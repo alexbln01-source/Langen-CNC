@@ -15,36 +15,47 @@ body {
   flex-direction: column;
 }
 
-/* Grundlayout */
+/* ===== LAYOUT ===== */
 #main {
   flex: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   height: 100%;
 }
-
 #left-panel {
+  width: 50%;
   background: #fff;
-  border-bottom: 2px solid #ccc;
+  border-right: 2px solid #ccc;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.preview-container {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ddd;
+  overflow: hidden;
   box-sizing: border-box;
 }
 
+/* ===== HEADING ===== */
 h2 {
-  text-align:center;
-  color:#004b8d;
-  margin: 8px 0 14px;
+  text-align: center;
+  color: #004b8d;
+  margin-top: 0;
+  margin-bottom: 16px;
 }
 
-/* Farb-Buttons */
+/* ===== BUTTONS (FARBEN) ===== */
 .color-row {
   display: flex;
   justify-content: center;
   gap: 10px;
-  flex-wrap: wrap;
+  margin-bottom: 10px;
 }
 .color-btn, #btnVorgezogen {
   height: 48px;
@@ -69,12 +80,12 @@ h2 {
 
 #btnVorgezogen {
   margin-top: 12px;
-  width: 320px;
+  width: calc(90px * 3 + 20px);
   color: #6c757d;
 }
 #btnVorgezogen.active { color:#d9534f; border-color:#d9534f; }
 
-/* Eingaben */
+/* ===== INPUTS ===== */
 .fake-input {
   width: 95%;
   padding: 10px;
@@ -88,17 +99,7 @@ h2 {
 }
 .fake-input:active { background: #f2f2f2; }
 
-/* Vorschau */
-.preview-container {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #ddd;
-  padding: 10px 0;
-  box-sizing: border-box;
-}
-
+/* ===== VORSCHAU ===== */
 .output-box {
   background: #fff;
   border: 1px solid #aaa;
@@ -113,10 +114,8 @@ h2 {
   padding: 8mm;
   transition: transform 0.3s ease;
   transform-origin: center center;
-  margin: auto;
   position: relative;
 }
-
 #output-footer {
   position: absolute;
   right: 5mm;
@@ -138,19 +137,18 @@ h2 {
   display: none;
 }
 
-/* Buttons unten */
+/* ===== BOTTOM BUTTONS ===== */
 .buttons-bottom {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
   display: flex;
   justify-content: space-around;
-  align-items: center;
-  width: 100%;
-  padding: 10px;
-  background: #f8f9fa;
-  border-top: 1px solid #ccc;
 }
 button.action {
   flex: 1;
-  margin: 0 5px;
+  margin: 0 20px;
   height: 42px;
   border: 1px solid #ccc;
   background: transparent;
@@ -161,19 +159,21 @@ button.action {
   box-shadow:0 2px 4px rgba(0,0,0,0.15);
 }
 
-/* 📱 Mobile Ansicht */
+/* ===== MOBILE ANSICHT ===== */
 @media (max-width: 768px) {
-  .preview-container {
-    justify-content: center;
-    align-items: center;
-  }
+  #main { flex-direction: column; }
+  #left-panel, .preview-container { width: 100%; border: none; }
   .output-box {
     transform: scale(0.55);
     margin: 0 auto;
   }
+  .buttons-bottom {
+    position: static;
+    margin-top: 10px;
+  }
 }
 
-/* Popup Tastatur */
+/* ===== POPUP TASTATUR ===== */
 #keyboardPopup {
   display:none;
   position:fixed;
@@ -223,6 +223,7 @@ button.action {
 .btn-ok {background:#28a745;}
 .btn-close {background:#6c757d;}
 
+/* ===== PRINT ===== */
 @media print {
   @page { size:A6 landscape; margin:0; }
   body * { visibility:hidden; }
@@ -236,11 +237,13 @@ button.action {
 <div id="main">
   <div id="left-panel">
     <h2>PAUS Lieferung</h2>
+
     <div class="color-row">
       <button class="color-btn color-red active" data-color="red">Rot</button>
       <button class="color-btn color-blue" data-color="blue">Blau</button>
       <button class="color-btn color-black" data-color="black">Schwarz</button>
     </div>
+
     <button id="btnVorgezogen">Vorgezogen</button>
 
     <label>Kommissionsnummer</label>
@@ -248,11 +251,11 @@ button.action {
 
     <label>Lieferdatum (TT.MM)</label>
     <div id="lieferdatum" class="fake-input">Tippen zum Eingeben</div>
-  </div>
 
-  <div class="buttons-bottom">
-    <button id="btnBack" class="action" onclick="window.location.href='index.html'">⬅️ Zurück</button>
-    <button id="btnDrucken" class="action">🖨 Drucken</button>
+    <div class="buttons-bottom">
+      <button id="btnBack" class="action" onclick="window.location.href='index.html'">⬅️ Zurück</button>
+      <button id="btnDrucken" class="action">🖨 Drucken</button>
+    </div>
   </div>
 
   <div class="preview-container">
