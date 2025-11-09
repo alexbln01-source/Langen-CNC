@@ -260,18 +260,17 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
     <h2>Kanten</h2>
 
     <div class="customer-buttons">
-      <button type="button" id="btnBergmann" class="action">Bergmann M-H</button>
-      <button type="button" id="btnBuecker" class="action">Bücker</button>
-      <button type="button" id="btnGrimme" class="action">Grimme</button>
-      <button type="button" id="btnJanzen" class="action">Janzen</button>
-      <button type="button" id="btnKrone" class="action">Krone Spelle</button>
-      <button type="button" id="btnLBergmann" class="action">L.Bergmann</button>
-      <button type="button" id="btnPaus" class="action">PAUS</button>
-      <button type="button" id="btnTos" class="action">TOS</button>
+      <button type="button" class="action" data-customer="Bergmann M-H">Bergmann M-H</button>
+      <button type="button" class="action" data-customer="Bücker">Bücker</button>
+      <button type="button" class="action" data-customer="Grimme">Grimme</button>
+      <button type="button" class="action" data-customer="Janzen">Janzen</button>
+      <button type="button" class="action" data-customer="Krone Spelle">Krone Spelle</button>
+      <button type="button" class="action" data-customer="L.Bergmann">L.Bergmann</button>
+      <button type="button" class="action" data-customer="PAUS">PAUS</button>
+      <button type="button" class="action" data-customer="TOS">TOS</button>
       <button type="button" id="btnSonstige" class="action">Sonstige Kunden</button>
     </div>
 
-    <!-- ZENTRIERTE BUTTONS -->
     <div class="button-row">
       <button id="btnBackKanten">⬅️ Zurück</button>
       <button id="btnDruckenKanten">🖨 Drucken</button>
@@ -298,12 +297,12 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
 </div>
 
 <script>
-const out=document.getElementById('output-content');
-const popup=document.getElementById('keyboardPopup');
-const input=document.getElementById('keyboardInput');
-const grid=document.getElementById('keyboardKeys');
+const out = document.getElementById('output-content');
+const popup = document.getElementById('keyboardPopup');
+const input = document.getElementById('keyboardInput');
+const grid = document.getElementById('keyboardKeys');
 
-/* Tastatur aufbauen */
+/* Bildschirmtastatur */
 (()=>{
   const chars=[..."QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM"];
   chars.forEach(c=>{
@@ -325,40 +324,37 @@ function showOutput(customer){
   out.innerHTML=`<div class="title">${customer}</div><div class="subtitle">Kanten</div>`;
   if(customer==="PAUS"){
     out.insertAdjacentHTML('beforeend',`<div class="line"><label>K-Termin:</label><span class="fill"></span></div>`);
-    return;
+  } else if(customer!=="TOS"){
+    out.insertAdjacentHTML('beforeend',`
+      <div class="line"><label>K-Termin:</label><span class="fill"></span></div>
+      <div class="line"><label>Palettennummer:</label><span class="fill"></span></div>`);
   }
-  if(customer==="TOS"){ return; }
-  out.insertAdjacentHTML('beforeend',`
-    <div class="line"><label>K-Termin:</label><span class="fill"></span></div>
-    <div class="line"><label>Palettennummer:</label><span class="fill"></span></div>`);
 }
 
-/* Button-Events */
-document.getElementById('btnBergmann').onclick=()=>showOutput('Bergmann M-H');
-document.getElementById('btnBuecker').onclick =()=>showOutput('Bücker');
-document.getElementById('btnGrimme').onclick  =()=>showOutput('Grimme');
-document.getElementById('btnJanzen').onclick  =()=>showOutput('Janzen');
-document.getElementById('btnKrone').onclick   =()=>showOutput('Krone Spelle');
-document.getElementById('btnLBergmann').onclick=()=>showOutput('L.Bergmann');
-document.getElementById('btnPaus').onclick    =()=>showOutput('PAUS');
-document.getElementById('btnTos').onclick     =()=>showOutput('TOS');
-document.getElementById('btnSonstige').onclick=()=>openKeyboard();
+/* Klick für Kunden */
+document.querySelectorAll('.action[data-customer]').forEach(btn=>{
+  btn.addEventListener('click',()=>showOutput(btn.dataset.customer));
+});
+document.getElementById('btnSonstige').addEventListener('click',openKeyboard);
 
-/* Tastatursteuerung */
+/* Tastatur-Steuerung */
 document.getElementById('keyboardOK').onclick=()=>{
   const val=input.value.trim();
   if(!val) return;
   closeKeyboard();
   showOutput(val);
 };
-document.getElementById('keyboardClose').onclick=closeKeyboard;
 document.getElementById('keyboardDelete').onclick=()=>input.value=input.value.slice(0,-1);
+document.getElementById('keyboardClose').onclick=closeKeyboard;
 
-/* Drucken */
+/* Druck */
 document.getElementById('btnDruckenKanten').onclick=()=>{
-  if(out.innerHTML.trim()===""){alert("Bitte zuerst einen Kunden wählen!");return;}
+  if(out.innerHTML.trim()===""){ alert("Bitte zuerst einen Kunden wählen!"); return; }
   window.print();
 };
+
+/* Zurück */
+document.getElementById('btnBackKanten').onclick=()=>window.location.href='index.html';
 
 /* Kein Doppeltap-Zoom */
 document.addEventListener('touchend',function(e){
