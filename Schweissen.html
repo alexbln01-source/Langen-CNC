@@ -2,99 +2,126 @@
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Schweißen (A6 Quer)</title>
 <style>
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  display: flex;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
   background: #f0f0f0;
-  position: relative;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+}
+
+/* Hauptlayout */
+#main {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  overflow: hidden;
+  gap: 10px;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 /* Linker Bereich */
 #form-container {
-  width: 50%;
+  flex: 1 1 360px;
+  max-width: 520px;
   background: #fff;
-  border-right: 2px solid #ccc;
-  display: flex;
-  flex-direction: column;
+  border: 2px solid #ccc;
+  border-radius: 10px;
   padding: 20px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
 }
-h2 { text-align: center; margin-top: 0; color: #004b8d; }
+h2 {
+  text-align: center;
+  margin: 0 0 20px 0;
+  color: #004b8d;
+  font-size: 1.8rem;
+}
 
 /* Buttons */
 button.action {
-  width: 48%;
-  height: 40px;
+  flex: 0 0 calc(48% - 8px);
+  height: 42px;
   border: 1px solid #ccc;
   background: linear-gradient(#f8f9fb, #eef1f4);
   color: #2d2d2d;
   font-weight: bold;
   border-radius: 8px;
   cursor: pointer;
-  margin-top: 12px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
   transition: all 0.2s ease;
+  font-size: 14px;
+  margin-bottom: 10px;
 }
 button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
 
-/* Fixe Buttons unten – links/rechts außen */
+/* Fixe Buttons unten */
 .fixed-btn {
   position: absolute;
-  bottom: 20px;
-  height: 38px;
-  min-width: 110px;
+  bottom: 18px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 0 12px;
-  font-size: 13px;
+  gap: 8px;
+  padding: 0 14px;
+  font-size: 14px;
   font-weight: bold;
   border-radius: 8px;
-  background: linear-gradient(#f8f9fb, #eef1f4);
   border: 1px solid #ccc;
+  background: linear-gradient(#f8f9fb,#eef1f4);
   color: #2d2d2d;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  cursor: pointer;
 }
 #btnBackSchweissen { left: 20px; }
 #btnDruckenSchweissen { right: 20px; }
 
 /* Vorschau */
 .preview-container {
-  flex: 1;
+  flex: 1 1 400px;
+  max-width: 700px;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #ddd;
+  border: 2px solid #bbb;
+  border-radius: 10px;
   overflow: hidden;
+  padding: 10px;
+  box-sizing: border-box;
 }
 .output-box {
   background: #fff;
   border: 1px solid #aaa;
   box-sizing: border-box;
+  width: 148mm;
+  height: 105mm;
   padding: 8mm;
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  overflow: hidden;
-  width: 148mm;
-  height: 105mm;
+  position: relative;
 }
 #output-content {
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: stretch;
+  align-items: center;
 }
 .title {
   font-size: 26pt;
@@ -156,7 +183,7 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
 }
 .keyboard-grid {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(9, 1fr);
   gap: 6px;
 }
 .keyboard-grid button {
@@ -166,30 +193,27 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   border-radius: 6px;
   background: #f2f2f2;
   cursor: pointer;
-  transition: transform 0.05s ease, background 0.1s;
 }
-.keyboard-grid button:hover { background: #e0e0e0; }
-.keyboard-grid button:active { background: #d4d4d4; transform: translateY(1px); }
-
-/* Untere Buttons Löschen / OK / Schließen */
+.keyboard-grid button:hover { background:#e0e0e0; }
+.keyboard-grid button:active { background:#d4d4d4; transform:translateY(1px); }
 .keyboard-actions {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 14px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-top:14px;
 }
 .keyboard-actions button {
-  padding: 8px 16px;
-  font-size: 15px;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  color: #fff;
+  padding:8px 16px;
+  font-size:15px;
+  font-weight:bold;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  color:#fff;
 }
-.btn-del { background: #d9534f; }
-.btn-ok { background: #28a745; }
-.btn-close { background: #6c757d; }
+.btn-del { background:#d9534f; }
+.btn-ok { background:#28a745; }
+.btn-close { background:#6c757d; }
 
 /* Druck */
 @media print {
@@ -202,30 +226,67 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
     border: none; box-shadow: none;
   }
 }
+
+/* Handyoptimierung */
+@media (max-width: 900px) {
+  #main {
+    flex-direction: column;
+    height: 100vh;
+    justify-content: flex-start;
+  }
+
+  #form-container {
+    width: 100%;
+    border-right: none;
+    border-bottom: 2px solid #ccc;
+    padding: 14px 18px 0;
+  }
+
+  .preview-container {
+    width: 100%;
+    flex: 1;
+    background: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 0;
+    margin-top: -4px;
+    height: calc(100vh - 400px);
+    overflow: hidden;
+  }
+
+  .output-box {
+    transform: scale(0.92);
+    transform-origin: top center;
+    height: auto;
+  }
+}
 </style>
 </head>
 <body>
 
-<div id="form-container">
-  <h2>Schweißen</h2>
+<div id="main">
+  <div id="form-container">
+    <h2>Schweißen</h2>
 
-  <div style="display:flex; justify-content:space-between; flex-wrap:wrap;">
-    <button type="button" id="btnBergmann" class="action">Bergmann M-H</button>
-    <button type="button" id="btnBuecker" class="action">Bücker</button>
-    <button type="button" id="btnJanzen" class="action">Janzen</button>
-    <button type="button" id="btnKrone" class="action">Krone Spelle</button>
-    <button type="button" id="btnLBergmann" class="action">L.Bergmann</button>
-    <button type="button" id="btnPaus" class="action">PAUS</button>
-    <button type="button" id="btnSonstige" class="action">Sonstige Kunden</button>
-    <button type="button" id="btnTos" class="action">TOS</button>
+    <div style="display:flex; justify-content:space-between; flex-wrap:wrap;">
+      <button type="button" class="action" data-customer="Bergmann M-H">Bergmann M-H</button>
+      <button type="button" class="action" data-customer="Bücker">Bücker</button>
+      <button type="button" class="action" data-customer="Janzen">Janzen</button>
+      <button type="button" class="action" data-customer="Krone Spelle">Krone Spelle</button>
+      <button type="button" class="action" data-customer="L.Bergmann">L.Bergmann</button>
+      <button type="button" class="action" data-customer="PAUS">PAUS</button>
+      <button type="button" class="action" data-customer="Sonstige Kunden">Sonstige Kunden</button>
+      <button type="button" class="action" data-customer="TOS">TOS</button>
+    </div>
+
+    <button id="btnBackSchweissen" class="fixed-btn">⬅️ Zurück</button>
+    <button id="btnDruckenSchweissen" class="fixed-btn" style="right:20px;">🖨 Drucken</button>
   </div>
 
-  <button id="btnBackSchweissen" class="fixed-btn">⬅️ Zurück</button>
-  <button id="btnDruckenSchweissen" class="fixed-btn">🖨 Drucken</button>
-</div>
-
-<div class="preview-container">
-  <div class="output-box"><div id="output-content"></div></div>
+  <div class="preview-container">
+    <div class="output-box"><div id="output-content"></div></div>
+  </div>
 </div>
 
 <!-- Popup Tastatur -->
@@ -248,27 +309,16 @@ const popup=document.getElementById('keyboardPopup');
 const input=document.getElementById('keyboardInput');
 const grid=document.getElementById('keyboardKeys');
 
-/* Tastatur aufbauen */
-(() => {
+/* Bildschirm-Tastatur */
+(()=>{
   const chars=[..."QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM"];
   chars.forEach(c=>{
     const b=document.createElement('button');
     b.textContent=c;
-    b.onclick=()=>input.value+=c;
+    b.onclick=()=>{input.value+=c; input.focus();}
     grid.appendChild(b);
   });
 })();
-
-/* Inaktivität → 30 Sekunden Timeout */
-let inactivityTimer;
-function resetInactivityTimer(){
-  clearTimeout(inactivityTimer);
-  inactivityTimer=setTimeout(()=>window.location.href='index.html',30000);
-}
-['click','keydown','mousemove','touchstart'].forEach(evt=>{
-  document.addEventListener(evt,resetInactivityTimer);
-});
-resetInactivityTimer();
 
 function openKeyboard(){
   input.value="";
@@ -278,20 +328,21 @@ function openKeyboard(){
 function closeKeyboard(){ popup.style.display='none'; }
 
 function showOutput(customer){
+  let html="";
   switch(customer){
     case 'Bergmann M-H':
-      out.innerHTML=`<div class="title">Bergmann M-H</div><div class="subtitle">Schweißen</div>
+      html=`<div class="title">Bergmann M-H</div><div class="subtitle">Schweißen</div>
         <div class="line"><label>Auftr.-NR:</label><span class="fill"></span></div>
         <div class="line"><label>Pos.:</label><span class="fill"></span></div>
         <div class="line"><label>SW-Termin:</label><span class="fill"></span></div>`;
       break;
     case 'Janzen':
     case 'L.Bergmann':
-      out.innerHTML=`<div class="title">${customer}</div><div class="subtitle">Schweißen</div>
+      html=`<div class="title">${customer}</div><div class="subtitle">Schweißen</div>
         <div class="line"><label>SW-Termin:</label><span class="fill"></span></div>`;
       break;
     case 'Krone Spelle':
-      out.innerHTML=`<div class="title">Krone Spelle</div>
+      html=`<div class="title">Krone Spelle</div>
         <div class="line"><label>Auftr.-NR:</label><span class="fill"></span></div>
         <div class="line"><label>Bezeichnung:</label><span class="fill"></span></div>
         <div class="line"><label>Stückzahl:</label><span style="width:3cm;" class="fill"></span>
@@ -299,29 +350,29 @@ function showOutput(customer){
         <div class="line"><label>Liefertermin:</label><span class="fill"></span></div>`;
       break;
     case 'PAUS':
-      out.innerHTML=`<div class="title">PAUS</div><div class="subtitle">Schweißen</div>
+      html=`<div class="title">PAUS</div><div class="subtitle">Schweißen</div>
         <div class="line"><label>Prod.-NR:</label><span class="fill"></span></div>
         <div class="line"><label>SW-Termin:</label><span class="fill"></span></div>`;
       break;
     case 'TOS':
-      out.innerHTML=`<div class="title">TOS</div><div class="subtitle">Schweißen</div>
+      html=`<div class="title">TOS</div><div class="subtitle">Schweißen</div>
         <div class="line"><label>Liefertermin:</label><span class="fill"></span></div>`;
       break;
     default:
-      out.innerHTML=`<div class="title">${customer}</div><div class="subtitle">Schweißen</div>
+      html=`<div class="title">${customer}</div><div class="subtitle">Schweißen</div>
         <div class="line"><label>SW-Termin:</label><span class="fill"></span></div>`;
   }
+  out.innerHTML=html;
 }
 
-/* Buttons */
-document.getElementById('btnBergmann').onclick=()=>showOutput('Bergmann M-H');
-document.getElementById('btnBuecker').onclick =()=>showOutput('Bücker');
-document.getElementById('btnJanzen').onclick  =()=>showOutput('Janzen');
-document.getElementById('btnKrone').onclick   =()=>showOutput('Krone Spelle');
-document.getElementById('btnLBergmann').onclick=()=>showOutput('L.Bergmann');
-document.getElementById('btnPaus').onclick    =()=>showOutput('PAUS');
-document.getElementById('btnTos').onclick     =()=>showOutput('TOS');
-document.getElementById('btnSonstige').onclick=()=>openKeyboard();
+/* Button-Aktionen */
+document.querySelectorAll('.action[data-customer]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const name=btn.dataset.customer;
+    if(name==='Sonstige Kunden'){ openKeyboard(); }
+    else{ showOutput(name); }
+  });
+});
 
 /* Tastatur Buttons */
 document.getElementById('keyboardOK').onclick=()=>{
@@ -329,18 +380,29 @@ document.getElementById('keyboardOK').onclick=()=>{
   closeKeyboard(); showOutput(val);
 };
 document.getElementById('keyboardClose').onclick=closeKeyboard;
-document.getElementById('keyboardDelete').onclick=()=>{
-  input.value=input.value.slice(0,-1);
-};
-
-/* Button Zurück */
-document.getElementById('btnBackSchweissen').onclick=()=>window.location.href='index.html';
+document.getElementById('keyboardDelete').onclick=()=>input.value=input.value.slice(0,-1);
 
 /* Drucken */
 document.getElementById('btnDruckenSchweissen').onclick=()=>{
   if(out.innerHTML.trim()===""){ alert("Bitte zuerst einen Kunden wählen!"); return; }
   window.print();
 };
+
+/* Zurück */
+document.getElementById('btnBackSchweissen').onclick=()=>window.location.href='index.html';
+
+/* Kein Doppeltap-Zoom */
+document.addEventListener('touchend',function(e){
+  const now=Date.now();
+  if(this.lastTouch && now-this.lastTouch<400)e.preventDefault();
+  this.lastTouch=now;
+},{passive:false});
+
+/* Automatischer Reset */
+let timer;
+function resetTimer(){clearTimeout(timer);timer=setTimeout(()=>window.location.href='index.html',30000);}
+['click','keydown','touchstart'].forEach(e=>document.addEventListener(e,resetTimer));
+resetTimer();
 </script>
 </body>
 </html>
