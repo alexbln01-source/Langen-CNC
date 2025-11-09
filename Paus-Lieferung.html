@@ -52,7 +52,7 @@ h2 {
   font-size: 1.6rem;
 }
 
-/* ===== BUTTONS (FARBEN) ===== */
+/* ===== BUTTONS (FARBEN + VORGEZOGEN) ===== */
 .color-row {
   display: flex;
   justify-content: center;
@@ -145,11 +145,6 @@ label {
   width: 4.34cm;
   height: 1.66cm;
   object-fit: contain;
-}
-#vorgezogenText {
-  font-size: 36pt;
-  font-weight: bold;
-  color: red;
 }
 
 /* ===== BUTTONS UNTEN ===== */
@@ -327,26 +322,29 @@ function updateOutput(){
   centerOutput(vorgezogen,isPast);
 }
 
-/* Zentrierung */
+/* ✅ NEUE ZENTRIERUNG – Logo-Safe */
 function centerOutput(vorgezogen,borderNeeded){
   requestAnimationFrame(()=>{
-    const footerSpace = footer.offsetHeight + 10;
+    const logoHeight = footer.offsetHeight;
+    const footerSpace = logoHeight + 10;
     const available = box.clientHeight - footerSpace;
     const contentH = out.scrollHeight;
     let top = Math.max((available - contentH) / 2, 0);
 
-    let extra = 0;
-    if (vorgezogen) extra += footer.offsetHeight * 0.8;
-    if (borderNeeded) extra += footer.offsetHeight * 0.4;
+    // immer Grundabstand über Logo
+    let extra = logoHeight * 0.8;
 
     if (vorgezogen && borderNeeded) {
-      const logoHeight = footer.offsetHeight;
-      extra += logoHeight * 2.1 + 20;
+      extra += logoHeight * 1.8 + 30;
     } else if (vorgezogen && !borderNeeded) {
-      extra += footer.offsetHeight * 1.2 + 10;
+      extra += logoHeight * 1.2 + 20;
+    } else if (!vorgezogen && borderNeeded) {
+      extra += logoHeight * 0.6 + 10;
+    } else {
+      extra += logoHeight * 0.4 + 8;
     }
 
-    const minSpace = 15;
+    const minSpace = 20;
     out.style.marginTop = Math.max(top - extra, minSpace) + "px";
   });
 }
