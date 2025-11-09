@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Beschichtung (A5 Quer)</title>
 <style>
 html, body {
@@ -10,33 +10,42 @@ html, body {
   font-family: Arial, sans-serif;
   background: #f0f0f0;
   display: flex; flex-direction: column;
+  touch-action: manipulation;
+  -webkit-user-select: none;
 }
 
 /* Hauptlayout */
 #main {
   flex: 1;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
   overflow: hidden;
-  position: relative;
+  gap: 10px;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 /* Linke Seite */
 #form-container {
-  width: 48%;
+  flex: 1 1 360px;
+  max-width: 520px;
   background: #fff;
-  border-right: 2px solid #dcdcdc;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  padding: 14px 16px;
-  box-sizing: border-box;
+  align-items: center;
   position: relative;
+  box-sizing: border-box;
 }
 
 h2 {
   text-align: center;
   margin: 0 0 12px 0;
-  font-size: 20px;
+  font-size: 1.6rem;
   color: #004b8d;
 }
 
@@ -57,14 +66,14 @@ input[type="text"] {
 }
 button.action {
   flex: 0 0 calc(33.333% - 8px);
-  height: 34px;
+  height: 36px;
   border: 1px solid #ccc;
   background: linear-gradient(#f8f9fb, #eef1f4);
   color: #2d2d2d;
   font-weight: bold;
   border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
   transition: all 0.2s ease;
   font-size: 13px;
   white-space: nowrap;
@@ -74,38 +83,52 @@ button.action:hover { background: linear-gradient(#ffffff, #e9ecef); }
 /* Fixe Buttons unten */
 .fixed-btn {
   position: absolute;
-  bottom: 20px;
-  height: 45px;
+  bottom: 18px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   padding: 0 14px;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: linear-gradient(#f8f9fb,#eef1f4);
+  color: #2d2d2d;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  cursor: pointer;
 }
 #btnBackBeschichtung { left: 20px; }
 #btnDruckenBeschichtung { right: 20px; }
 
 /* Rechte Seite */
 .preview-container {
-  flex: 1;
+  flex: 1 1 400px;
+  max-width: 700px;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #ddd;
+  border: 2px solid #bbb;
+  border-radius: 10px;
   overflow: hidden;
+  padding: 10px;
+  box-sizing: border-box;
 }
 .output-box {
   background: #fff;
   border: 1px solid #aaa;
   box-sizing: border-box;
   padding: 8mm;
+  width: 210mm;
+  height: 148mm;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: 210mm;
-  height: 148mm;
   position: relative;
+  text-align: center;
 }
 #output-content div {
   font-weight: bold;
@@ -155,7 +178,7 @@ button.action:hover { background: linear-gradient(#ffffff, #e9ecef); }
 }
 .keyboard-grid {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(9, 1fr);
   gap: 6px;
 }
 .keyboard-grid button {
@@ -165,30 +188,27 @@ button.action:hover { background: linear-gradient(#ffffff, #e9ecef); }
   border-radius: 6px;
   background: #f2f2f2;
   cursor: pointer;
-  transition: transform 0.05s ease, background 0.1s;
 }
-.keyboard-grid button:hover { background: #e0e0e0; }
-.keyboard-grid button:active { background: #d4d4d4; transform: translateY(1px); }
-
-/* Untere Buttons Löschen / OK / Schließen */
+.keyboard-grid button:hover { background:#e0e0e0; }
+.keyboard-grid button:active { background:#d4d4d4; transform:translateY(1px); }
 .keyboard-actions {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 14px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-top:14px;
 }
 .keyboard-actions button {
-  padding: 8px 16px;
-  font-size: 15px;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  color: #fff;
+  padding:8px 16px;
+  font-size:15px;
+  font-weight:bold;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  color:#fff;
 }
-.btn-del { background: #d9534f; }
-.btn-ok { background: #28a745; }
-.btn-close { background: #6c757d; }
+.btn-del { background:#d9534f; }
+.btn-ok { background:#28a745; }
+.btn-close { background:#6c757d; }
 
 /* Druck */
 @media print {
@@ -196,6 +216,41 @@ button.action:hover { background: linear-gradient(#ffffff, #e9ecef); }
   body * { visibility: hidden; }
   .output-box, .output-box * { visibility: visible; }
   .output-box { position: absolute; left: 0; top: 0; border: none; }
+}
+
+/* Handyoptimierung */
+@media (max-width: 900px) {
+  #main {
+    flex-direction: column;
+    height: 100vh;
+    justify-content: flex-start;
+  }
+
+  #form-container {
+    width: 100%;
+    border-right: none;
+    border-bottom: 2px solid #ccc;
+    padding: 14px 18px 0;
+  }
+
+  .preview-container {
+    width: 100%;
+    flex: 1;
+    background: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 0;
+    margin-top: -4px;
+    height: calc(100vh - 400px);
+    overflow: hidden;
+  }
+
+  .output-box {
+    transform: scale(0.9);
+    transform-origin: top center;
+    height: auto;
+  }
 }
 </style>
 </head>
@@ -226,13 +281,8 @@ button.action:hover { background: linear-gradient(#ffffff, #e9ecef); }
       <button class="action" data-type="COATINC">Coatinc</button>
     </div>
 
-    <button id="btnBackBeschichtung" class="action fixed-btn" onclick="window.location.href='index.html'">
-      ⬅️ Zurück
-    </button>
-
-    <button id="btnDruckenBeschichtung" class="action fixed-btn" style="right:20px;">
-      🖨 Drucken
-    </button>
+    <button id="btnBackBeschichtung" class="fixed-btn">⬅️ Zurück</button>
+    <button id="btnDruckenBeschichtung" class="fixed-btn" style="right:20px;">🖨 Drucken</button>
   </div>
 
   <div class="preview-container">
@@ -247,7 +297,7 @@ button.action:hover { background: linear-gradient(#ffffff, #e9ecef); }
 <div id="keyboardPopup">
   <div id="keyboardBox">
     <h3 id="keyboardTitle">Eingabe</h3>
-    <input type="text" id="keyboardInput">
+    <input type="text" id="keyboardInput" autocomplete="off">
     <div class="keyboard-grid" id="keyboardGrid"></div>
     <div class="keyboard-actions">
       <button class="btn-del" id="btnDel">⌫ Löschen</button>
@@ -281,22 +331,22 @@ function openKeyboard(field, type){
   keys.forEach(k=>{
     const b=document.createElement('button');
     b.textContent=k;
-    b.onclick=()=>kbInput.value+=k;
+    b.onclick=()=>{ kbInput.value+=k; kbInput.focus(); };
     grid.appendChild(b);
   });
 
   popup.style.display='flex';
-  kbInput.focus();
+  setTimeout(()=>kbInput.focus(),100);
 }
-
 function closeKeyboard(){ popup.style.display='none'; }
+
 document.getElementById('btnDel').onclick=()=>kbInput.value=kbInput.value.slice(0,-1);
 document.getElementById('btnOk').onclick=()=>{
   currentField.value = kbInput.value;
   closeKeyboard();
   if(currentField===zahlInput) openKeyboard(kundeInput,'letters');
 };
-document.getElementById('btnClose').onclick=()=>closeKeyboard();
+document.getElementById('btnClose').onclick=closeKeyboard;
 
 zahlInput.onclick=()=>openKeyboard(zahlInput,'numbers');
 kundeInput.onclick=()=>openKeyboard(kundeInput,'letters');
@@ -312,7 +362,6 @@ function addLine(txt,size){
   out.appendChild(d);
 }
 
-/* Logo herausrechnen für echte Mitte */
 function centerWithLogo(){
   const box=document.getElementById('output');
   const footer=document.getElementById('output-footer');
@@ -357,6 +406,23 @@ document.getElementById('btnDruckenBeschichtung').onclick=()=>{
   window.print();
 };
 
+/* Zurück */
+document.getElementById('btnBackBeschichtung').onclick=()=>window.location.href='index.html';
+
+/* Kein Doppeltap-Zoom */
+document.addEventListener('touchend',function(e){
+  const now=Date.now();
+  if(this.lastTouch && now-this.lastTouch<400)e.preventDefault();
+  this.lastTouch=now;
+},{passive:false});
+
+/* Auto-Zurück nach 30s */
+let timer;
+function resetTimer(){clearTimeout(timer);timer=setTimeout(()=>window.location.href='index.html',30000);}
+['click','keydown','touchstart'].forEach(e=>document.addEventListener(e,resetTimer));
+resetTimer();
+
+/* Logo mittig anpassen */
 window.addEventListener('resize',centerWithLogo);
 const logo=document.querySelector('#output-footer img');
 if(logo.complete) centerWithLogo();
