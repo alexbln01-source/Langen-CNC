@@ -242,7 +242,7 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   }
 
   .button-row {
-    margin-bottom: 8px;
+    margin-bottom: 6px; /* Knöpfe näher an Vorschau */
   }
 
   .button-row button {
@@ -256,14 +256,18 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
     background: #eee;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Vorschau nach oben */
-    padding-top: 5px;
-    padding-bottom: 5px;
+    align-items: flex-start;
+    padding-top: 0;          /* kein extra Abstand mehr */
+    padding-bottom: 0;
+    margin-top: -4px;        /* Vorschau leicht anheben */
+    height: calc(100vh - 420px); /* dynamische Höhe, mehr Platz */
+    overflow: hidden;
   }
 
   .output-box {
-    transform: scale(0.85);
+    transform: scale(0.92);
     transform-origin: top center;
+    height: auto;
   }
 }
 </style>
@@ -312,10 +316,10 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
 </div>
 
 <script>
-const out = document.getElementById('output-content');
-const popup = document.getElementById('keyboardPopup');
-const input = document.getElementById('keyboardInput');
-const grid = document.getElementById('keyboardKeys');
+const out=document.getElementById('output-content');
+const popup=document.getElementById('keyboardPopup');
+const input=document.getElementById('keyboardInput');
+const grid=document.getElementById('keyboardKeys');
 
 /* Bildschirmtastatur */
 (()=>{
@@ -323,7 +327,10 @@ const grid = document.getElementById('keyboardKeys');
   chars.forEach(c=>{
     const b=document.createElement('button');
     b.textContent=c;
-    b.onclick=()=>input.value+=c;
+    b.onclick=()=>{
+      input.value+=c;
+      input.focus(); // Fokus bleibt
+    };
     grid.appendChild(b);
   });
 })();
