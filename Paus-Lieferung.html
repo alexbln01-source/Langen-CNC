@@ -322,7 +322,7 @@ function updateOutput(){
   centerOutput(vorgezogen,isPast);
 }
 
-/* ✅ NEUE ZENTRIERUNG – Logo-Safe */
+/* ✅ "Grüne" perfekte Version */
 function centerOutput(vorgezogen,borderNeeded){
   requestAnimationFrame(()=>{
     const logoHeight = footer.offsetHeight;
@@ -331,17 +331,15 @@ function centerOutput(vorgezogen,borderNeeded){
     const contentH = out.scrollHeight;
     let top = Math.max((available - contentH) / 2, 0);
 
-    // immer Grundabstand über Logo
-    let extra = logoHeight * 0.8;
+    // Grundausgleich (leicht oberhalb Mitte)
+    let extra = logoHeight * 1.1;
 
     if (vorgezogen && borderNeeded) {
-      extra += logoHeight * 1.8 + 30;
+      extra += logoHeight * 1.8 + 20;
     } else if (vorgezogen && !borderNeeded) {
-      extra += logoHeight * 1.2 + 20;
+      extra += logoHeight * 1.2 + 10;
     } else if (!vorgezogen && borderNeeded) {
-      extra += logoHeight * 0.6 + 10;
-    } else {
-      extra += logoHeight * 0.4 + 8;
+      extra += logoHeight * 0.7 + 5;
     }
 
     const minSpace = 20;
