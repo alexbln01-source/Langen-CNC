@@ -40,7 +40,6 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
 }
 h2 {
   text-align: center;
@@ -50,12 +49,12 @@ h2 {
   font-size: 1.8rem;
 }
 
-/* Buttons Kunden */
+/* Kunden-Buttons */
 .customer-buttons {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
 }
 button.action {
   flex: 1 1 45%;
@@ -72,27 +71,27 @@ button.action {
 }
 button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
 
-/* Fixe Buttons unten */
-.fixed-btn {
-  position: absolute;
-  bottom: 20px;
-  height: 45px;
-  min-width: 120px;
+/* ===== ZENTRIERTE BUTTONS UNTEN ===== */
+.button-row {
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 0 12px;
-  font-size: 14px;
-  font-weight: bold;
-  border-radius: 8px;
-  background: linear-gradient(#f8f9fb, #eef1f4);
-  border: 1px solid #ccc;
-  color: #2d2d2d;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+  margin-bottom: 10px;
+  width: 100%;
 }
-#btnBackKanten { left: 20px; }
-#btnDruckenKanten { right: 20px; }
+.button-row button {
+  width: 45%;
+  height: 44px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: linear-gradient(#f8f9fb,#eef1f4);
+  color: #2d2d2d;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
 
 /* ===== Vorschau ===== */
 .preview-container {
@@ -197,7 +196,6 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   border-radius: 6px;
   background: #f2f2f2;
   cursor: pointer;
-  transition: background 0.1s;
 }
 .keyboard-grid button:hover { background:#e0e0e0; }
 .keyboard-grid button:active { background:#d4d4d4; transform:translateY(1px); }
@@ -227,6 +225,32 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   .output-box, .output-box * { visibility: visible; }
   .output-box { position:absolute; left:0; top:0; border:none; box-shadow:none; }
 }
+
+/* ===== Handyoptimierung ===== */
+@media (max-width: 900px) {
+  #main { flex-direction: column; height: 100vh; }
+  #form-container {
+    width: 100%;
+    border-right: none;
+    border-bottom: 2px solid #ccc;
+    padding: 14px 18px;
+  }
+  .button-row button { width: 46%; font-size: 14px; }
+  .preview-container {
+    width: 100%;
+    flex: 1;
+    background: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+  .output-box {
+    transform: scale(0.85);
+    transform-origin: center;
+  }
+}
 </style>
 </head>
 <body>
@@ -247,8 +271,11 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
       <button type="button" id="btnSonstige" class="action">Sonstige Kunden</button>
     </div>
 
-    <button id="btnBackKanten" class="fixed-btn" onclick="window.location.href='index.html'">⬅️ Zurück</button>
-    <button id="btnDruckenKanten" class="fixed-btn">🖨 Drucken</button>
+    <!-- ZENTRIERTE BUTTONS -->
+    <div class="button-row">
+      <button id="btnBackKanten">⬅️ Zurück</button>
+      <button id="btnDruckenKanten">🖨 Drucken</button>
+    </div>
   </div>
 
   <div class="preview-container">
@@ -288,13 +315,12 @@ const grid=document.getElementById('keyboardKeys');
 })();
 
 function openKeyboard(){
-  input.value=""; // immer leeren
+  input.value="";
   popup.style.display='flex';
   setTimeout(()=>input.focus(),100);
 }
 function closeKeyboard(){ popup.style.display='none'; }
 
-/* Anzeige aktualisieren */
 function showOutput(customer){
   out.innerHTML=`<div class="title">${customer}</div><div class="subtitle">Kanten</div>`;
   if(customer==="PAUS"){
@@ -328,12 +354,6 @@ document.getElementById('keyboardOK').onclick=()=>{
 document.getElementById('keyboardClose').onclick=closeKeyboard;
 document.getElementById('keyboardDelete').onclick=()=>input.value=input.value.slice(0,-1);
 
-/* Physische Eingabe */
-input.addEventListener('keydown',e=>{
-  if(e.key==="Enter"){e.preventDefault();document.getElementById('keyboardOK').click();}
-  if(e.key==="Escape"){e.preventDefault();closeKeyboard();}
-});
-
 /* Drucken */
 document.getElementById('btnDruckenKanten').onclick=()=>{
   if(out.innerHTML.trim()===""){alert("Bitte zuerst einen Kunden wählen!");return;}
@@ -341,13 +361,13 @@ document.getElementById('btnDruckenKanten').onclick=()=>{
 };
 
 /* Kein Doppeltap-Zoom */
-document.addEventListener('touchend', function(event) {
+document.addEventListener('touchend',function(e){
   const now=Date.now();
-  if(this.lastTouch && now-this.lastTouch<400) event.preventDefault();
+  if(this.lastTouch && now-this.lastTouch<400)e.preventDefault();
   this.lastTouch=now;
 },{passive:false});
 
-/* Automatisches Zurück nach 30 s */
+/* Auto-Zurück nach 30s */
 let timer;
 function resetTimer(){clearTimeout(timer);timer=setTimeout(()=>window.location.href='index.html',30000);}
 ['click','keydown','touchstart'].forEach(e=>document.addEventListener(e,resetTimer));
