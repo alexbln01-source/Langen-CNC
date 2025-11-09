@@ -8,10 +8,11 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  height: 100vh;
   display: flex;
-  flex-direction: column;
+  height: 100vh;
   background: #f0f0f0;
+  position: relative;
+  flex-direction: column;
   touch-action: manipulation;
   -webkit-user-select: none;
 }
@@ -107,21 +108,23 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   background: #fff;
   border: 1px solid #aaa;
   box-sizing: border-box;
-  width: 148mm;
-  height: 105mm;
   padding: 8mm;
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  position: relative;
+  overflow: hidden;
+  width: 148mm;
+  height: 105mm;
 }
 #output-content {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;
+  align-items: stretch;
 }
 .title {
   font-size: 26pt;
@@ -244,20 +247,21 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
 
   .preview-container {
     width: 100%;
-    flex: 1;
+    flex: none;
     background: #eee;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding-top: 0;
-    margin-top: -4px;
-    height: calc(100vh - 400px);
+    padding: 0;
+    margin-top: 0;
+    height: 52vh;               /* Vorschau nimmt 52% der Bildschirmhöhe */
     overflow: hidden;
   }
 
   .output-box {
     transform: scale(0.92);
     transform-origin: top center;
+    margin-top: 6px;            /* Vorschau leicht höher ansetzen */
     height: auto;
   }
 }
@@ -398,7 +402,7 @@ document.addEventListener('touchend',function(e){
   this.lastTouch=now;
 },{passive:false});
 
-/* Automatischer Reset */
+/* Auto-Zurück nach 30s */
 let timer;
 function resetTimer(){clearTimeout(timer);timer=setTimeout(()=>window.location.href='index.html',30000);}
 ['click','keydown','touchstart'].forEach(e=>document.addEventListener(e,resetTimer));
