@@ -15,7 +15,6 @@ body {
   flex-direction: column;
   touch-action: manipulation; /* Kein Doppeltap-Zoom */
   -webkit-user-select: none;
-  -ms-content-zooming: none;
 }
 
 /* ===== Layout allgemein ===== */
@@ -110,12 +109,13 @@ input[type="text"] {
   background: #ffffff;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
+/* 👇 Eingaben bleiben klickbar, aber keine Systemtastatur */
 input[readonly] {
   caret-color: transparent;
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
-  pointer-events: none; /* Kein Tastatur-Trigger */
+  touch-action: manipulation;
 }
 
 /* Buttons unten */
@@ -287,7 +287,7 @@ button.action:hover { background: linear-gradient(#ffffff, #e9ecef); }
     <input id="lieferdatum" type="text" readonly>
 
     <div class="button-row">
-      <button id="btnBack" class="action">⬅️ Zurück</button>
+      <button id="btnBack" class="action" onclick="window.location.href='index.html'">⬅️ Zurück</button>
       <button id="btnDrucken" class="action">🖨 Drucken</button>
     </div>
   </div>
