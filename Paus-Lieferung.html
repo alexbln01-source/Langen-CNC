@@ -5,12 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>PAUS Lieferung (A6)</title>
 <style>
-:root{
-  --gap-lg: 22px;
-  --gap-md: 14px;
-  --field-max: 520px;
-}
-
 html, body { touch-action: manipulation; }
 body {
   font-family: Arial, sans-serif;
@@ -25,7 +19,7 @@ body {
 #main {
   flex: 1;
   display: flex;
-  flex-direction: row;   /* Desktop: links/rechts */
+  flex-direction: row;
   height: 100%;
 }
 #left-panel {
@@ -35,7 +29,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24px 24px 84px;
+  padding: 24px;
   box-sizing: border-box;
   position: relative;
 }
@@ -47,14 +41,14 @@ body {
   background: #ddd;
   overflow: hidden;
   box-sizing: border-box;
-  position: relative;
 }
 
 /* ===== HEADING ===== */
 h2 {
   text-align: center;
   color: #004b8d;
-  margin: 0 0 18px;
+  margin-top: 0;
+  margin-bottom: 20px;
   font-size: 1.6rem;
 }
 
@@ -63,7 +57,7 @@ h2 {
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 .color-btn, #btnVorgezogen {
   height: 48px;
@@ -88,67 +82,60 @@ h2 {
 
 #btnVorgezogen {
   margin-top: 12px;
-  width: calc(90px * 3 + 20px); /* so breit wie drei Farbbuttons */
+  width: calc(90px * 3 + 20px);
   color: #6c757d;
 }
 #btnVorgezogen.active { color:#d9534f; border-color:#d9534f; }
 
-/* ===== FELD-STACK mit großem Abstand ===== */
-.field {
-  width: 100%;
-  max-width: var(--field-max);
-  margin: var(--gap-lg) auto 0;
-}
-.field:first-of-type { margin-top: calc(var(--gap-lg) + 6px); }
-
+/* ===== FELDER ===== */
 label {
   display: block;
-  font-size: 0.98rem;
+  font-size: 0.95rem;
   color: #444;
-  margin-bottom: 8px; /* klarer Abstand zum Feld */
+  margin-top: 20px;
+  margin-bottom: 6px;
   text-align: center;
 }
-
 .fake-input {
-  width: 100%;
-  padding: 14px 16px;
+  width: 95%;
+  padding: 14px;
+  margin-bottom: 14px;
   text-align: center;
   font-size: 18px;
   border: 1px solid #cfd3d7;
   border-radius: 10px;
   background: #ffffff;
   cursor: pointer;
-
-  /* Stabil beim Schreiben: */
   min-height: 56px;
-  line-height: 1.15;
+  line-height: 1.1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-
   box-shadow: 0 2px 3px rgba(0,0,0,0.05);
-  transition: all 0.2s ease-in-out;
 }
 .fake-input:hover { background: #f8f8f8; border-color: #bbb; }
-.fake-input:active { background: #f1f1f1; }
 
-/* ===== VORSCHAU A6 ===== */
+/* ===== VORSCHAU ===== */
 .output-box {
   background: #fff;
   border: 1px solid #aaa;
   box-sizing: border-box;
-  width: 148mm;                 /* A6 breit */
-  height: 105mm;                /* A6 hoch (Querformat) */
+  width: 148mm;
+  height: 105mm;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   text-align: center;
   padding: 8mm;
-  transform-origin: center center;
   position: relative;
 }
-#output-content { pointer-events: none; }
+#output-content {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  width:100%;
+  transition: margin-top 0.1s;
+}
 #output-footer {
   position: absolute;
   right: 5mm;
@@ -160,14 +147,9 @@ label {
   object-fit: contain;
 }
 #vorgezogenText {
-  position: absolute;
-  bottom: 22mm;
   font-size: 36pt;
   font-weight: bold;
-  width: 100%;
-  text-align: center;
   color: red;
-  display: none;
 }
 
 /* ===== BUTTONS UNTEN ===== */
@@ -192,34 +174,20 @@ button.action {
   box-shadow:0 2px 4px rgba(0,0,0,0.15);
 }
 
-/* ===== MOBILE: oben/unten + mehr Luft + Auto-Fit der Vorschau ===== */
+/* ===== MOBILE ===== */
 @media (max-width: 768px) {
   #main { flex-direction: column; }
-  #left-panel { 
-    width: 100%; 
-    border-right: none; 
-    border-bottom: 2px solid #ccc;
-    padding: 18px 16px 76px;
-  }
-  .preview-container { 
-    width: 100%; 
-    flex: 1; 
-    min-height: 42vh;
-  }
-
-  /* Mehr Luft auf Handy */
-  .field { margin-top: 24px; }
-  label { font-size: 1rem; margin-bottom: 10px; }
-  .fake-input { padding: 16px; font-size: 20px; min-height: 60px; }
-  .buttons-bottom { position: static; margin-top: 16px; }
+  #left-panel, .preview-container { width: 100%; border: none; }
+  .output-box { transform: scale(0.55); margin: 0 auto; }
+  .buttons-bottom { position: static; margin-top: 10px; }
 }
 
-/* ===== PRINT (echtes A6 Querformat) ===== */
+/* ===== PRINT ===== */
 @media print {
-  @page { size:A6 landscape; margin:0; }
-  body * { visibility:hidden; }
-  .output-box, .output-box * { visibility:visible; }
-  .output-box { position:absolute; left:0; top:0; border:none; box-shadow:none; transform:none !important; }
+  @page { size: A6 landscape; margin: 0; }
+  body * { visibility: hidden; }
+  .output-box, .output-box * { visibility: visible; }
+  .output-box { position:absolute; left:0; top:0; border:none; box-shadow:none; }
 }
 </style>
 </head>
@@ -237,15 +205,11 @@ button.action {
 
     <button id="btnVorgezogen">Vorgezogen</button>
 
-    <div class="field">
-      <label for="kommission">Kommissionsnummer</label>
-      <div id="kommission" class="fake-input">Tippen zum Eingeben</div>
-    </div>
+    <label>Kommissionsnummer</label>
+    <div id="kommission" class="fake-input">Tippen zum Eingeben</div>
 
-    <div class="field">
-      <label for="lieferdatum">Lieferdatum (TT.MM)</label>
-      <div id="lieferdatum" class="fake-input">Tippen zum Eingeben</div>
-    </div>
+    <label>Lieferdatum (TT.MM)</label>
+    <div id="lieferdatum" class="fake-input">Tippen zum Eingeben</div>
 
     <div class="buttons-bottom">
       <button id="btnBack" class="action" onclick="window.location.href='index.html'">⬅️ Zurück</button>
@@ -253,10 +217,9 @@ button.action {
     </div>
   </div>
 
-  <div class="preview-container" id="previewContainer">
+  <div class="preview-container">
     <div class="output-box" id="outputBox">
       <div id="output-content"></div>
-      <div id="vorgezogenText">„Vorgezogen“</div>
       <div id="output-footer"><img src="Langen.png" alt="Logo"></div>
     </div>
   </div>
@@ -264,12 +227,12 @@ button.action {
 
 <!-- Popup Tastatur -->
 <div id="keyboardPopup" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:1000;">
-  <div id="keyboardModal" style="background:#fff; border-radius:10px; padding:16px; box-shadow:0 6px 20px rgba(0,0,0,0.3); text-align:center; width:90%; max-width:360px;">
+  <div style="background:#fff; border-radius:10px; padding:16px; box-shadow:0 6px 20px rgba(0,0,0,0.3); text-align:center; width:90%; max-width:360px;">
     <h3 style="margin:0 0 10px; color:#004b8d;">Eingabe</h3>
     <input type="text" id="keyboardInput" style="width:90%;padding:10px;font-size:18px;text-align:center;border:1px solid #cfd3d7;border-radius:8px;margin-bottom:10px;">
     <div id="keyboardKeys" style="display:grid; grid-template-columns:repeat(5,1fr); gap:6px; margin-bottom:10px;"></div>
     <div style="display:flex; justify-content:center; gap:10px;">
-      <button id="keyboardDelete" style="padding:8px 16px;border:none;border-radius:8px;background:#d9534f;color:#fff;font-weight:bold;cursor:pointer;">⌫ Löschen</button>
+      <button id="keyboardDelete" style="padding:8px 16px;border:none;border-radius:8px;background:#d9534f;color:#fff;font-weight:bold;cursor:pointer;">⌫</button>
       <button id="keyboardOK" style="padding:8px 16px;border:none;border-radius:8px;background:#28a745;color:#fff;font-weight:bold;cursor:pointer;">OK</button>
       <button id="keyboardClose" style="padding:8px 16px;border:none;border-radius:8px;background:#6c757d;color:#fff;font-weight:bold;cursor:pointer;">Schließen</button>
     </div>
@@ -277,137 +240,122 @@ button.action {
 </div>
 
 <script>
-/* ===== STATE ===== */
-const out = document.getElementById("output-content");
-const vorgezogenText = document.getElementById("vorgezogenText");
-const previewBox = document.getElementById("outputBox");
-const previewContainer = document.getElementById("previewContainer");
+const out=document.getElementById("output-content");
+const box=document.getElementById("outputBox");
+const footer=document.getElementById("output-footer");
+const popup=document.getElementById("keyboardPopup");
+const input=document.getElementById("keyboardInput");
+const grid=document.getElementById("keyboardKeys");
+let activeInput=null;
+let currentColor="red";
+let vorgezogen=false;
 
-const keyboardPopup = document.getElementById("keyboardPopup");
-const keyboardInput = document.getElementById("keyboardInput");
-const grid = document.getElementById("keyboardKeys");
-let activeField = null;
-let currentColor = "red";
-let vorgezogen = false;
-
-/* ===== Tastatur erstellen ===== */
-if (!grid.dataset.ready) {
-  "1234567890".split("").forEach(k=>{
-    const b=document.createElement("button");
-    b.textContent=k;
-    b.style.cssText="padding:10px;font-size:18px;border:1px solid #ccc;border-radius:6px;background:#f2f2f2;cursor:pointer;";
-    b.onclick=()=>keyboardInput.value+=k;
-    grid.appendChild(b);
-  });
-  grid.dataset.ready = "1";
-}
-
-/* ===== Farbwahl ===== */
+/* Farbwahl */
 document.querySelectorAll(".color-btn").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
+  btn.addEventListener("click",()=>{
     document.querySelectorAll(".color-btn").forEach(b=>b.classList.remove("active"));
     btn.classList.add("active");
-    currentColor = btn.dataset.color;
-    vorgezogenText.style.color = currentColor;
+    currentColor=btn.dataset.color;
     updateOutput();
   });
 });
 
-/* ===== Vorgezogen ===== */
-const btnVorgezogen = document.getElementById("btnVorgezogen");
-btnVorgezogen.addEventListener("click", ()=>{
-  vorgezogen = !vorgezogen;
-  btnVorgezogen.classList.toggle("active", vorgezogen);
+/* Vorgezogen */
+document.getElementById("btnVorgezogen").addEventListener("click",()=>{
+  vorgezogen=!vorgezogen;
+  document.getElementById("btnVorgezogen").classList.toggle("active",vorgezogen);
   updateOutput();
 });
 
-/* ===== Fake-Inputs öffnen Tastatur ===== */
-document.getElementById("kommission").addEventListener("click", ()=>openKeyboard("kommission"));
-document.getElementById("lieferdatum").addEventListener("click", ()=>openKeyboard("lieferdatum"));
-
+/* Tastatur */
+(() => {
+  const chars="1234567890".split("");
+  chars.forEach(c=>{
+    const b=document.createElement('button');
+    b.textContent=c;
+    b.onclick=()=>input.value+=c;
+    grid.appendChild(b);
+  });
+})();
+document.getElementById("kommission").addEventListener("click",()=>openKeyboard("kommission"));
+document.getElementById("lieferdatum").addEventListener("click",()=>openKeyboard("lieferdatum"));
 function openKeyboard(id){
-  activeField = document.getElementById(id);
-  // Nur Zahlen verwenden; vorhandene Punkte (.) fürs Datum drin lassen:
-  const t = activeField.textContent.trim();
-  keyboardInput.value = t === "Tippen zum Eingeben" ? "" : t.replace(/[^\d.]/g,"");
-  keyboardPopup.style.display = "flex";
-  setTimeout(()=>keyboardInput.focus(), 50);
+  activeInput=document.getElementById(id);
+  input.value=activeInput.textContent.replace(/\D/g,"");
+  popup.style.display='flex';
 }
-document.getElementById("keyboardClose").onclick = ()=> keyboardPopup.style.display="none";
-document.getElementById("keyboardDelete").onclick = ()=> keyboardInput.value = keyboardInput.value.slice(0,-1);
-document.getElementById("keyboardOK").onclick = ()=>{
-  if(!activeField) return;
-  let val = keyboardInput.value.trim();
-  // Datum TT.MM automatisch formatieren
-  if(activeField.id === "lieferdatum"){
-    val = val.replace(/\D/g,"");
-    if(val.length === 3) val = "0" + val;
-    if(val.length >= 4) val = val.slice(0,2)+"."+val.slice(2,4);
+document.getElementById("keyboardClose").onclick=()=>popup.style.display='none';
+document.getElementById("keyboardDelete").onclick=()=>input.value=input.value.slice(0,-1);
+document.getElementById("keyboardOK").onclick=()=>{
+  if(!activeInput)return;
+  let val=input.value.trim();
+  if(activeInput.id==="lieferdatum"){
+    val=val.replace(/\D/g,"");
+    if(val.length===3)val="0"+val;
+    if(val.length===4)val=val.slice(0,2)+"."+val.slice(2);
   }
-  activeField.textContent = val || "Tippen zum Eingeben";
-  keyboardPopup.style.display = "none";
+  activeInput.textContent=val||"Tippen zum Eingeben";
+  popup.style.display='none';
   updateOutput();
 };
 
-/* ===== Vorschau-Inhalt ===== */
+/* Vorschau */
 function updateOutput(){
-  const kom = document.getElementById("kommission").textContent.trim();
-  const dat = document.getElementById("lieferdatum").textContent.trim();
+  const kom=document.getElementById("kommission").textContent.trim();
+  const dat=document.getElementById("lieferdatum").textContent.trim();
+  if(!kom&&!dat){out.innerHTML="";centerOutput(false,false);return;}
 
-  // Datum Vergangenheit → roter Rahmen
-  let dateHTML = "";
-  if (dat && dat !== "Tippen zum Eingeben"){
-    let isPast=false;
-    if(/^\d{2}\.\d{2}$/.test(dat)){
-      const [d,m] = dat.split(".");
-      const now = new Date();
-      const date = new Date(now.getFullYear(), parseInt(m)-1, parseInt(d));
-      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      isPast = date < today;
-    }
-    dateHTML = isPast
-      ? `<div style="font-size:48pt;border:3px solid red;padding:4px 12px;border-radius:6px;display:inline-block;margin:6px 0;color:black;">${dat}</div>`
-      : `<div style="font-size:48pt;margin:6px 0;color:black;">${dat}</div>`;
+  let isPast=false;
+  if(dat && /^\d{2}\.\d{2}$/.test(dat)){
+    const [d,m]=dat.split(".");
+    const now=new Date();
+    const dd=new Date(now.getFullYear(),parseInt(m)-1,parseInt(d));
+    const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+    if(dd<today)isPast=true;
   }
 
-  out.innerHTML = `
-    <div style="font-size:24pt;font-weight:bold;color:black;">PAUS</div>
-    <div style="font-size:48pt;font-weight:900;margin:6px 0;color:${currentColor};">${kom==="Tippen zum Eingeben"?"":kom}</div>
-    ${dateHTML}
+  const dateHtml=isPast
+    ? `<div style="font-size:48pt;border:3px solid red;padding:4px 12px;border-radius:6px;display:inline-block;margin:6px 0;color:black;">${dat}</div>`
+    : `<div style="font-size:48pt;margin:6px 0;color:black;">${dat}</div>`;
+
+  out.innerHTML=`
+    <div style="font-size:24pt;font-weight:bold;">PAUS</div>
+    <div style="font-size:48pt;font-weight:900;margin:6px 0;color:${currentColor};">${kom!=="Tippen zum Eingeben"?kom:""}</div>
+    ${dat!=="Tippen zum Eingeben"?dateHtml:""}
+    ${vorgezogen?`<div id="vorgezogenText" style="font-size:36pt;font-weight:bold;margin-top:10px;color:${currentColor};">„Vorgezogen“</div>`:""}
   `;
-
-  vorgezogenText.style.display = vorgezogen ? "block" : "none";
-  vorgezogenText.style.color = currentColor;
-
-  fitPreview(); // nach jeder Änderung neu an Container anpassen (mobil)
+  centerOutput(vorgezogen,isPast);
 }
 
-/* ===== Auto-Fit der Vorschau in den Container (mobil + klein) ===== */
-function fitPreview(){
-  // A6-Box reale px Maße (ungefähr bei 96dpi):
-  const A6_W_PX = 148/25.4*96; // ≈ 559
-  const A6_H_PX = 105/25.4*96; // ≈ 397
+/* Zentrierung */
+function centerOutput(vorgezogen,borderNeeded){
+  requestAnimationFrame(()=>{
+    const footerSpace = footer.offsetHeight + 10;
+    const available = box.clientHeight - footerSpace;
+    const contentH = out.scrollHeight;
+    let top = Math.max((available - contentH) / 2, 0);
 
-  const cw = previewContainer.clientWidth;
-  const ch = previewContainer.clientHeight;
+    let extra = 0;
+    if (vorgezogen) extra += footer.offsetHeight * 0.8;
+    if (borderNeeded) extra += footer.offsetHeight * 0.4;
 
-  // Platz für Padding o.ä. abziehen
-  const pad = 12;
-  const maxW = Math.max(10, cw - pad*2);
-  const maxH = Math.max(10, ch - pad*2);
+    if (vorgezogen && borderNeeded) {
+      const logoHeight = footer.offsetHeight;
+      extra += logoHeight * 2.1 + 20;
+    } else if (vorgezogen && !borderNeeded) {
+      extra += footer.offsetHeight * 1.2 + 10;
+    }
 
-  // erforderlicher Scale, um reinzupassen
-  const sx = maxW / A6_W_PX;
-  const sy = maxH / A6_H_PX;
-  const scale = Math.min(sx, sy, 1); // nie größer als 1 (Desktop bleibt 1:1)
-
-  previewBox.style.transform = `scale(${scale})`;
-  previewBox.style.margin = "0 auto";
+    const minSpace = 15;
+    out.style.marginTop = Math.max(top - extra, minSpace) + "px";
+  });
 }
 
-/* Initial */
-window.addEventListener("load", ()=>{ updateOutput(); fitPreview(); });
-window.addEventListener("resize", fitPreview);
+/* Drucken */
+document.getElementById("btnDrucken").onclick=()=>{
+  if(out.innerHTML.trim()===""){alert("Bitte zuerst Kommissionsnummer eingeben!");return;}
+  window.print();
+};
 </script>
 </body>
 </html>
