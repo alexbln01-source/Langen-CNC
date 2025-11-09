@@ -242,7 +242,7 @@ button.action:hover { background: linear-gradient(#ffffff, #e9ecef); }
   .output-box { position:absolute; left:0; top:0; border:none; box-shadow:none; }
 }
 
-/* ===== Handy Ansicht korrigiert ===== */
+/* ===== Handy Ansicht: Vorschau etwas tiefer ===== */
 @media (max-width: 900px) {
   body, #main {
     flex-direction: column;
@@ -278,18 +278,19 @@ button.action:hover { background: linear-gradient(#ffffff, #e9ecef); }
     background: #eee;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 8px 0;
+    align-items: center; /* mittig vertikal */
+    padding-top: 35px;   /* etwas nach unten verschoben */
+    box-sizing: border-box;
   }
 
   .output-box {
-    width: 92vw;
+    width: 90vw;
     max-width: 148mm;
     aspect-ratio: 148 / 105;
     border: 1px solid #999;
     background: #fff;
     transform: scale(0.72);
-    transform-origin: center top;
+    transform-origin: center;
   }
 
   #output-footer img { width: 3.8cm; height: auto; }
