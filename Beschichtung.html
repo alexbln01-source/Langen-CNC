@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Beschichtung (A5 Quer)</title>
+<style>
+html, body {
+  margin: 0; padding: 0; height: 100%;
+  font-family: Arial, sans-serif;
+  background: #f0f0f0;
+  display: flex; flex-direction: column;
+}
+
+/* Hauptlayout */
+#main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Linke Seite */
+#form-container {
+  width: 48%;
+  background: #fff;
+  border-right: 2px solid #dcdcdc;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 14px 16px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+h2 {
+  text-align: center;
+  margin: 0 0 12px 0;
+  font-size: 20px;
+  color: #004b8d;
+}
+
+label { display:block; margin-top:8px; font-size:0.9rem; }
+input[type="text"] {
+  width:96%; padding:8px; font-size:16px;
+  text-align:center; border:1px solid #cfd3d7;
+  border-radius:6px; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* Kunden-Buttons kompakt */
+#lieferanten {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+button.action {
+  flex: 0 0 calc(33.333% - 8px);
+  height: 34px;
+  border: 1px solid #ccc;
+  background: linear-gradient(#f8f9fb, #eef1f4);
+  color: #2d2d2d;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  transition: all 0.2s ease;
+  font-size: 13px;
+  white-space: nowrap;
+}
+button.action:hover { background: linear-gradient(#ffffff, #e9ecef); }
+
+/* Fixe Buttons unten */
+.fixed-btn {
+  position: absolute;
+  bottom: 20px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 14px;
+}
+#btnBackBeschichtung { left: 20px; }
+#btnDruckenBeschichtung { right: 20px; }
+
+/* Rechte Seite */
+.preview-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ddd;
+  overflow: hidden;
+}
+.output-box {
+  background: #fff;
+  border: 1px solid #aaa;
+  box-sizing: border-box;
+  padding: 8mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 210mm;
+  height: 148mm;
+  position: relative;
+}
+#output-content div {
+  font-weight: bold;
+  line-height: 1.3;
+  margin: 0;
+  text-align: center;
+}
+#output-footer {
+  position: absolute;
+  right: 5mm;
+  bottom: 6mm;
+}
+#output-footer img {
+  width: 4.34cm;
+  height: 1.66cm;
+  object-fit: contain;
+}
+
+/* Popup Tastatur */
+#keyboardPopup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 2000;
+  justify-content: center;
+  align-items: center;
+}
+#keyboardBox {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  text-align: center;
+  width: 90%;
+  max-width: 420px;
+}
+#keyboardBox h3 { margin: 0 0 10px 0; color:#004b8d; }
+#keyboardInput {
+  width: 90%;
+  padding: 10px;
+  font-size: 18px;
+  margin-bottom: 12px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+.keyboard-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 6px;
+}
+.keyboard-grid button {
+  padding: 10px 0;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #f2f2f2;
+  cursor: pointer;
+  transition: transform 0.05s ease, background 0.1s;
+}
+.keyboard-grid button:hover { background: #e0e0e0; }
+.keyboard-grid button:active { background: #d4d4d4; transform: translateY(1px); }
+
+/* Untere Buttons Löschen / OK / Schließen */
+.keyboard-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+.keyboard-actions button {
+  padding: 8px 16px;
+  font-size: 15px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #fff;
+}
+.btn-del { background: #d9534f; }
+.btn-ok { background: #28a745; }
+.btn-close { background: #6c757d; }
+
+/* Druck */
+@media print {
+  @page { size: A5 landscape; margin: 0; }
+  body * { visibility: hidden; }
+  .output-box, .output-box * { visibility: visible; }
+  .output-box { position: absolute; left: 0; top: 0; border: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="main">
+  <div id="form-container">
+    <h2>Beschichtung</h2>
+
+    <label>Beistell-Nummer</label>
+    <input id="zahlA5" type="text" readonly>
+    <label>Kunde</label>
+    <input id="kundeA5" type="text" readonly>
+
+    <div id="lieferanten">
+      <button class="action" data-type="LP">L&P</button>
+      <button class="action" data-type="LPEILT">L&P EILT</button>
+      <button class="action" data-type="SCHUETTE">Schütte</button>
+      <button class="action" data-type="SCHUETTEEILT">Schütte EILT</button>
+      <button class="action" data-type="KLEY">Kleymann</button>
+      <button class="action" data-type="KLEYEILT">Kleymann EILT</button>
+      <button class="action" data-type="COMTEZN8">Comte ZN8</button>
+      <button class="action" data-type="CHEMISCH">Chemisch</button>
+      <button class="action" data-type="DICK">Dickschicht</button>
+      <button class="action" data-type="BLAU">Blau ZN8</button>
+      <button class="action" data-type="PENTZ">Pentz</button>
+      <button class="action" data-type="RCS">RCS</button>
+      <button class="action" data-type="COATINC">Coatinc</button>
+    </div>
+
+    <button id="btnBackBeschichtung" class="action fixed-btn" onclick="window.location.href='index.html'">
+      ⬅️ Zurück
+    </button>
+
+    <button id="btnDruckenBeschichtung" class="action fixed-btn" style="right:20px;">
+      🖨 Drucken
+    </button>
+  </div>
+
+  <div class="preview-container">
+    <div id="output" class="output-box">
+      <div id="output-content"></div>
+      <div id="output-footer"><img src="Langen.png" alt="Logo"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Popup Tastatur -->
+<div id="keyboardPopup">
+  <div id="keyboardBox">
+    <h3 id="keyboardTitle">Eingabe</h3>
+    <input type="text" id="keyboardInput">
+    <div class="keyboard-grid" id="keyboardGrid"></div>
+    <div class="keyboard-actions">
+      <button class="btn-del" id="btnDel">⌫ Löschen</button>
+      <button class="btn-ok" id="btnOk">OK</button>
+      <button class="btn-close" id="btnClose">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const popup = document.getElementById('keyboardPopup');
+const title = document.getElementById('keyboardTitle');
+const kbInput = document.getElementById('keyboardInput');
+const grid = document.getElementById('keyboardGrid');
+const zahlInput = document.getElementById('zahlA5');
+const kundeInput = document.getElementById('kundeA5');
+let currentField = null;
+let currentType = 'letters';
+
+function openKeyboard(field, type){
+  currentField = field;
+  currentType = type;
+  title.textContent = (type==='numbers') ? 'Beistell-Nummer eingeben' : 'Kundenname eingeben';
+  kbInput.value = field.value || '';
+  grid.innerHTML = '';
+
+  const keys = (type==='numbers')
+    ? ['1','2','3','4','5','6','7','8','9','0']
+    : 'QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM'.split('');
+
+  keys.forEach(k=>{
+    const b=document.createElement('button');
+    b.textContent=k;
+    b.onclick=()=>kbInput.value+=k;
+    grid.appendChild(b);
+  });
+
+  popup.style.display='flex';
+  kbInput.focus();
+}
+
+function closeKeyboard(){ popup.style.display='none'; }
+document.getElementById('btnDel').onclick=()=>kbInput.value=kbInput.value.slice(0,-1);
+document.getElementById('btnOk').onclick=()=>{
+  currentField.value = kbInput.value;
+  closeKeyboard();
+  if(currentField===zahlInput) openKeyboard(kundeInput,'letters');
+};
+document.getElementById('btnClose').onclick=()=>closeKeyboard();
+
+zahlInput.onclick=()=>openKeyboard(zahlInput,'numbers');
+kundeInput.onclick=()=>openKeyboard(kundeInput,'letters');
+
+/* === Ausgabe rendern === */
+const out=document.getElementById('output-content');
+function addLine(txt,size){
+  const d=document.createElement('div');
+  d.textContent=txt;
+  d.style.fontSize=size+'pt';
+  d.style.marginBottom='8mm';
+  d.style.fontWeight='700';
+  out.appendChild(d);
+}
+
+/* Logo herausrechnen für echte Mitte */
+function centerWithLogo(){
+  const box=document.getElementById('output');
+  const footer=document.getElementById('output-footer');
+  const boxTop=box.getBoundingClientRect().top;
+  const footerTop=footer.getBoundingClientRect().top;
+  const area=footerTop-boxTop;
+  const contentH=out.getBoundingClientRect().height;
+  out.style.marginTop=Math.max((area-contentH)/2,0)+'px';
+}
+
+function renderFor(type){
+  const zahl=zahlInput.value.trim();
+  const kunde=kundeInput.value.trim();
+  if(!zahl){ alert('Bitte Beistellnummer eingeben'); return; }
+
+  out.innerHTML="";
+  addLine(zahl,36);
+  switch(type){
+    case 'LP': addLine("L&P",48); break;
+    case 'LPEILT': addLine("L&P",48); addLine("„EILT SEHR“",32); break;
+    case 'SCHUETTE': addLine("Schütte",48); break;
+    case 'SCHUETTEEILT': addLine("Schütte",48); addLine("„EILT SEHR“",32); break;
+    case 'KLEY': addLine("Kleymann",48); break;
+    case 'KLEYEILT': addLine("Kleymann",48); addLine("„EILT SEHR“",32); break;
+    case 'COMTEZN8': addLine("Comte",48); addLine("„ZN8“",32); break;
+    case 'CHEMISCH': addLine("Comte",48); addLine("„chemisch Vernickeln“",32); break;
+    case 'DICK': addLine("Comte",48); addLine("„Dickschichtpassivierung“",32); break;
+    case 'BLAU': addLine("Comte",48); addLine("„Blau ZN8“",32); break;
+    case 'PENTZ': addLine("Pentz & Gerdes",48); addLine("„ZN8“",32); break;
+    case 'RCS': addLine("RCS GmbH",48); addLine("„Schweißen“",32); break;
+    case 'COATINC': addLine("Coatinc 24 GmbH",48); addLine("„Verzinken“",32); break;
+  }
+  centerWithLogo();
+}
+
+document.querySelectorAll('#lieferanten .action').forEach(btn=>{
+  btn.onclick=()=>renderFor(btn.dataset.type);
+});
+
+document.getElementById('btnDruckenBeschichtung').onclick=()=>{
+  if(out.innerHTML.trim()==="") return alert("Bitte zuerst einen Kunden wählen!");
+  window.print();
+};
+
+window.addEventListener('resize',centerWithLogo);
+const logo=document.querySelector('#output-footer img');
+if(logo.complete) centerWithLogo();
+else logo.addEventListener('load',centerWithLogo,{once:true});
+</script>
+</body>
+</html>
