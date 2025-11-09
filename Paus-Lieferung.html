@@ -349,55 +349,109 @@ document.querySelectorAll(".color-btn").forEach(btn=>{
 });
 
 /* Tastatur */
-(()=>{ "1234567890".split("").forEach(c=>{
-  const b=document.createElement('button'); b.textContent=c;
-  b.onclick=()=>input.value+=c; grid.appendChild(b);
-});})();
+(() => {
+  const chars=["1","2","3","4","5","6","7","8","9","0"];
+  chars.forEach(c=>{
+    const b=document.createElement('button');
+    b.textContent=c;
+    b.onclick=()=>input.value+=c;
+    grid.appendChild(b);
+  });
+})();
 
 document.getElementById("kommission").addEventListener("click",()=>openKeyboard("kommission"));
 document.getElementById("lieferdatum").addEventListener("click",()=>openKeyboard("lieferdatum"));
-function openKeyboard(field){activeInput=document.getElementById(field);input.value=activeInput.value.replace(/\./g,"");popup.style.display='flex';setTimeout(()=>input.focus(),100);}
-function closeKeyboard(){popup.style.display='none';}
+
+function openKeyboard(field){
+  activeInput=document.getElementById(field);
+  input.value=activeInput.value.replace(/\./g,"");
+  popup.style.display='flex';
+
+  const title=document.querySelector("#keyboardModal h3");
+  title.textContent = field==="kommission" ? "Kommissionsnummer eingeben" : "Lieferdatum eingeben";
+
+  setTimeout(()=>input.focus(),100);
+}
+function closeKeyboard(){ popup.style.display='none'; }
+
 document.getElementById("keyboardDelete").onclick=()=>input.value=input.value.slice(0,-1);
 document.getElementById("keyboardClose").onclick=closeKeyboard;
+
 function handleKeyboardOK(){
   if(!activeInput)return;
   let val=input.value.trim();
-  if(activeInput.id==="lieferdatum"){val=val.replace(/\D/g,"");if(val.length===3)val="0"+val;if(val.length===4)val=val.slice(0,2)+"."+val.slice(2);}
+  if(activeInput.id==="lieferdatum"){
+    val=val.replace(/\D/g,"");
+    if(val.length===3)val="0"+val;
+    if(val.length===4)val=val.slice(0,2)+"."+val.slice(2);
+  }
   activeInput.value=val;
-  closeKeyboard(); updateOutput();
+
+  if(activeInput.id==="kommission"){
+    openKeyboard("lieferdatum");
+    return;
+  }
+
+  if(activeInput.id==="lieferdatum"){
+    closeKeyboard();
+    updateOutput();
+  }
 }
+
 document.getElementById("keyboardOK").onclick=handleKeyboardOK;
+
+// ✅ FIX: ENTER funktioniert jetzt bei beiden Feldern
+input.addEventListener("keydown",e=>{
+  if(e.key==="Enter"){e.preventDefault();handleKeyboardOK();}
+});
 
 /* Vorschau */
 function updateOutput(){
   const kom=document.getElementById("kommission").value;
   const dat=document.getElementById("lieferdatum").value;
   const vorgezogen=document.getElementById("chkVorgezogen").checked;
+
   if(!kom&&!dat){out.innerHTML="";vorgezogenText.style.display="none";return;}
+
   let isPast=false;
-  if(dat){const parts=dat.split(".");if(parts.length===2){const now=new Date();const d=new Date(now.getFullYear(),parseInt(parts[1])-1,parseInt(parts[0]));const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());if(d<today)isPast=true;}}
-  const dateHtml=isPast?`<div style="font-size:48pt;border:3px solid red;padding:4px 12px;border-radius:6px;margin:6px 0;color:black;">${dat}</div>`:`<div style="font-size:48pt;margin:6px 0;color:black;">${dat}</div>`;
-  out.innerHTML=`<div style="font-size:24pt;font-weight:bold;">PAUS</div><div style="font-size:48pt;font-weight:900;margin:6px 0;color:${currentColor};">${kom}</div>${dateHtml}`;
+  if(dat){
+    const parts=dat.split(".");
+    if(parts.length===2){
+      const now=new Date();
+      const d=new Date(now.getFullYear(),parseInt(parts[1])-1,parseInt(parts[0]));
+      const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+      if(d<today)isPast=true;
+    }
+  }
+
+  const dateHtml=isPast
+    ? `<div style="font-size:48pt;border:3px solid red;padding:4px 12px;border-radius:6px;margin:6px 0;color:black;">${dat}</div>`
+    : `<div style="font-size:48pt;margin:6px 0;color:black;">${dat}</div>`;
+
+  out.innerHTML=`<div style="font-size:24pt;font-weight:bold;">PAUS</div>
+    <div style="font-size:48pt;font-weight:900;margin:6px 0;color:${currentColor};">${kom}</div>
+    ${dateHtml}`;
+
   vorgezogenText.style.display=vorgezogen?"block":"none";
   vorgezogenText.style.color=currentColor;
+
   centerOutput(vorgezogen,isPast);
 }
 
-/* Grüne Zentrierregel */
+/* Zentrierregel (Grün) */
 function centerOutput(vorgezogen,borderNeeded){
   requestAnimationFrame(()=>{
-    const logoHeight = footer.offsetHeight;
-    const footerSpace = logoHeight + 10;
-    const available = box.clientHeight - footerSpace;
-    const contentH = out.scrollHeight;
-    let top = Math.max((available - contentH) / 2, 0);
-    let extra = logoHeight * 1.1;
-    if(vorgezogen && borderNeeded){extra += logoHeight * 1.8 + 20;}
-    else if(vorgezogen && !borderNeeded){extra += logoHeight * 1.2 + 10;}
-    else if(!vorgezogen && borderNeeded){extra += logoHeight * 0.7 + 5;}
-    const minSpace = 20;
-    out.style.marginTop = Math.max(top - extra, minSpace) + "px";
+    const logoHeight=footer.offsetHeight;
+    const footerSpace=logoHeight+10;
+    const available=box.clientHeight-footerSpace;
+    const contentH=out.scrollHeight;
+    let top=Math.max((available-contentH)/2,0);
+    let extra=logoHeight*1.1;
+    if(vorgezogen&&borderNeeded){extra+=logoHeight*1.8+20;}
+    else if(vorgezogen&&!borderNeeded){extra+=logoHeight*1.2+10;}
+    else if(!vorgezogen&&borderNeeded){extra+=logoHeight*0.7+5;}
+    const minSpace=20;
+    out.style.marginTop=Math.max(top-extra,minSpace)+"px";
   });
 }
 
