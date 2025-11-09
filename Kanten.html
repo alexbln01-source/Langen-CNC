@@ -10,36 +10,31 @@ body {
   margin: 0;
   height: 100vh;
   display: flex;
-  flex-direction: column;
   background: #f0f0f0;
   touch-action: manipulation;
   -webkit-user-select: none;
 }
 
-/* Hauptbereich */
-#main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 12px;
-  overflow: hidden;
-}
-
-/* Formularbereich */
+/* --- Desktop Layout (50/50) --- */
 #form-container {
-  width: 100%;
-  max-width: 520px;
+  width: 50%;
   background: #fff;
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  padding: 16px;
-  box-sizing: border-box;
+  border-right: 2px solid #ccc;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.preview-container {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ddd;
 }
 
+/* --- Formular --- */
 h2 {
   text-align: center;
   margin: 0 0 16px 0;
@@ -47,7 +42,24 @@ h2 {
   font-size: 1.8rem;
 }
 
-/* Kundenbuttons */
+label { display:block; margin-top:8px; font-weight:bold; }
+input[type="text"] {
+  width:90%;
+  padding:8px;
+  font-size:16px;
+  text-align:center;
+  border:1px solid #ccc;
+  border-radius:8px;
+  margin-bottom:10px;
+}
+
+.button-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 10px;
+}
 button.action {
   flex: 0 0 calc(48% - 6px);
   height: 42px;
@@ -64,36 +76,14 @@ button.action {
 }
 button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
 
-.button-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 6px;
-}
-
-/* Steuerbuttons */
 .action-row {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin: 6px 0 10px 0;
-}
-.action-row button {
-  flex: 0 0 48%;
+  margin-top: 10px;
 }
 
-/* Vorschau */
-.preview-container {
-  width: 100%;
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  background: #ddd;
-  border-radius: 10px;
-  margin-top: 10px;
-  overflow: hidden;
-}
+/* --- Vorschau (A6) --- */
 .output-box {
   background: #fff;
   border: 1px solid #aaa;
@@ -103,42 +93,63 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   padding: 8mm;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   text-align: center;
+  position: relative;
 }
 #output-content {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
+.output-box img {
+  position: absolute;
+  right: 8mm;
+  bottom: 8mm;
+  width: 4cm;
+  height: auto;
+}
+
 .title {
-  font-size: 26pt;
+  font-size: 30pt;
   font-weight: bold;
-  margin-bottom: 8mm;
-}
-.subtitle {
-  font-size: 36pt;
-  font-weight: 900;
-  margin-bottom: 8mm;
+  margin-top: 10mm;
+  margin-bottom: 10mm;
 }
 .line {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 8px;
   font-size: 20pt;
   font-weight: bold;
   margin-bottom: 8mm;
 }
-.fill {
-  flex: 1;
-  border-bottom: 3px solid #000;
-  height: 1.2em;
+
+/* --- Handyansicht --- */
+@media (max-width: 900px) {
+  body {
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+  }
+  #form-container, .preview-container {
+    width: 100%;
+    border: none;
+  }
+  .preview-container {
+    margin-top: 10px;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .output-box {
+    transform: scale(0.6);
+    transform-origin: top center;
+    margin-top: 4px;
+    height: auto;
+  }
 }
 
-/* Popup Tastatur */
+/* --- Popup Tastatur --- */
 #keyboardPopup {
   display: none;
   position: fixed;
@@ -180,7 +191,6 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   background: #f2f2f2;
   cursor: pointer;
 }
-.keyboard-grid button:hover { background:#e0e0e0; }
 .keyboard-actions {
   display:flex;
   justify-content:center;
@@ -200,66 +210,56 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
 .btn-ok { background:#28a745; }
 .btn-close { background:#6c757d; }
 
-/* Druck */
+/* --- Druck --- */
 @media print {
   @page { size: A6 landscape; margin: 0; }
   body * { visibility: hidden; }
   .output-box, .output-box * { visibility: visible; }
   .output-box { position: absolute; left: 0; top: 0; border: none; }
 }
-
-/* Handyoptimierung */
-@media (max-width: 900px) {
-  #main {
-    height: 100vh;
-    justify-content: flex-start;
-  }
-  .preview-container {
-    height: 48vh;
-    align-items: flex-start;
-  }
-  .output-box {
-    transform: scale(0.85); /* Vorschau auf 85 % verkleinert */
-    transform-origin: top center;
-    margin-top: 8px;
-    height: auto;
-  }
-}
 </style>
 </head>
 <body>
 
-<div id="main">
-  <div id="form-container">
-    <h2>Kanten</h2>
+<!-- Linker Bereich -->
+<div id="form-container">
+  <h2>Kanten</h2>
 
-    <div class="button-grid">
-      <button class="action" data-customer="Bergmann M-H">Bergmann M-H</button>
-      <button class="action" data-customer="Bücker">Bücker</button>
-      <button class="action" data-customer="Grimme">Grimme</button>
-      <button class="action" data-customer="Janzen">Janzen</button>
-      <button class="action" data-customer="Krone Spelle">Krone Spelle</button>
-      <button class="action" data-customer="L.Bergmann">L.Bergmann</button>
-      <button class="action" data-customer="PAUS">PAUS</button>
-      <button class="action" data-customer="Sonstige Kunden">Sonstige Kunden</button>
-      <button class="action" data-customer="TOS">TOS</button>
-    </div>
+  <label>K-Termin:</label>
+  <input id="terminInput" type="text" readonly>
+  <label>Palettennummer:</label>
+  <input id="palettenInput" type="text" readonly>
 
-    <div class="action-row">
-      <button id="btnBackKanten" class="action">⬅️ Zurück</button>
-      <button id="btnDruckenKanten" class="action">🖨 Drucken</button>
-    </div>
+  <div class="button-grid">
+    <button class="action" data-customer="Bergmann M-H">Bergmann M-H</button>
+    <button class="action" data-customer="Bücker">Bücker</button>
+    <button class="action" data-customer="Grimme">Grimme</button>
+    <button class="action" data-customer="Janzen">Janzen</button>
+    <button class="action" data-customer="Krone Spelle">Krone Spelle</button>
+    <button class="action" data-customer="L.Bergmann">L.Bergmann</button>
+    <button class="action" data-customer="PAUS">PAUS</button>
+    <button class="action" data-customer="TOS">TOS</button>
+    <button class="action" data-customer="Sonstige Kunden">Sonstige Kunden</button>
   </div>
 
-  <div class="preview-container">
-    <div class="output-box"><div id="output-content"></div></div>
+  <div class="action-row">
+    <button id="btnBackKanten" class="action">⬅️ Zurück</button>
+    <button id="btnDruckenKanten" class="action">🖨 Drucken</button>
   </div>
 </div>
 
-<!-- Tastatur -->
+<!-- Rechte Vorschau -->
+<div class="preview-container">
+  <div class="output-box">
+    <div id="output-content"></div>
+    <img src="Langen.png" alt="Logo">
+  </div>
+</div>
+
+<!-- Popup Tastatur -->
 <div id="keyboardPopup">
   <div id="keyboardModal">
-    <h3>Kundenname eingeben</h3>
+    <h3>Eingabe</h3>
     <input type="text" id="keyboardInput" autocomplete="off">
     <div class="keyboard-grid" id="keyboardKeys"></div>
     <div class="keyboard-actions">
@@ -275,10 +275,11 @@ const out=document.getElementById('output-content');
 const popup=document.getElementById('keyboardPopup');
 const input=document.getElementById('keyboardInput');
 const grid=document.getElementById('keyboardKeys');
+let currentField=null;
 
-/* Tastatur */
+/* Tastatur aufbauen */
 (()=>{
-  const chars=[..."QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM"];
+  const chars=[..."QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM1234567890"];
   chars.forEach(c=>{
     const b=document.createElement('button');
     b.textContent=c;
@@ -287,59 +288,44 @@ const grid=document.getElementById('keyboardKeys');
   });
 })();
 
-function openKeyboard(){
-  input.value="";
+function openKeyboard(field){
+  currentField=field;
+  input.value=field.value||"";
   popup.style.display='flex';
   setTimeout(()=>input.focus(),100);
 }
 function closeKeyboard(){ popup.style.display='none'; }
 
-function showOutput(customer){
-  let html="";
-  switch(customer){
-    case 'Bergmann M-H':
-      html=`<div class="title">Bergmann M-H</div><div class="subtitle">Kanten</div>
-      <div class="line"><label>K-Termin:</label><span class="fill"></span></div>
-      <div class="line"><label>Palettennummer:</label><span class="fill"></span></div>`;
-      break;
-    case 'Janzen':
-    case 'L.Bergmann':
-      html=`<div class="title">${customer}</div><div class="subtitle">Kanten</div>
-      <div class="line"><label>K-Termin:</label><span class="fill"></span></div>`;
-      break;
-    case 'PAUS':
-      html=`<div class="title">PAUS</div><div class="subtitle">Kanten</div>
-      <div class="line"><label>K-Termin:</label><span class="fill"></span></div>`;
-      break;
-    case 'TOS':
-      html=`<div class="title">TOS</div><div class="subtitle">Kanten</div>`;
-      break;
-    default:
-      html=`<div class="title">${customer}</div><div class="subtitle">Kanten</div>
-      <div class="line"><label>K-Termin:</label><span class="fill"></span></div>
-      <div class="line"><label>Palettennummer:</label><span class="fill"></span></div>`;
-  }
-  out.innerHTML=html;
+document.getElementById('keyboardOK').onclick=()=>{
+  currentField.value=input.value.trim();
+  closeKeyboard();
+};
+document.getElementById('keyboardClose').onclick=closeKeyboard;
+document.getElementById('keyboardDelete').onclick=()=>input.value=input.value.slice(0,-1);
+
+document.getElementById('terminInput').onclick=()=>openKeyboard(terminInput);
+document.getElementById('palettenInput').onclick=()=>openKeyboard(palettenInput);
+
+/* Vorschau erzeugen */
+function showOutput(kunde){
+  const termin=document.getElementById('terminInput').value||"________";
+  const palette=document.getElementById('palettenInput').value||"________";
+  out.innerHTML=`
+    <div class="title">${kunde}</div>
+    <div class="line">Kanten</div>
+    <div class="line">K-Termin: ${termin}</div>
+    <div class="line">Palettennummer: ${palette}</div>`;
 }
 
 /* Buttons */
 document.querySelectorAll('.action[data-customer]').forEach(btn=>{
   btn.onclick=()=>{
     const name=btn.dataset.customer;
-    if(name==='Sonstige Kunden') openKeyboard();
+    if(name==='Sonstige Kunden') openKeyboard({value:"",id:"kunde"});
     else showOutput(name);
   };
 });
 
-document.getElementById('keyboardOK').onclick=()=>{
-  const val=input.value.trim();
-  if(!val) return;
-  closeKeyboard(); showOutput(val);
-};
-document.getElementById('keyboardClose').onclick=closeKeyboard;
-document.getElementById('keyboardDelete').onclick=()=>input.value=input.value.slice(0,-1);
-
-/* Navigation */
 document.getElementById('btnBackKanten').onclick=()=>window.location.href='index.html';
 document.getElementById('btnDruckenKanten').onclick=()=>{
   if(out.innerHTML.trim()===""){ alert("Bitte zuerst einen Kunden wählen!"); return; }
