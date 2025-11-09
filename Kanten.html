@@ -228,27 +228,42 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
 
 /* ===== Handyoptimierung ===== */
 @media (max-width: 900px) {
-  #main { flex-direction: column; height: 100vh; }
+  #main {
+    flex-direction: column;
+    height: 100vh;
+    justify-content: flex-start;
+  }
+
   #form-container {
     width: 100%;
     border-right: none;
     border-bottom: 2px solid #ccc;
-    padding: 14px 18px;
+    padding: 14px 18px 0;
   }
-  .button-row button { width: 46%; font-size: 14px; }
+
+  .button-row {
+    margin-bottom: 8px;
+  }
+
+  .button-row button {
+    width: 46%;
+    font-size: 14px;
+  }
+
   .preview-container {
     width: 100%;
     flex: 1;
     background: #eee;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    align-items: flex-start; /* Vorschau nach oben */
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
+
   .output-box {
     transform: scale(0.85);
-    transform-origin: center;
+    transform-origin: top center;
   }
 }
 </style>
@@ -347,7 +362,7 @@ document.getElementById('keyboardOK').onclick=()=>{
 document.getElementById('keyboardDelete').onclick=()=>input.value=input.value.slice(0,-1);
 document.getElementById('keyboardClose').onclick=closeKeyboard;
 
-/* Druck */
+/* Drucken */
 document.getElementById('btnDruckenKanten').onclick=()=>{
   if(out.innerHTML.trim()===""){ alert("Bitte zuerst einen Kunden wählen!"); return; }
   window.print();
