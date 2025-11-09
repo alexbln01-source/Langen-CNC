@@ -120,16 +120,32 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   height: auto;
 }
 
+/* 📱 Handy-Ansicht */
 @media (max-width: 900px) {
-  body { flex-direction: column; height: auto; }
-  #form-container, .preview-container { width: 100%; border: none; }
+  #main {
+    flex-direction: column; /* ⬅️ Vorschau unter Formular */
+  }
+  #form-container, .preview-container {
+    width: 100%;
+    border: none;
+  }
   #lieferanten {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 8px;
   }
   button.action { height: 38px; font-size: 12px; flex: none; }
-  .preview-container { margin-top: 8px; overflow: hidden; }
+  .action-row {
+    margin-top: 12px;
+    justify-content: space-between;
+  }
+  .preview-container {
+    margin-top: 8px;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 12px;
+  }
   .output-box {
     transform: scale(0.43);
     transform-origin: top center;
@@ -137,6 +153,7 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   }
 }
 
+/* Bildschirm-Tastatur */
 #keyboardPopup {
   display: none;
   position: fixed;
@@ -197,6 +214,7 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
 .btn-ok { background:#28a745; }
 .btn-close { background:#6c757d; }
 
+/* Druck */
 @media print {
   @page { size: A5 landscape; margin: 0; }
   body * { visibility: hidden; }
@@ -245,6 +263,7 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   </div>
 </div>
 
+<!-- Popup Tastatur -->
 <div id="keyboardPopup">
   <div id="keyboardModal">
     <h3 id="keyboardTitle">Eingabe</h3>
