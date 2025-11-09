@@ -141,23 +141,25 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
     margin-top: 10px;
   }
 
-  /* Vorschau vergrößert & mittig */
+  /* Vorschau: echtes Querformat mit Zoom */
   .preview-container {
     background: #ddd;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 0;
-    margin-top: -10px;
+    margin-top: -6px;
   }
 
   .output-box {
-    transform: scale(0.6);
-    transform-origin: top center;
-    width: 210mm;
-    height: 148mm;
-    margin-top: -50px;
-    margin-bottom: -60px;
+    aspect-ratio: 210 / 148;
+    width: 95vw;
+    height: auto;
+    border: 1px solid #999;
+    transform: scale(1);
+    transform-origin: center top;
+    margin-top: 10px;
+    margin-bottom: 30px;
   }
 }
 
@@ -215,11 +217,11 @@ const out=document.getElementById('output-content');
 const zahlInput=document.getElementById('zahlA5');
 const kundeInput=document.getElementById('kundeA5');
 
-/* Bildschirmtastatur simuliert */
+/* Eingabe */
 zahlInput.onclick=()=>zahlInput.value=prompt("Beistellnummer eingeben")||zahlInput.value;
 kundeInput.onclick=()=>kundeInput.value=prompt("Kundenname eingeben")||kundeInput.value;
 
-/* Vorschau erzeugen */
+/* Vorschau rendern */
 function addLine(txt,size){
   const d=document.createElement('div');
   d.textContent=txt;
