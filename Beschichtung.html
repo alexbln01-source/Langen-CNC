@@ -97,7 +97,7 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   width: 210mm;
   height: 148mm;
   box-sizing: border-box;
-  padding: 8mm;
+  padding: 6mm;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -109,8 +109,9 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  flex: 1;
 }
 .output-box img {
   position: absolute;
@@ -123,7 +124,7 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
 /* 📱 Handy-Ansicht */
 @media (max-width: 900px) {
   #main {
-    flex-direction: column; /* ⬅️ Vorschau unter Formular */
+    flex-direction: column;
   }
   #form-container, .preview-container {
     width: 100%;
@@ -147,9 +148,10 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
     padding-bottom: 12px;
   }
   .output-box {
-    transform: scale(0.43);
+    transform: scale(0.78); /* ⬅️ größerer Maßstab */
     transform-origin: top center;
     margin: 6px 0 10px 0;
+    padding: 4mm; /* etwas weniger Rand = mehr Fläche */
   }
 }
 
@@ -311,7 +313,6 @@ document.getElementById('btnOk').onclick=()=>{
 };
 document.getElementById('btnClose').onclick=()=>popup.style.display='none';
 
-// ✅ Return-Taste (physische Tastatur) löst OK aus
 kbInput.addEventListener('keydown', e => {
   if (e.key === 'Enter') {
     e.preventDefault();
