@@ -6,7 +6,6 @@
 <title>PAUS Lieferung (A6)</title>
 <style>
 html, body { touch-action: manipulation; }
-
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -16,6 +15,7 @@ body {
   flex-direction: column;
 }
 
+/* Grundlayout */
 #main {
   flex: 1;
   display: flex;
@@ -39,18 +39,19 @@ h2 {
   margin: 8px 0 14px;
 }
 
-/* Farbbuttons */
+/* Farb-Buttons */
 .color-row {
   display: flex;
   justify-content: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 .color-btn, #btnVorgezogen {
-  height: 50px;
-  min-width: 80px;
+  height: 48px;
+  min-width: 90px;
   border-radius: 10px;
   border: 2px solid #ccc;
-  background: linear-gradient(#f8f9fb,#eef1f4);
+  background: transparent;
   font-weight: bold;
   font-size: 1rem;
   cursor: pointer;
@@ -67,13 +68,13 @@ h2 {
 .color-black { color: #2b2b2b; }
 
 #btnVorgezogen {
-  margin-top: 10px;
-  width: 260px;
+  margin-top: 12px;
+  width: 320px;
   color: #6c757d;
 }
 #btnVorgezogen.active { color:#d9534f; border-color:#d9534f; }
 
-/* Eingabe */
+/* Eingaben */
 .fake-input {
   width: 95%;
   padding: 10px;
@@ -94,7 +95,10 @@ h2 {
   justify-content: center;
   align-items: center;
   background: #ddd;
+  padding: 10px 0;
+  box-sizing: border-box;
 }
+
 .output-box {
   background: #fff;
   border: 1px solid #aaa;
@@ -104,16 +108,15 @@ h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
   padding: 8mm;
-  position: relative;
   transition: transform 0.3s ease;
+  transform-origin: center center;
+  margin: auto;
+  position: relative;
 }
-#output-content {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
+
 #output-footer {
   position: absolute;
   right: 5mm;
@@ -150,7 +153,7 @@ button.action {
   margin: 0 5px;
   height: 42px;
   border: 1px solid #ccc;
-  background: linear-gradient(#f8f9fb,#eef1f4);
+  background: transparent;
   color:#2d2d2d;
   font-weight:bold;
   border-radius:8px;
@@ -158,13 +161,19 @@ button.action {
   box-shadow:0 2px 4px rgba(0,0,0,0.15);
 }
 
-/* Mobile Vorschau kleiner */
+/* 📱 Mobile Ansicht */
 @media (max-width: 768px) {
-  .output-box { transform: scale(0.5); transform-origin: top center; }
-  #vorgezogenText { font-size: 28pt; }
+  .preview-container {
+    justify-content: center;
+    align-items: center;
+  }
+  .output-box {
+    transform: scale(0.55);
+    margin: 0 auto;
+  }
 }
 
-/* Tastatur Popup */
+/* Popup Tastatur */
 #keyboardPopup {
   display:none;
   position:fixed;
@@ -227,13 +236,11 @@ button.action {
 <div id="main">
   <div id="left-panel">
     <h2>PAUS Lieferung</h2>
-
     <div class="color-row">
       <button class="color-btn color-red active" data-color="red">Rot</button>
       <button class="color-btn color-blue" data-color="blue">Blau</button>
       <button class="color-btn color-black" data-color="black">Schwarz</button>
     </div>
-
     <button id="btnVorgezogen">Vorgezogen</button>
 
     <label>Kommissionsnummer</label>
@@ -257,7 +264,7 @@ button.action {
   </div>
 </div>
 
-<!-- Tastatur -->
+<!-- Popup Tastatur -->
 <div id="keyboardPopup">
   <div id="keyboardModal">
     <h3>Eingabe</h3>
@@ -272,74 +279,71 @@ button.action {
 </div>
 
 <script>
-const out = document.getElementById("output-content");
-const vorgezogenText = document.getElementById("vorgezogenText");
-let currentColor = "red";
-let vorgezogen = false;
-let activeInput = null;
-
-/* Farbwahl */
-document.querySelectorAll(".color-btn").forEach(btn=>{
-  btn.onclick=()=>{
-    document.querySelectorAll(".color-btn").forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    currentColor = btn.dataset.color;
-    updateOutput();
-  };
-});
-
-/* Vorgezogen */
-document.getElementById("btnVorgezogen").onclick=()=>{
-  vorgezogen = !vorgezogen;
-  document.getElementById("btnVorgezogen").classList.toggle("active",vorgezogen);
-  updateOutput();
-};
-
-/* Fake Inputs */
-document.querySelectorAll(".fake-input").forEach(div=>{
-  div.onclick=()=>openKeyboard(div);
-});
-
-/* Tastatur aufbauen */
-const popup=document.getElementById("keyboardPopup");
+const out=document.getElementById("output-content");
+const vorgezogenText=document.getElementById("vorgezogenText");
+const keyboardPopup=document.getElementById("keyboardPopup");
+const keyboardInput=document.getElementById("keyboardInput");
 const grid=document.getElementById("keyboardKeys");
-const input=document.getElementById("keyboardInput");
-const chars=["1","2","3","4","5","6","7","8","9","0"];
-chars.forEach(c=>{
+let activeField=null;
+let currentColor="red";
+let vorgezogen=false;
+
+/* Tastatur erstellen */
+const keys=["1","2","3","4","5","6","7","8","9","0"];
+keys.forEach(k=>{
   const b=document.createElement("button");
-  b.textContent=c;
-  b.onclick=()=>input.value+=c;
+  b.textContent=k;
+  b.onclick=()=>keyboardInput.value+=k;
   grid.appendChild(b);
 });
 
-function openKeyboard(el){
-  activeInput=el;
-  input.value=el.textContent.replace(/\D/g,"");
-  popup.style.display="flex";
-  setTimeout(()=>input.focus(),100);
-}
-document.getElementById("keyboardClose").onclick=()=>popup.style.display="none";
-document.getElementById("keyboardDelete").onclick=()=>input.value=input.value.slice(0,-1);
-document.getElementById("keyboardOK").onclick=()=>{
-  if(!activeInput)return;
-  let val=input.value;
-  if(activeInput.id==="lieferdatum" && val.length===4){
-    val=val.slice(0,2)+"."+val.slice(2);
-  }
-  activeInput.textContent=val||"Tippen zum Eingeben";
-  popup.style.display="none";
+/* Farbwahl */
+document.querySelectorAll(".color-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".color-btn").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    currentColor=btn.dataset.color;
+    vorgezogenText.style.color=currentColor;
+    updateOutput();
+  });
+});
+
+/* Vorgezogen Button */
+const btnVorgezogen=document.getElementById("btnVorgezogen");
+btnVorgezogen.addEventListener("click",()=>{
+  vorgezogen=!vorgezogen;
+  btnVorgezogen.classList.toggle("active",vorgezogen);
   updateOutput();
+});
+
+/* Eingabefelder */
+document.getElementById("kommission").addEventListener("click",()=>openKeyboard("kommission"));
+document.getElementById("lieferdatum").addEventListener("click",()=>openKeyboard("lieferdatum"));
+
+function openKeyboard(id){
+  activeField=document.getElementById(id);
+  keyboardInput.value=activeField.textContent.replace("Tippen zum Eingeben","");
+  keyboardPopup.style.display="flex";
+}
+document.getElementById("keyboardClose").onclick=()=>keyboardPopup.style.display="none";
+document.getElementById("keyboardDelete").onclick=()=>keyboardInput.value=keyboardInput.value.slice(0,-1);
+document.getElementById("keyboardOK").onclick=()=>{
+  const val=keyboardInput.value.trim();
+  if(activeField){
+    activeField.textContent=val||"Tippen zum Eingeben";
+    keyboardPopup.style.display="none";
+    updateOutput();
+  }
 };
 
 /* Vorschau aktualisieren */
 function updateOutput(){
   const kom=document.getElementById("kommission").textContent.trim();
   const dat=document.getElementById("lieferdatum").textContent.trim();
-
   out.innerHTML=`
-    <div style="font-size:24pt;font-weight:bold;color:black;">PAUS</div>
-    <div style="font-size:48pt;font-weight:900;margin:6px 0;color:${currentColor};">${kom}</div>
-    <div style="font-size:48pt;margin:6px 0;color:black;">${dat}</div>
+    <div style="font-size:24pt;font-weight:bold;">PAUS</div>
+    <div style="font-size:48pt;font-weight:900;color:${currentColor};">${kom!=="Tippen zum Eingeben"?kom:""}</div>
+    <div style="font-size:48pt;color:black;">${dat!=="Tippen zum Eingeben"?dat:""}</div>
   `;
   vorgezogenText.style.display=vorgezogen?"block":"none";
   vorgezogenText.style.color=currentColor;
@@ -347,7 +351,7 @@ function updateOutput(){
 
 /* Drucken */
 document.getElementById("btnDrucken").onclick=()=>{
-  if(out.innerHTML.trim()===""){alert("Bitte zuerst Daten eingeben!");return;}
+  if(out.innerHTML.trim()===""){alert("Bitte zuerst Kommissionsnummer eingeben!");return;}
   window.print();
 };
 </script>
