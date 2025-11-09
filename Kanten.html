@@ -2,59 +2,88 @@
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Kanten (A6 Quer)</title>
 <style>
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  display: flex;
   height: 100vh;
   background: #f0f0f0;
-  position: relative;
-}
-
-/* Linker Bereich */
-#form-container {
-  width: 50%;
-  background: #fff;
-  border-right: 2px solid #ccc;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+}
+
+/* ===== Hauptlayout ===== */
+#main {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: 10px;
+  padding: 10px;
   box-sizing: border-box;
+}
+
+/* ===== Linke Seite ===== */
+#form-container {
+  flex: 1 1 360px;
+  max-width: 520px;
+  background: #fff;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 25px 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
 }
-h2 { text-align: center; margin-top: 0; color: #004b8d; }
+h2 {
+  text-align: center;
+  color: #004b8d;
+  margin-top: 0;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+}
 
-/* Buttons */
+/* Buttons Kunden */
+.customer-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
 button.action {
-  width: 48%;
-  height: 40px;
+  flex: 1 1 45%;
+  min-width: 130px;
+  height: 44px;
   border: 1px solid #ccc;
-  background: linear-gradient(#f8f9fb, #eef1f4);
-  color: #2d2d2d;
-  font-weight: bold;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 12px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-  transition: all 0.2s ease;
+  background: linear-gradient(#f8f9fb,#eef1f4);
+  color:#2d2d2d;
+  font-weight:bold;
+  border-radius:8px;
+  cursor:pointer;
+  box-shadow:0 2px 4px rgba(0,0,0,0.15);
+  transition:background 0.2s;
 }
 button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
 
-/* Fixe Buttons unten links/rechts */
+/* Fixe Buttons unten */
 .fixed-btn {
   position: absolute;
   bottom: 20px;
-  height: 38px;
-  min-width: 110px;
+  height: 45px;
+  min-width: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
   padding: 0 12px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: bold;
   border-radius: 8px;
   background: linear-gradient(#f8f9fb, #eef1f4);
@@ -65,47 +94,49 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
 #btnBackKanten { left: 20px; }
 #btnDruckenKanten { right: 20px; }
 
-/* Vorschau */
+/* ===== Vorschau ===== */
 .preview-container {
-  flex: 1;
+  flex: 1 1 400px;
+  max-width: 700px;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #ddd;
+  border: 2px solid #bbb;
+  border-radius: 10px;
   overflow: hidden;
+  padding: 10px;
+  box-sizing: border-box;
 }
 .output-box {
   background: #fff;
   border: 1px solid #aaa;
   box-sizing: border-box;
-  padding: 8mm;
-  position: relative;
+  aspect-ratio: 148 / 105;
+  width: 100%;
+  max-width: 148mm;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   text-align: center;
-  overflow: hidden;
-  width: 148mm;
-  height: 105mm;
+  padding: 8mm;
+  position: relative;
 }
 #output-content {
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: stretch;
+  align-items: center;
 }
 #output-content .title {
   font-size: 26pt;
   font-weight: bold;
-  text-align: center;
   margin-bottom: 8mm;
 }
 #output-content .subtitle {
   font-size: 36pt;
   font-weight: 900;
-  text-align: center;
   margin-bottom: 8mm;
 }
 .line {
@@ -118,14 +149,14 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   margin-bottom: 8mm;
   white-space: nowrap;
 }
-.line label { margin: 0; white-space: nowrap; }
+.line label { margin: 0; }
 .line .fill {
-  flex: 1 1 auto;
+  flex: 1;
   border-bottom: 3px solid #000;
   height: 1.2em;
 }
 
-/* Popup Tastatur */
+/* ===== Popup Tastatur ===== */
 #keyboardPopup {
   display: none;
   position: fixed;
@@ -156,7 +187,7 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
 }
 .keyboard-grid {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(9, 1fr);
   gap: 6px;
 }
 .keyboard-grid button {
@@ -166,67 +197,63 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   border-radius: 6px;
   background: #f2f2f2;
   cursor: pointer;
-  transition: transform 0.05s ease, background 0.1s;
+  transition: background 0.1s;
 }
-.keyboard-grid button:hover { background: #e0e0e0; }
-.keyboard-grid button:active { background: #d4d4d4; transform: translateY(1px); }
-
-/* Untere Buttons Löschen / OK / Schließen */
+.keyboard-grid button:hover { background:#e0e0e0; }
+.keyboard-grid button:active { background:#d4d4d4; transform:translateY(1px); }
 .keyboard-actions {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 14px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-top:14px;
 }
 .keyboard-actions button {
-  padding: 8px 16px;
-  font-size: 15px;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  color: #fff;
+  padding:8px 16px;
+  font-size:15px;
+  font-weight:bold;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  color:#fff;
 }
-.btn-del { background: #d9534f; }
-.btn-ok { background: #28a745; }
-.btn-close { background: #6c757d; }
+.btn-del { background:#d9534f; }
+.btn-ok { background:#28a745; }
+.btn-close { background:#6c757d; }
 
-/* Druck */
+/* ===== Druck ===== */
 @media print {
   @page { size: A6 landscape; margin: 0; }
   body * { visibility: hidden; }
   .output-box, .output-box * { visibility: visible; }
-  .output-box {
-    position: absolute;
-    left: 0; top: 0;
-    border: none; box-shadow: none;
-  }
+  .output-box { position:absolute; left:0; top:0; border:none; box-shadow:none; }
 }
 </style>
 </head>
 <body>
 
-<div id="form-container">
-  <h2>Kanten</h2>
+<div id="main">
+  <div id="form-container">
+    <h2>Kanten</h2>
 
-  <div style="display:flex; justify-content:space-between; flex-wrap:wrap;">
-    <button type="button" id="btnBergmann" class="action">Bergmann M-H</button>
-    <button type="button" id="btnBuecker" class="action">Bücker</button>
-    <button type="button" id="btnGrimme" class="action">Grimme</button>
-    <button type="button" id="btnJanzen" class="action">Janzen</button>
-    <button type="button" id="btnKrone" class="action">Krone Spelle</button>
-    <button type="button" id="btnLBergmann" class="action">L.Bergmann</button>
-    <button type="button" id="btnPaus" class="action">PAUS</button>
-    <button type="button" id="btnSonstige" class="action">Sonstige Kunden</button>
-    <button type="button" id="btnTos" class="action">TOS</button>
+    <div class="customer-buttons">
+      <button type="button" id="btnBergmann" class="action">Bergmann M-H</button>
+      <button type="button" id="btnBuecker" class="action">Bücker</button>
+      <button type="button" id="btnGrimme" class="action">Grimme</button>
+      <button type="button" id="btnJanzen" class="action">Janzen</button>
+      <button type="button" id="btnKrone" class="action">Krone Spelle</button>
+      <button type="button" id="btnLBergmann" class="action">L.Bergmann</button>
+      <button type="button" id="btnPaus" class="action">PAUS</button>
+      <button type="button" id="btnTos" class="action">TOS</button>
+      <button type="button" id="btnSonstige" class="action">Sonstige Kunden</button>
+    </div>
+
+    <button id="btnBackKanten" class="fixed-btn" onclick="window.location.href='index.html'">⬅️ Zurück</button>
+    <button id="btnDruckenKanten" class="fixed-btn">🖨 Drucken</button>
   </div>
 
-  <button id="btnBackKanten" class="fixed-btn" onclick="window.location.href='index.html'">⬅️ Zurück</button>
-  <button id="btnDruckenKanten" class="fixed-btn">🖨 Drucken</button>
-</div>
-
-<div class="preview-container">
-  <div class="output-box"><div id="output-content"></div></div>
+  <div class="preview-container">
+    <div class="output-box"><div id="output-content"></div></div>
+  </div>
 </div>
 
 <!-- Popup Tastatur -->
@@ -250,7 +277,7 @@ const input=document.getElementById('keyboardInput');
 const grid=document.getElementById('keyboardKeys');
 
 /* Tastatur aufbauen */
-(() => {
+(()=>{
   const chars=[..."QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM"];
   chars.forEach(c=>{
     const b=document.createElement('button');
@@ -260,34 +287,27 @@ const grid=document.getElementById('keyboardKeys');
   });
 })();
 
-/* 30 Sekunden Inaktivität → automatisch zurück */
-let inactivityTimer;
-function resetInactivityTimer(){
-  clearTimeout(inactivityTimer);
-  inactivityTimer=setTimeout(()=>window.location.href='index.html',30000);
-}
-['click','keydown','mousemove','touchstart'].forEach(evt=>{
-  document.addEventListener(evt,resetInactivityTimer);
-});
-resetInactivityTimer();
-
 function openKeyboard(){
-  input.value="";
+  input.value=""; // immer leeren
   popup.style.display='flex';
   setTimeout(()=>input.focus(),100);
 }
 function closeKeyboard(){ popup.style.display='none'; }
 
+/* Anzeige aktualisieren */
 function showOutput(customer){
   out.innerHTML=`<div class="title">${customer}</div><div class="subtitle">Kanten</div>`;
-  if(customer==="PAUS"){ out.insertAdjacentHTML('beforeend',`<div class="line"><label>K-Termin:</label><span class="fill"></span></div>`); return; }
+  if(customer==="PAUS"){
+    out.insertAdjacentHTML('beforeend',`<div class="line"><label>K-Termin:</label><span class="fill"></span></div>`);
+    return;
+  }
   if(customer==="TOS"){ return; }
   out.insertAdjacentHTML('beforeend',`
     <div class="line"><label>K-Termin:</label><span class="fill"></span></div>
     <div class="line"><label>Palettennummer:</label><span class="fill"></span></div>`);
 }
 
-/* Buttons */
+/* Button-Events */
 document.getElementById('btnBergmann').onclick=()=>showOutput('Bergmann M-H');
 document.getElementById('btnBuecker').onclick =()=>showOutput('Bücker');
 document.getElementById('btnGrimme').onclick  =()=>showOutput('Grimme');
@@ -298,28 +318,40 @@ document.getElementById('btnPaus').onclick    =()=>showOutput('PAUS');
 document.getElementById('btnTos').onclick     =()=>showOutput('TOS');
 document.getElementById('btnSonstige').onclick=()=>openKeyboard();
 
-/* Tastatur Buttons */
+/* Tastatursteuerung */
 document.getElementById('keyboardOK').onclick=()=>{
-  const val=input.value.trim(); if(!val) return;
-  closeKeyboard(); showOutput(val);
+  const val=input.value.trim();
+  if(!val) return;
+  closeKeyboard();
+  showOutput(val);
 };
 document.getElementById('keyboardClose').onclick=closeKeyboard;
-document.getElementById('keyboardDelete').onclick=()=>{
-  input.value=input.value.slice(0,-1);
-};
+document.getElementById('keyboardDelete').onclick=()=>input.value=input.value.slice(0,-1);
 
-/* Physische Tastatur */
+/* Physische Eingabe */
 input.addEventListener('keydown',e=>{
-  if(e.key==="Enter"){ e.preventDefault(); document.getElementById('keyboardOK').click(); }
-  if(e.key==="Escape"){ e.preventDefault(); closeKeyboard(); }
-  if(e.key==="Backspace" && input.value===""){ e.preventDefault(); }
+  if(e.key==="Enter"){e.preventDefault();document.getElementById('keyboardOK').click();}
+  if(e.key==="Escape"){e.preventDefault();closeKeyboard();}
 });
 
 /* Drucken */
 document.getElementById('btnDruckenKanten').onclick=()=>{
-  if(out.innerHTML.trim()===""){ alert("Bitte zuerst einen Kunden wählen!"); return; }
+  if(out.innerHTML.trim()===""){alert("Bitte zuerst einen Kunden wählen!");return;}
   window.print();
 };
+
+/* Kein Doppeltap-Zoom */
+document.addEventListener('touchend', function(event) {
+  const now=Date.now();
+  if(this.lastTouch && now-this.lastTouch<400) event.preventDefault();
+  this.lastTouch=now;
+},{passive:false});
+
+/* Automatisches Zurück nach 30 s */
+let timer;
+function resetTimer(){clearTimeout(timer);timer=setTimeout(()=>window.location.href='index.html',30000);}
+['click','keydown','touchstart'].forEach(e=>document.addEventListener(e,resetTimer));
+resetTimer();
 </script>
 </body>
 </html>
