@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no">
 <title>PAUS Lieferung (A6)</title>
 <style>
-html, body { touch-action: manipulation; }
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -14,175 +14,169 @@ body {
   display: flex;
   flex-direction: column;
 }
+#main { flex: 1; display: flex; height: 100%; }
 
-/* ===== LAYOUT ===== */
-#main {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-}
+/* ----- Panels ----- */
 #left-panel {
   width: 50%;
   background: #fff;
   border-right: 2px solid #ccc;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 24px;
+  padding: 20px;
   box-sizing: border-box;
   position: relative;
 }
-.preview-container {
-  width: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #ddd;
-  overflow: hidden;
-  box-sizing: border-box;
-}
+h2 { text-align:center; color:#004b8d; margin-top:0; }
 
-/* ===== HEADING ===== */
-h2 {
-  text-align: center;
-  color: #004b8d;
-  margin-top: 0;
-  margin-bottom: 20px;
-  font-size: 1.6rem;
-}
-
-/* ===== BUTTONS (FARBEN + VORGEZOGEN) ===== */
-.color-row {
+/* ----- Farbbuttons ----- */
+.color-buttons {
   display: flex;
   justify-content: center;
   gap: 10px;
   margin-bottom: 12px;
 }
-.color-btn, #btnVorgezogen {
-  height: 48px;
-  min-width: 90px;
-  border-radius: 10px;
-  border: 2px solid #ccc;
-  background: transparent;
-  font-weight: bold;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.15s ease-in-out;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+.color-btn {
+  width: 70px; height: 40px;
+  border-radius: 8px; border: 2px solid transparent;
+  font-weight: bold; cursor: pointer; color: white;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
-.color-btn.active, #btnVorgezogen.active {
-  box-shadow: 0 0 5px rgba(0,0,0,0.25);
-  border-color: currentColor;
-  transform: scale(1.05);
-}
-.color-red { color: #d32f2f; }
-.color-blue { color: #1976d2; }
-.color-black { color: #2b2b2b; }
+.color-btn:hover { transform: scale(1.05); }
+.color-btn.active { box-shadow: 0 0 0 3px rgba(0,0,0,0.2); border-color: #333; }
+.color-red { background: #d32f2f; }
+.color-blue { background: #1976d2; }
+.color-black { background: #2b2b2b; }
 
-#btnVorgezogen {
-  margin-top: 12px;
-  width: calc(90px * 3 + 20px);
-  color: #6c757d;
+/* ----- Buttons unten ----- */
+button.action {
+  width: 45%; height: 42px;
+  border: 1px solid #ccc;
+  background: linear-gradient(#f8f9fb,#eef1f4);
+  color:#2d2d2d; font-weight:bold;
+  border-radius:8px; cursor:pointer;
+  box-shadow:0 2px 4px rgba(0,0,0,0.15);
+  transition:background 0.2s;
 }
-#btnVorgezogen.active { color:#d9534f; border-color:#d9534f; }
+button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
+.fixed-btn {
+  position: absolute; bottom: 20px;
+  height: 45px; display: flex;
+  align-items: center; justify-content: center;
+  gap: 8px; padding: 0 14px;
+}
+#btnBack { left: 20px; }
+#btnDrucken { right: 20px; }
 
-/* ===== FELDER ===== */
-label {
-  display: block;
-  font-size: 0.95rem;
-  color: #444;
-  margin-top: 20px;
-  margin-bottom: 6px;
-  text-align: center;
+/* ----- Eingabefelder ----- */
+label { display:block; margin-top:10px; font-size:0.95rem; color:#333; }
+input[type="text"] {
+  width:95%; padding:10px; margin-bottom:10px;
+  text-align:center; font-size:18px;
+  border-radius:8px; border:1px solid #cfd3d7;
+  background:#ffffff;
 }
-.fake-input {
-  width: 95%;
-  padding: 14px;
-  margin-bottom: 14px;
-  text-align: center;
-  font-size: 18px;
-  border: 1px solid #cfd3d7;
-  border-radius: 10px;
-  background: #ffffff;
-  cursor: pointer;
-  min-height: 56px;
-  line-height: 1.1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  box-shadow: 0 2px 3px rgba(0,0,0,0.05);
+input[readonly] {
+  caret-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
 }
-.fake-input:hover { background: #f8f8f8; border-color: #bbb; }
 
-/* ===== VORSCHAU ===== */
+/* ----- Vorschau ----- */
+.preview-container {
+  width: 50%;
+  display: flex; justify-content: center; align-items: center;
+  background: #ddd; overflow: hidden;
+}
 .output-box {
-  background: #fff;
-  border: 1px solid #aaa;
-  box-sizing: border-box;
-  width: 148mm;
-  height: 105mm;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 8mm;
-  position: relative;
+  background: #fff; border: 1px solid #aaa;
+  box-sizing: border-box; width: 148mm; height: 105mm;
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+  padding: 8mm; position: relative;
 }
 #output-content {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  width:100%;
+  display:flex; flex-direction:column;
+  align-items:center; width:100%;
   transition: margin-top 0.1s;
 }
 #output-footer {
-  position: absolute;
-  right: 5mm;
-  bottom: 6mm;
+  position: absolute; right: 5mm; bottom: 6mm;
 }
 #output-footer img {
-  width: 4.34cm;
-  height: 1.66cm;
-  object-fit: contain;
+  width: 4.34cm; height: 1.66cm; object-fit: contain;
 }
 
-/* ===== BUTTONS UNTEN ===== */
-.buttons-bottom {
+/* Vorgezogen Text */
+#vorgezogenText {
   position: absolute;
-  bottom: 20px;
-  left: 0;
+  bottom: 22mm;
+  font-size: 36pt;
+  font-weight: bold;
   width: 100%;
-  display: flex;
-  justify-content: space-around;
-}
-button.action {
-  flex: 1;
-  margin: 0 20px;
-  height: 42px;
-  border: 1px solid #ccc;
-  background: transparent;
-  color:#2d2d2d;
-  font-weight:bold;
-  border-radius:8px;
-  cursor:pointer;
-  box-shadow:0 2px 4px rgba(0,0,0,0.15);
+  text-align: center;
+  color: red;
+  display: none;
 }
 
-/* ===== MOBILE ===== */
-@media (max-width: 768px) {
-  #main { flex-direction: column; }
-  #left-panel, .preview-container { width: 100%; border: none; }
-  .output-box { transform: scale(0.55); margin: 0 auto; }
-  .buttons-bottom { position: static; margin-top: 10px; }
+/* ----- Popup Tastatur ----- */
+#keyboardPopup {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000; align-items: center; justify-content: center;
 }
+#keyboardModal {
+  background: #fff; border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  padding: 20px; width: 90%; max-width: 420px; text-align: center;
+}
+#keyboardModal h3 { margin: 0 0 10px; color:#004b8d; }
+#keyboardInput {
+  width: 92%; padding: 10px; margin-bottom: 12px;
+  text-align: center; font-size: 18px;
+  border: 1px solid #cfd3d7; border-radius: 8px;
+}
+.keyboard-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
+}
+.keyboard-grid button {
+  padding: 10px 0; font-size: 18px;
+  border: 1px solid #ccc; border-radius: 6px;
+  background: #f2f2f2; cursor: pointer;
+}
+.keyboard-grid button:hover { background:#e0e0e0; }
+.keyboard-actions { display:flex; justify-content:center; gap:10px; margin-top:14px; }
+.keyboard-actions button {
+  padding:8px 16px; font-size:15px; font-weight:bold;
+  border:none; border-radius:8px; cursor:pointer; color:#fff;
+}
+.btn-del { background:#d9534f; }
+.btn-ok { background:#28a745; }
+.btn-close { background:#6c757d; }
 
-/* ===== PRINT ===== */
+/* ----- Druck ----- */
 @media print {
   @page { size: A6 landscape; margin: 0; }
   body * { visibility: hidden; }
   .output-box, .output-box * { visibility: visible; }
   .output-box { position:absolute; left:0; top:0; border:none; box-shadow:none; }
+}
+
+/* ----- Handy ----- */
+@media (max-width: 900px) {
+  body, #main { flex-direction: column; }
+  #left-panel {
+    width: 100%; height: 50vh;
+    border-right: none; border-bottom: 2px solid #ccc;
+  }
+  .preview-container {
+    width: 100%; height: 50vh;
+    background: #eee; justify-content: center; align-items: center;
+  }
+  .output-box {
+    transform: scale(0.75);
+    transform-origin: center;
+  }
 }
 </style>
 </head>
@@ -191,45 +185,41 @@ button.action {
 <div id="main">
   <div id="left-panel">
     <h2>PAUS Lieferung</h2>
-
-    <div class="color-row">
-      <button class="color-btn color-red active" data-color="red">Rot</button>
-      <button class="color-btn color-blue" data-color="blue">Blau</button>
-      <button class="color-btn color-black" data-color="black">Schwarz</button>
+    <div class="color-buttons">
+      <button type="button" class="color-btn color-red active" data-color="red">Rot</button>
+      <button type="button" class="color-btn color-blue" data-color="blue">Blau</button>
+      <button type="button" class="color-btn color-black" data-color="black">Schwarz</button>
     </div>
 
-    <button id="btnVorgezogen">Vorgezogen</button>
-
+    <label><input type="checkbox" id="chkVorgezogen"> Auftrag vorgezogen</label>
     <label>Kommissionsnummer</label>
-    <div id="kommission" class="fake-input">Tippen zum Eingeben</div>
-
+    <input id="kommission" type="text" readonly>
     <label>Lieferdatum (TT.MM)</label>
-    <div id="lieferdatum" class="fake-input">Tippen zum Eingeben</div>
+    <input id="lieferdatum" type="text" readonly>
 
-    <div class="buttons-bottom">
-      <button id="btnBack" class="action" onclick="window.location.href='index.html'">⬅️ Zurück</button>
-      <button id="btnDrucken" class="action">🖨 Drucken</button>
-    </div>
+    <button id="btnBack" class="action fixed-btn" onclick="window.location.href='index.html'">⬅️ Zurück</button>
+    <button id="btnDrucken" class="action fixed-btn" style="right:20px;">🖨 Drucken</button>
   </div>
 
   <div class="preview-container">
     <div class="output-box" id="outputBox">
       <div id="output-content"></div>
+      <div id="vorgezogenText">„Vorgezogen“</div>
       <div id="output-footer"><img src="Langen.png" alt="Logo"></div>
     </div>
   </div>
 </div>
 
 <!-- Popup Tastatur -->
-<div id="keyboardPopup" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:1000;">
-  <div style="background:#fff; border-radius:10px; padding:16px; box-shadow:0 6px 20px rgba(0,0,0,0.3); text-align:center; width:90%; max-width:360px;">
-    <h3 style="margin:0 0 10px; color:#004b8d;">Eingabe</h3>
-    <input type="text" id="keyboardInput" style="width:90%;padding:10px;font-size:18px;text-align:center;border:1px solid #cfd3d7;border-radius:8px;margin-bottom:10px;">
-    <div id="keyboardKeys" style="display:grid; grid-template-columns:repeat(5,1fr); gap:6px; margin-bottom:10px;"></div>
-    <div style="display:flex; justify-content:center; gap:10px;">
-      <button id="keyboardDelete" style="padding:8px 16px;border:none;border-radius:8px;background:#d9534f;color:#fff;font-weight:bold;cursor:pointer;">⌫</button>
-      <button id="keyboardOK" style="padding:8px 16px;border:none;border-radius:8px;background:#28a745;color:#fff;font-weight:bold;cursor:pointer;">OK</button>
-      <button id="keyboardClose" style="padding:8px 16px;border:none;border-radius:8px;background:#6c757d;color:#fff;font-weight:bold;cursor:pointer;">Schließen</button>
+<div id="keyboardPopup">
+  <div id="keyboardModal">
+    <h3>Zahl eingeben</h3>
+    <input type="text" id="keyboardInput" autocomplete="off" />
+    <div class="keyboard-grid" id="keyboardKeys"></div>
+    <div class="keyboard-actions">
+      <button id="keyboardDelete" class="btn-del">⌫ Löschen</button>
+      <button id="keyboardOK" class="btn-ok">OK</button>
+      <button id="keyboardClose" class="btn-close">Schließen</button>
     </div>
   </div>
 </div>
@@ -241,9 +231,9 @@ const footer=document.getElementById("output-footer");
 const popup=document.getElementById("keyboardPopup");
 const input=document.getElementById("keyboardInput");
 const grid=document.getElementById("keyboardKeys");
+const vorgezogenText=document.getElementById("vorgezogenText");
 let activeInput=null;
 let currentColor="red";
-let vorgezogen=false;
 
 /* Farbwahl */
 document.querySelectorAll(".color-btn").forEach(btn=>{
@@ -251,78 +241,48 @@ document.querySelectorAll(".color-btn").forEach(btn=>{
     document.querySelectorAll(".color-btn").forEach(b=>b.classList.remove("active"));
     btn.classList.add("active");
     currentColor=btn.dataset.color;
+    vorgezogenText.style.color=currentColor;
     updateOutput();
   });
 });
 
-/* Vorgezogen */
-document.getElementById("btnVorgezogen").addEventListener("click",()=>{
-  vorgezogen=!vorgezogen;
-  document.getElementById("btnVorgezogen").classList.toggle("active",vorgezogen);
-  updateOutput();
-});
-
 /* Tastatur */
-(() => {
-  const chars="1234567890".split("");
-  chars.forEach(c=>{
-    const b=document.createElement('button');
-    b.textContent=c;
-    b.onclick=()=>input.value+=c;
-    grid.appendChild(b);
-  });
-})();
+(()=>{ "1234567890".split("").forEach(c=>{
+  const b=document.createElement('button'); b.textContent=c;
+  b.onclick=()=>input.value+=c; grid.appendChild(b);
+});})();
+
 document.getElementById("kommission").addEventListener("click",()=>openKeyboard("kommission"));
 document.getElementById("lieferdatum").addEventListener("click",()=>openKeyboard("lieferdatum"));
-function openKeyboard(id){
-  activeInput=document.getElementById(id);
-  input.value=activeInput.textContent.replace(/\D/g,"");
-  popup.style.display='flex';
-}
-document.getElementById("keyboardClose").onclick=()=>popup.style.display='none';
+function openKeyboard(field){activeInput=document.getElementById(field);input.value=activeInput.value.replace(/\./g,"");popup.style.display='flex';setTimeout(()=>input.focus(),100);}
+function closeKeyboard(){popup.style.display='none';}
 document.getElementById("keyboardDelete").onclick=()=>input.value=input.value.slice(0,-1);
-document.getElementById("keyboardOK").onclick=()=>{
+document.getElementById("keyboardClose").onclick=closeKeyboard;
+function handleKeyboardOK(){
   if(!activeInput)return;
   let val=input.value.trim();
-  if(activeInput.id==="lieferdatum"){
-    val=val.replace(/\D/g,"");
-    if(val.length===3)val="0"+val;
-    if(val.length===4)val=val.slice(0,2)+"."+val.slice(2);
-  }
-  activeInput.textContent=val||"Tippen zum Eingeben";
-  popup.style.display='none';
-  updateOutput();
-};
+  if(activeInput.id==="lieferdatum"){val=val.replace(/\D/g,"");if(val.length===3)val="0"+val;if(val.length===4)val=val.slice(0,2)+"."+val.slice(2);}
+  activeInput.value=val;
+  closeKeyboard(); updateOutput();
+}
+document.getElementById("keyboardOK").onclick=handleKeyboardOK;
 
 /* Vorschau */
 function updateOutput(){
-  const kom=document.getElementById("kommission").textContent.trim();
-  const dat=document.getElementById("lieferdatum").textContent.trim();
-  if(!kom&&!dat){out.innerHTML="";centerOutput(false,false);return;}
-
+  const kom=document.getElementById("kommission").value;
+  const dat=document.getElementById("lieferdatum").value;
+  const vorgezogen=document.getElementById("chkVorgezogen").checked;
+  if(!kom&&!dat){out.innerHTML="";vorgezogenText.style.display="none";return;}
   let isPast=false;
-  if(dat && /^\d{2}\.\d{2}$/.test(dat)){
-    const [d,m]=dat.split(".");
-    const now=new Date();
-    const dd=new Date(now.getFullYear(),parseInt(m)-1,parseInt(d));
-    const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
-    if(dd<today)isPast=true;
-  }
-
-  const dateHtml=isPast
-    ? `<div style="font-size:48pt;border:3px solid red;padding:4px 12px;border-radius:6px;display:inline-block;margin:6px 0;color:black;">${dat}</div>`
-    : `<div style="font-size:48pt;margin:6px 0;color:black;">${dat}</div>`;
-
-  out.innerHTML=`
-    <div style="font-size:24pt;font-weight:bold;">PAUS</div>
-    <div style="font-size:48pt;font-weight:900;margin:6px 0;color:${currentColor};">${kom!=="Tippen zum Eingeben"?kom:""}</div>
-    ${dat!=="Tippen zum Eingeben"?dateHtml:""}
-    ${vorgezogen?`<div id="vorgezogenText" style="font-size:36pt;font-weight:bold;margin-top:10px;color:${currentColor};">„Vorgezogen“</div>`:""}
-  `;
+  if(dat){const parts=dat.split(".");if(parts.length===2){const now=new Date();const d=new Date(now.getFullYear(),parseInt(parts[1])-1,parseInt(parts[0]));const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());if(d<today)isPast=true;}}
+  const dateHtml=isPast?`<div style="font-size:48pt;border:3px solid red;padding:4px 12px;border-radius:6px;margin:6px 0;color:black;">${dat}</div>`:`<div style="font-size:48pt;margin:6px 0;color:black;">${dat}</div>`;
+  out.innerHTML=`<div style="font-size:24pt;font-weight:bold;">PAUS</div><div style="font-size:48pt;font-weight:900;margin:6px 0;color:${currentColor};">${kom}</div>${dateHtml}`;
+  vorgezogenText.style.display=vorgezogen?"block":"none";
+  vorgezogenText.style.color=currentColor;
   centerOutput(vorgezogen,isPast);
 }
 
-/* ✅ "Grüne" perfekte Version */
+/* 🔧 Grüne Zentrierregel */
 function centerOutput(vorgezogen,borderNeeded){
   requestAnimationFrame(()=>{
     const logoHeight = footer.offsetHeight;
@@ -330,28 +290,21 @@ function centerOutput(vorgezogen,borderNeeded){
     const available = box.clientHeight - footerSpace;
     const contentH = out.scrollHeight;
     let top = Math.max((available - contentH) / 2, 0);
-
-    // Grundausgleich (leicht oberhalb Mitte)
     let extra = logoHeight * 1.1;
-
-    if (vorgezogen && borderNeeded) {
-      extra += logoHeight * 1.8 + 20;
-    } else if (vorgezogen && !borderNeeded) {
-      extra += logoHeight * 1.2 + 10;
-    } else if (!vorgezogen && borderNeeded) {
-      extra += logoHeight * 0.7 + 5;
-    }
-
+    if(vorgezogen && borderNeeded){extra += logoHeight * 1.8 + 20;}
+    else if(vorgezogen && !borderNeeded){extra += logoHeight * 1.2 + 10;}
+    else if(!vorgezogen && borderNeeded){extra += logoHeight * 0.7 + 5;}
     const minSpace = 20;
     out.style.marginTop = Math.max(top - extra, minSpace) + "px";
   });
 }
 
 /* Drucken */
-document.getElementById("btnDrucken").onclick=()=>{
-  if(out.innerHTML.trim()===""){alert("Bitte zuerst Kommissionsnummer eingeben!");return;}
-  window.print();
-};
+document.getElementById("btnDrucken").onclick=()=>{if(out.innerHTML.trim()===""){alert("Bitte zuerst Kommissionsnummer eingeben!");return;}window.print();};
+
+/* Auto-Zurück */
+let timer;function resetTimer(){clearTimeout(timer);timer=setTimeout(()=>window.location.href='index.html',30000);}
+document.addEventListener('click',resetTimer);document.addEventListener('keydown',resetTimer);resetTimer();
 </script>
 </body>
 </html>
