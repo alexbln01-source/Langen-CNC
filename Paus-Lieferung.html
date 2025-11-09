@@ -13,9 +13,9 @@ body {
   background: #f0f0f0;
   display: flex;
   flex-direction: column;
+  touch-action: manipulation; /* verhindert Zoom und Doppeltap */
 }
 
-/* ===== Hauptlayout ===== */
 #main {
   flex: 1;
   display: flex;
@@ -99,6 +99,10 @@ input[type="text"] {
   border: 1px solid #cfd3d7;
   background: #ffffff;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  user-select: none;
+  -webkit-user-select: none;
+  caret-color: transparent;
+  touch-action: none;
 }
 
 /* Buttons unten */
@@ -242,35 +246,15 @@ button.action:hover { background: linear-gradient(#ffffff, #e9ecef); }
   .output-box { position:absolute; left:0; top:0; border:none; box-shadow:none; }
 }
 
-/* ===== Handy Ansicht: echte A6-Proportion ===== */
+/* ===== Handy Ansicht mit echter A6-Proportion ===== */
 @media (max-width: 900px) {
-  body, #main {
-    flex-direction: column;
-    height: 100vh;
-  }
-
+  body, #main { flex-direction: column; height: 100vh; }
   #left-panel {
     width: 100%;
     border-right: none;
     border-bottom: 2px solid #ccc;
     padding: 10px 18px 0;
-    box-sizing: border-box;
   }
-
-  .button-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    margin: 8px 0 12px;
-  }
-
-  .button-row button {
-    width: 45%;
-    height: 44px;
-    font-size: 15px;
-  }
-
   .preview-container {
     width: 100%;
     flex: 1;
@@ -280,25 +264,16 @@ button.action:hover { background: linear-gradient(#ffffff, #e9ecef); }
     align-items: center;
     padding-top: 15px;
     padding-bottom: 15px;
-    box-sizing: border-box;
   }
-
   .output-box {
-    background: #fff;
-    border: 1px solid #999;
-    box-sizing: border-box;
-    aspect-ratio: 148 / 105;  /* echtes Querformat */
+    aspect-ratio: 148 / 105;
     width: 90vw;
     max-width: 148mm;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    background: #fff;
+    border: 1px solid #999;
     transform: scale(0.85);
     transform-origin: center;
   }
-
   #output-footer img { width: 3.8cm; height: auto; }
   #vorgezogenText { font-size: 26pt; bottom: 14mm; }
 }
@@ -309,7 +284,6 @@ button.action:hover { background: linear-gradient(#ffffff, #e9ecef); }
 <div id="main">
   <div id="left-panel">
     <h2>PAUS Lieferung</h2>
-
     <div class="color-buttons">
       <button type="button" class="color-btn color-red active" data-color="red">Rot</button>
       <button type="button" class="color-btn color-blue" data-color="blue">Blau</button>
@@ -325,7 +299,7 @@ button.action:hover { background: linear-gradient(#ffffff, #e9ecef); }
     <input id="lieferdatum" type="text" readonly>
 
     <div class="button-row">
-      <button id="btnBack" class="action">⬅️ Zurück</button>
+      <button id="btnBack" class="action" onclick="window.history.back()">⬅️ Zurück</button>
       <button id="btnDrucken" class="action">🖨 Drucken</button>
     </div>
   </div>
@@ -343,7 +317,7 @@ button.action:hover { background: linear-gradient(#ffffff, #e9ecef); }
 <div id="keyboardPopup">
   <div id="keyboardModal">
     <h3>Zahl eingeben</h3>
-    <input type="text" id="keyboardInput" autocomplete="off" />
+    <input type="text" id="keyboardInput" inputmode="none" autocomplete="off" />
     <div class="keyboard-grid" id="keyboardKeys"></div>
     <div class="keyboard-actions">
       <button id="keyboardDelete" class="btn-del">⌫ Löschen</button>
@@ -384,9 +358,6 @@ document.querySelectorAll(".color-btn").forEach(btn=>{
   });
 })();
 
-document.getElementById("kommission").addEventListener("click",()=>openKeyboard("kommission"));
-document.getElementById("lieferdatum").addEventListener("click",()=>openKeyboard("lieferdatum"));
-
 function openKeyboard(field){
   activeInput=document.getElementById(field);
   input.value=activeInput.value.replace(/\./g,"");
@@ -397,6 +368,8 @@ function openKeyboard(field){
 }
 function closeKeyboard(){ popup.style.display='none'; }
 
+document.getElementById("kommission").onclick=()=>openKeyboard("kommission");
+document.getElementById("lieferdatum").onclick=()=>openKeyboard("lieferdatum");
 document.getElementById("keyboardDelete").onclick=()=>input.value=input.value.slice(0,-1);
 document.getElementById("keyboardClose").onclick=closeKeyboard;
 
@@ -409,7 +382,6 @@ function handleKeyboardOK(){
     if(val.length===4)val=val.slice(0,2)+"."+val.slice(2);
   }
   activeInput.value=val;
-
   if(activeInput.id==="kommission"){ openKeyboard("lieferdatum"); return; }
   if(activeInput.id==="lieferdatum"){ closeKeyboard(); updateOutput(); }
 }
