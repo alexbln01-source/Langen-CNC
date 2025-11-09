@@ -141,21 +141,23 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
     margin-top: 10px;
   }
 
-  /* Vorschau skaliert & mittig */
+  /* Vorschau vergrößert & mittig */
   .preview-container {
     background: #ddd;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 12px 0 24px;
+    padding: 0;
+    margin-top: -10px;
   }
 
   .output-box {
-    transform: scale(0.42);
+    transform: scale(0.6);
     transform-origin: top center;
     width: 210mm;
     height: 148mm;
-    margin-top: -60px;
+    margin-top: -50px;
+    margin-bottom: -60px;
   }
 }
 
