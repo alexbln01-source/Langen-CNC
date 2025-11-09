@@ -10,44 +10,43 @@ body {
   margin: 0;
   height: 100vh;
   display: flex;
-  flex-direction: column;
   background: #f0f0f0;
   touch-action: manipulation;
   -webkit-user-select: none;
 }
 
-/* Hauptbereich */
-#main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 12px;
-  overflow: hidden;
-}
-
-/* Formularbereich */
+/* --- Desktop-Layout --- */
 #form-container {
-  width: 100%;
-  max-width: 520px;
+  width: 50%;
   background: #fff;
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  padding: 16px;
-  box-sizing: border-box;
+  border-right: 2px solid #ccc;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.preview-container {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ddd;
 }
 
+/* --- Formularelemente --- */
 h2 {
   text-align: center;
   margin: 0 0 16px 0;
   color: #004b8d;
   font-size: 1.8rem;
 }
-
-/* Kundenbuttons */
+.button-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px;
+}
 button.action {
   flex: 0 0 calc(48% - 6px);
   height: 42px;
@@ -64,36 +63,14 @@ button.action {
 }
 button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
 
-.button-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 6px;
-}
-
-/* Steuerbuttons */
 .action-row {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin: 6px 0 10px 0;
-}
-.action-row button {
-  flex: 0 0 48%;
+  margin-top: 10px;
 }
 
-/* Vorschau */
-.preview-container {
-  width: 100%;
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  background: #ddd;
-  border-radius: 10px;
-  margin-top: 10px;
-  overflow: hidden;
-}
+/* --- Vorschau (A6) --- */
 .output-box {
   background: #fff;
   border: 1px solid #aaa;
@@ -138,7 +115,31 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   height: 1.2em;
 }
 
-/* Popup Tastatur */
+/* --- Handyansicht --- */
+@media (max-width: 900px) {
+  body {
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+  }
+  #form-container, .preview-container {
+    width: 100%;
+    border: none;
+  }
+  .preview-container {
+    margin-top: 10px;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .output-box {
+    transform: scale(0.6);
+    transform-origin: top center;
+    margin-top: 4px;
+    height: auto;
+  }
+}
+
+/* --- Tastatur-Popup --- */
 #keyboardPopup {
   display: none;
   position: fixed;
@@ -180,7 +181,6 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   background: #f2f2f2;
   cursor: pointer;
 }
-.keyboard-grid button:hover { background:#e0e0e0; }
 .keyboard-actions {
   display:flex;
   justify-content:center;
@@ -200,62 +200,44 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
 .btn-ok { background:#28a745; }
 .btn-close { background:#6c757d; }
 
-/* Druck */
+/* --- Druck --- */
 @media print {
   @page { size: A6 landscape; margin: 0; }
   body * { visibility: hidden; }
   .output-box, .output-box * { visibility: visible; }
   .output-box { position: absolute; left: 0; top: 0; border: none; }
 }
-
-/* Handyoptimierung */
-@media (max-width: 900px) {
-  #main {
-    height: 100vh;
-    justify-content: flex-start;
-  }
-  .preview-container {
-    height: 42vh;
-    align-items: flex-start;
-  }
-  .output-box {
-    transform: scale(0.6); /* Vorschau stark verkleinert */
-    transform-origin: top center;
-    margin-top: 6px;
-    height: auto;
-  }
-}
 </style>
 </head>
 <body>
 
-<div id="main">
-  <div id="form-container">
-    <h2>Schweißen</h2>
+<!-- Linker Bereich -->
+<div id="form-container">
+  <h2>Schweißen</h2>
 
-    <div class="button-grid">
-      <button class="action" data-customer="Bergmann M-H">Bergmann M-H</button>
-      <button class="action" data-customer="Bücker">Bücker</button>
-      <button class="action" data-customer="Janzen">Janzen</button>
-      <button class="action" data-customer="Krone Spelle">Krone Spelle</button>
-      <button class="action" data-customer="L.Bergmann">L.Bergmann</button>
-      <button class="action" data-customer="PAUS">PAUS</button>
-      <button class="action" data-customer="Sonstige Kunden">Sonstige Kunden</button>
-      <button class="action" data-customer="TOS">TOS</button>
-    </div>
-
-    <div class="action-row">
-      <button id="btnBackSchweissen" class="action">⬅️ Zurück</button>
-      <button id="btnDruckenSchweissen" class="action">🖨 Drucken</button>
-    </div>
+  <div class="button-grid">
+    <button class="action" data-customer="Bergmann M-H">Bergmann M-H</button>
+    <button class="action" data-customer="Bücker">Bücker</button>
+    <button class="action" data-customer="Janzen">Janzen</button>
+    <button class="action" data-customer="Krone Spelle">Krone Spelle</button>
+    <button class="action" data-customer="L.Bergmann">L.Bergmann</button>
+    <button class="action" data-customer="PAUS">PAUS</button>
+    <button class="action" data-customer="Sonstige Kunden">Sonstige Kunden</button>
+    <button class="action" data-customer="TOS">TOS</button>
   </div>
 
-  <div class="preview-container">
-    <div class="output-box"><div id="output-content"></div></div>
+  <div class="action-row">
+    <button id="btnBackSchweissen" class="action">⬅️ Zurück</button>
+    <button id="btnDruckenSchweissen" class="action">🖨 Drucken</button>
   </div>
 </div>
 
-<!-- Tastatur -->
+<!-- Rechte Vorschau -->
+<div class="preview-container">
+  <div class="output-box"><div id="output-content"></div></div>
+</div>
+
+<!-- Popup Tastatur -->
 <div id="keyboardPopup">
   <div id="keyboardModal">
     <h3>Kundenname eingeben</h3>
@@ -331,7 +313,7 @@ function showOutput(customer){
   out.innerHTML=html;
 }
 
-/* Buttons */
+/* Button Events */
 document.querySelectorAll('.action[data-customer]').forEach(btn=>{
   btn.onclick=()=>{
     const name=btn.dataset.customer;
