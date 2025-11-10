@@ -1,190 +1,269 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>Beschichtung (A5 Quer)</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<title>Beschichtung</title>
 <style>
 html, body {
   margin: 0;
   padding: 0;
+  height: 100%;
+  background: #f2f2f2;
   font-family: Arial, sans-serif;
-  background: #f0f0f0;
+  overflow: hidden;
 }
 
-/* Hauptlayout */
 #main {
   display: flex;
+  flex-direction: row;
   height: 100vh;
-  overflow: hidden;
 }
 
-/* Linke Seite */
+/* -------- Formular -------- */
 #form-container {
   width: 50%;
-  background: #fff;
-  border-right: 2px solid #ccc;
+  background: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 14px;
-  box-sizing: border-box;
+  padding: 10px;
+  border-right: 2px solid #ccc;
 }
-
-h2 {
-  color: #004b8d;
-  font-size: 1.8rem;
-  text-align: center;
-  margin: 6px 0 12px 0;
-}
+h2 { color: #004b8d; margin: 10px 0; font-size: 1.8rem; }
 
 label {
-  display: block;
   font-weight: bold;
-  margin-top: 8px;
+  margin-top: 10px;
 }
-input[type="text"] {
+
+input[type=text] {
   width: 90%;
   padding: 8px;
-  font-size: 16px;
   text-align: center;
+  font-size: 16px;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
+/* -------- Buttons -------- */
 #lieferanten {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 8px;
-  margin-top: 12px;
+  margin-top: 15px;
 }
 button.action {
-  flex: 0 0 calc(33.333% - 8px);
-  height: 38px;
+  background: linear-gradient(#f9f9f9,#eaeaea);
   border: 1px solid #ccc;
-  background: linear-gradient(#f8f9fb, #eef1f4);
-  color: #2d2d2d;
-  font-weight: bold;
   border-radius: 8px;
+  font-weight: bold;
+  height: 40px;
   cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-  transition: all 0.2s ease;
-  font-size: 13px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
+button.action.selected { outline: 3px solid #004b8d; }
 
 .action-row {
+  width: 90%;
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  margin-top: 12px;
+  margin-top: 15px;
 }
 
-/* Rechte Seite Vorschau */
+/* -------- Vorschau (Desktop) -------- */
 .preview-container {
-  flex: 1;
+  width: 50%;
+  background: #ddd;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #ddd;
-  overflow: hidden;
 }
-
 .output-box {
   background: #fff;
-  border: 1px solid #aaa;
-  box-sizing: border-box;
-  padding: 8mm;
   width: 210mm;
   height: 148mm;
+  border: 1px solid #aaa;
+  position: relative;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: relative;
-  text-align: center;
 }
-#output-content div {
-  font-weight: bold;
-  margin-bottom: 8mm;
-}
+#output-content { text-align: center; font-weight: bold; }
+#output-content div { margin-bottom: 8mm; }
 #output-footer {
   position: absolute;
   right: 8mm;
   bottom: 8mm;
 }
-#output-footer img {
+#output-footer img { width: 4.3cm; }
+
+/* -------- Tastatur -------- */
+#keyboardPopup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+#keyboardBox {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+}
+#keyboardInput {
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  text-align: center;
+}
+.keyboard-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 6px;
+}
+.keyboard-grid button {
+  padding: 10px 0;
+  font-size: 16px;
+  background: #eee;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.keyboard-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.keyboard-actions button {
+  border: none;
+  color: white;
+  font-weight: bold;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.btn-del { background: #d9534f; }
+.btn-ok { background: #28a745; }
+.btn-close { background: #6c757d; }
+
+/* -------- Popup Vorschau (Handy) -------- */
+#previewPopup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+#previewBox {
+  background: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  width: 95%;
+  max-width: 500px;
+  text-align: center;
+}
+#previewArea {
+  background: #fff;
+  border: 1px solid #aaa;
+  aspect-ratio: 210 / 148;
+  width: 82%;
+  max-width: 360px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+#previewInner div { margin-bottom: 8mm; font-weight: bold; }
+#previewLogo {
+  position: absolute;
+  right: 8mm;
+  bottom: 8mm;
+  width: 4cm;
+}
+#previewActions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+#previewActions button {
+  border: none;
+  padding: 8px 14px;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.btn-print { background: #28a745; }
+.btn-cancel { background: #6c757d; }
+
+/* -------- Druckbereich -------- */
+#printArea { display: none; }
+#printContent {
+  width: 210mm;
+  height: 148mm;
+  background: white;
+  text-align: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#printLogo {
+  position: absolute;
+  right: 8mm;
+  bottom: 8mm;
   width: 4.3cm;
-  height: auto;
 }
 
-/* Handy-Ansicht */
-@media (max-width: 900px) {
-  #main {
-    flex-direction: column;
-    overflow-y: auto;
-  }
-  #form-container, .preview-container {
-    width: 100%;
-    border: none;
-  }
-
-  #lieferanten {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-  }
-
-  .action-row {
-    justify-content: space-between;
-    margin-top: 10px;
-  }
-
-  /* Vorschau: echtes Querformat mit Zoom */
-  .preview-container {
-    background: #ddd;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0;
-    margin-top: -6px;
-  }
-
-  .output-box {
-    aspect-ratio: 210 / 148;
-    width: 95vw;
-    height: auto;
-    border: 1px solid #999;
-    transform: scale(1);
-    transform-origin: center top;
-    margin-top: 10px;
-    margin-bottom: 30px;
-  }
-}
-
-/* Druck */
+/* -------- Querformat Druck -------- */
 @media print {
   @page { size: A5 landscape; margin: 0; }
-  body * { visibility: hidden; }
-  .output-box, .output-box * { visibility: visible; }
-  .output-box { position: absolute; left: 0; top: 0; border: none; }
+  body * { visibility: hidden !important; }
+  #printArea, #printArea * { visibility: visible !important; }
+  #printArea {
+    display: block !important;
+    position: absolute;
+    left: 0; top: 0;
+    width: 210mm; height: 148mm;
+  }
+}
+
+/* -------- Handy -------- */
+@media (max-width: 900px) {
+  #main { flex-direction: column; }
+  #form-container { width: 100%; border-right: none; border-bottom: 2px solid #ccc; }
+  .preview-container { display: none; }
 }
 </style>
 </head>
 <body>
+
 <div id="main">
   <div id="form-container">
     <h2>Beschichtung</h2>
 
     <label>Beistell-Nummer</label>
     <input id="zahlA5" type="text" readonly>
+
     <label>Kunde</label>
     <input id="kundeA5" type="text" readonly>
 
     <div id="lieferanten">
-      <button class="action" data-type="LP">L&P</button>
-      <button class="action" data-type="LPEILT">L&P EILT</button>
+      <button class="action" data-type="LP">L&amp;P</button>
+      <button class="action" data-type="LPEILT">L&amp;P EILT</button>
       <button class="action" data-type="SCHUETTE">Schütte</button>
       <button class="action" data-type="SCHUETTEEILT">Schütte EILT</button>
       <button class="action" data-type="KLEY">Kleymann</button>
@@ -199,8 +278,8 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
     </div>
 
     <div class="action-row">
-      <button id="btnBackBeschichtung" class="action">⬅️ Zurück</button>
-      <button id="btnDruckenBeschichtung" class="action">🖨 Drucken</button>
+      <button id="btnBack" class="action">⬅️ Zurück</button>
+      <button id="btnDrucken" class="action">🖨 Drucken</button>
     </div>
   </div>
 
@@ -212,52 +291,170 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   </div>
 </div>
 
+<!-- Popup Tastatur -->
+<div id="keyboardPopup">
+  <div id="keyboardBox">
+    <h3 id="keyboardTitle">Eingabe</h3>
+    <input id="keyboardInput" type="text" autocomplete="off" />
+    <div id="keyboardGrid" class="keyboard-grid"></div>
+    <div class="keyboard-actions">
+      <button id="btnDel" class="btn-del">⌫ Löschen</button>
+      <button id="btnOk" class="btn-ok">OK</button>
+      <button id="btnClose" class="btn-close">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<!-- Vorschau Popup -->
+<div id="previewPopup">
+  <div id="previewBox">
+    <div id="previewArea">
+      <div id="previewInner"></div>
+      <img id="previewLogo" src="Langen.png" alt="">
+    </div>
+    <div id="previewActions">
+      <button id="btnPrintNow" class="btn-print">Jetzt drucken</button>
+      <button id="btnPreviewClose" class="btn-cancel">Abbrechen</button>
+    </div>
+  </div>
+</div>
+
+<!-- Druckbereich -->
+<div id="printArea">
+  <div id="printContent">
+    <div id="printInner"></div>
+    <img id="printLogo" src="Langen.png" alt="">
+  </div>
+</div>
+
 <script>
-const out=document.getElementById('output-content');
-const zahlInput=document.getElementById('zahlA5');
-const kundeInput=document.getElementById('kundeA5');
+const zahl=document.getElementById('zahlA5'),kunde=document.getElementById('kundeA5'),
+out=document.getElementById('output-content'),printInner=document.getElementById('printInner'),
+previewInner=document.getElementById('previewInner');
+let currentType=null,activeField=null;
 
-/* Eingabe */
-zahlInput.onclick=()=>zahlInput.value=prompt("Beistellnummer eingeben")||zahlInput.value;
-kundeInput.onclick=()=>kundeInput.value=prompt("Kundenname eingeben")||kundeInput.value;
-
-/* Vorschau rendern */
-function addLine(txt,size){
-  const d=document.createElement('div');
-  d.textContent=txt;
-  d.style.fontSize=size+'pt';
-  d.style.fontWeight='700';
-  out.appendChild(d);
+/* ---------- Popup Tastatur ---------- */
+const popup=document.getElementById('keyboardPopup'),
+kbdInput=document.getElementById('keyboardInput'),
+kbdGrid=document.getElementById('keyboardGrid');
+let mode='letters';
+function buildKeyboard(type){
+  kbdGrid.innerHTML='';
+  const keys=(type==='numbers')?['1','2','3','4','5','6','7','8','9','0']:Array.from('QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM');
+  keys.forEach(k=>{
+    const b=document.createElement('button');
+    b.textContent=k;
+    b.onclick=()=>kbdInput.value+=k;
+    kbdGrid.appendChild(b);
+  });
 }
+function openKeyboard(field,type){
+  activeField=field;mode=type;
+  kbdInput.value=field.value||'';
+  buildKeyboard(type);
+  popup.style.display='flex';
+}
+function closeKeyboard(){popup.style.display='none';}
+document.getElementById('btnDel').onclick=()=>kbdInput.value=kbdInput.value.slice(0,-1);
+document.getElementById('btnOk').onclick=()=>{
+  if(!activeField)return;
+  activeField.value=kbdInput.value.trim();
+  if(activeField===zahl){openKeyboard(kunde,'letters');return;}
+  closeKeyboard();
+  updatePreview();
+};
+document.getElementById('btnClose').onclick=closeKeyboard;
+kbdInput.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){e.preventDefault();document.getElementById('btnOk').click();}
+  if(e.key==='Escape'){e.preventDefault();closeKeyboard();}
+});
 
-function renderFor(type){
-  const zahl=zahlInput.value.trim();
-  const kunde=kundeInput.value.trim();
-  if(!zahl){ alert('Bitte Beistellnummer eingeben'); return; }
-  out.innerHTML="";
-  addLine(zahl,36);
-  const showKunde=()=>{ if(kunde){ const k=document.createElement('div'); k.textContent="("+kunde+")"; k.style.fontSize='32pt'; k.style.fontWeight='700'; out.appendChild(k);}};
-
+/* ---------- Vorschau Inhalt ---------- */
+function line(t,s){return `<div style="font-size:${s}pt;">${t}</div>`;}
+function layout(type, beistell, kundeName){
+  const kundeLine = kundeName ? line(`(${kundeName})`, 32) : '';
+  let html = line(beistell, 36);
   switch(type){
-    case 'LP': addLine("L&P",48); break;
-    case 'LPEILT': addLine("L&P",48); addLine("„EILT SEHR“",32); break;
-    case 'SCHUETTE': addLine("Schütte",48); break;
-    case 'SCHUETTEEILT': addLine("Schütte",48); addLine("„EILT SEHR“",32); break;
-    case 'KLEY': addLine("Kleymann",48); break;
-    case 'KLEYEILT': addLine("Kleymann",48); addLine("„EILT SEHR“",32); break;
-    case 'COMTEZN8': addLine("Comte",48); addLine("„ZN8“",32); showKunde(); break;
-    case 'CHEMISCH': addLine("Comte",48); addLine("„chemisch Vernickeln“",32); showKunde(); break;
-    case 'DICK': addLine("Comte",48); addLine("„Dickschichtpassivierung“",32); showKunde(); break;
-    case 'BLAU': addLine("Comte",48); addLine("„Blau ZN8“",32); showKunde(); break;
-    case 'PENTZ': addLine("Pentz & Gerdes",48); addLine("„ZN8“",32); showKunde(); break;
-    case 'RCS': addLine("RCS GmbH",48); addLine("„Schweißen“",32); showKunde(); break;
-    case 'COATINC': addLine("Coatinc 24 GmbH",48); addLine("„Verzinken“",32); showKunde(); break;
+    case 'LP': html+=line('L&P',48)+kundeLine; break;
+    case 'LPEILT': html+=line('L&P',48)+line('„EILT SEHR“',32)+kundeLine; break;
+    case 'SCHUETTE': html+=line('Schütte',48)+kundeLine; break;
+    case 'SCHUETTEEILT': html+=line('Schütte',48)+line('„EILT SEHR“',32)+kundeLine; break;
+    case 'KLEY': html+=line('Kleymann',48)+kundeLine; break;
+    case 'KLEYEILT': html+=line('Kleymann',48)+line('„EILT SEHR“',32)+kundeLine; break;
+    case 'COMTEZN8': html+=line('Comte',48)+line('„ZN8“',32)+kundeLine; break;
+    case 'CHEMISCH': html+=line('Comte',48)+line('„chemisch Vernickeln“',32)+kundeLine; break;
+    case 'DICK': html+=line('Comte',48)+line('„Dickschichtpassivierung“',32)+kundeLine; break;
+    case 'BLAU': html+=line('Comte',48)+line('„Blau ZN8“',32)+kundeLine; break;
+    case 'PENTZ': html+=line('Pentz & Gerdes',48)+line('„ZN8“',32)+kundeLine; break;
+    case 'RCS': html+=line('RCS GmbH',48)+line('„Schweißen“',32)+kundeLine; break;
+    case 'COATINC': html+=line('Coatinc 24 GmbH',48)+line('„Verzinken“',32)+kundeLine; break;
+    default: html+=line(type||'',48)+kundeLine;
   }
+  return html;
 }
 
-document.querySelectorAll('#lieferanten .action').forEach(b=>b.onclick=()=>renderFor(b.dataset.type));
-document.getElementById('btnDruckenBeschichtung').onclick=()=>{ if(out.innerHTML.trim()===""){alert("Bitte zuerst einen Kunden wählen!");return;} window.print(); };
-document.getElementById('btnBackBeschichtung').onclick=()=>window.location.href='index.html';
+/* ---------- Auto-Fit Funktion ---------- */
+function fitIntoBox(boxEl, innerEl, reservedBottomPx=0){
+  const boxH=boxEl.clientHeight-reservedBottomPx;
+  const boxW=boxEl.clientWidth;
+  innerEl.style.transform='scale(1)';
+  innerEl.style.transformOrigin='center';
+  const needH=innerEl.scrollHeight, needW=innerEl.scrollWidth;
+  const s=Math.min(1, boxH/needH, boxW/needW);
+  innerEl.style.transform=`scale(${s})`;
+}
+
+/* ---------- Vorschau Desktop ---------- */
+function updatePreview(){
+  if(window.innerWidth<=900)return;
+  const z=zahl.value.trim(); if(!z){out.innerHTML='';return;}
+  const k=kunde.value.trim();
+  out.innerHTML=layout(currentType,z,k);
+  const box=document.querySelector('.output-box');
+  fitIntoBox(box,out,65);
+}
+
+/* ---------- Buttons ---------- */
+document.querySelectorAll('#lieferanten .action').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('#lieferanten .action').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+    currentType=btn.dataset.type;
+    updatePreview();
+  };
+});
+zahl.onclick=()=>openKeyboard(zahl,'numbers');
+kunde.onclick=()=>openKeyboard(kunde,'letters');
+
+/* ---------- Drucken ---------- */
+const previewPopup=document.getElementById('previewPopup');
+document.getElementById('btnDrucken').onclick=()=>{
+  const z=zahl.value.trim();
+  if(!z){alert('Bitte Beistellnummer eingeben!');return;}
+  if(!currentType){alert('Bitte Kunden wählen!');return;}
+  const k=kunde.value.trim();
+  const html=layout(currentType,z,k);
+  if(window.innerWidth>900){
+    printInner.innerHTML=html;
+    document.getElementById('printArea').style.display='block';
+    setTimeout(()=>{window.print();document.getElementById('printArea').style.display='none';},100);
+  } else {
+    previewInner.innerHTML=html;
+    fitIntoBox(document.getElementById('previewArea'),previewInner,60);
+    previewPopup.style.display='flex';
+  }
+};
+document.getElementById('btnPreviewClose').onclick=()=>previewPopup.style.display='none';
+document.getElementById('btnPrintNow').onclick=()=>{
+  printInner.innerHTML=previewInner.innerHTML;
+  previewPopup.style.display='none';
+  const area=document.getElementById('printArea');
+  area.style.display='block';
+  setTimeout(()=>{window.print();area.style.display='none';},100);
+};
+
+/* ---------- Zurück ---------- */
+document.getElementById('btnBack').onclick=()=>window.location.href='index.html';
 </script>
 </body>
 </html>
