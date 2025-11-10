@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Beschichtung (A5 Quer)</title>
 
-<!-- ========================== -->
-<!-- 💻 BLOCK 1: COMPUTER-DESIGN -->
-<!-- ========================== -->
+<!-- ============================== -->
+<!-- 💻 BLOCK 1: DESIGN FÜR COMPUTER -->
+<!-- ============================== -->
 <style>
 body {
   margin: 0;
@@ -45,18 +45,13 @@ button.action {
   transition: background 0.2s;
 }
 button.action:hover { background: linear-gradient(#fff,#e9ecef); }
+
 .preview-container {
   width: 50%; display: flex; justify-content: center; align-items: center;
   background: #ddd; overflow: hidden;
 }
-button.action.active {
-  background: #004b8d;
-  color: white;
-  border-color: #003366;
-  box-shadow: 0 0 4px rgba(0,0,0,0.3);
-}
 .output-box {
-  background: #fff; border: 1px solid #aaa;
+  background: #fff;
   width: 210mm; height: 148mm;
   box-sizing: border-box; padding: 8mm;
   position: relative;
@@ -64,16 +59,12 @@ button.action.active {
   align-items: center; justify-content: center;
 }
 #output-content { text-align: center; font-weight: bold; line-height: 1.3; }
-#output-footer {
-  position: absolute; right: 5mm; bottom: 5mm;
-}
-#output-footer img {
-  width: 4.3cm; height: 1.6cm; object-fit: contain;
-}
+#output-footer { position: absolute; right: 5mm; bottom: 5mm; }
+#output-footer img { width: 4.3cm; height: 1.6cm; object-fit: contain; }
 </style>
 
 <!-- ========================== -->
-<!-- 📱 BLOCK 2: HANDY-DESIGN -->
+<!-- 📱 BLOCK 2: DESIGN FÜR HANDY -->
 <!-- ========================== -->
 <style>
 @media (max-width: 900px) {
@@ -85,75 +76,41 @@ button.action.active {
   #form-container {
     width: 100%;
     border: none;
-    box-shadow: none;
     background: #fff;
     padding: 12px 10px 20px;
   }
   h2 { font-size: 20px; margin-bottom: 12px; }
   input[type="text"] {
-    width: 94%; font-size: 18px; margin-bottom: 12px;
+    width: 94%;
+    font-size: 18px;
+    margin-bottom: 12px;
   }
   #kunden {
-    display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
   }
   #kunden button.action {
     flex: 0 0 calc(33.33% - 8px);
-    height: 44px; font-size: 14px; font-weight: bold;
+    height: 44px;
+    font-size: 14px;
+    font-weight: bold;
   }
   #form-container > div:last-child {
-    display: flex; justify-content: space-between; width: 94%; margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    width: 94%;
+    margin-top: 15px;
   }
   #btnBack, #btnDrucken {
-    flex: 0 0 48%; height: 44px; font-size: 14px; font-weight: bold; border-radius: 8px;
+    flex: 0 0 48%;
+    height: 44px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 8px;
   }
   .preview-container { display: none; }
-
-  /* 📱 Popup-Vorschau beim Drucken */
-  #previewPopup {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    z-index: 5000;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    animation: fadeIn 0.25s ease-in-out;
-  }
-  #previewBox {
-    background: #fff;
-    border: 1px solid #999;
-    border-radius: 10px;
-    width: 92vw;
-    aspect-ratio: 210 / 148;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.3);
-    animation: zoomIn 0.25s ease-in-out;
-  }
-  #previewBox .inner {
-    transform: scale(0.7);
-    transform-origin: center;
-  }
-  #previewActions {
-    margin-top: 15px;
-    text-align: center;
-  }
-  #previewActions button {
-    padding: 10px 18px;
-    font-size: 15px;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    color: #fff;
-    margin: 0 5px;
-  }
-  #btnPrintConfirm { background: #28a745; }
-  #btnPrintCancel { background: #6c757d; }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  @keyframes zoomIn { from { transform: scale(0.8); opacity: 0.6; } to { transform: scale(1); opacity: 1; } }
 }
 </style>
 
@@ -164,25 +121,33 @@ button.action.active {
 @media print {
   @page { size: A5 landscape; margin: 0; }
   html, body {
-    width: 210mm; height: 148mm;
-    margin: 0; padding: 0; overflow: hidden;
+    width: 210mm;
+    height: 148mm;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
   }
   body * { visibility: hidden !important; }
-  #printArea, #printArea * { visibility: visible !important; }
+  #printArea, #printArea * {
+    visibility: visible !important;
+  }
   #printArea {
     position: absolute;
     left: 0; top: 0;
     width: 210mm; height: 148mm;
     overflow: hidden;
-    border: none !important; box-shadow: none !important;
-    transform: scale(1); transform-origin: top left;
+    border: none !important;
+    box-shadow: none !important;
+    background: white !important;
   }
-  .output-box { border: none !important; }
 }
 </style>
 </head>
 
 <body>
+<!-- ========================== -->
+<!-- 🧩 BLOCK 4: SEITENAUFBAU -->
+<!-- ========================== -->
 <div id="main">
   <div id="form-container">
     <h2>Beschichtung</h2>
@@ -222,84 +187,60 @@ button.action.active {
 </div>
 
 <!-- ========================== -->
-<!-- 🔤 BLOCK 6: POPUP-TASTATUR -->
+<!-- 🔤 BLOCK 5: POPUP-TASTATUR -->
 <!-- ========================== -->
 <div id="keyboardPopup" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:3000; justify-content:center; align-items:center;">
-  <div id="keyboardBox" style="background:#fff; padding:20px; border-radius:10px; width:90%; max-width:420px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.2);">
-    <h3 id="keyboardTitle" style="margin:0 0 10px 0; color:#004b8d;">Eingabe</h3>
+  <div id="keyboardBox" style="background:#fff; padding:20px; border-radius:10px; width:90%; max-width:420px; text-align:center;">
+    <h3 id="keyboardTitle" style="margin-bottom:10px;">Eingabe</h3>
     <input id="keyboardInput" type="text" style="width:90%; padding:10px; font-size:18px; text-align:center; border:1px solid #ccc; border-radius:6px; margin-bottom:12px;">
     <div id="keyboardGrid" style="display:grid; grid-template-columns:repeat(10,1fr); gap:6px;"></div>
     <div style="display:flex; justify-content:center; gap:10px; margin-top:14px;">
-      <button id="btnDel" style="padding:8px 16px; font-weight:bold; border:none; border-radius:8px; background:#d9534f; color:#fff;">⌫ Löschen</button>
-      <button id="btnOk" style="padding:8px 16px; font-weight:bold; border:none; border-radius:8px; background:#28a745; color:#fff;">OK</button>
-      <button id="btnClose" style="padding:8px 16px; font-weight:bold; border:none; border-radius:8px; background:#6c757d; color:#fff;">Schließen</button>
+      <button id="btnDel" style="background:#d9534f; color:#fff; border:none; padding:8px 16px; border-radius:6px;">⌫ Löschen</button>
+      <button id="btnOk" style="background:#28a745; color:#fff; border:none; padding:8px 16px; border-radius:6px;">OK</button>
+      <button id="btnClose" style="background:#6c757d; color:#fff; border:none; padding:8px 16px; border-radius:6px;">Abbrechen</button>
     </div>
   </div>
 </div>
 
 <!-- ========================== -->
-<!-- 📱 BLOCK 7: POPUP-VORSCHAU -->
+<!-- ⚙️ BLOCK 6: SCRIPT -->
 <!-- ========================== -->
-<div id="previewPopup">
-  <div id="previewBox">
-    <div class="inner">
-      <div class="output-box" id="mobilePreviewBox">
-        <div id="mobilePreviewContent"></div>
-        <div id="mobilePreviewFooter">
-          <img src="Langen.png" alt="Logo" style="width:4.3cm;height:auto;">
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="previewActions">
-    <button id="btnPrintConfirm">Jetzt drucken</button>
-    <button id="btnPrintCancel">Abbrechen</button>
-  </div>
-</div>
-
-<!-- ========================== -->
-<!-- ⚙️ BLOCK 5: SCRIPT -->
-<!-- ========================== -->
-<script>
+<<script>
 const out=document.getElementById('output-content');
 const num=document.getElementById('numInput');
 const kunde=document.getElementById('kundeInput');
 const popup=document.getElementById('keyboardPopup');
 const kbInput=document.getElementById('keyboardInput');
 const kbGrid=document.getElementById('keyboardGrid');
-const title=document.getElementById('keyboardTitle');
-let currentField=null,currentType='numbers';
+let currentField=null;
 
-/* Tastatur */
+// Tastatur
 function buildKeyboard(type){
   kbGrid.innerHTML='';
   const chars=(type==='numbers')?['1','2','3','4','5','6','7','8','9','0']:'QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM'.split('');
   chars.forEach(c=>{
     const b=document.createElement('button');
-    b.textContent=c; b.onclick=()=>kbInput.value+=c; kbGrid.appendChild(b);
+    b.textContent=c;
+    b.onclick=()=>kbInput.value+=c;
+    kbGrid.appendChild(b);
   });
 }
 function openKeyboard(field,type){
   currentField=field;
-  title.textContent=(type==='numbers')?'Beistellnummer eingeben':'Kundenname eingeben';
-  kbInput.value=''; buildKeyboard(type);
-  popup.style.display='flex'; setTimeout(()=>kbInput.focus(),100);
+  kbInput.value=field.value||'';
+  buildKeyboard(type);
+  popup.style.display='flex';
+  setTimeout(()=>kbInput.focus(),100);
 }
-function closeKeyboard(){ popup.style.display='none'; }
+function closeKeyboard(){popup.style.display='none';currentField=null;}
 document.getElementById('btnDel').onclick=()=>kbInput.value=kbInput.value.slice(0,-1);
 document.getElementById('btnClose').onclick=closeKeyboard;
-document.getElementById('btnOk').onclick=()=>{
-  currentField.value=kbInput.value.trim(); closeKeyboard();
-  if(currentField===num) openKeyboard(kunde,'letters');
-};
-kbInput.addEventListener('keydown',e=>{
-  if(e.key==='Enter'){ e.preventDefault(); document.getElementById('btnOk').click(); }
-});
+document.getElementById('btnOk').onclick=()=>{if(currentField){currentField.value=kbInput.value.trim();closeKeyboard();if(currentField===num)openKeyboard(kunde,'letters');}};
 num.onclick=()=>openKeyboard(num,'numbers');
 kunde.onclick=()=>openKeyboard(kunde,'letters');
 
-/* Vorschau */
-function showPreview(txt){ out.innerHTML=txt; }
+// Vorschau
+function showPreview(txt){out.innerHTML=txt;}
 function makeOutput(type){
   const n=num.value.trim(),k=kunde.value.trim();
   if(!n)return alert('Bitte Beistellnummer eingeben');
@@ -326,27 +267,24 @@ function makeOutput(type){
   }
   showPreview(html);
 }
-
-/* Kundenbuttons */
 document.querySelectorAll('#kunden .action').forEach(btn=>btn.onclick=()=>makeOutput(btn.dataset.type));
 
-/* Drucken */
+// 🖨 Fix: PC druckt direkt mit sichtbarem Bereich
 document.getElementById('btnDrucken').onclick=()=>{
   if(out.innerHTML.trim()==="") return alert("Bitte zuerst einen Kunden wählen!");
-  if(window.innerWidth<900){
-    document.getElementById('mobilePreviewContent').innerHTML=out.innerHTML;
-    document.getElementById('previewPopup').style.display='flex';
-  } else { window.print(); }
-};
-document.getElementById('btnPrintConfirm').onclick=()=>{
-  document.getElementById('previewPopup').style.display='none';
+  
+  const printContent = document.getElementById('printArea');
+  const originalContent = document.body.innerHTML;
+
+  // Temporär nur Druckbereich anzeigen
+  document.body.innerHTML = printContent.outerHTML;
   window.print();
-};
-document.getElementById('btnPrintCancel').onclick=()=>{
-  document.getElementById('previewPopup').style.display='none';
+
+  // Originalinhalt wiederherstellen
+  document.body.innerHTML = originalContent;
+  location.reload(); // Seite neu laden, damit JS wieder aktiv ist
 };
 
-/* Zurück */
 document.getElementById('btnBack').onclick=()=>window.location.href='index.html';
 </script>
 </body>
