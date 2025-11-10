@@ -71,25 +71,83 @@ button.action:hover { background: linear-gradient(#fff,#e9ecef); }
 <!-- ========================== -->
 <style>
 @media (max-width: 900px) {
-  #main { flex-direction: column; }
+  #main {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
   #form-container {
     width: 100%;
-    border-right: none;
-    border-bottom: 2px solid #ccc;
+    border: none;
+    box-shadow: none;
+    background: #fff;
+    padding: 12px 10px 20px;
   }
-  button.action { flex: 0 0 calc(50% - 8px); }
-  .preview-container {
-    width: 100%;
-    order: 3;
-    background: #ddd;
-    padding: 10px 0;
+  h2 { font-size: 20px; margin-bottom: 12px; }
+  input[type="text"] {
+    width: 94%; font-size: 18px; margin-bottom: 12px;
   }
-  .output-box {
-    width: 90%;
-    height: auto;
-    transform: scale(0.65);
-    transform-origin: top center;
+  #kunden {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
   }
+  #kunden button.action {
+    flex: 0 0 calc(33.33% - 8px);
+    height: 44px; font-size: 14px; font-weight: bold;
+  }
+  #form-container > div:last-child {
+    display: flex; justify-content: space-between; width: 94%; margin-top: 15px;
+  }
+  #btnBack, #btnDrucken {
+    flex: 0 0 48%; height: 44px; font-size: 14px; font-weight: bold; border-radius: 8px;
+  }
+  .preview-container { display: none; }
+
+  /* 📱 Popup-Vorschau beim Drucken */
+  #previewPopup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 5000;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    animation: fadeIn 0.25s ease-in-out;
+  }
+  #previewBox {
+    background: #fff;
+    border: 1px solid #999;
+    border-radius: 10px;
+    width: 92vw;
+    aspect-ratio: 210 / 148;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+    animation: zoomIn 0.25s ease-in-out;
+  }
+  #previewBox .inner {
+    transform: scale(0.7);
+    transform-origin: center;
+  }
+  #previewActions {
+    margin-top: 15px;
+    text-align: center;
+  }
+  #previewActions button {
+    padding: 10px 18px;
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    margin: 0 5px;
+  }
+  #btnPrintConfirm { background: #28a745; }
+  #btnPrintCancel { background: #6c757d; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes zoomIn { from { transform: scale(0.8); opacity: 0.6; } to { transform: scale(1); opacity: 1; } }
 }
 </style>
 
@@ -104,19 +162,14 @@ button.action:hover { background: linear-gradient(#fff,#e9ecef); }
     margin: 0; padding: 0; overflow: hidden;
   }
   body * { visibility: hidden !important; }
-  #printArea, #printArea * {
-    visibility: visible !important;
-  }
+  #printArea, #printArea * { visibility: visible !important; }
   #printArea {
     position: absolute;
     left: 0; top: 0;
-    width: 210mm;
-    height: 148mm;
+    width: 210mm; height: 148mm;
     overflow: hidden;
-    border: none !important;
-    box-shadow: none !important;
-    transform: scale(1);
-    transform-origin: top left;
+    border: none !important; box-shadow: none !important;
+    transform: scale(1); transform-origin: top left;
   }
   .output-box { border: none !important; }
 }
@@ -124,10 +177,6 @@ button.action:hover { background: linear-gradient(#fff,#e9ecef); }
 </head>
 
 <body>
-
-<!-- ========================== -->
-<!-- 🧩 BLOCK 4: HTML STRUKTUR -->
-<!-- ========================== -->
 <div id="main">
   <div id="form-container">
     <h2>Beschichtung</h2>
@@ -183,6 +232,26 @@ button.action:hover { background: linear-gradient(#fff,#e9ecef); }
 </div>
 
 <!-- ========================== -->
+<!-- 📱 BLOCK 7: POPUP-VORSCHAU -->
+<!-- ========================== -->
+<div id="previewPopup">
+  <div id="previewBox">
+    <div class="inner">
+      <div class="output-box" id="mobilePreviewBox">
+        <div id="mobilePreviewContent"></div>
+        <div id="mobilePreviewFooter">
+          <img src="Langen.png" alt="Logo" style="width:4.3cm;height:auto;">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="previewActions">
+    <button id="btnPrintConfirm">Jetzt drucken</button>
+    <button id="btnPrintCancel">Abbrechen</button>
+  </div>
+</div>
+
+<!-- ========================== -->
 <!-- ⚙️ BLOCK 5: SCRIPT -->
 <!-- ========================== -->
 <script>
@@ -195,32 +264,26 @@ const kbGrid=document.getElementById('keyboardGrid');
 const title=document.getElementById('keyboardTitle');
 let currentField=null,currentType='numbers';
 
+/* Tastatur */
 function buildKeyboard(type){
   kbGrid.innerHTML='';
   const chars=(type==='numbers')?['1','2','3','4','5','6','7','8','9','0']:'QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM'.split('');
   chars.forEach(c=>{
     const b=document.createElement('button');
-    b.textContent=c;
-    b.onclick=()=>kbInput.value+=c;
-    kbGrid.appendChild(b);
+    b.textContent=c; b.onclick=()=>kbInput.value+=c; kbGrid.appendChild(b);
   });
 }
-
 function openKeyboard(field,type){
   currentField=field;
   title.textContent=(type==='numbers')?'Beistellnummer eingeben':'Kundenname eingeben';
-  kbInput.value='';
-  buildKeyboard(type);
-  popup.style.display='flex';
-  setTimeout(()=>kbInput.focus(),100);
+  kbInput.value=''; buildKeyboard(type);
+  popup.style.display='flex'; setTimeout(()=>kbInput.focus(),100);
 }
 function closeKeyboard(){ popup.style.display='none'; }
-
 document.getElementById('btnDel').onclick=()=>kbInput.value=kbInput.value.slice(0,-1);
 document.getElementById('btnClose').onclick=closeKeyboard;
 document.getElementById('btnOk').onclick=()=>{
-  currentField.value=kbInput.value.trim();
-  closeKeyboard();
+  currentField.value=kbInput.value.trim(); closeKeyboard();
   if(currentField===num) openKeyboard(kunde,'letters');
 };
 kbInput.addEventListener('keydown',e=>{
@@ -229,8 +292,8 @@ kbInput.addEventListener('keydown',e=>{
 num.onclick=()=>openKeyboard(num,'numbers');
 kunde.onclick=()=>openKeyboard(kunde,'letters');
 
+/* Vorschau */
 function showPreview(txt){ out.innerHTML=txt; }
-
 function makeOutput(type){
   const n=num.value.trim(),k=kunde.value.trim();
   if(!n)return alert('Bitte Beistellnummer eingeben');
@@ -240,61 +303,45 @@ function makeOutput(type){
     if(sub)html+=`<div style="font-size:32pt;">„${sub}“</div>`;
     if(name)html+=`<div style="font-size:32pt;">(${name})</div>`;
   };
-  switch (type) {
-  case 'LP':
-    add('L&P');
-    break;
-  case 'LPEILT':
-    add('L&P', 'EILT SEHR');
-    break;
-  case 'SCHUETTE':
-    add('Schütte');
-    break;
-  case 'SCHUETTEEILT':
-    add('Schütte', 'EILT SEHR');
-    break;
-  case 'KLEY':
-    add('Kleymann');
-    break;
-  case 'KLEYEILT':
-    add('Kleymann', 'EILT SEHR');
-    break;
-
-  // 🟦 Comte-Varianten: mit Kundennamen unten
-  case 'COMTEZN8':
-    add('Comte', 'ZN8', k);
-    break;
-  case 'CHEMISCH':
-    add('Comte', 'Chemisch Vernickeln', k);
-    break;
-  case 'DICK':
-    add('Comte', 'Dickschichtpassivierung', k);
-    break;
-  case 'BLAU':
-    add('Comte', 'Blau ZN8', k);
-    break;
-
-  // 🟦 Pentz, RCS, Coatinc: auch mit Kundenname unten
-  case 'PENTZ':
-    add('Pentz & Gerdes', 'ZN8', k);
-    break;
-  case 'RCS':
-    add('RCS GmbH', 'Schweißen', k);
-    break;
-  case 'COATINC':
-    add('Coatinc 24 GmbH', 'Verzinken', k);
-    break;
-}
+  switch(type){
+    case'LP':add('L&P');break;
+    case'LPEILT':add('L&P','EILT SEHR');break;
+    case'SCHUETTE':add('Schütte');break;
+    case'SCHUETTEEILT':add('Schütte','EILT SEHR');break;
+    case'KLEY':add('Kleymann');break;
+    case'KLEYEILT':add('Kleymann','EILT SEHR');break;
+    case'COMTEZN8':add('Comte','ZN8',k);break;
+    case'CHEMISCH':add('Comte','Chemisch Vernickeln',k);break;
+    case'DICK':add('Comte','Dickschichtpassivierung',k);break;
+    case'BLAU':add('Comte','Blau ZN8',k);break;
+    case'PENTZ':add('Pentz & Gerdes','ZN8',k);break;
+    case'RCS':add('RCS GmbH','Schweißen',k);break;
+    case'COATINC':add('Coatinc 24 GmbH','Verzinken',k);break;
+  }
   showPreview(html);
 }
 
+/* Kundenbuttons */
 document.querySelectorAll('#kunden .action').forEach(btn=>btn.onclick=()=>makeOutput(btn.dataset.type));
+
+/* Drucken */
 document.getElementById('btnDrucken').onclick=()=>{
-  if(out.innerHTML.trim()==="")return alert("Bitte zuerst einen Kunden wählen!");
+  if(out.innerHTML.trim()==="") return alert("Bitte zuerst einen Kunden wählen!");
+  if(window.innerWidth<900){
+    document.getElementById('mobilePreviewContent').innerHTML=out.innerHTML;
+    document.getElementById('previewPopup').style.display='flex';
+  } else { window.print(); }
+};
+document.getElementById('btnPrintConfirm').onclick=()=>{
+  document.getElementById('previewPopup').style.display='none';
   window.print();
 };
+document.getElementById('btnPrintCancel').onclick=()=>{
+  document.getElementById('previewPopup').style.display='none';
+};
+
+/* Zurück */
 document.getElementById('btnBack').onclick=()=>window.location.href='index.html';
 </script>
-
 </body>
 </html>
