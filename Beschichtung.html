@@ -70,7 +70,7 @@ button.action:hover { background: linear-gradient(#fff,#e9ecef); }
 <!-- 📱 BLOCK 2: HANDY-DESIGN -->
 <!-- ========================== -->
 <style>
-/* ✅ Handy-Layout optimiert: 4 Kunden-Buttons nebeneinander, Zurück/Drucken untereinander */
+/* ✅ Handy-Layout optimiert: Vorschau nur über „Drucken“, Buttons untereinander */
 @media (max-width: 900px) {
 
   /* Grundaufbau */
@@ -82,18 +82,13 @@ button.action:hover { background: linear-gradient(#fff,#e9ecef); }
   #form-container {
     width: 100%;
     border-right: none;
-    border-bottom: 2px solid #ccc;
+    border-bottom: none;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  /* Vorschau ausgeblendet – wird nur über Drucken angezeigt */
-  .preview-container {
-    display: none !important;
-  }
-
-  /* Kundenbereich: 4 Spalten */
+  /* Kundenbereich: 4 Spalten nebeneinander */
   #kunden {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -103,7 +98,7 @@ button.action:hover { background: linear-gradient(#fff,#e9ecef); }
     width: 95%;
   }
 
-  /* Buttons im PC-Stil */
+  /* Buttons wie am PC */
   button.action {
     background: linear-gradient(#f8f9fb, #eef1f4);
     border: 1px solid #ccc;
@@ -122,7 +117,7 @@ button.action:hover { background: linear-gradient(#fff,#e9ecef); }
     background: linear-gradient(#ffffff, #e9ecef);
   }
 
-  /* Untere Buttons (Zurück & Drucken) untereinander + zentriert */
+  /* Zurück und Drucken untereinander */
   #form-container > div:last-of-type {
     display: flex;
     flex-direction: column;
@@ -135,6 +130,40 @@ button.action:hover { background: linear-gradient(#fff,#e9ecef); }
     width: 60%;
     font-size: 14px;
     padding: 10px;
+  }
+
+  /* Vorschau-Bereich am Handy ausgeblendet */
+  .preview-container {
+    display: none !important;
+  }
+
+  /* Popup-Vorschau (Drucken) skalieren */
+  #previewPopup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+  }
+
+  #previewBox {
+    background: #fff;
+    width: 92vw;
+    aspect-ratio: 210 / 148; /* echtes A5-Querformat */
+    border: 1px solid #aaa;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #previewBox .inner {
+    transform: scale(0.75);
+    transform-origin: center;
   }
 }
 </style>
