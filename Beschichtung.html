@@ -12,29 +12,34 @@ html, body {
   height: 100%;
 }
 
-/* Hauptlayout */
+/* --- Hauptlayout --- */
 #main {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   height: 100vh;
 }
 
-/* Formularbereich */
+/* --- Linke Seite (Formular) --- */
 #form-container {
+  width: 50%;
   background: #fff;
+  border-right: 2px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
   padding: 14px;
-  border-bottom: 2px solid #ccc;
-  text-align: center;
+  box-sizing: border-box;
 }
 
 h2 {
-  margin: 6px 0 12px 0;
+  margin: 10px 0 14px 0;
   color: #004b8d;
   font-size: 1.8rem;
 }
 
 /* Eingabefelder */
-label { display:block; font-weight:bold; margin-top:8px; }
+label { font-weight: bold; margin-top: 8px; display:block; }
 input[type="text"] {
   width: 90%;
   padding: 8px;
@@ -55,66 +60,36 @@ input[type="text"] {
 button.action {
   border: 1px solid #ccc;
   background: linear-gradient(#f8f9fb, #eef1f4);
+  color: #2d2d2d;
   font-weight: bold;
   border-radius: 8px;
   cursor: pointer;
   height: 40px;
+  font-size: 13px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.15);
   transition: all 0.2s ease;
-  font-size: 13px;
 }
 button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
 
 .action-row {
   display: flex;
   justify-content: space-between;
-  margin-top: 14px;
+  width: 90%;
+  margin-top: 16px;
 }
 
-/* Vorschau */
+/* --- Rechte Seite (leer) --- */
 .preview-container {
+  width: 50%;
   background: #ddd;
-  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 0 20px 0;
-}
-.output-box {
-  background: #fff;
-  border: 1px solid #aaa;
-  width: 210mm;
-  height: 148mm;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-#output-inner {
-  width: 210mm;
-  height: 148mm;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-#output-content div {
-  font-weight: bold;
-  margin-bottom: 8mm;
-}
-#output-footer {
-  position: absolute;
-  right: 8mm;
-  bottom: 8mm;
-}
-#output-footer img {
-  width: 4.3cm;
-  height: auto;
+  color: #666;
+  font-style: italic;
 }
 
-/* Popup Tastatur */
+/* --- Popup Tastatur --- */
 #keyboardPopup, #printPopup {
   display: none;
   position: fixed;
@@ -124,6 +99,7 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   justify-content: center;
   align-items: center;
 }
+
 #keyboardBox, #printBox {
   background: #fff;
   padding: 20px;
@@ -133,6 +109,7 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   width: 90%;
   max-width: 420px;
 }
+
 #keyboardBox h3 { margin-bottom: 10px; color:#004b8d; }
 #keyboardInput {
   width: 90%;
@@ -143,6 +120,7 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   border: 1px solid #ccc;
   border-radius: 8px;
 }
+
 .keyboard-grid {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
@@ -178,46 +156,70 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
 .btn-ok { background: #28a745; }
 .btn-close { background: #6c757d; }
 
-/* Druck-Popup */
+/* --- Druckvorschau Popup --- */
 #printBox {
-  max-width: 95%;
+  max-width: 800px;
   max-height: 90vh;
-  overflow: auto;
+  overflow: hidden;
 }
+
 #printPreview {
   background: #fff;
   border: 1px solid #aaa;
   width: 210mm;
   height: 148mm;
-  transform: scale(0.7);
+  transform: scale(0.65);
   transform-origin: top center;
-  margin: 0 auto;
+  margin: 0 auto 15px auto;
   position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+#printContent {
+  text-align: center;
+  font-weight: bold;
+}
+#printContent div { margin-bottom: 8mm; }
 #printFooter {
   position: absolute;
   right: 8mm;
   bottom: 8mm;
 }
-#printFooter img { width: 4.3cm; }
+#printFooter img { width: 4.3cm; height: auto; }
 
-/* Druck */
+/* --- Druck --- */
 @media print {
   @page { size: A5 landscape; margin: 0; }
   body * { visibility: hidden; }
-  .output-box, .output-box * { visibility: visible; }
-  .output-box { position: absolute; left: 0; top: 0; border: none; }
+  #printPreview, #printPreview * { visibility: visible; }
+  #printPreview { position: absolute; left:0; top:0; transform:none; border:none; }
+}
+
+/* --- Handy-Ansicht --- */
+@media (max-width: 900px) {
+  #main { flex-direction: column; }
+  #form-container { width: 100%; border-right:none; border-bottom:2px solid #ccc; }
+  #lieferanten { grid-template-columns: repeat(4, 1fr); }
+  .preview-container { display:none; }
+  .action-row { width:100%; padding:0 10px; }
 }
 </style>
 </head>
 <body>
+
 <div id="main">
   <div id="form-container">
     <h2>Beschichtung</h2>
+
     <label>Beistell-Nummer</label>
     <input id="zahlA5" type="text" readonly>
+
     <label>Kunde</label>
     <input id="kundeA5" type="text" readonly>
+
     <div id="lieferanten">
       <button class="action" data-type="LP">L&P</button>
       <button class="action" data-type="LPEILT">L&P EILT</button>
@@ -233,6 +235,7 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
       <button class="action" data-type="RCS">RCS</button>
       <button class="action" data-type="COATINC">Coatinc</button>
     </div>
+
     <div class="action-row">
       <button id="btnBack" class="action">⬅️ Zurück</button>
       <button id="btnDrucken" class="action">🖨 Drucken</button>
@@ -240,12 +243,7 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   </div>
 
   <div class="preview-container">
-    <div class="output-box">
-      <div id="output-inner">
-        <div id="output-content"></div>
-        <div id="output-footer"><img src="Langen.png" alt="Logo"></div>
-      </div>
-    </div>
+    <p>Vorschau wird beim Drucken angezeigt</p>
   </div>
 </div>
 
@@ -263,7 +261,7 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
   </div>
 </div>
 
-<!-- Druck-Vorschau -->
+<!-- Druckvorschau -->
 <div id="printPopup">
   <div id="printBox">
     <h3 style="color:#004b8d; margin-top:0;">Druckvorschau</h3>
@@ -272,7 +270,7 @@ button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
       <div id="printFooter"><img src="Langen.png"></div>
     </div>
     <div class="keyboard-actions">
-      <button class="btn-ok" id="btnPrintNow">Drucken</button>
+      <button class="btn-ok" id="btnPrintNow">Drucken starten</button>
       <button class="btn-close" id="btnClosePrint">Schließen</button>
     </div>
   </div>
@@ -285,6 +283,7 @@ const input=document.getElementById('keyboardInput');
 const title=document.getElementById('keyboardTitle');
 let currentField=null, currentType='letters';
 
+/* === Tastatur öffnen === */
 function openKeyboard(field,type){
   currentField=field; currentType=type;
   title.textContent=(type==='numbers')?'Beistellnummer eingeben':'Kundenname eingeben';
@@ -310,45 +309,42 @@ document.getElementById('btnClose').onclick=closeKeyboard;
 document.getElementById('zahlA5').onclick=()=>openKeyboard(document.getElementById('zahlA5'),'numbers');
 document.getElementById('kundeA5').onclick=()=>openKeyboard(document.getElementById('kundeA5'),'letters');
 
-/* Vorschau */
-const out=document.getElementById('output-content');
-function addLine(txt,size){
-  const d=document.createElement('div');
-  d.textContent=txt;
-  d.style.fontSize=size+'pt';
-  out.appendChild(d);
-}
-function renderFor(type){
+/* === Vorschau generieren === */
+function generatePreview(type){
   const z=document.getElementById('zahlA5').value.trim();
   const k=document.getElementById('kundeA5').value.trim();
-  if(!z){ alert('Bitte Beistellnummer eingeben'); return; }
-  out.innerHTML='';
-  addLine(z,36);
-  const kunde=()=>{if(k){let e=document.createElement('div');e.textContent=`(${k})`;e.style.fontSize='32pt';e.style.fontWeight='700';out.appendChild(e);}};
+  if(!z){ alert('Bitte Beistellnummer eingeben'); return ''; }
+  let html=`<div style="font-size:36pt;">${z}</div>`;
+  const kunde=(k)?`<div style="font-size:32pt; font-weight:700;">(${k})</div>`:'';
   switch(type){
-    case 'LP': addLine('L&P',48); break;
-    case 'LPEILT': addLine('L&P',48); addLine('„EILT SEHR“',32); break;
-    case 'SCHUETTE': addLine('Schütte',48); break;
-    case 'SCHUETTEEILT': addLine('Schütte',48); addLine('„EILT SEHR“',32); break;
-    case 'KLEY': addLine('Kleymann',48); break;
-    case 'KLEYEILT': addLine('Kleymann',48); addLine('„EILT SEHR“',32); break;
-    case 'COMTEZN8': addLine('Comte',48); addLine('„ZN8“',32); kunde(); break;
-    case 'CHEMISCH': addLine('Comte',48); addLine('„chemisch Vernickeln“',32); kunde(); break;
-    case 'DICK': addLine('Comte',48); addLine('„Dickschichtpassivierung“',32); kunde(); break;
-    case 'BLAU': addLine('Comte',48); addLine('„Blau ZN8“',32); kunde(); break;
-    case 'PENTZ': addLine('Pentz & Gerdes',48); addLine('„ZN8“',32); kunde(); break;
-    case 'RCS': addLine('RCS GmbH',48); addLine('„Schweißen“',32); kunde(); break;
-    case 'COATINC': addLine('Coatinc 24 GmbH',48); addLine('„Verzinken“',32); kunde(); break;
+    case 'LP': html+=`<div style="font-size:48pt;">L&P</div>`; break;
+    case 'LPEILT': html+=`<div style="font-size:48pt;">L&P</div><div style="font-size:32pt;">„EILT SEHR“</div>`; break;
+    case 'SCHUETTE': html+=`<div style="font-size:48pt;">Schütte</div>`; break;
+    case 'SCHUETTEEILT': html+=`<div style="font-size:48pt;">Schütte</div><div style="font-size:32pt;">„EILT SEHR“</div>`; break;
+    case 'KLEY': html+=`<div style="font-size:48pt;">Kleymann</div>`; break;
+    case 'KLEYEILT': html+=`<div style="font-size:48pt;">Kleymann</div><div style="font-size:32pt;">„EILT SEHR“</div>`; break;
+    case 'COMTEZN8': html+=`<div style="font-size:48pt;">Comte</div><div style="font-size:32pt;">„ZN8“</div>${kunde}`; break;
+    case 'CHEMISCH': html+=`<div style="font-size:48pt;">Comte</div><div style="font-size:32pt;">„chemisch Vernickeln“</div>${kunde}`; break;
+    case 'DICK': html+=`<div style="font-size:48pt;">Comte</div><div style="font-size:32pt;">„Dickschichtpassivierung“</div>${kunde}`; break;
+    case 'BLAU': html+=`<div style="font-size:48pt;">Comte</div><div style="font-size:32pt;">„Blau ZN8“</div>${kunde}`; break;
+    case 'PENTZ': html+=`<div style="font-size:48pt;">Pentz & Gerdes</div><div style="font-size:32pt;">„ZN8“</div>${kunde}`; break;
+    case 'RCS': html+=`<div style="font-size:48pt;">RCS GmbH</div><div style="font-size:32pt;">„Schweißen“</div>${kunde}`; break;
+    case 'COATINC': html+=`<div style="font-size:48pt;">Coatinc 24 GmbH</div><div style="font-size:32pt;">„Verzinken“</div>${kunde}`; break;
   }
+  return html;
 }
-document.querySelectorAll('#lieferanten .action').forEach(b=>b.onclick=()=>renderFor(b.dataset.type));
 
-/* Druckvorschau */
+/* === Druck-Popup === */
 const printPopup=document.getElementById('printPopup');
 const printContent=document.getElementById('printContent');
+document.querySelectorAll('#lieferanten .action').forEach(btn=>{
+  btn.onclick=()=>printContent.dataset.type=btn.dataset.type;
+});
+
 document.getElementById('btnDrucken').onclick=()=>{
-  if(out.innerHTML.trim()===''){alert('Bitte zuerst einen Kunden wählen!');return;}
-  printContent.innerHTML=out.innerHTML;
+  const type=printContent.dataset.type;
+  if(!type){ alert('Bitte zuerst einen Kunden wählen!'); return; }
+  printContent.innerHTML=generatePreview(type);
   printPopup.style.display='flex';
 };
 document.getElementById('btnClosePrint').onclick=()=>printPopup.style.display='none';
