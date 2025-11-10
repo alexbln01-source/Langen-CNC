@@ -69,8 +69,11 @@ button.action:hover { background: linear-gradient(#fff,#e9ecef); }
 <!-- ========================== -->
 <!-- 📱 BLOCK 2: HANDY-DESIGN -->
 <!-- ========================== -->
-/* ✅ Handy-Layout: 4 Buttons nebeneinander mit PC-Design */
+<style>
+@/* ✅ Handy-Layout: 4 Buttons nebeneinander, wie am PC */
 @media (max-width: 900px) {
+
+  /* Grundstruktur für Handy */
   #main {
     flex-direction: column;
   }
@@ -81,11 +84,12 @@ button.action:hover { background: linear-gradient(#fff,#e9ecef); }
     border-bottom: 2px solid #ccc;
   }
 
+  /* Vorschau auf Handy ausgeblendet */
   .preview-container {
     display: none;
   }
 
-  /* 4 Buttons nebeneinander */
+  /* Kunden-Button-Bereich – 4 Spalten nebeneinander */
   #kunden {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -95,35 +99,37 @@ button.action:hover { background: linear-gradient(#fff,#e9ecef); }
     width: 95%;
   }
 
+  /* Buttons an PC-Design angepasst */
   button.action {
     background: linear-gradient(#f8f9fb, #eef1f4);
     border: 1px solid #ccc;
     border-radius: 8px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
     color: #004b8d;
     font-weight: bold;
     font-size: 13px;
     padding: 8px 4px;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.2s ease;
   }
 
   button.action:hover {
     background: linear-gradient(#ffffff, #e9ecef);
   }
 
-  /* Zurück & Drucken unten nebeneinander */
+  /* Zurück- und Drucken-Buttons untereinander, schön zentriert */
   #btnBack, #btnDrucken {
     width: 45%;
     font-size: 14px;
     padding: 10px;
   }
 
-  /* Vorschau ausblenden */
+  /* Sicherheitshalber Vorschau aus */
   .preview-container {
     display: none !important;
   }
-}
+}</style>
+
 <!-- ========================== -->
 <!-- 🖨 BLOCK 3: DRUCK -->
 <!-- ========================== -->
