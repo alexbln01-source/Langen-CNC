@@ -14,10 +14,9 @@ html, body {
   font-family: Arial, sans-serif;
   background: #f0f0f0;
   overflow: hidden;
-  touch-action: manipulation; /* verhindert Doppeltipp-Zoom */
+  touch-action: manipulation;
 }
 
-/* Verhindert Zoom bei Fokus auf Mobile */
 input, button {
   font-size: 16px !important;
   touch-action: manipulation;
@@ -30,7 +29,7 @@ input, button {
   height: 100vh;
 }
 
-/* Linke Seite (Form) */
+/* Linke Seite (Formular) */
 #form-container {
   width: 50%;
   background: #fff;
@@ -192,13 +191,16 @@ button.action.selected { outline: 3px solid #7aa2d6; }
   max-width: 500px;
   text-align: center;
 }
+
+/* Vorschau (verkleinert und mittig) */
 #previewArea {
   background: #fff;
   border: 1px solid #aaa;
   aspect-ratio: 210 / 148;
-  width: 100%;
-  transform: scale(0.9);
-  transform-origin: top center;
+  width: 95%;
+  max-width: 420px;
+  transform: scale(0.8);
+  transform-origin: center center;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -228,7 +230,7 @@ button.action.selected { outline: 3px solid #7aa2d6; }
 .btn-print { background: #28a745; }
 .btn-cancel { background: #6c757d; }
 
-/* ===== Druckbereich (nur beim Drucken sichtbar) ===== */
+/* ===== Druckbereich ===== */
 #printArea { display: none; }
 #printContent {
   width: 210mm;
@@ -249,7 +251,7 @@ button.action.selected { outline: 3px solid #7aa2d6; }
   width: 4.3cm;
 }
 
-/* ===== Drucken: immer A5 quer, nie leer ===== */
+/* ===== Drucken: Querformat ===== */
 @media print {
   @page { size: A5 landscape; margin: 0; }
   body * { visibility: hidden !important; }
@@ -269,7 +271,7 @@ button.action.selected { outline: 3px solid #7aa2d6; }
 @media (max-width:900px) {
   #main { flex-direction: column; }
   #form-container { width:100%; border-right:none; border-bottom:2px solid #ccc; }
-  .preview-container { display:none; } /* keine Live-Vorschau am Handy */
+  .preview-container { display:none; }
 }
 </style>
 </head>
@@ -303,7 +305,6 @@ button.action.selected { outline: 3px solid #7aa2d6; }
     </div>
   </div>
 
-  <!-- PC Live-Vorschau -->
   <div class="preview-container">
     <div class="output-box">
       <div id="output-content"></div>
@@ -312,8 +313,8 @@ button.action.selected { outline: 3px solid #7aa2d6; }
   </div>
 </div>
 
-<!-- Popup Tastatur -->
-<div id="keyboardPopup" aria-hidden="true">
+<!-- Tastatur -->
+<div id="keyboardPopup">
   <div id="keyboardBox">
     <h3 id="keyboardTitle">Eingabe</h3>
     <input type="text" id="keyboardInput" autocomplete="off" />
@@ -326,8 +327,8 @@ button.action.selected { outline: 3px solid #7aa2d6; }
   </div>
 </div>
 
-<!-- Handy-Druckvorschau -->
-<div id="previewPopup" aria-hidden="true">
+<!-- Vorschau Popup -->
+<div id="previewPopup">
   <div id="previewBox">
     <div id="previewArea">
       <div id="previewInner"></div>
@@ -341,7 +342,7 @@ button.action.selected { outline: 3px solid #7aa2d6; }
 </div>
 
 <!-- Druckbereich -->
-<div id="printArea" aria-hidden="true">
+<div id="printArea">
   <div id="printContent">
     <div id="printInner"></div>
     <img id="printLogo" src="Langen.png" alt="">
@@ -349,159 +350,28 @@ button.action.selected { outline: 3px solid #7aa2d6; }
 </div>
 
 <script>
-/* ===== Elemente ===== */
-const zahl = document.getElementById('zahlA5');
-const kunde = document.getElementById('kundeA5');
-const out = document.getElementById('output-content');
-const printInner = document.getElementById('printInner');
-const previewInner = document.getElementById('previewInner');
+const zahl=document.getElementById('zahlA5'),kunde=document.getElementById('kundeA5'),out=document.getElementById('output-content'),printInner=document.getElementById('printInner'),previewInner=document.getElementById('previewInner');
+let currentType=null,activeField=null;
+const popup=document.getElementById('keyboardPopup'),kbdInput=document.getElementById('keyboardInput'),kbdGrid=document.getElementById('keyboardGrid');let mode='letters';
 
-let currentType = null;
-let activeField = null;
+function buildKeyboard(type){kbdGrid.innerHTML='';const keys=(type==='numbers')?['1','2','3','4','5','6','7','8','9','0']:Array.from('QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM');keys.forEach(k=>{const b=document.createElement('button');b.textContent=k;b.onclick=()=>kbdInput.value+=k;kbdGrid.appendChild(b);});}
+function openKeyboard(field,type){activeField=field;mode=type;kbdInput.value=field.value||'';buildKeyboard(type);popup.style.display='flex';setTimeout(()=>kbdInput.focus(),50);}
+function closeKeyboard(){popup.style.display='none';activeField=null;}
+document.getElementById('btnDel').onclick=()=>kbdInput.value=kbdInput.value.slice(0,-1);
+document.getElementById('btnOk').onclick=()=>{if(!activeField)return;activeField.value=kbdInput.value.trim();if(activeField===zahl){openKeyboard(kunde,'letters');return;}closeKeyboard();updatePreview();};
+document.getElementById('btnClose').onclick=closeKeyboard;
+kbdInput.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();document.getElementById('btnOk').click();}else if(e.key==='Escape'){e.preventDefault();closeKeyboard();}else if(mode==='numbers'){if(!/[0-9]/.test(e.key)&&e.key.length===1)e.preventDefault();}else if(mode==='letters'){if(e.key.length===1){if(!/[a-zA-ZäöüÄÖÜß]/.test(e.key))e.preventDefault();else{e.preventDefault();kbdInput.value+=(e.key==='ß'?'ß':e.key.toUpperCase());}}}});
+zahl.addEventListener('click',()=>openKeyboard(zahl,'numbers'));
+kunde.addEventListener('click',()=>openKeyboard(kunde,'letters'));
 
-/* ===== Popup-Tastatur ===== */
-const popup = document.getElementById('keyboardPopup');
-const kbdTitle = document.getElementById('keyboardTitle');
-const kbdInput = document.getElementById('keyboardInput');
-const kbdGrid  = document.getElementById('keyboardGrid');
-let mode = 'letters';
-
-function buildKeyboard(type){
-  kbdGrid.innerHTML='';
-  const keys = (type==='numbers')
-    ? ['1','2','3','4','5','6','7','8','9','0']
-    : Array.from('QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM');
-  keys.forEach(k=>{
-    const b=document.createElement('button');
-    b.textContent=k;
-    b.onclick=()=>kbdInput.value+=k;
-    kbdGrid.appendChild(b);
-  });
-}
-
-function openKeyboard(field, type){
-  activeField = field;
-  mode = type;
-  kbdTitle.textContent = (type==='numbers') ? 'Beistellnummer eingeben' : 'Kundenname eingeben';
-  kbdInput.value = field.value || '';
-  buildKeyboard(type);
-  popup.style.display='flex';
-  setTimeout(()=>kbdInput.focus(), 50);
-}
-
-function closeKeyboard(){
-  popup.style.display='none';
-  activeField = null;
-}
-
-document.getElementById('btnDel').onclick = ()=> kbdInput.value = kbdInput.value.slice(0,-1);
-document.getElementById('btnOk').onclick  = ()=>{
-  if(!activeField) return;
-  activeField.value = kbdInput.value.trim();
-  if(activeField === zahl){
-    openKeyboard(kunde, 'letters');  // weiter zum Kunden
-    return;
-  }
-  closeKeyboard();                    // nach Kunde schließen
-  updatePreview();
-};
-document.getElementById('btnClose').onclick = closeKeyboard;
-
-/* Physische Tasten im Popup */
-kbdInput.addEventListener('keydown', e=>{
-  if(e.key==='Enter'){ e.preventDefault(); document.getElementById('btnOk').click(); }
-  else if(e.key==='Escape'){ e.preventDefault(); closeKeyboard(); }
-  else if(mode==='numbers'){
-    if(!/[0-9]/.test(e.key) && e.key.length===1){ e.preventDefault(); }
-  }else if(mode==='letters'){
-    if(e.key.length===1){
-      if(!/[a-zA-ZäöüÄÖÜß]/.test(e.key)){ e.preventDefault(); }
-      else { e.preventDefault(); kbdInput.value += (e.key==='ß' ? 'ß' : e.key.toUpperCase()); }
-    }
-  }
-});
-
-/* Klick öffnet Popup-Tastatur (Inputs sind readonly) */
-zahl.addEventListener('click', ()=> openKeyboard(zahl, 'numbers'));
-kunde.addEventListener('click',()=> openKeyboard(kunde,'letters'));
-
-/* ===== Layout & Vorschau ===== */
-function line(t,s){ return `<div style="font-size:${s}pt;">${t}</div>`; }
-function layout(t, z, k){
-  let html = line(z,36);
-  const kundeLine = k ? line(`(${k})`,32) : '';
-  switch(t){
-    case 'COMTEZN8': html += line('Comte',48)+line('„ZN8“',32)+kundeLine; break;
-    case 'CHEMISCH': html += line('Comte',48)+line('„chemisch Vernickeln“',32)+kundeLine; break;
-    case 'DICK':     html += line('Comte',48)+line('„Dickschichtpassivierung“',32)+kundeLine; break;
-    case 'BLAU':     html += line('Comte',48)+line('„Blau ZN8“',32)+kundeLine; break;
-    case 'PENTZ':    html += line('Pentz & Gerdes',48)+line('„ZN8“',32)+kundeLine; break;
-    case 'RCS':      html += line('RCS GmbH',48)+line('„Schweißen“',32)+kundeLine; break;
-    case 'COATINC':  html += line('Coatinc 24 GmbH',48)+line('„Verzinken“',32)+kundeLine; break;
-    case 'LP':       html += line('L&P',48)+kundeLine; break;
-    case 'LPEILT':   html += line('L&P',48)+line('„EILT SEHR“',32)+kundeLine; break;
-    default:         html += line(t||'',48)+kundeLine; break;
-  }
-  return html;
-}
-
-function updatePreview(){
-  if(window.innerWidth <= 900) return; // Handy: keine Live-Vorschau
-  const z = zahl.value.trim();
-  if(!z){ out.innerHTML=''; return; }
-  const k = kunde.value.trim();
-  out.innerHTML = layout(currentType, z, k);
-}
-
-/* Kundenbuttons */
-document.querySelectorAll('#lieferanten .action').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    document.querySelectorAll('#lieferanten .action').forEach(b=>b.classList.remove('selected'));
-    btn.classList.add('selected');
-    currentType = btn.dataset.type;
-    updatePreview();
-  });
-});
-
-/* ===== Drucken ===== */
-const previewPopup = document.getElementById('previewPopup');
-const btnPrintNow  = document.getElementById('btnPrintNow');
-const btnPreviewClose = document.getElementById('btnPreviewClose');
-
-document.getElementById('btnDrucken').addEventListener('click', ()=>{
-  const z = zahl.value.trim(); if(!z){ alert('Bitte Beistellnummer eingeben!'); return; }
-  if(!currentType){ alert('Bitte Kunden wählen!'); return; }
-  const k = kunde.value.trim();
-  const html = layout(currentType, z, k);
-
-  if(window.innerWidth > 900){
-    // PC: direkt drucken
-    printInner.innerHTML = html;
-    const area = document.getElementById('printArea');
-    area.style.display='block';
-    setTimeout(()=>{ window.print(); area.style.display='none'; }, 120);
-  }else{
-    // Handy: erst Vorschau-Popup
-    previewInner.innerHTML = html;
-    previewPopup.style.display = 'flex';
-  }
-});
-
-btnPreviewClose.addEventListener('click', ()=> previewPopup.style.display='none');
-
-btnPrintNow.addEventListener('click', ()=>{
-  const area = document.getElementById('printArea');
-  // Inhalt aus der Handy-Vorschau in den Druckbereich übernehmen
-  printInner.innerHTML = previewInner.innerHTML;
-  previewPopup.style.display = 'none';
-  area.style.display='block';
-  setTimeout(()=>{ window.print(); area.style.display='none'; }, 120);
-});
-
-/* Zurück */
-document.getElementById('btnBack').addEventListener('click', ()=>{
-  window.location.href='index.html';
-});
+function line(t,s){return `<div style="font-size:${s}pt;">${t}</div>`;}
+function layout(t,z,k){let html=line(z,36);const kundeLine=k?line(`(${k})`,32):'';switch(t){case'COMTEZN8':html+=line('Comte',48)+line('„ZN8“',32)+kundeLine;break;case'CHEMISCH':html+=line('Comte',48)+line('„chemisch Vernickeln“',32)+kundeLine;break;case'DICK':html+=line('Comte',48)+line('„Dickschichtpassivierung“',32)+kundeLine;break;case'BLAU':html+=line('Comte',48)+line('„Blau ZN8“',32)+kundeLine;break;case'PENTZ':html+=line('Pentz & Gerdes',48)+line('„ZN8“',32)+kundeLine;break;case'RCS':html+=line('RCS GmbH',48)+line('„Schweißen“',32)+kundeLine;break;case'COATINC':html+=line('Coatinc 24 GmbH',48)+line('„Verzinken“',32)+kundeLine;break;case'LP':html+=line('L&P',48)+kundeLine;break;case'LPEILT':html+=line('L&P',48)+line('„EILT SEHR“',32)+kundeLine;break;default:html+=line(t||'',48)+kundeLine;break;}return html;}
+function updatePreview(){if(window.innerWidth<=900)return;const z=zahl.value.trim();if(!z){out.innerHTML='';return;}const k=kunde.value.trim();out.innerHTML=layout(currentType,z,k);}
+document.querySelectorAll('#lieferanten .action').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('#lieferanten .action').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');currentType=btn.dataset.type;updatePreview();});});
+const previewPopup=document.getElementById('previewPopup');document.getElementById('btnDrucken').addEventListener('click',()=>{const z=zahl.value.trim();if(!z){alert('Bitte Beistellnummer eingeben!');return;}if(!currentType){alert('Bitte Kunden wählen!');return;}const k=kunde.value.trim();const html=layout(currentType,z,k);if(window.innerWidth>900){printInner.innerHTML=html;const area=document.getElementById('printArea');area.style.display='block';setTimeout(()=>{window.print();area.style.display='none';},120);}else{previewInner.innerHTML=html;previewPopup.style.display='flex';}});
+document.getElementById('btnPreviewClose').addEventListener('click',()=>previewPopup.style.display='none');
+document.getElementById('btnPrintNow').addEventListener('click',()=>{const area=document.getElementById('printArea');printInner.innerHTML=previewInner.innerHTML;previewPopup.style.display='none';area.style.display='block';setTimeout(()=>{window.print();area.style.display='none';},120);});
+document.getElementById('btnBack').addEventListener('click',()=>window.location.href='index.html');
 </script>
 </body>
 </html>
