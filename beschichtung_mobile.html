@@ -2,19 +2,25 @@
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="viewport"
+  content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>Beschichtung Mobile</title>
 <style>
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
+  touch-action: manipulation; /* verhindert Pinch und Doppeltipp */
+  overscroll-behavior: contain; /* kein Browser-Zoom oder Bounce */
   background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
   font-family: "Segoe UI", Arial, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  -ms-touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 /* Hauptcontainer */
@@ -27,8 +33,6 @@ html, body {
   padding: 18px 14px 20px;
   text-align: center;
 }
-
-/* Titel */
 h2 {
   font-size: 22px;
   color: #003a73;
@@ -276,10 +280,19 @@ const kbGrid = document.getElementById('keyboardGrid');
 let currentField = null;
 let selectedType = null;
 
+/* 🛡️ Anti-Zoom */
+document.addEventListener('gesturestart', e => e.preventDefault());
+document.addEventListener('dblclick', e => e.preventDefault());
+document.addEventListener('touchmove', e => {
+  if (e.scale !== undefined && e.scale !== 1) e.preventDefault();
+}, { passive: false });
+
 /* Tastatur */
 function buildKeyboard(type) {
   kbGrid.innerHTML = '';
-  const chars = (type === 'numbers') ? ['1','2','3','4','5','6','7','8','9','0'] : 'QWERTZUIOPASDFGHJKLYXCVBNM'.split('');
+  const chars = (type === 'numbers')
+    ? ['1','2','3','4','5','6','7','8','9','0']
+    : 'QWERTZUIOPASDFGHJKLYXCVBNM'.split('');
   chars.forEach(c => {
     const b = document.createElement('button');
     b.textContent = c;
@@ -300,76 +313,49 @@ document.getElementById('btnClose').onclick = closeKeyboard;
 document.getElementById('btnOk').onclick = () => {
   currentField.value = kbInput.value.trim();
   popup.style.display = 'none';
-  
-  // nach Eingabe der Beistellnummer direkt Kunde öffnen
-  if (currentField === num) {
-    setTimeout(() => openKeyboard(kunde, 'letters'), 200);
-  }
+  if (currentField === num) setTimeout(() => openKeyboard(kunde, 'letters'), 200);
 };
 
 num.onclick = () => openKeyboard(num, 'numbers');
 kunde.onclick = () => openKeyboard(kunde, 'letters');
 
-/* Vorschau */
+/* Vorschau & Drucken */
 function makeOutput(type) {
   selectedType = type;
-  const n = num.value.trim();
-  const k = kunde.value.trim();
-
+  const n = num.value.trim(), k = kunde.value.trim();
   let html = `<div style="font-size:36pt;margin-bottom:6mm;">${n || ''}</div>`;
-  const add = (main, sub = '', name = '') => {
-    html += `<div style="font-size:48pt;font-weight:900;">${main}</div>`;
-    if (sub) html += `<div style="font-size:32pt;">„${sub}“</div>`;
-    if (name) html += `<div style="font-size:32pt;">(${name})</div>`;
+  const add = (m,s='',n='') => {
+    html += `<div style="font-size:48pt;font-weight:900;">${m}</div>`;
+    if (s) html += `<div style="font-size:32pt;">„${s}“</div>`;
+    if (n) html += `<div style="font-size:32pt;">(${n})</div>`;
   };
-
-  switch (type) {
-    case 'LP': add('L&P'); break;
-    case 'LPEILT': add('L&P', 'EILT SEHR'); break;
-    case 'SCHUETTE': add('Schütte'); break;
-    case 'SCHUETTEEILT': add('Schütte', 'EILT SEHR'); break;
-    case 'KLEY': add('Kleymann'); break;
-    case 'KLEYEILT': add('Kleymann', 'EILT SEHR'); break;
-    case 'COMTEZN8': add('Comte', 'ZN8', k); break;
-    case 'CHEMISCH': add('Comte', 'Chemisch Vernickeln', k); break;
-    case 'DICK': add('Comte', 'Dickschichtpassivierung', k); break;
-    case 'BLAU': add('Comte', 'Blau ZN8', k); break;
-    case 'PENTZ': add('Pentz & Gerdes', 'ZN8', k); break;
-    case 'RCS': add('RCS GmbH', 'Schweißen', k); break;
-    case 'COATINC': add('Coatinc 24 GmbH', 'Verzinken', k); break;
-  }
-
+  const map = {
+    LP:['L&P'], LPEILT:['L&P','EILT SEHR'],
+    SCHUETTE:['Schütte'], SCHUETTEEILT:['Schütte','EILT SEHR'],
+    KLEY:['Kleymann'], KLEYEILT:['Kleymann','EILT SEHR'],
+    COMTEZN8:['Comte','ZN8',k], CHEMISCH:['Comte','Chemisch Vernickeln',k],
+    DICK:['Comte','Dickschichtpassivierung',k], BLAU:['Comte','Blau ZN8',k],
+    PENTZ:['Pentz & Gerdes','ZN8',k], RCS:['RCS GmbH','Schweißen',k],
+    COATINC:['Coatinc 24 GmbH','Verzinken',k]
+  };
+  add(...map[type]);
   document.getElementById('output-content').innerHTML = html;
 }
-
-document.querySelectorAll('#kunden button').forEach(btn => {
-  btn.onclick = () => {
-    document.querySelectorAll('#kunden button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    makeOutput(btn.dataset.type);
-  };
+document.querySelectorAll('#kunden button').forEach(btn=>{
+  btn.onclick=()=>{document.querySelectorAll('#kunden button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');makeOutput(btn.dataset.type);}
 });
-
-/* Drucken */
-document.getElementById('btnDrucken').onclick = () => {
-  const n = num.value.trim();
-  const k = kunde.value.trim();
-  if (!n || !k || !selectedType) {
-    alert('Bitte Beistellnummer, Kunde und Kundentyp auswählen.');
-    return;
-  }
-  document.getElementById('previewPopup').style.display = 'flex';
+document.getElementById('btnDrucken').onclick=()=>{
+  const n=num.value.trim(),k=kunde.value.trim();
+  if(!n||!k||!selectedType){alert('Bitte Beistellnummer, Kunde und Kundentyp auswählen.');return;}
+  document.getElementById('previewPopup').style.display='flex';
 };
-
-document.getElementById('btnPrintNow').onclick = () => {
+document.getElementById('btnPrintNow').onclick=()=>{
   window.print();
-  setTimeout(() => document.getElementById('previewPopup').style.display = 'none', 600);
+  setTimeout(()=>document.getElementById('previewPopup').style.display='none',600);
 };
-
-document.getElementById('btnCancelPreview').onclick = () =>
-  document.getElementById('previewPopup').style.display = 'none';
-
-document.getElementById('btnBack').onclick = () => window.location.href = 'index.html';
+document.getElementById('btnCancelPreview').onclick=()=>document.getElementById('previewPopup').style.display='none';
+document.getElementById('btnBack').onclick=()=>window.location.href='index.html';
 </script>
 </body>
 </html>
