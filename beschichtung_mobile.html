@@ -299,8 +299,14 @@ document.getElementById('btnDel').onclick = () => kbInput.value = kbInput.value.
 document.getElementById('btnClose').onclick = closeKeyboard;
 document.getElementById('btnOk').onclick = () => {
   currentField.value = kbInput.value.trim();
-  closeKeyboard();
+  popup.style.display = 'none';
+  
+  // nach Eingabe der Beistellnummer direkt Kunde öffnen
+  if (currentField === num) {
+    setTimeout(() => openKeyboard(kunde, 'letters'), 200);
+  }
 };
+
 num.onclick = () => openKeyboard(num, 'numbers');
 kunde.onclick = () => openKeyboard(kunde, 'letters');
 
