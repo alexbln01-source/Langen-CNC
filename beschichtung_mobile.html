@@ -14,7 +14,7 @@ html, body {
   overflow: hidden;
 }
 
-/* Hauptrahmen */
+/* Hauptcontainer */
 #main {
   width: 92%; max-width: 370px;
   background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
@@ -86,70 +86,62 @@ input::placeholder {
   border: none;
   cursor: pointer;
 }
-#btnBack {
-  background: linear-gradient(#6c757d, #495057);
-}
-#btnDrucken {
-  background: linear-gradient(#007bff, #0056b3);
-}
+#btnBack { background: linear-gradient(#6c757d, #495057); }
+#btnDrucken { background: linear-gradient(#007bff, #0056b3); }
 
-/* Vorschau */
+/* --- Vorschau (A5) --- */
 #previewPopup {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0,0,0,0.6);
   z-index: 5000;
   justify-content: center;
   align-items: center;
 }
-
 #previewBox {
   background: #fff;
   border-radius: 10px;
   width: 90vw;
-  aspect-ratio: 210 / 148;
-  max-width: 480px; /* ideal für 5 Zoll */
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+  aspect-ratio: 210 / 148; /* echtes A5 Querformat */
+  max-width: 480px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.4);
   position: relative;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
   transform: scale(0.9);
 }
 
+/* zentrierter Textblock */
 #output-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.75);
   text-align: center;
   font-weight: 900;
   line-height: 1.2;
-  transform: scale(0.7);
 }
+#output-content div { margin: 4px 0; }
 
-#output-content div {
-  margin: 3px 0;
-}
-
+/* Logo unten rechts */
 #output-footer {
   position: absolute;
-  bottom: 8mm;
-  right: 9mm;
+  bottom: 10mm;
+  right: 10mm;
 }
-
 #output-footer img {
   width: 2.8cm;
   height: auto;
+  object-fit: contain;
 }
 
+/* Vorschau-Buttons */
 #previewBox .preview-buttons {
   position: absolute;
-  bottom: 5mm;
+  bottom: 6mm;
   left: 0;
   right: 0;
   display: flex;
@@ -166,7 +158,24 @@ input::placeholder {
 #btnPrintNow { background: #28a745; }
 #btnCancelPreview { background: #d9534f; }
 
-/* Popup Tastatur */
+/* --- Druckansicht --- */
+@media print {
+  body * { visibility: hidden !important; }
+  #previewBox, #previewBox * {
+    visibility: visible !important;
+  }
+  #previewBox {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    box-shadow: none;
+    border-radius: 0;
+    transform: scale(1);
+  }
+  #previewBox .preview-buttons { display: none !important; }
+}
+
+/* --- Popup Tastatur --- */
 #keyboardPopup {
   display: none;
   position: fixed;
@@ -302,7 +311,6 @@ function buildKeyboard(type){
     kbGrid.appendChild(b);
   });
 }
-
 function openKeyboard(field,type){
   currentField=field;
   kbInput.value=field.value||'';
@@ -312,7 +320,6 @@ function openKeyboard(field,type){
   setTimeout(()=>kbInput.focus(),100);
 }
 function closeKeyboard(){ popup.style.display='none'; }
-
 document.getElementById('btnDel').onclick=()=>kbInput.value=kbInput.value.slice(0,-1);
 document.getElementById('btnClose').onclick=closeKeyboard;
 document.getElementById('btnOk').onclick=()=>{
@@ -320,7 +327,6 @@ document.getElementById('btnOk').onclick=()=>{
   closeKeyboard();
   if(currentField===num && kbInput.value.trim()!=='') openKeyboard(kunde,'letters');
 };
-
 num.onclick=()=>openKeyboard(num,'numbers');
 kunde.onclick=()=>openKeyboard(kunde,'letters');
 
@@ -352,9 +358,7 @@ function makeOutput(type){
   document.getElementById('output-content').innerHTML=html;
   document.getElementById('previewPopup').style.display='flex';
 }
-
 document.querySelectorAll('#kunden button').forEach(btn=>btn.onclick=()=>makeOutput(btn.dataset.type));
-
 document.getElementById('btnPrintNow').onclick=()=>{
   window.print();
   document.getElementById('previewPopup').style.display='none';
