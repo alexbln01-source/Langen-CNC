@@ -4,7 +4,6 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Beschichtung (Mobile)</title>
-
 <style>
 body {
   margin: 0;
@@ -14,49 +13,56 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  overflow: hidden;
 }
+
 #container {
-  width: 95%;
-  max-width: 380px;
+  width: 92%;
+  max-width: 370px;
   background: #fff;
-  border-radius: 25px;
+  border-radius: 26px;
   box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-  padding: 16px 10px 20px;
+  padding: 14px 10px 18px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 h2 {
   color: #004b8d;
   margin: 5px 0 12px;
-  font-size: 20px;
+  font-size: 22px;
+  font-weight: 700;
 }
+
 input[type="text"] {
   width: 90%;
-  height: 42px;
+  height: 38px;
   text-align: center;
   border: 1px solid #ccc;
   border-radius: 10px;
-  font-size: 18px;
-  margin-bottom: 10px;
+  font-size: 17px;
+  margin-bottom: 8px;
   color: #333;
 }
 input::placeholder {
   color: #888;
   font-style: italic;
 }
+
 #kunden {
   display: flex;
   flex-direction: column;
   width: 90%;
-  gap: 8px;
-  margin: 8px 0 12px;
+  gap: 6px;
+  margin: 6px 0 10px;
 }
 #kunden button {
   width: 100%;
-  height: 42px;
+  height: 38px;
   font-weight: bold;
+  font-size: 15px;
   border-radius: 8px;
   border: 1px solid #ccc;
   background: linear-gradient(#f8f9fb,#eef1f4);
@@ -67,21 +73,30 @@ input::placeholder {
 #kunden button:hover {
   background: linear-gradient(#fff,#e9ecef);
 }
-button.action {
-  width: 45%;
-  height: 42px;
-  font-weight: bold;
-  font-size: 14px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  background: linear-gradient(#f8f9fb,#eef1f4);
-  margin: 10px 4px;
-}
+
 #actions {
   display: flex;
   justify-content: space-between;
   width: 90%;
+  margin-top: 8px;
 }
+#actions button {
+  width: 45%;
+  height: 38px;
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 8px;
+  border: none;
+  color: #fff;
+}
+#btnBack {
+  background: linear-gradient(#7c8591,#5a616b);
+}
+#btnDrucken {
+  background: linear-gradient(#007bff,#0056b3);
+}
+
+/* Vorschau */
 #previewPopup {
   display: none;
   position: fixed;
@@ -134,14 +149,14 @@ button.action {
   background: #fff;
   border-radius: 14px;
   width: 94%;
-  max-width: 380px;
+  max-width: 370px;
   text-align: center;
   padding: 14px;
 }
 #keyboardInput {
   width: 90%;
-  height: 40px;
-  font-size: 20px;
+  height: 38px;
+  font-size: 19px;
   text-align: center;
   margin-bottom: 8px;
   border-radius: 8px;
@@ -155,8 +170,8 @@ button.action {
 }
 #keyboardGrid button {
   width: 100%;
-  height: 45px;
-  font-size: 20px;
+  height: 42px;
+  font-size: 18px;
   border-radius: 8px;
   border: 1px solid #ccc;
   background: #f1f1f1;
@@ -164,17 +179,17 @@ button.action {
 #keyboardActions {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 #keyboardActions button {
   flex: 1;
-  margin: 0 5px;
-  height: 42px;
+  margin: 0 4px;
+  height: 38px;
   border: none;
   border-radius: 8px;
   font-weight: bold;
   color: #fff;
-  font-size: 16px;
+  font-size: 15px;
 }
 #btnDel { background: #d9534f; }
 #btnOk { background: #28a745; }
@@ -184,7 +199,7 @@ button.action {
 <body>
 
 <div id="container">
-  <h2>Beschichtung</h2>
+  <h2>BESCHICHTUNG</h2>
   <input id="numInput" type="text" placeholder="Beistellnummer" readonly>
   <input id="kundeInput" type="text" placeholder="Kunde" readonly>
 
@@ -205,8 +220,8 @@ button.action {
   </div>
 
   <div id="actions">
-    <button id="btnBack" class="action">⬅️ Zurück</button>
-    <button id="btnDrucken" class="action">🖨 Drucken</button>
+    <button id="btnBack">⬅️ Zurück</button>
+    <button id="btnDrucken">🖨 Drucken</button>
   </div>
 </div>
 
@@ -255,14 +270,12 @@ function buildKeyboard(type){
     kbGrid.appendChild(b);
   });
 }
-
 function openKeyboard(field,type){
   currentField=field;
   kbInput.value=field.value||'';
   buildKeyboard(type);
   popup.style.display='flex';
 }
-
 function closeKeyboard(){ popup.style.display='none'; }
 
 document.getElementById('btnDel').onclick=()=>kbInput.value=kbInput.value.slice(0,-1);
@@ -271,7 +284,6 @@ document.getElementById('btnOk').onclick=()=>{
   currentField.value=kbInput.value.trim();
   closeKeyboard();
 };
-
 num.onclick=()=>openKeyboard(num,'numbers');
 kunde.onclick=()=>openKeyboard(kunde,'letters');
 
