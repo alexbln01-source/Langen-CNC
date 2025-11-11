@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Beschichtung – Mobil</title>
+<script src="beschichtung_core.js" defer></script>
+<style>
+body {
+  margin: 0; font-family: Arial, sans-serif;
+  background: #fff; padding: 12px;
+  display: flex; flex-direction: column; align-items: center;
+}
+h2 { color: #004b8d; margin-bottom: 12px; }
+input[type="text"] {
+  width: 94%; font-size: 18px;
+  margin-bottom: 12px; padding: 10px; text-align: center;
+  border: 1px solid #ccc; border-radius: 6px;
+}
+#kunden {
+  display: flex; flex-wrap: wrap;
+  justify-content: center; gap: 8px;
+}
+#kunden button.action {
+  flex: 0 0 calc(33.33% - 8px);
+  height: 44px; font-size: 14px; font-weight: bold;
+}
+#form-buttons {
+  display: flex; justify-content: space-between;
+  width: 94%; margin-top: 15px;
+}
+#form-buttons button {
+  flex: 0 0 48%;
+  height: 44px; font-size: 14px; font-weight: bold;
+  border-radius: 8px;
+}
+#keyboardPopup {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  justify-content: center; align-items: center;
+  z-index: 1000;
+}
+#keyboardBox {
+  background: white; padding: 20px;
+  border-radius: 10px; width: 90%; max-width: 400px;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+<h2>Beschichtung</h2>
+<label>Beistellnummer</label>
+<input id="numInput" type="text" readonly>
+<label>Kunde</label>
+<input id="kundeInput" type="text" readonly>
+
+<div id="kunden"></div>
+
+<div id="form-buttons">
+  <button id="btnBack">⬅️ Zurück</button>
+  <button id="btnDrucken">🖨 Drucken</button>
+</div>
+
+<!-- Popup Tastatur -->
+<div id="keyboardPopup">
+  <div id="keyboardBox">
+    <h3 id="keyboardTitle">Eingabe</h3>
+    <input id="keyboardInput" type="text" style="width:90%;padding:10px;font-size:18px;text-align:center;margin-bottom:12px;">
+    <div id="keyboardGrid" style="display:grid;grid-template-columns:repeat(10,1fr);gap:6px;"></div>
+    <div style="margin-top:10px;">
+      <button id="btnDel">⌫</button>
+      <button id="btnOk">OK</button>
+      <button id="btnClose">X</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

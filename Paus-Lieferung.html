@@ -108,15 +108,10 @@ input[type="text"] {
   border: 1px solid #cfd3d7;
   background: #ffffff;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-/* 👇 Eingaben bleiben klickbar, aber keine Systemtastatur */
-input[readonly] {
-  caret-color: transparent;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
   touch-action: manipulation;
+  user-select: none;
 }
+input[type="text"]:focus { outline: none; }
 
 /* Buttons unten */
 .button-row {
@@ -158,13 +153,13 @@ button.action:hover { background: linear-gradient(#ffffff, #e9ecef); }
   background: #fff;
   border: 1px solid #aaa;
   box-sizing: border-box;
-  aspect-ratio: 148 / 105; /* echtes A6 Querformat */
+  aspect-ratio: 148 / 105;
   width: 100%;
   max-width: 148mm;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   text-align: center;
   padding: 8mm;
   position: relative;
@@ -174,6 +169,7 @@ button.action:hover { background: linear-gradient(#ffffff, #e9ecef); }
   flex-direction: column;
   align-items: center;
   width: 100%;
+  transition: margin-top .12s ease;
 }
 #output-footer {
   position: absolute;
@@ -196,7 +192,7 @@ button.action:hover { background: linear-gradient(#ffffff, #e9ecef); }
   display: none;
 }
 
-/* ===== Popup Tastatur ===== */
+/* Popup Tastatur */
 #keyboardPopup {
   display: none;
   position: fixed;
@@ -257,7 +253,7 @@ button.action:hover { background: linear-gradient(#ffffff, #e9ecef); }
 .btn-ok { background:#28a745; }
 .btn-close { background:#6c757d; }
 
-/* ===== Druck ===== */
+/* Druck */
 @media print {
   @page { size: A6 landscape; margin: 0; }
   body * { visibility: hidden; }
@@ -317,6 +313,8 @@ button.action:hover { background: linear-gradient(#ffffff, #e9ecef); }
 
 <script>
 const out=document.getElementById("output-content");
+const box=document.getElementById("outputBox");
+const footer=document.getElementById("output-footer");
 const popup=document.getElementById("keyboardPopup");
 const input=document.getElementById("keyboardInput");
 const grid=document.getElementById("keyboardKeys");
@@ -335,8 +333,8 @@ document.querySelectorAll(".color-btn").forEach(btn=>{
   });
 });
 
-/* Tastatur */
-(() => {
+/* Tastatur (nur Zahlen) */
+(()=>{
   const chars=["1","2","3","4","5","6","7","8","9","0"];
   chars.forEach(c=>{
     const b=document.createElement('button');
@@ -351,10 +349,10 @@ document.getElementById("lieferdatum").addEventListener("click",()=>openKeyboard
 
 function openKeyboard(field){
   activeInput=document.getElementById(field);
-  input.value=activeInput.value.replace(/\./g,"");
+  input.value = ""; // ← Tastatur wird immer geleert
   popup.style.display='flex';
-  const title=document.querySelector("#keyboardModal h3");
-  title.textContent = field==="kommission" ? "Kommissionsnummer eingeben" : "Lieferdatum eingeben";
+  document.querySelector("#keyboardModal h3").textContent =
+    field==="kommission" ? "Kommissionsnummer eingeben" : "Lieferdatum eingeben";
   setTimeout(()=>input.focus(),100);
 }
 function closeKeyboard(){ popup.style.display='none'; }
@@ -375,16 +373,58 @@ function handleKeyboardOK(){
   if(activeInput.id==="kommission"){ openKeyboard("lieferdatum"); return; }
   if(activeInput.id==="lieferdatum"){ closeKeyboard(); updateOutput(); }
 }
-
 document.getElementById("keyboardOK").onclick=handleKeyboardOK;
 input.addEventListener("keydown",e=>{ if(e.key==="Enter"){e.preventDefault();handleKeyboardOK();}});
+
+/* Abstandskorrektur & Dynamische Zentrierung */
+let PX_PER_MM=null;
+function pxPerMm(){
+  if(PX_PER_MM) return PX_PER_MM;
+  const r=document.createElement('div');
+  r.style.position='absolute';
+  r.style.width='100mm';
+  r.style.height='0';
+  r.style.visibility='hidden';
+  document.body.appendChild(r);
+  PX_PER_MM = r.getBoundingClientRect().width / 100;
+  document.body.removeChild(r);
+  return PX_PER_MM;
+}
+
+function layoutOutput({vorgezogen,isPast}){
+  const boxRect = box.getBoundingClientRect();
+  const outRect = out.getBoundingClientRect();
+  const footerRect = footer.getBoundingClientRect();
+  const vzShown = vorgezogen && (vorgezogenText.style.display!=="none");
+  const spaceAvailable = (footerRect.top - boxRect.top) - 6;
+  const contentH = outRect.height;
+  let baseTop = Math.max((spaceAvailable - contentH) / 2, 0);
+  const mm = pxPerMm();
+  let minGapPx = 6 * mm;
+  if(isPast) minGapPx += 2 * mm;
+  if(vzShown) minGapPx += 8 * mm;
+  const contentBottom = (outRect.top - boxRect.top) + contentH;
+  let lowestBottom = contentBottom;
+  if(vzShown){
+    const vzRect = vorgezogenText.getBoundingClientRect();
+    const vzBottom = (vzRect.bottom - boxRect.top);
+    lowestBottom = Math.max(lowestBottom, vzBottom);
+  }
+  const logoTop = (footerRect.top - boxRect.top);
+  const overflow = (lowestBottom + minGapPx) - logoTop;
+  let newTop = baseTop;
+  if(overflow > 0){
+    newTop = Math.max(baseTop - overflow, 3 * mm);
+  }
+  out.style.marginTop = `${newTop}px`;
+}
 
 /* Vorschau */
 function updateOutput(){
   const kom=document.getElementById("kommission").value;
   const dat=document.getElementById("lieferdatum").value;
   const vorgezogen=document.getElementById("chkVorgezogen").checked;
-  if(!kom&&!dat){out.innerHTML="";vorgezogenText.style.display="none";return;}
+  if(!kom&&!dat){out.innerHTML="";vorgezogenText.style.display="none";out.style.marginTop="";return;}
   let isPast=false;
   if(dat){
     const parts=dat.split(".");
@@ -396,28 +436,29 @@ function updateOutput(){
     }
   }
   const dateHtml=isPast
-    ? `<div style="font-size:48pt;border:3px solid red;padding:4px 12px;border-radius:6px;margin:6px 0;color:black;">${dat}</div>`
-    : `<div style="font-size:48pt;margin:6px 0;color:black;">${dat}</div>`;
+    ? `<div style="font-size:48pt;border:3px solid red;padding:4px 12px;border-radius:6px;margin:6px 0;color:black;">${dat||""}</div>`
+    : `<div style="font-size:48pt;margin:6px 0;color:black;">${dat||""}</div>`;
   out.innerHTML=`<div style="font-size:24pt;font-weight:bold;">PAUS</div>
     <div style="font-size:48pt;font-weight:900;margin:6px 0;color:${currentColor};">${kom}</div>
     ${dateHtml}`;
   vorgezogenText.style.display=vorgezogen?"block":"none";
   vorgezogenText.style.color=currentColor;
+  requestAnimationFrame(()=>layoutOutput({vorgezogen,isPast}));
 }
 
+document.getElementById("chkVorgezogen").addEventListener("change",()=>updateOutput());
+window.addEventListener("resize",()=>updateOutput());
+
 /* Drucken */
-document.getElementById("btnDrucken").onclick=()=>{if(out.innerHTML.trim()===""){alert("Bitte zuerst Kommissionsnummer eingeben!");return;}window.print();};
+document.getElementById("btnDrucken").onclick=()=>{
+  if(out.innerHTML.trim()===""){alert("Bitte zuerst Kommissionsnummer eingeben!");return;}
+  window.print();
+};
 
-/* Auto-Zurück */
-let timer;function resetTimer(){clearTimeout(timer);timer=setTimeout(()=>window.location.href='index.html',30000);}
-document.addEventListener('click',resetTimer);document.addEventListener('keydown',resetTimer);resetTimer();
-
-/* Kein Doppeltap-Zoom (iOS Fix) */
+/* Kein Doppeltap-Zoom iOS */
 document.addEventListener('touchend', function(event) {
   const now = Date.now();
-  if (this.lastTouch && now - this.lastTouch < 400) {
-    event.preventDefault();
-  }
+  if (this.lastTouch && now - this.lastTouch < 400) event.preventDefault();
   this.lastTouch = now;
 }, { passive: false });
 </script>
