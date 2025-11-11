@@ -37,23 +37,21 @@ h2 {
 }
 
 /* Eingabefelder */
-label {
-  display: block;
-  text-align: center;
-  font-weight: bold;
-  font-size: 13px;
-  margin-top: 2px;
-}
 input[type="text"] {
   width: 100%;
   text-align: center;
   font-size: 14px;
   padding: 4px 0;
-  margin: 3px 0;
+  margin: 4px 0;
   border: 1px solid #aaa;
   border-radius: 6px;
   background: #fff;
-  height: 28px;
+  height: 30px;
+}
+input::placeholder {
+  color: #999;
+  opacity: 1;
+  font-style: italic;
 }
 
 /* Kundenbuttons */
@@ -92,12 +90,8 @@ input[type="text"] {
   color: #fff;
   font-weight: bold;
 }
-#btnBack {
-  background: #6c757d;
-}
-#btnDrucken {
-  background: #007bff;
-}
+#btnBack { background: #6c757d; }
+#btnDrucken { background: #007bff; }
 
 /* Tastatur-Popup */
 #keyboardPopup {
@@ -208,10 +202,8 @@ input[type="text"] {
 <div id="app">
   <h2>Beschichtung</h2>
 
-  <label>Beistellnummer</label>
-  <input id="numInput" type="text" readonly>
-  <label>Kunde</label>
-  <input id="kundeInput" type="text" readonly>
+  <input id="numInput" type="text" placeholder="Beistellnummer" readonly>
+  <input id="kundeInput" type="text" placeholder="Kunde" readonly>
 
   <div id="kunden">
     <button data-type="LP">L&amp;P</button>
@@ -264,7 +256,7 @@ let currentField=null;
 
 function buildKeyboard(type){
   kbGrid.innerHTML='';
-  const chars=(type==='numbers') ? ['1','2','3','4','5','6','7','8','9','0'] : 'QWERTZUIOPASDFGHJKLYXCVBNM'.split('');
+  const chars=(type==='numbers')?['1','2','3','4','5','6','7','8','9','0']:'QWERTZUIOPASDFGHJKLYXCVBNM'.split('');
   chars.forEach(c=>{
     const b=document.createElement('button');
     b.textContent=c;
