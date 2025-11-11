@@ -9,68 +9,68 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #f0f0f0;
+  background: #f2f3f5;
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 h2 {
   color: #004b8d;
+  margin: 18px 0 10px;
   text-align: center;
-  margin: 20px 0 10px;
 }
 label {
   font-weight: bold;
   color: #333;
-  display: block;
   text-align: center;
-  margin-bottom: 4px;
+  display: block;
+  margin-bottom: 5px;
 }
 input[type="text"] {
-  width: 80%;
+  width: 85%;
   height: 42px;
-  border: 1.3px solid #bfc5cc;
   border-radius: 8px;
+  border: 1px solid #aaa;
   font-size: 18px;
   text-align: center;
-  background: #fff;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
   margin-bottom: 10px;
+  background: #fff;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
 }
 #kunden {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
   width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 10px 0;
 }
 button.action {
-  flex: 0 0 calc(33.33% - 8px);
-  height: 46px;
+  height: 48px;
   border-radius: 10px;
-  border: 1px solid #ccc;
-  background: linear-gradient(#f8f9fb, #eef1f4);
+  font-size: 16px;
   font-weight: bold;
-  font-size: 14px;
+  background: linear-gradient(#f8f9fb, #e8ebef);
+  border: 1px solid #ccc;
+  cursor: pointer;
 }
-button.active { background: #007bff; color: white; }
+button.action:active { background: #007bff; color: white; }
 
-#navButtons {
+#bottomButtons {
   display: flex;
   justify-content: space-between;
-  width: 82%;
+  width: 88%;
   margin: 15px 0 20px;
 }
-#navButtons button {
+#bottomButtons button {
   flex: 0 0 48%;
-  height: 44px;
-  font-size: 14px;
+  height: 46px;
+  font-size: 15px;
   font-weight: bold;
   border-radius: 8px;
   border: 1px solid #ccc;
-  background: linear-gradient(#f8f9fb, #eef1f4);
+  background: linear-gradient(#f8f9fb, #e8ebef);
 }
 
 /* Vorschau-Popup */
@@ -89,27 +89,24 @@ button.active { background: #007bff; color: white; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 #a5Preview {
   width: 90vw;
   aspect-ratio: 210 / 148;
   background: #fff;
-  border: 2px solid #888;
-  border-radius: 6px;
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+  align-items: center;
 }
 #a5Preview #prevContent {
   text-align: center;
   font-weight: 900;
   line-height: 1.2;
-  font-size: clamp(18px, 4vw, 22px);
   transform: scale(0.9);
 }
 #a5Preview .logo {
@@ -151,12 +148,16 @@ button.active { background: #007bff; color: white; }
   background: white;
   padding: 16px;
   border-radius: 12px;
-  width: 92%;
+  width: 90%;
   max-width: 420px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.25);
   text-align: center;
 }
-#keyboardTitle { font-size: 18px; color: #004b8d; margin-bottom: 8px; }
+#keyboardTitle {
+  font-size: 18px;
+  color: #004b8d;
+  margin-bottom: 8px;
+}
 #keyboardInput {
   width: 90%;
   padding: 10px;
@@ -164,11 +165,10 @@ button.active { background: #007bff; color: white; }
   text-align: center;
   border: 1px solid #ccc;
   border-radius: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 #keyboardGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   justify-content: center;
   margin-bottom: 10px;
@@ -224,7 +224,7 @@ button.active { background: #007bff; color: white; }
   <button class="action" data-type="COATINC">Coatinc 24 Verzinken</button>
 </div>
 
-<div id="navButtons">
+<div id="bottomButtons">
   <button id="btnBack">⬅️ Zurück</button>
   <button id="btnDrucken">🖨 Drucken</button>
 </div>
@@ -270,8 +270,8 @@ function buildKeyboard(type){
   const keys=(type==='numbers')
     ? ['1','2','3','4','5','6','7','8','9','0']
     : ['Q','W','E','R','T','Z','U','I','O','P','A','S','D','F','G','H','J','K','L','Y','X','C','V','B','N','M','Ä','Ö','Ü'];
-  const layout=(type==='numbers')?3:5;
-  kbGrid.style.gridTemplateColumns=`repeat(${layout}, 1fr)`;
+  const cols=(type==='numbers')?3:6;
+  kbGrid.style.gridTemplateColumns=`repeat(${cols},1fr)`;
   keys.forEach(k=>{
     const b=document.createElement('button');
     b.textContent=k;
