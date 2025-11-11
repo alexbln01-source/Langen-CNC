@@ -3,217 +3,91 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport"
-  content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>Beschichtung Mobile</title>
+
 <style>
+/* === Grundlayout (5" Portrait, alles mittig) === */
 html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  touch-action: manipulation; /* verhindert Pinch und Doppeltipp */
-  overscroll-behavior: contain; /* kein Browser-Zoom oder Bounce */
+  margin: 0; padding: 0; height: 100%;
   background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
   font-family: "Segoe UI", Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: flex; justify-content: center; align-items: center;
   overflow: hidden;
-  -ms-touch-action: none;
-  -webkit-user-select: none;
-  user-select: none;
 }
-
-/* Hauptcontainer */
 #main {
-  width: 92%;
-  max-width: 370px;
-  background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
-  border-radius: 30px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-  padding: 18px 14px 20px;
-  text-align: center;
+  width: 92%; max-width: 370px;
+  background: linear-gradient(180deg,#fff 0%,#eef1f4 100%);
+  border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  padding: 18px 14px 20px; text-align: center;
 }
-h2 {
-  font-size: 22px;
-  color: #003a73;
-  font-weight: 700;
-  margin: 0 0 10px;
-}
+h2 { margin: 0 0 10px; color:#003a73; font-size:22px; font-weight:700; }
 
 /* Eingabefelder */
-input[type="text"] {
-  width: 90%;
-  height: 36px;
-  margin: 6px 0;
-  text-align: center;
-  font-size: 16px;
-  border: 1px solid #bbb;
-  border-radius: 12px;
-  color: #222;
+input[type="text"]{
+  width: 90%; height: 36px; margin: 6px 0;
+  text-align:center; font-size:16px; color:#222;
+  border:1px solid #bbb; border-radius:12px;
 }
-input::placeholder {
-  color: #777;
-  font-style: italic;
+input::placeholder{ color:#777; font-style:italic; }
+
+/* Kunden-Buttons (einspaltig) */
+#kunden{ display:flex; flex-direction:column; gap:6px; margin:8px 0 10px; }
+#kunden button{
+  height:34px; font-size:15px; font-weight:600; color:#004b8d;
+  background:linear-gradient(#f9f9fb,#edf0f3);
+  border:1px solid #ccc; border-radius:10px; cursor:pointer;
+}
+#kunden button:active{ transform:scale(.99); }
+
+/* Footer-Aktionen */
+#actions{ display:flex; justify-content:space-between; margin-top:6px; }
+#actions button{
+  width:46%; height:38px; font-weight:700; font-size:15px; border:none; color:#fff; border-radius:10px;
+}
+#btnBack{ background:linear-gradient(#6c757d,#495057); }
+#btnDrucken{ background:linear-gradient(#007bff,#0056b3); }
+
+/* === VORSCHAU: echte Miniatur des Drucketiketts === */
+#previewPopup{
+  display:none; position:fixed; inset:0; z-index:5000;
+  background:rgba(0,0,0,.6); justify-content:center; align-items:center;
+}
+#previewBox{
+  background:#fff; border-radius:14px; padding:10px;
+  box-shadow:0 6px 20px rgba(0,0,0,.4);
+}
+.labelBox {            /* unser Etikett-Canvas */
+  width:210mm; height:148mm;            /* A5 quer */
+  box-sizing:border-box; padding:8mm;    /* gleicher Innenrand wie Druck */
+  position:relative;
+  display:flex; flex-direction:column;
+  justify-content:center; align-items:center;
+  border:1px solid #ddd;                 /* nur in Vorschau sichtbar */
+}
+.labelContent{ text-align:center; line-height:1.25; font-weight:900; }
+.labelLogo{
+  position:absolute; right:8mm; bottom:6mm;
+  width:43mm; height:16mm; object-fit:contain;
 }
 
-/* Kundenbuttons */
-#kunden {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin: 8px 0 10px;
-}
-#kunden button {
-  height: 34px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #004b8d;
-  background: linear-gradient(#f9f9fb, #edf0f3);
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-#kunden button.active {
-  background: #007bff;
-  color: #fff;
-}
+/* Miniatur-Skalierung nur für Vorschau */
+.previewScale { transform: scale(.48); transform-origin: top left; }
 
-/* Aktionen */
-#actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 6px;
+/* === DRUCK: nur #printArea sichtbar, echtes A5 quer === */
+@media print {
+  @page { size: A5 landscape; margin: 0; }
+  html, body { width: 210mm; height: 148mm; }
+  body * { visibility: hidden !important; }
+  #printArea, #printArea * { visibility: visible !important; }
+  #printArea {
+    position: fixed; inset: 0; margin: 0;
+    width: 210mm; height: 148mm;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  /* keine Ränder/Schattierungen im Druck */
+  #printArea .labelBox { border: none !important; }
 }
-#actions button {
-  width: 46%;
-  height: 38px;
-  font-weight: bold;
-  font-size: 15px;
-  border-radius: 10px;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-}
-#btnBack { background: linear-gradient(#6c757d, #495057); }
-#btnDrucken { background: linear-gradient(#007bff, #0056b3); }
-
-/* Vorschau */
-#previewPopup {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  z-index: 5000;
-  justify-content: center;
-  align-items: center;
-}
-#previewBox {
-  position: relative;
-  background: white;
-  border-radius: 12px;
-  width: 90vw;
-  aspect-ratio: 210/148;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  overflow: hidden;
-}
-#output-content {
-  text-align: center;
-  font-weight: 900;
-  line-height: 1.3;
-  transform: scale(0.7);
-}
-#output-footer {
-  position: absolute;
-  bottom: 10mm;
-  right: 10mm;
-}
-#output-footer img {
-  width: 3.8cm;
-  height: auto;
-  object-fit: contain;
-}
-#previewButtons {
-  position: absolute;
-  bottom: 6mm;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  gap: 14px;
-}
-#previewButtons button {
-  padding: 8px 20px;
-  border: none;
-  border-radius: 8px;
-  color: #fff;
-  font-weight: bold;
-}
-#btnPrintNow { background: #28a745; }
-#btnCancelPreview { background: #d9534f; }
-
-/* Popup Tastatur */
-#keyboardPopup {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  z-index: 8000;
-  justify-content: center;
-  align-items: center;
-}
-#keyboardBox {
-  background: #fff;
-  border-radius: 14px;
-  width: 94%;
-  max-width: 360px;
-  text-align: center;
-  padding: 12px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
-}
-#keyboardInput {
-  width: 90%;
-  height: 34px;
-  font-size: 18px;
-  text-align: center;
-  border-radius: 8px;
-  border: 1px solid #bbb;
-  margin-bottom: 8px;
-}
-#keyboardGrid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
-}
-#keyboardGrid button {
-  height: 38px;
-  font-size: 18px;
-  border-radius: 8px;
-  background: #f1f1f1;
-  border: 1px solid #ccc;
-  color: #003a73;
-}
-#keyboardActions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 8px;
-}
-#keyboardActions button {
-  flex: 1;
-  height: 36px;
-  border-radius: 8px;
-  color: #fff;
-  font-weight: bold;
-  margin: 0 3px;
-  border: none;
-}
-#btnDel { background: #dc3545; }
-#btnOk { background: #28a745; }
-#btnClose { background: #6c757d; }
 </style>
 </head>
 <body>
@@ -221,12 +95,12 @@ input::placeholder {
 <div id="main">
   <h2>BESCHICHTUNG</h2>
 
-  <input id="numInput" type="text" placeholder="Beistellnummer" readonly>
-  <input id="kundeInput" type="text" placeholder="Kunde" readonly>
+  <input id="numInput"   type="text" placeholder="Beistellnummer" readonly>
+  <input id="kundeInput" type="text" placeholder="Kunde"          readonly>
 
   <div id="kunden">
-    <button data-type="LP">L&P</button>
-    <button data-type="LPEILT">L&P EILT SEHR</button>
+    <button data-type="LP">L&amp;P</button>
+    <button data-type="LPEILT">L&amp;P EILT SEHR</button>
     <button data-type="SCHUETTE">Schütte</button>
     <button data-type="SCHUETTEEILT">Schütte EILT SEHR</button>
     <button data-type="KLEY">Kleymann</button>
@@ -235,7 +109,7 @@ input::placeholder {
     <button data-type="CHEMISCH">Comte Chemisch Vernickeln</button>
     <button data-type="DICK">Comte Dickschichtpassivierung</button>
     <button data-type="BLAU">Comte Blau ZN8</button>
-    <button data-type="PENTZ">Pentz & Gerdes ZN8</button>
+    <button data-type="PENTZ">Pentz &amp; Gerdes ZN8</button>
     <button data-type="RCS">RCS Schweißen</button>
     <button data-type="COATINC">Coatinc 24 Verzinken</button>
   </div>
@@ -246,116 +120,160 @@ input::placeholder {
   </div>
 </div>
 
-<!-- Vorschau -->
+<!-- Vorschau-Popup (Miniatur) -->
 <div id="previewPopup">
   <div id="previewBox">
-    <div id="output-content"></div>
-    <div id="output-footer"><img src="Langen.png" alt="Logo"></div>
-    <div id="previewButtons">
-      <button id="btnPrintNow">Jetzt drucken</button>
-      <button id="btnCancelPreview">Abbrechen</button>
+    <div id="previewCanvas" class="labelBox previewScale"></div>
+    <div style="display:flex; gap:12px; justify-content:center; margin-top:14px;">
+      <button id="btnPrintNow"
+              style="background:#28a745;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-weight:700;">
+        Jetzt drucken
+      </button>
+      <button id="btnCancelPreview"
+              style="background:#d9534f;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-weight:700;">
+        Abbrechen
+      </button>
     </div>
   </div>
 </div>
 
-<!-- Popup Tastatur -->
-<div id="keyboardPopup">
-  <div id="keyboardBox">
-    <input id="keyboardInput" type="text" readonly>
-    <div id="keyboardGrid"></div>
-    <div id="keyboardActions">
-      <button id="btnDel">⌫</button>
-      <button id="btnOk">OK</button>
-      <button id="btnClose">Abbrechen</button>
+<!-- Versteckter Druck-Container (gleicher Inhalt wie Vorschau, ohne Skalierung) -->
+<div id="printArea" style="position:fixed; left:-10000px; top:-10000px;">
+  <div id="printCanvas" class="labelBox"></div>
+</div>
+
+<!-- Popup-Tastatur (unverändert) -->
+<div id="keyboardPopup" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:8000; justify-content:center; align-items:center;">
+  <div id="keyboardBox" style="background:#fff; border-radius:14px; width:94%; max-width:360px; text-align:center; padding:12px; box-shadow:0 8px 30px rgba(0,0,0,.35);">
+    <input id="keyboardInput" type="text" style="width:90%; height:34px; font-size:18px; text-align:center; border-radius:8px; border:1px solid #bbb; margin-bottom:8px;">
+    <div id="keyboardGrid" style="display:grid; grid-template-columns:repeat(5,1fr); gap:6px;"></div>
+    <div style="display:flex; justify-content:space-between; margin-top:8px;">
+      <button id="btnDel"   style="flex:1; height:36px; border-radius:8px; color:#fff; font-weight:700; margin:0 3px; border:none; background:#dc3545;">Löschen</button>
+      <button id="btnOk"    style="flex:1; height:36px; border-radius:8px; color:#fff; font-weight:700; margin:0 3px; border:none; background:#28a745;">OK</button>
+      <button id="btnClose" style="flex:1; height:36px; border-radius:8px; color:#fff; font-weight:700; margin:0 3px; border:none; background:#6c757d;">Schließen</button>
     </div>
   </div>
 </div>
 
 <script>
-const num = document.getElementById('numInput');
+/* ------- Hilfen ------- */
+const num   = document.getElementById('numInput');
 const kunde = document.getElementById('kundeInput');
-const popup = document.getElementById('keyboardPopup');
+
+/* Eigene Tastatur */
+const popup   = document.getElementById('keyboardPopup');
 const kbInput = document.getElementById('keyboardInput');
-const kbGrid = document.getElementById('keyboardGrid');
+const kbGrid  = document.getElementById('keyboardGrid');
 let currentField = null;
-let selectedType = null;
 
-/* 🛡️ Anti-Zoom */
-document.addEventListener('gesturestart', e => e.preventDefault());
-document.addEventListener('dblclick', e => e.preventDefault());
-document.addEventListener('touchmove', e => {
-  if (e.scale !== undefined && e.scale !== 1) e.preventDefault();
-}, { passive: false });
-
-/* Tastatur */
-function buildKeyboard(type) {
+function buildKeyboard(type){
   kbGrid.innerHTML = '';
-  const chars = (type === 'numbers')
+  const chars = (type==='numbers')
     ? ['1','2','3','4','5','6','7','8','9','0']
-    : 'QWERTZUIOPASDFGHJKLYXCVBNM'.split('');
-  chars.forEach(c => {
-    const b = document.createElement('button');
-    b.textContent = c;
-    b.onclick = () => kbInput.value += c;
+    : 'QWERTZUIOPÄASDFGHJKLÖYXCVBNM'.split('');
+  chars.forEach(c=>{
+    const b=document.createElement('button');
+    b.textContent=c;
+    b.style.cssText='height:38px;font-size:18px;border-radius:8px;background:#f1f1f1;border:1px solid #ccc;color:#003a73;';
+    b.onclick=()=>kbInput.value+=c;
     kbGrid.appendChild(b);
   });
 }
-function openKeyboard(field, type) {
-  currentField = field;
-  kbInput.value = field.value || '';
+function openKeyboard(field,type){
+  currentField=field;
+  kbInput.value=field.value||'';
   buildKeyboard(type);
-  popup.style.display = 'flex';
+  popup.style.display='flex';
+  setTimeout(()=>kbInput.focus(),50);
 }
-function closeKeyboard() { popup.style.display = 'none'; }
+function closeKeyboard(){ popup.style.display='none'; }
 
-document.getElementById('btnDel').onclick = () => kbInput.value = kbInput.value.slice(0, -1);
+document.getElementById('btnDel').onclick = ()=> kbInput.value = kbInput.value.slice(0,-1);
 document.getElementById('btnClose').onclick = closeKeyboard;
-document.getElementById('btnOk').onclick = () => {
+document.getElementById('btnOk').onclick = ()=>{
   currentField.value = kbInput.value.trim();
-  popup.style.display = 'none';
-  if (currentField === num) setTimeout(() => openKeyboard(kunde, 'letters'), 200);
+  if(currentField===num){ openKeyboard(kunde,'letters'); } else { closeKeyboard(); }
 };
-
-num.onclick = () => openKeyboard(num, 'numbers');
-kunde.onclick = () => openKeyboard(kunde, 'letters');
-
-/* Vorschau & Drucken */
-function makeOutput(type) {
-  selectedType = type;
-  const n = num.value.trim(), k = kunde.value.trim();
-  let html = `<div style="font-size:36pt;margin-bottom:6mm;">${n || ''}</div>`;
-  const add = (m,s='',n='') => {
-    html += `<div style="font-size:48pt;font-weight:900;">${m}</div>`;
-    if (s) html += `<div style="font-size:32pt;">„${s}“</div>`;
-    if (n) html += `<div style="font-size:32pt;">(${n})</div>`;
-  };
-  const map = {
-    LP:['L&P'], LPEILT:['L&P','EILT SEHR'],
-    SCHUETTE:['Schütte'], SCHUETTEEILT:['Schütte','EILT SEHR'],
-    KLEY:['Kleymann'], KLEYEILT:['Kleymann','EILT SEHR'],
-    COMTEZN8:['Comte','ZN8',k], CHEMISCH:['Comte','Chemisch Vernickeln',k],
-    DICK:['Comte','Dickschichtpassivierung',k], BLAU:['Comte','Blau ZN8',k],
-    PENTZ:['Pentz & Gerdes','ZN8',k], RCS:['RCS GmbH','Schweißen',k],
-    COATINC:['Coatinc 24 GmbH','Verzinken',k]
-  };
-  add(...map[type]);
-  document.getElementById('output-content').innerHTML = html;
-}
-document.querySelectorAll('#kunden button').forEach(btn=>{
-  btn.onclick=()=>{document.querySelectorAll('#kunden button').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');makeOutput(btn.dataset.type);}
+kbInput.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){ e.preventDefault(); document.getElementById('btnOk').click(); }
 });
-document.getElementById('btnDrucken').onclick=()=>{
-  const n=num.value.trim(),k=kunde.value.trim();
-  if(!n||!k||!selectedType){alert('Bitte Beistellnummer, Kunde und Kundentyp auswählen.');return;}
+num.onclick   = ()=>openKeyboard(num,'numbers');
+kunde.onclick = ()=>openKeyboard(kunde,'letters');
+
+/* Doppeltipp-/Pinch-Zoom weiter unterdrücken */
+let lastTouch=0;
+document.addEventListener('touchstart',e=>{
+  const now=e.timeStamp;
+  if(now-lastTouch<=350){ e.preventDefault(); }
+  lastTouch=now;
+},{passive:false});
+document.addEventListener('gesturestart',e=>e.preventDefault());
+
+/* ---------- Etikett-Renderer (einmal definieren, 2x benutzen: Vorschau & Druck) ---------- */
+function renderLabelHTML(n, main, sub='', name=''){
+  return `
+    <div class="labelContent">
+      <div style="font-size:36pt; margin-bottom:6mm;">${n}</div>
+      <div style="font-size:48pt; font-weight:900;">${main}</div>
+      ${sub ? `<div style="font-size:32pt;">„${sub}“</div>` : '' }
+      ${name? `<div style="font-size:32pt;">(${name})</div>` : '' }
+    </div>
+    <img class="labelLogo" src="Langen.png" alt="Logo">
+  `;
+}
+
+function fillByType(type){
+  const n = num.value.trim();
+  const k = kunde.value.trim();
+  let main='', sub='', name='';
+  switch(type){
+    case 'LP': main='L&P'; break;
+    case 'LPEILT': main='L&P'; sub='EILT SEHR'; break;
+    case 'SCHUETTE': main='Schütte'; break;
+    case 'SCHUETTEEILT': main='Schütte'; sub='EILT SEHR'; break;
+    case 'KLEY': main='Kleymann'; break;
+    case 'KLEYEILT': main='Kleymann'; sub='EILT SEHR'; break;
+    /* Comte-Varianten mit Kundennamen unten */
+    case 'COMTEZN8': main='Comte'; sub='ZN8'; name=k; break;
+    case 'CHEMISCH': main='Comte'; sub='Chemisch Vernickeln'; name=k; break;
+    case 'DICK': main='Comte'; sub='Dickschichtpassivierung'; name=k; break;
+    case 'BLAU': main='Comte'; sub='Blau ZN8'; name=k; break;
+    /* Pentz / RCS / Coatinc mit Kunde unten */
+    case 'PENTZ': main='Pentz & Gerdes'; sub='ZN8'; name=k; break;
+    case 'RCS': main='RCS GmbH'; sub='Schweißen'; name=k; break;
+    case 'COATINC': main='Coatinc 24 GmbH'; sub='Verzinken'; name=k; break;
+  }
+  return renderLabelHTML(n, main, sub, name);
+}
+
+/* Vorschau öffnen (Miniatur) */
+function openPreview(type){
+  const n=num.value.trim(), k=kunde.value.trim();
+  if(!n || !k){ alert('Bitte Beistellnummer UND Kunde eingeben.'); return; }
+
+  const html = fillByType(type);
+
+  document.getElementById('previewCanvas').innerHTML = html; // Miniatur
+  document.getElementById('printCanvas').innerHTML   = html; // Druck 1:1
+
   document.getElementById('previewPopup').style.display='flex';
-};
-document.getElementById('btnPrintNow').onclick=()=>{
+}
+
+/* Buttons: Kunden -> Vorschau */
+document.querySelectorAll('#kunden button')
+  .forEach(b => b.addEventListener('click', () => openPreview(b.dataset.type)));
+
+/* Drucken nur #printArea */
+document.getElementById('btnPrintNow').onclick = ()=>{
+  if(!num.value.trim() || !kunde.value.trim()){ alert('Bitte zuerst alles ausfüllen.'); return; }
   window.print();
-  setTimeout(()=>document.getElementById('previewPopup').style.display='none',600);
+  document.getElementById('previewPopup').style.display='none';
 };
-document.getElementById('btnCancelPreview').onclick=()=>document.getElementById('previewPopup').style.display='none';
-document.getElementById('btnBack').onclick=()=>window.location.href='index.html';
+
+/* Footer */
+document.getElementById('btnCancelPreview').onclick = ()=> document.getElementById('previewPopup').style.display='none';
+document.getElementById('btnDrucken').onclick = ()=> alert('Bitte zunächst Kunde wählen, dann in der Vorschau „Jetzt drucken“.');
+document.getElementById('btnBack').onclick = ()=> history.back();
 </script>
 </body>
 </html>
