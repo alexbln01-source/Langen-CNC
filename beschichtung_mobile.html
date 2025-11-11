@@ -345,6 +345,18 @@ document.getElementById('btnPrintNow').onclick = () => {
   window.print();
   document.getElementById('previewPopup').style.display = 'none';
 };
+<!-- Popup Tastatur -->
+<div id="keyboardPopup">
+  <div id="keyboardBox">
+    <input id="keyboardInput" type="text" readonly>
+    <div id="keyboardGrid"></div>
+    <div id="keyboardActions">
+      <button id="btnDel">⌫</button>
+      <button id="btnOk">OK</button>
+      <button id="btnClose">Abbrechen</button>
+    </div>
+  </div>
+</div>
 </script>
 </body>
 </html>
