@@ -282,48 +282,52 @@ num.onclick=()=>openKeyboard(num,'numbers');
 kunde.onclick=()=>openKeyboard(kunde,'letters');
 
 function makeOutput(type){
-  const n=num.value.trim(),k=kunde.value.trim();
-  if(!n)return alert('Bitte Beistellnummer eingeben');
-  let html=`<div style="font-size:36pt;margin-bottom:6mm;">${n}</div>`;
-  const add=(main,sub='',name='')=>{
-    html+=`<div style="font-size:48pt;font-weight:900;">${main}</div>`;
-    if(sub)html+=`<div style="font-size:32pt;">„${sub}“</div>`;
-    if(name)html+=`<div style="font-size:32pt;">(${name})</div>`;
-  };
-  switch(type){
-    case'LP':add('L&P');break;
-    case'LPEILT':add('L&P','EILT SEHR');break;
-    case'SCHUETTE':add('Schütte');break;
-    case'SCHUETTEEILT':add('Schütte','EILT SEHR');break;
-    case'KLEY':add('Kleymann');break;
-    case'KLEYEILT':add('Kleymann','EILT SEHR');break;
-    case'COMTEZN8':add('Comte','ZN8',k);break;
-    case'CHEMISCH':add('Comte','Chemisch Vernickeln',k);break;
-    case'DICK':add('Comte','Dickschichtpassivierung',k);break;
-    case'BLAU':add('Comte','Blau ZN8',k);break;
-    case'PENTZ':add('Pentz & Gerdes','ZN8',k);break;
-    case'RCS':add('RCS GmbH','Schweißen',k);break;
-    case'COATINC':add('Coatinc 24 GmbH','Verzinken',k);break;
+  const n = num.value.trim();
+  const k = kunde.value.trim();
+
+  if (!n || !k) {
+    alert('Bitte Beistellnummer UND Kunde eingeben, bevor gedruckt werden kann.');
+    return;
   }
-  document.getElementById('output-content').innerHTML=html;
-  document.getElementById('previewPopup').style.display='flex';
+
+  let html = `<div style="font-size:36pt;margin-bottom:6mm;">${n}</div>`;
+  const add = (main, sub = '', name = '') => {
+    html += `<div style="font-size:48pt;font-weight:900;">${main}</div>`;
+    if (sub) html += `<div style="font-size:32pt;">„${sub}“</div>`;
+    if (name) html += `<div style="font-size:32pt;">(${name})</div>`;
+  };
+
+  switch (type) {
+    case 'LP': add('L&P'); break;
+    case 'LPEILT': add('L&P', 'EILT SEHR'); break;
+    case 'SCHUETTE': add('Schütte'); break;
+    case 'SCHUETTEEILT': add('Schütte', 'EILT SEHR'); break;
+    case 'KLEY': add('Kleymann'); break;
+    case 'KLEYEILT': add('Kleymann', 'EILT SEHR'); break;
+    case 'COMTEZN8': add('Comte', 'ZN8', k); break;
+    case 'CHEMISCH': add('Comte', 'Chemisch Vernickeln', k); break;
+    case 'DICK': add('Comte', 'Dickschichtpassivierung', k); break;
+    case 'BLAU': add('Comte', 'Blau ZN8', k); break;
+    case 'PENTZ': add('Pentz & Gerdes', 'ZN8', k); break;
+    case 'RCS': add('RCS GmbH', 'Schweißen', k); break;
+    case 'COATINC': add('Coatinc 24 GmbH', 'Verzinken', k); break;
+  }
+
+  document.getElementById('output-content').innerHTML = html;
+  document.getElementById('previewPopup').style.display = 'flex';
 }
 
-document.querySelectorAll('#kunden button').forEach(btn=>
-  btn.onclick=()=>makeOutput(btn.dataset.type)
+document.querySelectorAll('#kunden button').forEach(btn =>
+  btn.onclick = () => makeOutput(btn.dataset.type)
 );
 
-document.getElementById('btnPrintNow').onclick=()=>{
+document.getElementById('btnPrintNow').onclick = () => {
+  if (!num.value.trim() || !kunde.value.trim()) {
+    alert('Bitte zuerst Beistellnummer UND Kunde eingeben.');
+    return;
+  }
   window.print();
-  document.getElementById('previewPopup').style.display='none';
-};
-document.getElementById('btnCancelPreview').onclick=()=>{
-  document.getElementById('previewPopup').style.display='none';
-};
-document.getElementById('btnBack').onclick=()=>window.location.href='index.html';
-document.getElementById('btnDrucken').onclick=()=>{
-  if(document.getElementById('output-content').innerHTML.trim()==="")return alert("Bitte zuerst einen Kunden wählen!");
-  document.getElementById('previewPopup').style.display='flex';
+  document.getElementById('previewPopup').style.display = 'none';
 };
 </script>
 </body>
