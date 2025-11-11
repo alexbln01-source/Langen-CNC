@@ -21,28 +21,30 @@ body {
   max-width: 360px;
   height: 100vh;
   background: #f9f9f9;
-  padding: 6px 8px;
+  padding: 8px 10px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
+  align-items: center;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 /* Titel */
 h2 {
   text-align: center;
-  font-size: 16px;
+  font-size: 18px;
   color: #004b8d;
-  margin: 4px 0;
+  margin: 4px 0 10px 0;
 }
 
 /* Eingabefelder */
 input[type="text"] {
-  width: 100%;
+  width: 90%;
   text-align: center;
   font-size: 14px;
   padding: 4px 0;
-  margin: 4px 0;
+  margin: 6px 0;
   border: 1px solid #aaa;
   border-radius: 6px;
   background: #fff;
@@ -59,7 +61,8 @@ input::placeholder {
   display: flex;
   flex-direction: column;
   gap: 3px;
-  margin-top: 4px;
+  margin-top: 8px;
+  width: 90%;
 }
 #kunden button {
   width: 100%;
@@ -79,7 +82,8 @@ input::placeholder {
 #controls {
   display: flex;
   justify-content: space-between;
-  margin-top: 4px;
+  margin-top: 10px;
+  width: 90%;
 }
 #controls button {
   flex: 0 0 48%;
@@ -93,7 +97,7 @@ input::placeholder {
 #btnBack { background: #6c757d; }
 #btnDrucken { background: #007bff; }
 
-/* Tastatur-Popup */
+/* Popup Tastatur */
 #keyboardPopup {
   display: none;
   position: fixed;
@@ -213,6 +217,12 @@ input::placeholder {
     <button data-type="KLEY">Kleymann</button>
     <button data-type="KLEYEILT">Kleymann EILT SEHR</button>
     <button data-type="COMTEZN8">Comte ZN8</button>
+    <button data-type="CHEMISCH">Comte Chemisch Vernickeln</button>
+    <button data-type="DICK">Comte Dickschichtpassivierung</button>
+    <button data-type="BLAU">Comte Blau ZN8</button>
+    <button data-type="PENTZ">Pentz &amp; Gerdes ZN8</button>
+    <button data-type="RCS">RCS Schweißen</button>
+    <button data-type="COATINC">Coatinc 24 Verzinken</button>
   </div>
 
   <div id="controls">
