@@ -5,88 +5,105 @@
 <meta name="viewport"
       content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>Beschichtung Mobile</title>
-
 <style>
-/* === Grundlayout (5" Portrait, alles mittig) === */
 html, body {
   margin: 0; padding: 0; height: 100%;
   background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
   font-family: "Segoe UI", Arial, sans-serif;
   display: flex; justify-content: center; align-items: center;
   overflow: hidden;
+  touch-action: none;          /* blockiert Zoom auf Android */
+  overscroll-behavior: none;
 }
+
+/* --- Rahmen --- */
 #main {
   width: 92%; max-width: 370px;
-  background: linear-gradient(180deg,#fff 0%,#eef1f4 100%);
-  border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,.25);
-  padding: 18px 14px 20px; text-align: center;
+  background: linear-gradient(180deg, #fff 0%, #eef1f4 100%);
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  padding: 18px 14px 20px;
+  text-align: center;
 }
-h2 { margin: 0 0 10px; color:#003a73; font-size:22px; font-weight:700; }
+h2 { font-size:22px; color:#003a73; font-weight:700; margin:0 0 10px; }
 
-/* Eingabefelder */
-input[type="text"]{
+/* --- Eingabe --- */
+input[type="text"] {
   width: 90%; height: 36px; margin: 6px 0;
-  text-align:center; font-size:16px; color:#222;
-  border:1px solid #bbb; border-radius:12px;
+  text-align:center; font-size:16px; border-radius:12px;
+  border:1px solid #bbb; color:#222;
 }
-input::placeholder{ color:#777; font-style:italic; }
+input::placeholder { color:#777; font-style:italic; }
 
-/* Kunden-Buttons (einspaltig) */
-#kunden{ display:flex; flex-direction:column; gap:6px; margin:8px 0 10px; }
-#kunden button{
+/* --- Buttons --- */
+#kunden { display:flex; flex-direction:column; gap:6px; margin:8px 0 10px; }
+#kunden button {
   height:34px; font-size:15px; font-weight:600; color:#004b8d;
   background:linear-gradient(#f9f9fb,#edf0f3);
   border:1px solid #ccc; border-radius:10px; cursor:pointer;
 }
-#kunden button:active{ transform:scale(.99); }
+#kunden button.active { background:#007bff; color:#fff; }
+#actions { display:flex; justify-content:space-between; margin-top:6px; }
+#actions button {
+  width:46%; height:38px; font-weight:700; font-size:15px; border-radius:10px;
+  color:#fff; border:none; cursor:pointer;
+}
+#btnBack { background:linear-gradient(#6c757d,#495057); }
+#btnDrucken { background:linear-gradient(#007bff,#0056b3); }
 
-/* Footer-Aktionen */
-#actions{ display:flex; justify-content:space-between; margin-top:6px; }
-#actions button{
-  width:46%; height:38px; font-weight:700; font-size:15px; border:none; color:#fff; border-radius:10px;
+/* --- Vorschau --- */
+#previewPopup {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,0.6);
+  z-index:5000;
+  justify-content:center; align-items:center;
 }
-#btnBack{ background:linear-gradient(#6c757d,#495057); }
-#btnDrucken{ background:linear-gradient(#007bff,#0056b3); }
-
-/* === VORSCHAU: echte Miniatur des Drucketiketts === */
-#previewPopup{
-  display:none; position:fixed; inset:0; z-index:5000;
-  background:rgba(0,0,0,.6); justify-content:center; align-items:center;
+#previewBox {
+  background:#fff;
+  border-radius:15px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.4);
+  padding:10px 10px 60px;
+  text-align:center;
+  width:85%;
+  max-width:420px;
 }
-#previewBox{
-  background:#fff; border-radius:14px; padding:10px;
-  box-shadow:0 6px 20px rgba(0,0,0,.4);
-}
-.labelBox {            /* unser Etikett-Canvas */
-  width:210mm; height:148mm;            /* A5 quer */
-  box-sizing:border-box; padding:8mm;    /* gleicher Innenrand wie Druck */
-  position:relative;
+#label {
   display:flex; flex-direction:column;
   justify-content:center; align-items:center;
-  border:1px solid #ddd;                 /* nur in Vorschau sichtbar */
+  aspect-ratio:210/148;
+  background:#fff;
+  border-radius:10px;
+  box-shadow:inset 0 0 5px rgba(0,0,0,0.1);
+  overflow:hidden;
+  width:100%;
 }
-.labelContent{ text-align:center; line-height:1.25; font-weight:900; }
-.labelLogo{
-  position:absolute; right:8mm; bottom:6mm;
-  width:43mm; height:16mm; object-fit:contain;
+#labelContent {
+  font-weight:900;
+  line-height:1.25;
+  text-align:center;
+}
+#labelLogo {
+  width:40%;
+  position:absolute;
+  bottom:6%;
+  right:6%;
 }
 
-/* Miniatur-Skalierung nur für Vorschau */
-.previewScale { transform: scale(.48); transform-origin: top left; }
-
-/* === DRUCK: nur #printArea sichtbar, echtes A5 quer === */
+/* --- Druck --- */
 @media print {
-  @page { size: A5 landscape; margin: 0; }
-  html, body { width: 210mm; height: 148mm; }
-  body * { visibility: hidden !important; }
-  #printArea, #printArea * { visibility: visible !important; }
+  @page { size: A5 landscape; margin:0; }
+  body * { visibility:hidden; }
+  #printArea, #printArea * { visibility:visible; }
   #printArea {
-    position: fixed; inset: 0; margin: 0;
-    width: 210mm; height: 148mm;
-    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    position:fixed; inset:0;
+    display:flex; justify-content:center; align-items:center;
+    width:100%; height:100%;
   }
-  /* keine Ränder/Schattierungen im Druck */
-  #printArea .labelBox { border: none !important; }
+  #printLabel {
+    width:100%; height:auto;
+    text-align:center;
+  }
+  #printLabel img { width:35%; position:absolute; bottom:8%; right:8%; }
 }
 </style>
 </head>
@@ -95,8 +112,8 @@ input::placeholder{ color:#777; font-style:italic; }
 <div id="main">
   <h2>BESCHICHTUNG</h2>
 
-  <input id="numInput"   type="text" placeholder="Beistellnummer" readonly>
-  <input id="kundeInput" type="text" placeholder="Kunde"          readonly>
+  <input id="numInput" type="text" placeholder="Beistellnummer" readonly>
+  <input id="kundeInput" type="text" placeholder="Kunde" readonly>
 
   <div id="kunden">
     <button data-type="LP">L&amp;P</button>
@@ -105,13 +122,6 @@ input::placeholder{ color:#777; font-style:italic; }
     <button data-type="SCHUETTEEILT">Schütte EILT SEHR</button>
     <button data-type="KLEY">Kleymann</button>
     <button data-type="KLEYEILT">Kleymann EILT SEHR</button>
-    <button data-type="COMTEZN8">Comte ZN8</button>
-    <button data-type="CHEMISCH">Comte Chemisch Vernickeln</button>
-    <button data-type="DICK">Comte Dickschichtpassivierung</button>
-    <button data-type="BLAU">Comte Blau ZN8</button>
-    <button data-type="PENTZ">Pentz &amp; Gerdes ZN8</button>
-    <button data-type="RCS">RCS Schweißen</button>
-    <button data-type="COATINC">Coatinc 24 Verzinken</button>
   </div>
 
   <div id="actions">
@@ -120,160 +130,87 @@ input::placeholder{ color:#777; font-style:italic; }
   </div>
 </div>
 
-<!-- Vorschau-Popup (Miniatur) -->
+<!-- Vorschau -->
 <div id="previewPopup">
   <div id="previewBox">
-    <div id="previewCanvas" class="labelBox previewScale"></div>
-    <div style="display:flex; gap:12px; justify-content:center; margin-top:14px;">
-      <button id="btnPrintNow"
-              style="background:#28a745;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-weight:700;">
-        Jetzt drucken
-      </button>
-      <button id="btnCancelPreview"
-              style="background:#d9534f;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-weight:700;">
-        Abbrechen
-      </button>
+    <div id="label">
+      <div id="labelContent"></div>
+      <img id="labelLogo" src="Langen.png" alt="Logo">
+    </div>
+    <div style="margin-top:14px; display:flex; justify-content:center; gap:14px;">
+      <button id="btnPrintNow" style="background:#28a745; color:#fff; border:none; border-radius:8px; padding:8px 20px;">Jetzt drucken</button>
+      <button id="btnCancelPreview" style="background:#d9534f; color:#fff; border:none; border-radius:8px; padding:8px 20px;">Abbrechen</button>
     </div>
   </div>
 </div>
 
-<!-- Versteckter Druck-Container (gleicher Inhalt wie Vorschau, ohne Skalierung) -->
-<div id="printArea" style="position:fixed; left:-10000px; top:-10000px;">
-  <div id="printCanvas" class="labelBox"></div>
-</div>
-
-<!-- Popup-Tastatur (unverändert) -->
-<div id="keyboardPopup" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:8000; justify-content:center; align-items:center;">
-  <div id="keyboardBox" style="background:#fff; border-radius:14px; width:94%; max-width:360px; text-align:center; padding:12px; box-shadow:0 8px 30px rgba(0,0,0,.35);">
-    <input id="keyboardInput" type="text" style="width:90%; height:34px; font-size:18px; text-align:center; border-radius:8px; border:1px solid #bbb; margin-bottom:8px;">
-    <div id="keyboardGrid" style="display:grid; grid-template-columns:repeat(5,1fr); gap:6px;"></div>
-    <div style="display:flex; justify-content:space-between; margin-top:8px;">
-      <button id="btnDel"   style="flex:1; height:36px; border-radius:8px; color:#fff; font-weight:700; margin:0 3px; border:none; background:#dc3545;">Löschen</button>
-      <button id="btnOk"    style="flex:1; height:36px; border-radius:8px; color:#fff; font-weight:700; margin:0 3px; border:none; background:#28a745;">OK</button>
-      <button id="btnClose" style="flex:1; height:36px; border-radius:8px; color:#fff; font-weight:700; margin:0 3px; border:none; background:#6c757d;">Schließen</button>
-    </div>
-  </div>
+<!-- Druckbereich -->
+<div id="printArea" style="display:none;">
+  <div id="printLabel"></div>
 </div>
 
 <script>
-/* ------- Hilfen ------- */
-const num   = document.getElementById('numInput');
+const num = document.getElementById('numInput');
 const kunde = document.getElementById('kundeInput');
+let selectedType = null;
 
-/* Eigene Tastatur */
-const popup   = document.getElementById('keyboardPopup');
-const kbInput = document.getElementById('keyboardInput');
-const kbGrid  = document.getElementById('keyboardGrid');
-let currentField = null;
-
-function buildKeyboard(type){
-  kbGrid.innerHTML = '';
-  const chars = (type==='numbers')
-    ? ['1','2','3','4','5','6','7','8','9','0']
-    : 'QWERTZUIOPÄASDFGHJKLÖYXCVBNM'.split('');
-  chars.forEach(c=>{
-    const b=document.createElement('button');
-    b.textContent=c;
-    b.style.cssText='height:38px;font-size:18px;border-radius:8px;background:#f1f1f1;border:1px solid #ccc;color:#003a73;';
-    b.onclick=()=>kbInput.value+=c;
-    kbGrid.appendChild(b);
-  });
+/* Tastatur */
+function openKeyboard(target,type){
+  const input = prompt('Eingabe:');
+  if(input!==null) target.value=input;
 }
-function openKeyboard(field,type){
-  currentField=field;
-  kbInput.value=field.value||'';
-  buildKeyboard(type);
-  popup.style.display='flex';
-  setTimeout(()=>kbInput.focus(),50);
-}
-function closeKeyboard(){ popup.style.display='none'; }
+num.onclick=()=>openKeyboard(num,'num');
+kunde.onclick=()=>openKeyboard(kunde,'text');
 
-document.getElementById('btnDel').onclick = ()=> kbInput.value = kbInput.value.slice(0,-1);
-document.getElementById('btnClose').onclick = closeKeyboard;
-document.getElementById('btnOk').onclick = ()=>{
-  currentField.value = kbInput.value.trim();
-  if(currentField===num){ openKeyboard(kunde,'letters'); } else { closeKeyboard(); }
-};
-kbInput.addEventListener('keydown',e=>{
-  if(e.key==='Enter'){ e.preventDefault(); document.getElementById('btnOk').click(); }
-});
-num.onclick   = ()=>openKeyboard(num,'numbers');
-kunde.onclick = ()=>openKeyboard(kunde,'letters');
-
-/* Doppeltipp-/Pinch-Zoom weiter unterdrücken */
-let lastTouch=0;
-document.addEventListener('touchstart',e=>{
-  const now=e.timeStamp;
-  if(now-lastTouch<=350){ e.preventDefault(); }
-  lastTouch=now;
-},{passive:false});
-document.addEventListener('gesturestart',e=>e.preventDefault());
-
-/* ---------- Etikett-Renderer (einmal definieren, 2x benutzen: Vorschau & Druck) ---------- */
-function renderLabelHTML(n, main, sub='', name=''){
+/* Inhalt für Vorschau und Druck */
+function renderLabelHTML(n,main,sub='',name=''){
   return `
-    <div class="labelContent">
-      <div style="font-size:36pt; margin-bottom:6mm;">${n}</div>
-      <div style="font-size:48pt; font-weight:900;">${main}</div>
-      ${sub ? `<div style="font-size:32pt;">„${sub}“</div>` : '' }
-      ${name? `<div style="font-size:32pt;">(${name})</div>` : '' }
-    </div>
-    <img class="labelLogo" src="Langen.png" alt="Logo">
+    <div style="font-size:36pt; margin-bottom:6mm;">${n}</div>
+    <div style="font-size:48pt;">${main}</div>
+    ${sub?`<div style="font-size:32pt;">„${sub}“</div>`:''}
+    ${name?`<div style="font-size:32pt;">(${name})</div>`:''}
   `;
 }
 
-function fillByType(type){
-  const n = num.value.trim();
-  const k = kunde.value.trim();
-  let main='', sub='', name='';
-  switch(type){
-    case 'LP': main='L&P'; break;
-    case 'LPEILT': main='L&P'; sub='EILT SEHR'; break;
-    case 'SCHUETTE': main='Schütte'; break;
-    case 'SCHUETTEEILT': main='Schütte'; sub='EILT SEHR'; break;
-    case 'KLEY': main='Kleymann'; break;
-    case 'KLEYEILT': main='Kleymann'; sub='EILT SEHR'; break;
-    /* Comte-Varianten mit Kundennamen unten */
-    case 'COMTEZN8': main='Comte'; sub='ZN8'; name=k; break;
-    case 'CHEMISCH': main='Comte'; sub='Chemisch Vernickeln'; name=k; break;
-    case 'DICK': main='Comte'; sub='Dickschichtpassivierung'; name=k; break;
-    case 'BLAU': main='Comte'; sub='Blau ZN8'; name=k; break;
-    /* Pentz / RCS / Coatinc mit Kunde unten */
-    case 'PENTZ': main='Pentz & Gerdes'; sub='ZN8'; name=k; break;
-    case 'RCS': main='RCS GmbH'; sub='Schweißen'; name=k; break;
-    case 'COATINC': main='Coatinc 24 GmbH'; sub='Verzinken'; name=k; break;
-  }
-  return renderLabelHTML(n, main, sub, name);
-}
-
-/* Vorschau öffnen (Miniatur) */
-function openPreview(type){
+function makeLabel(type){
   const n=num.value.trim(), k=kunde.value.trim();
-  if(!n || !k){ alert('Bitte Beistellnummer UND Kunde eingeben.'); return; }
-
-  const html = fillByType(type);
-
-  document.getElementById('previewCanvas').innerHTML = html; // Miniatur
-  document.getElementById('printCanvas').innerHTML   = html; // Druck 1:1
-
+  if(!n||!k){ alert('Bitte Beistellnummer UND Kunde eingeben.'); return; }
+  selectedType=type;
+  let main='',sub='',name='';
+  switch(type){
+    case 'LP':main='L&P';break;
+    case 'LPEILT':main='L&P';sub='EILT SEHR';break;
+    case 'SCHUETTE':main='Schütte';break;
+    case 'SCHUETTEEILT':main='Schütte';sub='EILT SEHR';break;
+    case 'KLEY':main='Kleymann';break;
+    case 'KLEYEILT':main='Kleymann';sub='EILT SEHR';break;
+  }
+  const html=renderLabelHTML(n,main,sub,k);
+  document.getElementById('labelContent').innerHTML=html;
+  document.getElementById('printLabel').innerHTML=html+`<img src="Langen.png" alt="Logo" style="position:absolute;bottom:6%;right:6%;width:40%;">`;
   document.getElementById('previewPopup').style.display='flex';
 }
 
-/* Buttons: Kunden -> Vorschau */
-document.querySelectorAll('#kunden button')
-  .forEach(b => b.addEventListener('click', () => openPreview(b.dataset.type)));
+/* Button Events */
+document.querySelectorAll('#kunden button').forEach(b=>{
+  b.onclick=()=>makeLabel(b.dataset.type);
+});
 
-/* Drucken nur #printArea */
-document.getElementById('btnPrintNow').onclick = ()=>{
-  if(!num.value.trim() || !kunde.value.trim()){ alert('Bitte zuerst alles ausfüllen.'); return; }
+document.getElementById('btnPrintNow').onclick=()=>{
+  document.getElementById('printArea').style.display='block';
   window.print();
   document.getElementById('previewPopup').style.display='none';
+  document.getElementById('printArea').style.display='none';
 };
+document.getElementById('btnCancelPreview').onclick=()=>document.getElementById('previewPopup').style.display='none';
+document.getElementById('btnBack').onclick=()=>history.back();
 
-/* Footer */
-document.getElementById('btnCancelPreview').onclick = ()=> document.getElementById('previewPopup').style.display='none';
-document.getElementById('btnDrucken').onclick = ()=> alert('Bitte zunächst Kunde wählen, dann in der Vorschau „Jetzt drucken“.');
-document.getElementById('btnBack').onclick = ()=> history.back();
+/* 🔒 Zoom verhindern auf Android */
+document.addEventListener('gesturestart', e=>e.preventDefault());
+document.addEventListener('dblclick', e=>e.preventDefault());
+document.addEventListener('touchmove', e=>{
+  if(e.scale!==undefined && e.scale!==1) e.preventDefault();
+},{passive:false});
 </script>
 </body>
 </html>
