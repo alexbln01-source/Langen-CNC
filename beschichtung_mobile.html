@@ -16,18 +16,20 @@ body {
   height: 100vh;
 }
 
+/* Hauptcontainer mit runden Ecken */
 #app {
   width: 100%;
   max-width: 360px;
-  height: 100vh;
-  background: #f9f9f9;
-  padding: 8px 10px;
+  height: auto;
+  background: #fdfdfd;
+  padding: 10px 12px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   box-sizing: border-box;
-  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
 }
 
 /* Titel */
@@ -97,7 +99,7 @@ input::placeholder {
 #btnBack { background: #6c757d; }
 #btnDrucken { background: #007bff; }
 
-/* Popup Tastatur */
+/* Tastatur-Popup */
 #keyboardPopup {
   display: none;
   position: fixed;
