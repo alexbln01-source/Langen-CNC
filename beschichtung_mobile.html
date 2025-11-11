@@ -103,32 +103,68 @@ input::placeholder {
   justify-content: center;
   align-items: center;
 }
+
 #previewBox {
   background: #fff;
-  border-radius: 15px;
+  border-radius: 10px;
   width: 90vw;
-  aspect-ratio: 210/148;
-  padding: 10px;
-  text-align: center;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+  aspect-ratio: 210 / 148;
+  max-width: 480px; /* ideal für 5 Zoll */
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
   position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transform: scale(0.9);
 }
+
 #output-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   font-weight: 900;
-  font-size: 28px;
-  margin-top: 15px;
-  transform: scale(0.75);
+  line-height: 1.2;
+  transform: scale(0.7);
 }
+
+#output-content div {
+  margin: 3px 0;
+}
+
 #output-footer {
   position: absolute;
   bottom: 8mm;
-  right: 10mm;
+  right: 9mm;
 }
+
 #output-footer img {
-  width: 3.8cm;
+  width: 2.8cm;
   height: auto;
 }
+
+#previewBox .preview-buttons {
+  position: absolute;
+  bottom: 5mm;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+#previewBox .preview-buttons button {
+  padding: 6px 16px;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+}
+#btnPrintNow { background: #28a745; }
+#btnCancelPreview { background: #d9534f; }
 
 /* Popup Tastatur */
 #keyboardPopup {
@@ -225,9 +261,9 @@ input::placeholder {
   <div id="previewBox">
     <div id="output-content"></div>
     <div id="output-footer"><img src="Langen.png" alt="Logo"></div>
-    <div style="position:absolute; bottom:6mm; left:0; right:0; display:flex; justify-content:center; gap:14px;">
-      <button id="btnPrintNow" style="background:#28a745;color:#fff;padding:8px 20px;border:none;border-radius:8px;">Jetzt drucken</button>
-      <button id="btnCancelPreview" style="background:#d9534f;color:#fff;padding:8px 20px;border:none;border-radius:8px;">Abbrechen</button>
+    <div class="preview-buttons">
+      <button id="btnPrintNow">Jetzt drucken</button>
+      <button id="btnCancelPreview">Abbrechen</button>
     </div>
   </div>
 </div>
@@ -253,7 +289,7 @@ const kbInput=document.getElementById('keyboardInput');
 const kbGrid=document.getElementById('keyboardGrid');
 let currentField=null;
 
-/* 🧭 Tastatur */
+/* Tastatur */
 function buildKeyboard(type){
   kbGrid.innerHTML='';
   const chars=(type==='numbers')
