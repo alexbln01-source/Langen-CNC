@@ -160,6 +160,65 @@ input::placeholder {
   background: #d9534f;
 }
 
+/* --- Tastatur-Popup --- */
+#keyboardPopup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 8000;
+  justify-content: center;
+  align-items: center;
+}
+#keyboardBox {
+  background: #fff;
+  border-radius: 14px;
+  width: 94%;
+  max-width: 360px;
+  text-align: center;
+  padding: 12px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+}
+#keyboardInput {
+  width: 90%;
+  height: 34px;
+  font-size: 18px;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px solid #bbb;
+  margin-bottom: 8px;
+}
+#keyboardGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+#keyboardGrid button {
+  height: 38px;
+  font-size: 18px;
+  border-radius: 8px;
+  background: #f1f1f1;
+  border: 1px solid #ccc;
+  color: #003a73;
+}
+#keyboardActions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+#keyboardActions button {
+  flex: 1;
+  height: 36px;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  margin: 0 3px;
+  border: none;
+}
+#btnDel { background: #dc3545; }
+#btnOk { background: #28a745; }
+#btnClose { background: #6c757d; }
+
 /* --- Druckansicht --- */
 @media print {
   body {
@@ -230,11 +289,7 @@ input::placeholder {
 <div id="previewPopup">
   <div id="previewBox">
     <div id="output-content"></div>
-
-    <div id="output-footer">
-      <img src="Langen.png" alt="Logo">
-    </div>
-
+    <div id="output-footer"><img src="Langen.png" alt="Logo"></div>
     <div id="previewButtons">
       <button id="btnPrintNow">Jetzt drucken</button>
       <button id="btnCancelPreview">Abbrechen</button>
@@ -242,10 +297,55 @@ input::placeholder {
   </div>
 </div>
 
+<!-- Tastatur -->
+<div id="keyboardPopup">
+  <div id="keyboardBox">
+    <input id="keyboardInput" type="text">
+    <div id="keyboardGrid"></div>
+    <div id="keyboardActions">
+      <button id="btnDel">Löschen</button>
+      <button id="btnOk">OK</button>
+      <button id="btnClose">Abbrechen</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const num=document.getElementById('numInput');
 const kunde=document.getElementById('kundeInput');
+const popup=document.getElementById('keyboardPopup');
+const kbInput=document.getElementById('keyboardInput');
+const kbGrid=document.getElementById('keyboardGrid');
+let currentField=null;
 
+function buildKeyboard(type){
+  kbGrid.innerHTML='';
+  const chars=(type==='numbers')?['1','2','3','4','5','6','7','8','9','0']:'QWERTZUIOPASDFGHJKLYXCVBNM'.split('');
+  chars.forEach(c=>{
+    const b=document.createElement('button');
+    b.textContent=c;
+    b.onclick=()=>kbInput.value+=c;
+    kbGrid.appendChild(b);
+  });
+}
+function openKeyboard(field,type){
+  currentField=field;
+  kbInput.value=field.value||'';
+  buildKeyboard(type);
+  popup.style.display='flex';
+}
+function closeKeyboard(){ popup.style.display='none'; }
+
+document.getElementById('btnDel').onclick=()=>kbInput.value=kbInput.value.slice(0,-1);
+document.getElementById('btnClose').onclick=closeKeyboard;
+document.getElementById('btnOk').onclick=()=>{
+  currentField.value=kbInput.value.trim();
+  closeKeyboard();
+};
+num.onclick=()=>openKeyboard(num,'numbers');
+kunde.onclick=()=>openKeyboard(kunde,'letters');
+
+/* Druckvorschau */
 function makeOutput(type){
   const n = num.value.trim();
   const k = kunde.value.trim();
@@ -282,7 +382,6 @@ function makeOutput(type){
   document.getElementById('previewPopup').style.display = 'flex';
 }
 
-/* Buttons */
 document.querySelectorAll('#kunden button').forEach(btn =>
   btn.onclick = () => makeOutput(btn.dataset.type)
 );
