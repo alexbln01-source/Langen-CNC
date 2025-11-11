@@ -89,7 +89,7 @@ input::placeholder {
 #btnBack { background: linear-gradient(#6c757d, #495057); }
 #btnDrucken { background: linear-gradient(#007bff, #0056b3); }
 
-/* --- Vorschau (A5) --- */
+/* ---------------- Vorschau (A5 Querformat) ---------------- */
 #previewPopup {
   display: none;
   position: fixed;
@@ -99,66 +99,76 @@ input::placeholder {
   justify-content: center;
   align-items: center;
 }
+
 #previewBox {
   background: #fff;
   border-radius: 10px;
   width: 90vw;
-  aspect-ratio: 210 / 148; /* echtes A5 Querformat */
+  aspect-ratio: 210 / 148;
   max-width: 480px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
   position: relative;
   overflow: hidden;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
+  padding: 15mm 10mm 25mm 10mm;
   transform: scale(0.9);
 }
 
-/* zentrierter Textblock */
+/* Textblock zentriert */
 #output-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.75);
+  flex: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   text-align: center;
   font-weight: 900;
-  line-height: 1.2;
+  line-height: 1.15;
+  transform: scale(0.85);
 }
-#output-content div { margin: 4px 0; }
+#output-content div {
+  margin: 3px 0;
+  word-break: break-word;
+}
 
-/* Logo unten rechts */
+/* Logo */
 #output-footer {
   position: absolute;
   bottom: 10mm;
   right: 10mm;
 }
 #output-footer img {
-  width: 2.8cm;
+  width: 2.6cm;
   height: auto;
   object-fit: contain;
 }
 
-/* Vorschau-Buttons */
+/* Buttons Vorschau */
 #previewBox .preview-buttons {
   position: absolute;
-  bottom: 6mm;
+  bottom: 5mm;
   left: 0;
   right: 0;
   display: flex;
   justify-content: center;
-  gap: 12px;
+  gap: 18px;
 }
 #previewBox .preview-buttons button {
-  padding: 6px 16px;
+  padding: 8px 18px;
   border: none;
   border-radius: 8px;
   color: #fff;
   font-weight: bold;
+  font-size: 14px;
 }
 #btnPrintNow { background: #28a745; }
 #btnCancelPreview { background: #d9534f; }
 
-/* --- Druckansicht --- */
+/* ---------------- Druckansicht ---------------- */
 @media print {
   body * { visibility: hidden !important; }
   #previewBox, #previewBox * {
@@ -170,12 +180,15 @@ input::placeholder {
     margin: auto;
     box-shadow: none;
     border-radius: 0;
-    transform: scale(1);
+    transform: none;
+    width: 100%;
+    height: 100%;
+    padding: 0;
   }
   #previewBox .preview-buttons { display: none !important; }
 }
 
-/* --- Popup Tastatur --- */
+/* ---------------- Popup Tastatur ---------------- */
 #keyboardPopup {
   display: none;
   position: fixed;
@@ -337,7 +350,7 @@ function makeOutput(type){
   let html=`<div style="font-size:36pt;margin-bottom:6mm;">${n}</div>`;
   const add=(main,sub='',name='')=>{
     html+=`<div style="font-size:48pt;">${main}</div>`;
-    if(sub)html+=`<div style="font-size:32pt;">„${sub}“</div>`;
+    if(sub)html+=`<div style="font-size:36pt;">„${sub}“</div>`;
     if(name)html+=`<div style="font-size:32pt;">(${name})</div>`;
   };
   switch(type){
