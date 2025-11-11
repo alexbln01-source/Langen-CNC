@@ -6,38 +6,38 @@
 <title>Beschichtung – Mobil</title>
 
 <style>
+/* Hintergrund wie auf Indexseite */
 body {
   margin: 0;
-  background: #e0e0e0;
+  height: 100vh;
   font-family: Arial, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
 }
 
-/* Hauptcontainer mit runden Ecken */
+/* Hauptcontainer */
 #app {
-  width: 100%;
+  width: 95%;
   max-width: 360px;
-  height: auto;
-  background: #fdfdfd;
-  padding: 10px 12px;
+  background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
+  padding: 12px 14px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   box-sizing: border-box;
-  border-radius: 16px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
 }
 
 /* Titel */
 h2 {
   text-align: center;
   font-size: 18px;
-  color: #004b8d;
-  margin: 4px 0 10px 0;
+  color: #003a73;
+  margin: 6px 0 10px 0;
+  text-transform: uppercase;
 }
 
 /* Eingabefelder */
@@ -45,12 +45,12 @@ input[type="text"] {
   width: 90%;
   text-align: center;
   font-size: 14px;
-  padding: 4px 0;
-  margin: 6px 0;
+  padding: 6px 0;
+  margin: 5px 0;
   border: 1px solid #aaa;
-  border-radius: 6px;
+  border-radius: 8px;
   background: #fff;
-  height: 30px;
+  height: 32px;
 }
 input::placeholder {
   color: #999;
@@ -62,94 +62,117 @@ input::placeholder {
 #kunden {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  margin-top: 8px;
+  gap: 4px;
+  margin-top: 10px;
   width: 90%;
 }
 #kunden button {
   width: 100%;
-  height: 32px;
+  height: 34px;
   font-size: 13px;
   border: 1px solid #bbb;
-  border-radius: 6px;
+  border-radius: 8px;
   background: linear-gradient(#f2f2f2, #e4e4e4);
   font-weight: bold;
+  color: #000;
 }
 #kunden button.active {
   background: #007bff;
-  color: white;
+  color: #fff;
 }
 
 /* Steuerbuttons */
 #controls {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  margin-top: 12px;
   width: 90%;
 }
 #controls button {
   flex: 0 0 48%;
-  height: 34px;
+  height: 36px;
   font-size: 13px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   color: #fff;
   font-weight: bold;
 }
 #btnBack { background: #6c757d; }
 #btnDrucken { background: #007bff; }
 
-/* Tastatur-Popup */
+/* Popup Tastatur */
 #keyboardPopup {
   display: none;
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.65);
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   z-index: 1000;
 }
+
+/* Tastaturbox */
 #keyboardBox {
-  background: #fff;
-  border-radius: 10px;
-  padding: 8px;
-  width: 95%;
-  max-width: 350px;
-  text-align: center;
+  background: #f9f9f9;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
+/* Eingabefeld in der Tastatur */
 #keyboardInput {
-  width: 90%;
-  padding: 6px;
+  width: 92%;
+  padding: 8px;
   font-size: 16px;
   border: 1px solid #ccc;
   text-align: center;
-  border-radius: 4px;
-  margin-bottom: 6px;
+  border-radius: 6px;
+  margin-bottom: 8px;
 }
-#keyboardGrid {
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  gap: 3px;
-}
-#keyboardGrid button {
-  padding: 6px 0;
-  font-size: 13px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  background: #f2f2f2;
-}
-#keyboardActions {
+
+/* Buchstabenfelder */
+.keyboard-row {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  margin-top: 6px;
+  margin-bottom: 5px;
+}
+.keyboard-row button {
+  flex: 0 0 9%;
+  margin: 2px;
+  height: 38px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  background: linear-gradient(#f2f2f2,#e0e0e0);
+  box-shadow: 0 2px 1px rgba(0,0,0,0.1);
+}
+.keyboard-row button:active {
+  background: #007bff;
+  color: white;
+}
+
+/* Aktionstasten */
+#keyboardActions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 5px;
+  width: 100%;
 }
 #keyboardActions button {
   flex: 1;
-  padding: 5px;
-  border-radius: 6px;
-  color: #fff;
+  margin: 3px;
+  height: 40px;
+  border-radius: 8px;
+  color: white;
   font-weight: bold;
+  font-size: 14px;
   border: none;
 }
 .btn-ok { background: #28a745; }
@@ -237,9 +260,11 @@ input::placeholder {
 <div id="keyboardPopup">
   <div id="keyboardBox">
     <input id="keyboardInput" type="text">
-    <div id="keyboardGrid"></div>
+
+    <div id="keyboardArea"></div>
+
     <div id="keyboardActions">
-      <button id="btnDel" class="btn-del">⌫</button>
+      <button id="btnDel" class="btn-del">⌫ Löschen</button>
       <button id="btnOk" class="btn-ok">OK</button>
       <button id="btnClose" class="btn-close">Abbruch</button>
     </div>
@@ -263,19 +288,29 @@ const num=document.getElementById('numInput');
 const kunde=document.getElementById('kundeInput');
 const kbPopup=document.getElementById('keyboardPopup');
 const kbInput=document.getElementById('keyboardInput');
-const kbGrid=document.getElementById('keyboardGrid');
+const kbArea=document.getElementById('keyboardArea');
 let currentField=null;
 
 function buildKeyboard(type){
-  kbGrid.innerHTML='';
-  const chars=(type==='numbers')?['1','2','3','4','5','6','7','8','9','0']:'QWERTZUIOPASDFGHJKLYXCVBNM'.split('');
-  chars.forEach(c=>{
-    const b=document.createElement('button');
-    b.textContent=c;
-    b.onclick=()=>kbInput.value+=c;
-    kbGrid.appendChild(b);
+  kbArea.innerHTML='';
+  const layout = (type==='numbers')
+  ? [['1','2','3','4','5','6','7','8','9','0']]
+  : [['Q','W','E','R','T','Z','U','I','O','P'],
+     ['A','S','D','F','G','H','J','K','L'],
+     ['Y','X','C','V','B','N','M']];
+  layout.forEach(row=>{
+    const div=document.createElement('div');
+    div.className='keyboard-row';
+    row.forEach(ch=>{
+      const btn=document.createElement('button');
+      btn.textContent=ch;
+      btn.onclick=()=>kbInput.value+=ch;
+      div.appendChild(btn);
+    });
+    kbArea.appendChild(div);
   });
 }
+
 function openKeyboard(field,type){
   currentField=field;
   kbInput.value=field.value||'';
