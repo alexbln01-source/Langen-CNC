@@ -2,98 +2,99 @@
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Beschichtung (Mobile)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Beschichtung Mobile</title>
 <style>
-body {
+html, body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  padding: 0;
+  height: 100%;
   background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
+  font-family: "Segoe UI", Arial, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   overflow: hidden;
 }
 
-#container {
+/* Hauptrahmen */
+#main {
   width: 92%;
   max-width: 370px;
-  background: #fff;
-  border-radius: 26px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-  padding: 14px 10px 18px;
+  background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  padding: 18px 14px 20px;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
+/* Titel */
 h2 {
-  color: #004b8d;
-  margin: 5px 0 12px;
   font-size: 22px;
+  color: #003a73;
   font-weight: 700;
+  margin: 0 0 10px;
 }
 
+/* Eingabefelder */
 input[type="text"] {
   width: 90%;
-  height: 38px;
+  height: 36px;
+  margin: 6px 0;
   text-align: center;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 17px;
-  margin-bottom: 8px;
-  color: #333;
+  font-size: 16px;
+  border: 1px solid #bbb;
+  border-radius: 12px;
+  color: #222;
 }
 input::placeholder {
-  color: #888;
+  color: #777;
   font-style: italic;
 }
 
+/* Kundenbuttons */
 #kunden {
   display: flex;
   flex-direction: column;
-  width: 90%;
   gap: 6px;
-  margin: 6px 0 10px;
+  margin: 8px 0 10px;
 }
 #kunden button {
-  width: 100%;
-  height: 38px;
-  font-weight: bold;
+  height: 34px;
   font-size: 15px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  background: linear-gradient(#f8f9fb,#eef1f4);
+  font-weight: 600;
   color: #004b8d;
+  background: linear-gradient(#f9f9fb, #edf0f3);
+  border: 1px solid #ccc;
+  border-radius: 10px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: all 0.15s;
 }
 #kunden button:hover {
-  background: linear-gradient(#fff,#e9ecef);
+  background: linear-gradient(#ffffff, #e8ecef);
 }
 
+/* Footer-Buttons */
 #actions {
   display: flex;
   justify-content: space-between;
-  width: 90%;
-  margin-top: 8px;
+  margin-top: 6px;
 }
 #actions button {
-  width: 45%;
+  width: 46%;
   height: 38px;
   font-weight: bold;
-  font-size: 14px;
-  border-radius: 8px;
-  border: none;
+  font-size: 15px;
+  border-radius: 10px;
   color: #fff;
+  border: none;
+  cursor: pointer;
 }
 #btnBack {
-  background: linear-gradient(#7c8591,#5a616b);
+  background: linear-gradient(#6c757d, #495057);
 }
 #btnDrucken {
-  background: linear-gradient(#007bff,#0056b3);
+  background: linear-gradient(#007bff, #0056b3);
 }
 
 /* Vorschau */
@@ -101,38 +102,33 @@ input::placeholder {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   z-index: 5000;
   justify-content: center;
   align-items: center;
 }
 #previewBox {
   background: #fff;
-  border-radius: 12px;
+  border-radius: 15px;
   width: 90vw;
-  aspect-ratio: 210 / 148;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  aspect-ratio: 210/148;
   padding: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.4);
 }
 #output-content {
   font-weight: 900;
-  text-align: center;
-  font-size: 26px;
-  line-height: 1.3;
+  font-size: 28px;
+  margin-top: 15px;
 }
 #output-footer {
   position: absolute;
-  bottom: 6mm;
-  right: 8mm;
+  bottom: 8mm;
+  right: 10mm;
 }
 #output-footer img {
-  width: 3.6cm;
-  height: 1.3cm;
-  object-fit: contain;
+  width: 3.8cm;
+  height: auto;
 }
 
 /* Popup Tastatur */
@@ -140,7 +136,7 @@ input::placeholder {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.55);
+  background: rgba(0,0,0,0.5);
   z-index: 8000;
   justify-content: center;
   align-items: center;
@@ -149,32 +145,32 @@ input::placeholder {
   background: #fff;
   border-radius: 14px;
   width: 94%;
-  max-width: 370px;
+  max-width: 360px;
   text-align: center;
-  padding: 14px;
+  padding: 12px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
 }
 #keyboardInput {
   width: 90%;
-  height: 38px;
-  font-size: 19px;
+  height: 34px;
+  font-size: 18px;
   text-align: center;
-  margin-bottom: 8px;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid #bbb;
+  margin-bottom: 8px;
 }
 #keyboardGrid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 6px;
-  justify-items: center;
 }
 #keyboardGrid button {
-  width: 100%;
-  height: 42px;
+  height: 38px;
   font-size: 18px;
   border-radius: 8px;
-  border: 1px solid #ccc;
   background: #f1f1f1;
+  border: 1px solid #ccc;
+  color: #003a73;
 }
 #keyboardActions {
   display: flex;
@@ -183,23 +179,23 @@ input::placeholder {
 }
 #keyboardActions button {
   flex: 1;
-  margin: 0 4px;
-  height: 38px;
-  border: none;
+  height: 36px;
   border-radius: 8px;
-  font-weight: bold;
   color: #fff;
-  font-size: 15px;
+  font-weight: bold;
+  margin: 0 3px;
+  border: none;
 }
-#btnDel { background: #d9534f; }
+#btnDel { background: #dc3545; }
 #btnOk { background: #28a745; }
 #btnClose { background: #6c757d; }
 </style>
 </head>
 <body>
 
-<div id="container">
+<div id="main">
   <h2>BESCHICHTUNG</h2>
+
   <input id="numInput" type="text" placeholder="Beistellnummer" readonly>
   <input id="kundeInput" type="text" placeholder="Kunde" readonly>
 
@@ -230,7 +226,7 @@ input::placeholder {
   <div id="previewBox">
     <div id="output-content"></div>
     <div id="output-footer"><img src="Langen.png" alt="Logo"></div>
-    <div style="margin-top:auto; display:flex; gap:10px;">
+    <div style="margin-top:auto; display:flex; gap:10px; justify-content:center;">
       <button id="btnPrintNow" style="background:#28a745;color:#fff;padding:8px 20px;border:none;border-radius:8px;">Jetzt drucken</button>
       <button id="btnCancelPreview" style="background:#d9534f;color:#fff;padding:8px 20px;border:none;border-radius:8px;">Abbrechen</button>
     </div>
@@ -260,9 +256,7 @@ let currentField=null;
 
 function buildKeyboard(type){
   kbGrid.innerHTML='';
-  const chars=(type==='numbers')
-    ?['1','2','3','4','5','6','7','8','9','0']
-    :'QWERTZUIOPASDFGHJKLYXCVBNM'.split('');
+  const chars=(type==='numbers')?['1','2','3','4','5','6','7','8','9','0']:'QWERTZUIOPASDFGHJKLYXCVBNM'.split('');
   chars.forEach(c=>{
     const b=document.createElement('button');
     b.textContent=c;
