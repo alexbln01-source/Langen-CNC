@@ -94,7 +94,7 @@ input::placeholder {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   z-index: 5000;
   justify-content: center;
   align-items: center;
@@ -111,31 +111,40 @@ input::placeholder {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  padding: 15mm 10mm 25mm 10mm;
+  padding: 15mm 12mm 25mm 12mm;
   transform: scale(0.9);
 }
 
-/* Textblock zentriert */
+/* Vollbreiter Textblock */
 #output-content {
   flex: 1;
   width: 100%;
+  text-align: center;
+  font-weight: 900;
+  line-height: 1.15;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  text-align: center;
-  font-weight: 900;
-  line-height: 1.15;
-  transform: scale(0.85);
+  transform: scale(0.9);
+  word-break: keep-all;
+  white-space: nowrap;
 }
 #output-content div {
   margin: 3px 0;
-  word-break: break-word;
 }
 
-/* Logo */
+/* Dynamische Schriftgröße */
+#output-content div[data-fit] {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Logo unten rechts */
 #output-footer {
   position: absolute;
   bottom: 10mm;
@@ -147,17 +156,19 @@ input::placeholder {
   object-fit: contain;
 }
 
-/* Buttons Vorschau */
-#previewBox .preview-buttons {
+/* Buttons einzeln unterhalb */
+.preview-buttons {
   position: absolute;
   bottom: 5mm;
   left: 0;
   right: 0;
   display: flex;
-  justify-content: center;
-  gap: 18px;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
 }
-#previewBox .preview-buttons button {
+.preview-buttons button {
+  width: 140px;
   padding: 8px 18px;
   border: none;
   border-radius: 8px;
@@ -168,12 +179,10 @@ input::placeholder {
 #btnPrintNow { background: #28a745; }
 #btnCancelPreview { background: #d9534f; }
 
-/* ---------------- Druckansicht ---------------- */
+/* --- Druckansicht --- */
 @media print {
   body * { visibility: hidden !important; }
-  #previewBox, #previewBox * {
-    visibility: visible !important;
-  }
+  #previewBox, #previewBox * { visibility: visible !important; }
   #previewBox {
     position: absolute;
     inset: 0;
@@ -185,7 +194,7 @@ input::placeholder {
     height: 100%;
     padding: 0;
   }
-  #previewBox .preview-buttons { display: none !important; }
+  .preview-buttons { display: none !important; }
 }
 
 /* ---------------- Popup Tastatur ---------------- */
@@ -349,9 +358,9 @@ function makeOutput(type){
   if(!n||!k){alert('Bitte Beistellnummer UND Kunde eingeben.');return;}
   let html=`<div style="font-size:36pt;margin-bottom:6mm;">${n}</div>`;
   const add=(main,sub='',name='')=>{
-    html+=`<div style="font-size:48pt;">${main}</div>`;
-    if(sub)html+=`<div style="font-size:36pt;">„${sub}“</div>`;
-    if(name)html+=`<div style="font-size:32pt;">(${name})</div>`;
+    html+=`<div data-fit style="font-size:48pt;">${main}</div>`;
+    if(sub)html+=`<div data-fit style="font-size:36pt;">„${sub}“</div>`;
+    if(name)html+=`<div data-fit style="font-size:32pt;">(${name})</div>`;
   };
   switch(type){
     case'LP':add('L&P');break;
@@ -370,6 +379,7 @@ function makeOutput(type){
   }
   document.getElementById('output-content').innerHTML=html;
   document.getElementById('previewPopup').style.display='flex';
+  autoResizeText();
 }
 document.querySelectorAll('#kunden button').forEach(btn=>btn.onclick=()=>makeOutput(btn.dataset.type));
 document.getElementById('btnPrintNow').onclick=()=>{
@@ -378,6 +388,18 @@ document.getElementById('btnPrintNow').onclick=()=>{
 };
 document.getElementById('btnCancelPreview').onclick=()=>document.getElementById('previewPopup').style.display='none';
 document.getElementById('btnBack').onclick=()=>history.back();
+
+/* Dynamische Schriftgrößenanpassung */
+function autoResizeText(){
+  const elements=document.querySelectorAll('#output-content [data-fit]');
+  elements.forEach(el=>{
+    let size=parseFloat(el.style.fontSize);
+    while(el.scrollWidth>el.clientWidth && size>10){
+      size-=1;
+      el.style.fontSize=size+'pt';
+    }
+  });
+}
 
 /* Zoom blockieren */
 document.addEventListener('gesturestart',e=>e.preventDefault());
