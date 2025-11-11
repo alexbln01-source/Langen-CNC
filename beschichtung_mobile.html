@@ -2,8 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>Beschichtung Mobile</title>
 <style>
 html, body {
@@ -12,22 +11,16 @@ html, body {
   font-family: "Segoe UI", Arial, sans-serif;
   display: flex; justify-content: center; align-items: center;
   overflow: hidden;
-  touch-action: none;          /* blockiert Zoom auf Android */
-  overscroll-behavior: none;
 }
-
-/* --- Rahmen --- */
 #main {
   width: 92%; max-width: 370px;
-  background: linear-gradient(180deg, #fff 0%, #eef1f4 100%);
+  background: linear-gradient(180deg,#fff 0%,#eef1f4 100%);
   border-radius: 30px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
   padding: 18px 14px 20px;
   text-align: center;
 }
 h2 { font-size:22px; color:#003a73; font-weight:700; margin:0 0 10px; }
-
-/* --- Eingabe --- */
 input[type="text"] {
   width: 90%; height: 36px; margin: 6px 0;
   text-align:center; font-size:16px; border-radius:12px;
@@ -35,23 +28,20 @@ input[type="text"] {
 }
 input::placeholder { color:#777; font-style:italic; }
 
-/* --- Buttons --- */
 #kunden { display:flex; flex-direction:column; gap:6px; margin:8px 0 10px; }
 #kunden button {
   height:34px; font-size:15px; font-weight:600; color:#004b8d;
   background:linear-gradient(#f9f9fb,#edf0f3);
   border:1px solid #ccc; border-radius:10px; cursor:pointer;
 }
-#kunden button.active { background:#007bff; color:#fff; }
 #actions { display:flex; justify-content:space-between; margin-top:6px; }
 #actions button {
-  width:46%; height:38px; font-weight:700; font-size:15px; border-radius:10px;
-  color:#fff; border:none; cursor:pointer;
+  width:46%; height:38px; font-weight:700; font-size:15px; border:none; color:#fff; border-radius:10px;
 }
-#btnBack { background:linear-gradient(#6c757d,#495057); }
-#btnDrucken { background:linear-gradient(#007bff,#0056b3); }
+#btnBack{background:linear-gradient(#6c757d,#495057);}
+#btnDrucken{background:linear-gradient(#007bff,#0056b3);}
 
-/* --- Vorschau --- */
+/* Vorschau */
 #previewPopup {
   display:none; position:fixed; inset:0;
   background:rgba(0,0,0,0.6);
@@ -60,50 +50,58 @@ input::placeholder { color:#777; font-style:italic; }
 }
 #previewBox {
   background:#fff;
-  border-radius:15px;
-  box-shadow:0 5px 20px rgba(0,0,0,0.4);
-  padding:10px 10px 60px;
+  border-radius:20px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.4);
+  padding:16px;
+  width:80%;
+  max-width:480px;
   text-align:center;
-  width:85%;
-  max-width:420px;
 }
-#label {
-  display:flex; flex-direction:column;
-  justify-content:center; align-items:center;
+#etikett {
+  width:100%;
   aspect-ratio:210/148;
   background:#fff;
-  border-radius:10px;
+  border-radius:15px;
   box-shadow:inset 0 0 5px rgba(0,0,0,0.1);
+  display:flex; flex-direction:column; justify-content:center; align-items:center;
+  position:relative;
   overflow:hidden;
-  width:100%;
 }
-#labelContent {
+#etikettContent {
+  text-align:center;
   font-weight:900;
   line-height:1.25;
-  text-align:center;
+  transform:scale(0.8);
 }
-#labelLogo {
-  width:40%;
+#etikettLogo {
   position:absolute;
-  bottom:6%;
-  right:6%;
+  bottom:10%;
+  right:10%;
+  width:40%;
+  max-width:160px;
 }
 
-/* --- Druck --- */
+/* Druckbereich */
 @media print {
-  @page { size: A5 landscape; margin:0; }
-  body * { visibility:hidden; }
-  #printArea, #printArea * { visibility:visible; }
+  @page { size:A5 landscape; margin:0; }
+  body * { visibility:hidden !important; }
+  #printArea, #printArea * { visibility:visible !important; }
   #printArea {
     position:fixed; inset:0;
     display:flex; justify-content:center; align-items:center;
     width:100%; height:100%;
   }
   #printLabel {
-    width:100%; height:auto;
-    text-align:center;
+    width:210mm; height:148mm;
+    display:flex; justify-content:center; align-items:center;
+    position:relative;
   }
-  #printLabel img { width:35%; position:absolute; bottom:8%; right:8%; }
+  #printLabel img {
+    position:absolute;
+    bottom:10%;
+    right:10%;
+    width:40%;
+  }
 }
 </style>
 </head>
@@ -133,9 +131,9 @@ input::placeholder { color:#777; font-style:italic; }
 <!-- Vorschau -->
 <div id="previewPopup">
   <div id="previewBox">
-    <div id="label">
-      <div id="labelContent"></div>
-      <img id="labelLogo" src="Langen.png" alt="Logo">
+    <div id="etikett">
+      <div id="etikettContent"></div>
+      <img id="etikettLogo" src="Langen.png" alt="Logo">
     </div>
     <div style="margin-top:14px; display:flex; justify-content:center; gap:14px;">
       <button id="btnPrintNow" style="background:#28a745; color:#fff; border:none; border-radius:8px; padding:8px 20px;">Jetzt drucken</button>
@@ -150,50 +148,48 @@ input::placeholder { color:#777; font-style:italic; }
 </div>
 
 <script>
-const num = document.getElementById('numInput');
-const kunde = document.getElementById('kundeInput');
-let selectedType = null;
+const num=document.getElementById('numInput');
+const kunde=document.getElementById('kundeInput');
+let currentType=null;
 
-/* Tastatur */
-function openKeyboard(target,type){
-  const input = prompt('Eingabe:');
-  if(input!==null) target.value=input;
+function openKeyboard(field,type){
+  const val=prompt(`Bitte ${type==='num'?'Nummer':'Kunde'} eingeben:`)||'';
+  field.value=val.trim();
+  if(type==='num' && val) openKeyboard(kunde,'text');
 }
+
 num.onclick=()=>openKeyboard(num,'num');
 kunde.onclick=()=>openKeyboard(kunde,'text');
 
-/* Inhalt für Vorschau und Druck */
-function renderLabelHTML(n,main,sub='',name=''){
+function labelHTML(n,main,sub='',name=''){
   return `
-    <div style="font-size:36pt; margin-bottom:6mm;">${n}</div>
+    <div style="font-size:36pt;margin-bottom:6mm;">${n}</div>
     <div style="font-size:48pt;">${main}</div>
     ${sub?`<div style="font-size:32pt;">„${sub}“</div>`:''}
     ${name?`<div style="font-size:32pt;">(${name})</div>`:''}
   `;
 }
 
-function makeLabel(type){
+function showPreview(type){
   const n=num.value.trim(), k=kunde.value.trim();
   if(!n||!k){ alert('Bitte Beistellnummer UND Kunde eingeben.'); return; }
-  selectedType=type;
-  let main='',sub='',name='';
+  let main='',sub='';
   switch(type){
-    case 'LP':main='L&P';break;
-    case 'LPEILT':main='L&P';sub='EILT SEHR';break;
-    case 'SCHUETTE':main='Schütte';break;
-    case 'SCHUETTEEILT':main='Schütte';sub='EILT SEHR';break;
-    case 'KLEY':main='Kleymann';break;
-    case 'KLEYEILT':main='Kleymann';sub='EILT SEHR';break;
+    case 'LP': main='L&P'; break;
+    case 'LPEILT': main='L&P'; sub='EILT SEHR'; break;
+    case 'SCHUETTE': main='Schütte'; break;
+    case 'SCHUETTEEILT': main='Schütte'; sub='EILT SEHR'; break;
+    case 'KLEY': main='Kleymann'; break;
+    case 'KLEYEILT': main='Kleymann'; sub='EILT SEHR'; break;
   }
-  const html=renderLabelHTML(n,main,sub,k);
-  document.getElementById('labelContent').innerHTML=html;
-  document.getElementById('printLabel').innerHTML=html+`<img src="Langen.png" alt="Logo" style="position:absolute;bottom:6%;right:6%;width:40%;">`;
+  const html=labelHTML(n,main,sub,k);
+  document.getElementById('etikettContent').innerHTML=html;
+  document.getElementById('printLabel').innerHTML=html+`<img src="Langen.png" alt="Logo">`;
   document.getElementById('previewPopup').style.display='flex';
 }
 
-/* Button Events */
 document.querySelectorAll('#kunden button').forEach(b=>{
-  b.onclick=()=>makeLabel(b.dataset.type);
+  b.onclick=()=>showPreview(b.dataset.type);
 });
 
 document.getElementById('btnPrintNow').onclick=()=>{
@@ -205,12 +201,9 @@ document.getElementById('btnPrintNow').onclick=()=>{
 document.getElementById('btnCancelPreview').onclick=()=>document.getElementById('previewPopup').style.display='none';
 document.getElementById('btnBack').onclick=()=>history.back();
 
-/* 🔒 Zoom verhindern auf Android */
-document.addEventListener('gesturestart', e=>e.preventDefault());
-document.addEventListener('dblclick', e=>e.preventDefault());
-document.addEventListener('touchmove', e=>{
-  if(e.scale!==undefined && e.scale!==1) e.preventDefault();
-},{passive:false});
+/* Zoom blockieren */
+document.addEventListener('gesturestart',e=>e.preventDefault());
+document.addEventListener('dblclick',e=>e.preventDefault());
 </script>
 </body>
 </html>
