@@ -42,19 +42,6 @@ h2 {
   background: #fff;
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
   margin: 6px 0 14px;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.textbox[readonly] {
-  user-select: none;
-  -webkit-user-select: none;
-  caret-color: transparent;
-}
-
-.textbox:focus {
-  border-color: #0d6efd;
-  box-shadow: 0 0 5px rgba(13,110,253,0.25);
-  outline: none;
 }
 
 label {
@@ -66,7 +53,7 @@ label {
   text-align: center;
 }
 
-/* Kundenbuttons */
+/* Buttons */
 #kunden {
   display: flex;
   flex-wrap: wrap;
@@ -85,7 +72,24 @@ label {
 }
 button.active { background: #007bff; color: #fff; }
 
-/* Vorschau-Popup */
+/* Navigation unten */
+#navButtons {
+  display: flex;
+  justify-content: space-between;
+  width: 82%;
+  margin-top: 10px;
+}
+#navButtons button {
+  flex: 0 0 48%;
+  height: 44px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: linear-gradient(#f8f9fb, #eef1f4);
+}
+
+/* Vorschau */
 #previewPopup {
   display: none;
   position: fixed;
@@ -96,26 +100,47 @@ button.active { background: #007bff; color: #fff; }
   align-items: center;
 }
 #previewBox {
-  background: #fff;
-  border: 1px solid #999;
-  border-radius: 10px;
-  width: 90vw;
-  aspect-ratio: 210 / 148;
-  overflow: hidden;
+  background: transparent;
+  border: none;
+  width: 92vw;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  gap: 10px;
 }
-#output-content {
+#a5Preview {
+  width: 92vw;
+  aspect-ratio: 210 / 148;
+  background: #fff;
+  border: 1px solid #999;
+  border-radius: 10px;
+  position: relative;
+  padding: 8mm;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+#a5Preview #prevContent {
   text-align: center;
   font-weight: bold;
+  line-height: 1.3;
+}
+#a5Preview .logo {
+  position: absolute;
+  right: 8mm;
+  bottom: 6mm;
+}
+#a5Preview .logo img {
+  width: 4.3cm;
+  height: 1.6cm;
+  object-fit: contain;
 }
 #previewButtons {
   display: flex;
-  justify-content: space-around;
-  width: 100%;
-  padding: 10px 0;
+  gap: 10px;
+  margin-top: 8px;
 }
 #previewButtons button {
   padding: 10px 16px;
@@ -127,7 +152,7 @@ button.active { background: #007bff; color: #fff; }
 #btnPrintNow { background: #28a745; }
 #btnCancel { background: #dc3545; }
 
-/* Popup Tastatur */
+/* Tastatur */
 #keyboardPopup {
   display: none;
   position: fixed;
@@ -185,7 +210,6 @@ button.active { background: #007bff; color: #fff; }
 #btnDel { background: #d9534f; }
 #btnOk { background: #28a745; }
 #btnClose { background: #6c757d; }
-
 </style>
 </head>
 <body>
@@ -216,10 +240,18 @@ button.active { background: #007bff; color: #fff; }
   <button class="action" data-type="COATINC">Coatinc 24 Verzinken</button>
 </div>
 
+<div id="navButtons">
+  <button id="btnBack">⬅️ Zurück</button>
+  <button id="btnDrucken">🖨 Drucken</button>
+</div>
+
 <!-- Vorschau -->
 <div id="previewPopup">
   <div id="previewBox">
-    <div id="output-content"></div>
+    <div id="a5Preview">
+      <div id="prevContent"></div>
+      <div class="logo"><img src="Langen.png" alt="Logo"></div>
+    </div>
     <div id="previewButtons">
       <button id="btnPrintNow">🖨 Jetzt drucken</button>
       <button id="btnCancel">❌ Abbrechen</button>
@@ -227,7 +259,7 @@ button.active { background: #007bff; color: #fff; }
   </div>
 </div>
 
-<!-- Popup Tastatur -->
+<!-- Tastatur -->
 <div id="keyboardPopup">
   <div id="keyboardBox">
     <h3 id="keyboardTitle">Eingabe</h3>
@@ -242,16 +274,15 @@ button.active { background: #007bff; color: #fff; }
 </div>
 
 <script>
-const out=document.getElementById('output-content');
 const num=document.getElementById('numInput');
 const kunde=document.getElementById('kundeInput');
 const popup=document.getElementById('keyboardPopup');
 const kbInput=document.getElementById('keyboardInput');
 const kbGrid=document.getElementById('keyboardGrid');
 const title=document.getElementById('keyboardTitle');
+const prevContent=document.getElementById('prevContent');
 let currentField=null;
 
-/* Tastatur */
 function buildKeyboard(type){
   kbGrid.innerHTML='';
   const chars=(type==='numbers')?['1','2','3','4','5','6','7','8','9','0']:'QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM'.split('');
@@ -295,9 +326,6 @@ kbInput.addEventListener('keydown',e=>{
 num.onclick=()=>openKeyboard(num,'numbers');
 kunde.onclick=()=>openKeyboard(kunde,'letters');
 
-/* Vorschau */
-function showPreview(txt){ out.innerHTML=txt; }
-
 function makeOutput(type){
   const n=num.value.trim(),k=kunde.value.trim();
   if(!n)return alert('Bitte Beistellnummer eingeben');
@@ -322,36 +350,33 @@ function makeOutput(type){
     case'RCS':add('RCS GmbH','Schweißen',k);break;
     case'COATINC':add('Coatinc 24 GmbH','Verzinken',k);break;
   }
-  showPreview(html);
+  prevContent.innerHTML=html;
+  document.getElementById('previewPopup').style.display='flex';
   document.querySelectorAll('#kunden button').forEach(b=>b.classList.remove('active'));
   document.querySelector(`button[data-type="${type}"]`).classList.add('active');
-  document.getElementById('previewPopup').style.display='flex';
 }
 
-/* Vorschau-Buttons */
+document.querySelectorAll('#kunden .action').forEach(btn=>btn.onclick=()=>makeOutput(btn.dataset.type));
+
 document.getElementById('btnPrintNow').onclick=()=>{
-  const printWindow=window.open('','_blank');
-  printWindow.document.write(`
+  const a5Markup=document.getElementById('a5Preview').outerHTML;
+  const w=window.open('','_blank');
+  w.document.write(`
   <html><head><title>Drucken</title>
   <style>
     @page { size: A5 landscape; margin: 0; }
-    html, body {
-      width: 210mm; height: 148mm;
-      margin: 0; padding: 0; overflow: hidden;
-      display: flex; justify-content: center; align-items: center;
-    }
+    html,body{width:210mm;height:148mm;margin:0;padding:0;overflow:hidden;
+      display:flex;align-items:center;justify-content:center;background:#fff;}
+    #a5Preview{width:210mm;height:148mm;border:none;}
   </style>
-  </head><body>${out.innerHTML}</body></html>
-  `);
-  printWindow.document.close();
-  printWindow.print();
-  setTimeout(()=>printWindow.close(),600);
+  </head><body>${a5Markup}</body></html>`);
+  w.document.close(); w.focus();
+  setTimeout(()=>{w.print(); w.close();},500);
   document.getElementById('previewPopup').style.display='none';
 };
 document.getElementById('btnCancel').onclick=()=>document.getElementById('previewPopup').style.display='none';
-
-document.querySelectorAll('#kunden .action').forEach(btn=>btn.onclick=()=>makeOutput(btn.dataset.type));
+document.getElementById('btnDrucken').onclick=()=>alert('Bitte Kunden auswählen, dann Vorschau drucken.');
+document.getElementById('btnBack').onclick=()=>window.location.href='index.html';
 </script>
-
 </body>
 </html>
