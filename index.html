@@ -44,7 +44,7 @@ button {
 
 footer { margin-top:40px; font-size:13px; color:#666; }
 
-/* Responsiv für kleine Bildschirme */
+/* Responsiv */
 @media (max-width: 600px) {
   button {
     width: 90%;
@@ -55,14 +55,14 @@ footer { margin-top:40px; font-size:13px; color:#666; }
 }
 </style>
 <script>
-// ✅ Automatische Weiterleitung je nach Gerät
 function openBeschichtung() {
   const isMobile = /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
-  if (isMobile) {
-    window.location.href = "beschichtung_mobile.html";
-  } else {
-    window.location.href = "beschichtung_pc.html";
-  }
+  window.location.href = isMobile ? "beschichtung_mobile.html" : "beschichtung_pc.html";
+}
+
+function openKanten() {
+  const isMobile = /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
+  window.location.href = isMobile ? "kanten_mobile.html" : "kanten_pc.html";
 }
 </script>
 </head>
@@ -71,11 +71,9 @@ function openBeschichtung() {
     <img id="logo" src="Langen.png" alt="Langen CNC Metalltechnik" style="max-width:240px;margin-bottom:10px;">
     <h1>Warenanhänger Terminal</h1>
 
-    <!-- 🧩 Automatische Auswahl PC/Mobile -->
     <button id="btnBeschichtung" onclick="openBeschichtung()">Beschichtung (A5)</button>
-
+    <button id="btnKanten" onclick="openKanten()">Kanten (A6)</button>
     <button id="btnPaus" onclick="window.location.href='Paus-Lieferung.html'">PAUS Lieferung (A6)</button>
-    <button id="btnKanten" onclick="window.location.href='Kanten.html'">Kanten</button>
     <button id="btnSchweissen" onclick="window.location.href='Schweissen.html'">Schweißen</button>
 
     <footer>Langen CNC Metalltechnik GmbH & Co. KG</footer>
