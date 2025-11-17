@@ -1,6 +1,6 @@
 {
   "name": "Warenanhänger Terminal",
-  "short_name": "Anhänger",
+  "short_name": "",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -18,3 +18,4 @@
     }
   ]
 }
+
