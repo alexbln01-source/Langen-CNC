@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Warenanhänger Terminal</title>
+
 <style>
 html,body {
   margin:0; padding:0; height:100%;
@@ -54,17 +55,33 @@ footer { margin-top:40px; font-size:13px; color:#666; }
   }
 }
 </style>
+
 <script>
+function isMobileDevice() {
+  const ua = navigator.userAgent.toLowerCase();
+  return (
+    ua.includes("android") ||
+    ua.includes("iphone") ||
+    ua.includes("ipad") ||
+    ua.includes("ipod") ||
+    ua.includes("windows phone") ||
+    ua.includes("zebra")
+  );
+}
+
 function openBeschichtung() {
-  const isMobile = /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
-  window.location.href = isMobile ? "beschichtung_mobile.html" : "beschichtung_pc.html";
+  window.location.href = isMobileDevice()
+    ? "beschichtung_mobile.html"
+    : "beschichtung_pc.html";
 }
 
 function openKanten() {
-  const isMobile = /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
-  window.location.href = isMobile ? "kanten_mobile.html" : "kanten_pc.html";
+  window.location.href = isMobileDevice()
+    ? "kanten_mobile.html"
+    : "kanten_pc.html";
 }
 </script>
+
 </head>
 <body>
   <div id="main">
