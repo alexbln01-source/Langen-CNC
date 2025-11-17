@@ -3,14 +3,21 @@
 <head>
 <meta charset="utf-8" />
 
-<!-- WICHTIG für Mobile + PWA -->
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-<meta name="theme-color" content="#003a73">
+<!-- Wichtig für Mobile -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-<!-- PWA Manifest -->
+<title>Warenanhänger</title>
+
+<!-- ====== ICONS ====== -->
+<link rel="icon" href="icon192.png" sizes="192x192" type="image/png">
+<link rel="icon" href="icon512.png" sizes="512x512" type="image/png">
+<link rel="apple-touch-icon" href="icon192.png">
+
+<!-- ====== PWA MANIFEST ====== -->
 <link rel="manifest" href="manifest.json">
 
-<title>Warenanhänger Terminal</title>
+<!-- Browser-Farbe -->
+<meta name="theme-color" content="#003a73">
 
 <style>
 html,body {
@@ -31,6 +38,7 @@ html,body {
 
 h1 {
   font-size:32px; color:#003a73; margin:10px 0 30px; text-transform:uppercase;
+  font-weight:900;
 }
 
 button {
@@ -67,54 +75,31 @@ footer { margin-top:40px; font-size:13px; color:#666; }
 </style>
 
 <script>
-/* Automatische Wahl PC / Mobile / Tablet */
+// Mobile / Desktop Erkennung
 function isMobileDevice() {
   return /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
 }
 
 function openBeschichtung() {
-  if (isMobileDevice()) {
-    window.location.href = "beschichtung_mobile.html";
-  } else {
-    window.location.href = "beschichtung_pc.html";
-  }
+  window.location.href = isMobileDevice() ? "beschichtung_mobile.html" : "beschichtung_pc.html";
 }
 
 function openKanten() {
-  if (isMobileDevice()) {
-    window.location.href = "kanten_mobile.html";
-  } else {
-    window.location.href = "kanten_pc.html";
-  }
+  window.location.href = isMobileDevice() ? "kanten_mobile.html" : "kanten_pc.html";
 }
 </script>
-
 </head>
+
 <body>
   <div id="main">
-    
-    <img id="logo" src="Langen.png" alt="Langen CNC Metalltechnik"
-         style="max-width:240px;margin-bottom:10px;">
+    <h1>Warenanhänger</h1>
 
-    <h1>Warenanhänger Terminal</h1>
-
-    <!-- Automatisch PC/Mobile Auswahl -->
     <button id="btnBeschichtung" onclick="openBeschichtung()">Beschichtung (A5)</button>
     <button id="btnKanten" onclick="openKanten()">Kanten (A6)</button>
-
-    <!-- Diese öffnen einfach ihre Seiten -->
     <button id="btnPaus" onclick="window.location.href='Paus-Lieferung.html'">PAUS Lieferung (A6)</button>
     <button id="btnSchweissen" onclick="window.location.href='Schweissen.html'">Schweißen</button>
 
     <footer>Langen CNC Metalltechnik GmbH & Co. KG</footer>
   </div>
-
-<script>
-/* PWA ServiceWorker aktivieren */
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
-}
-</script>
-
 </body>
 </html>
