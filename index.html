@@ -36,6 +36,11 @@ html,body {
   border:1px solid #bfc5cc;
 }
 
+#logo {
+  max-width:280px;
+  margin-bottom:15px;
+}
+
 h1 {
   font-size:32px;
   color:#003a73;
@@ -59,33 +64,17 @@ button {
 }
 
 /* Farben */
-#btnBeschichtung {
-  background:linear-gradient(180deg,#007bff 0%,#0056b3 100%);
-}
-#btnBeschichtung:hover {
-  background:linear-gradient(180deg,#2196f3 0%,#0066d6 100%);
-}
+#btnBeschichtung { background:linear-gradient(180deg,#007bff 0%,#0056b3 100%); }
+#btnBeschichtung:hover { background:linear-gradient(180deg,#2196f3 0%,#0066d6 100%); }
 
-#btnKanten {
-  background:linear-gradient(180deg,#ff9800 0%,#e67e00 100%);
-}
-#btnKanten:hover {
-  background:linear-gradient(180deg,#ffb84d 0%,#d96b00 100%);
-}
+#btnKanten { background:linear-gradient(180deg,#ff9800 0%,#e67e00 100%); }
+#btnKanten:hover { background:linear-gradient(180deg,#ffb84d 0%,#d96b00 100%); }
 
-#btnPaus {
-  background:linear-gradient(180deg,#28a745 0%,#1d7f31 100%);
-}
-#btnPaus:hover {
-  background:linear-gradient(180deg,#2fc34a 0%,#1a6d29 100%);
-}
+#btnPaus { background:linear-gradient(180deg,#28a745 0%,#1d7f31 100%); }
+#btnPaus:hover { background:linear-gradient(180deg,#2fc34a 0%,#1a6d29 100%); }
 
-#btnSchweissen {
-  background:linear-gradient(180deg,#9c27b0 0%,#6a0080 100%);
-}
-#btnSchweissen:hover {
-  background:linear-gradient(180deg,#b94ed3 0%,#7a0093 100%);
-}
+#btnSchweissen { background:linear-gradient(180deg,#9c27b0 0%,#6a0080 100%); }
+#btnSchweissen:hover { background:linear-gradient(180deg,#b94ed3 0%,#7a0093 100%); }
 
 footer {
   margin-top:40px;
@@ -100,6 +89,10 @@ footer {
     height: 70px;
     font-size: 18px;
     margin: 10px auto;
+  }
+
+  #logo {
+    max-width:200px;
   }
 }
 </style>
@@ -126,6 +119,9 @@ function openKanten() {
 
 <body>
   <div id="main">
+
+    <!-- HIER DEIN LOGO -->
+    <img id="logo" src="langen_logo.png" alt="Langen CNC Logo">
 
     <h1>Warenanhänger</h1>
 
