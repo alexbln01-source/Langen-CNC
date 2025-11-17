@@ -13,7 +13,7 @@
 <link rel="icon" href="icon512.png" sizes="512x512" type="image/png">
 <link rel="apple-touch-icon" href="icon192.png">
 
-<!-- ====== PWA MANIFEST ====== -->
+<!-- Manifest -->
 <link rel="manifest" href="manifest.json">
 
 <!-- Browser Theme -->
@@ -26,13 +26,7 @@ html,body {
   font-family:"Segoe UI", Arial, sans-serif;
   display:flex; justify-content:center; align-items:center;
 }
-#logo {
-  width: 260px;          /* Größe des Logos */
-  display: block;
-  margin: 0 auto 20px;   /* zentriert + Abstand nach unten */
-  image-rendering: auto;
-}
-  
+
 #main {
   width:90%; max-width:900px; text-align:center;
   background:linear-gradient(180deg,#ffffff 0%,#eef1f4 100%);
@@ -42,9 +36,14 @@ html,body {
   border:1px solid #bfc5cc;
 }
 
+/* ⭐ Langen Logo */
 #logo {
-  width:170px;
-  margin-bottom:20px;
+  width: 260px;          /* Größe */
+  max-width: 70%;
+  margin-bottom: 25px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 h1 {
@@ -89,31 +88,33 @@ footer {
 }
 
 @media (max-width: 600px) {
+  #logo {
+    width: 200px;    /* kleiner auf Handy */
+  }
   button {
     width: 90%;
     height: 70px;
     font-size: 18px;
     margin: 10px auto;
   }
-
-  #logo {
-    width:140px;
-  }
 }
 </style>
 
 <script>
-// Mobile/Tablet/PC Erkennung
 function isMobileDevice() {
   return /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
 }
 
 function openBeschichtung() {
-  window.location.href = isMobileDevice() ? "beschichtung_mobile.html" : "beschichtung_pc.html";
+  window.location.href = isMobileDevice()
+    ? "beschichtung_mobile.html"
+    : "beschichtung_pc.html";
 }
 
 function openKanten() {
-  window.location.href = isMobileDevice() ? "kanten_mobile.html" : "kanten_pc.html";
+  window.location.href = isMobileDevice()
+    ? "kanten_mobile.html"
+    : "kanten_pc.html";
 }
 </script>
 </head>
@@ -121,7 +122,7 @@ function openKanten() {
 <body>
   <div id="main">
 
-    <!-- ⭐ Langen CNC Logo oben einfügen -->
+    <!-- ⭐ Langen CNC Logo oben -->
     <img id="logo" src="langen.png" alt="Langen CNC Logo">
 
     <h1>Warenanhänger</h1>
