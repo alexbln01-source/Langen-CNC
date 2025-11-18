@@ -267,17 +267,18 @@ function initPrintButton() {
           line-height: 1.2;
         }
 
-        #output-footer {
-          position: absolute;
-          bottom: 6mm;
-          right: 8mm;
-        }
+     #output-footer {
+  position: absolute;
+  bottom: 2mm;   /* vorher 6mm */
+  right: 2mm;    /* vorher 8mm */
+}
 
-        #output-footer img {
-          width: 4.3cm;
-          height: 1.6cm;
-          object-fit: contain;
-        }
+#output-footer img {
+  width: 35mm;   /* vorher 43mm */
+  height: auto;
+  max-height: 12mm;  /* verhindert Überlaufen */
+  object-fit: contain;
+}
 
       </style>
       </head>
