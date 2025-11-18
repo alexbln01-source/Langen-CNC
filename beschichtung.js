@@ -150,10 +150,17 @@ function buildKeyboard(type) {
 
 function openKeyboard(field, type) {
   currentField = field;
-  if (kbTitle) kbTitle.textContent = (type === 'numbers') ? 'Beistellnummer eingeben' : 'Kundenname eingeben';
-  if (kbInput) kbInput.value = field.value || '';
+
+  kbTitle.textContent =
+    (type === 'numbers') ? 'Beistellnummer eingeben' : 'Kundenname eingeben';
+
+  kbInput.value = field.value || '';
   buildKeyboard(type);
-  if (kbPopup) kbPopup.style.display = 'flex';
+
+  kbPopup.style.display = 'flex';
+
+  // ⭐ WICHTIGER FIX → Cursor sofort im Eingabefeld
+  setTimeout(() => kbInput.focus(), 50);
 }
 
 function closeKeyboard() {
