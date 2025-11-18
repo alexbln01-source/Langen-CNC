@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Beschichtung (A5 Quer)</title>
 
-<!-- 💻 STYLES -->
+<link rel="stylesheet" href="style.css">
+
 <style>
 body {
   margin: 0;
@@ -105,6 +106,17 @@ button.active { background: #007bff; color: #fff; }
   height: 1.6cm;
   object-fit: contain;
 }
+
+/* Popup-Tastatur */
+#keyboardPopup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 3000;
+  justify-content: center;
+  align-items: center;
+}
 </style>
 </head>
 
@@ -120,21 +132,7 @@ button.active { background: #007bff; color: #fff; }
     <label>Kunde</label>
     <input id="kundeInput" type="text" readonly>
 
-    <div id="kunden">
-      <button class="action" data-type="LP">L&amp;P</button>
-      <button class="action" data-type="LPEILT">L&amp;P EILT SEHR</button>
-      <button class="action" data-type="SCHUETTE">Schütte</button>
-      <button class="action" data-type="SCHUETTEEILT">Schütte EILT SEHR</button>
-      <button class="action" data-type="KLEY">Kleymann</button>
-      <button class="action" data-type="KLEYEILT">Kleymann EILT SEHR</button>
-      <button class="action" data-type="COMTEZN8">Comte ZN8</button>
-      <button class="action" data-type="CHEMISCH">Comte Chemisch Vernickeln</button>
-      <button class="action" data-type="DICK">Comte Dickschichtpassivierung</button>
-      <button class="action" data-type="BLAU">Comte Blau ZN8</button>
-      <button class="action" data-type="PENTZ">Pentz &amp; Gerdes ZN8</button>
-      <button class="action" data-type="RCS">RCS Schweißen</button>
-      <button class="action" data-type="COATINC">Coatinc 24 Verzinken</button>
-    </div>
+    <div id="kunden"></div>
 
     <div style="display:flex; justify-content:space-between; width:90%;">
       <button id="btnBack" class="action">⬅️ Zurück</button>
@@ -150,160 +148,22 @@ button.active { background: #007bff; color: #fff; }
   </div>
 </div>
 
-<!-- 🔤 POPUP-TASTATUR -->
-<div id="keyboardPopup" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:3000; justify-content:center; align-items:center;">
-  <div id="keyboardBox" style="background:#fff; padding:20px; border-radius:10px; width:90%; max-width:420px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.2);">
-    <h3 id="keyboardTitle" style="margin:0 0 10px 0; color:#004b8d;">Eingabe</h3>
+<!-- 🔤 Popup Tastatur -->
+<div id="keyboardPopup">
+  <div id="keyboardBox" style="background:#fff; padding:20px; border-radius:10px; width:90%; max-width:420px; text-align:center;">
+    <h3 id="keyboardTitle">Eingabe</h3>
     <input id="keyboardInput" type="text" style="width:90%; padding:10px; font-size:18px; text-align:center; border:1px solid #ccc; border-radius:6px; margin-bottom:12px;">
     <div id="keyboardGrid" style="display:grid; grid-template-columns:repeat(10,1fr); gap:6px;"></div>
     <div style="display:flex; justify-content:center; gap:10px; margin-top:14px;">
-      <button id="btnDel" style="padding:8px 16px; font-weight:bold; border:none; border-radius:8px; background:#d9534f; color:#fff;">⌫ Löschen</button>
-      <button id="btnOk" style="padding:8px 16px; font-weight:bold; border:none; border-radius:8px; background:#28a745; color:#fff;">OK</button>
-      <button id="btnClose" style="padding:8px 16px; font-weight:bold; border:none; border-radius:8px; background:#6c757d; color:#fff;">Schließen</button>
+      <button id="btnDel" class="action" style="background:#d9534f; color:white;">⌫ Löschen</button>
+      <button id="btnOk"  class="action" style="background:#28a745; color:white;">OK</button>
+      <button id="btnClose" class="action" style="background:#6c757d; color:white;">Schließen</button>
     </div>
   </div>
 </div>
 
-<!-- ⚙️ SCRIPT -->
-<script>
-const out=document.getElementById('output-content');
-const num=document.getElementById('numInput');
-const kunde=document.getElementById('kundeInput');
-const popup=document.getElementById('keyboardPopup');
-const kbInput=document.getElementById('keyboardInput');
-const kbGrid=document.getElementById('keyboardGrid');
-const title=document.getElementById('keyboardTitle');
-let currentField=null;
+<!-- 👉 EXTERNES JAVASCRIPT -->
+<script src="beschichtung_core.js"></script>
 
-function buildKeyboard(type){
-  kbGrid.innerHTML='';
-  const chars=(type==='numbers')?['1','2','3','4','5','6','7','8','9','0']:'QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM'.split('');
-  chars.forEach(c=>{
-    const b=document.createElement('button');
-    b.textContent=c;
-    b.style.cssText='padding:10px;font-size:18px;border-radius:8px;border:1px solid #ccc;background:#f0f0f0;';
-    b.onclick=()=>kbInput.value+=c;
-    kbGrid.appendChild(b);
-  });
-}
-
-function openKeyboard(field,type){
-  currentField=field;
-  title.textContent=(type==='numbers')?'Beistellnummer eingeben':'Kundenname eingeben';
-  kbInput.value=field.value||'';
-  kbInput.dataset.type=type;
-  buildKeyboard(type);
-  popup.style.display='flex';
-  setTimeout(()=>kbInput.focus(),100);
-}
-function closeKeyboard(){ popup.style.display='none'; }
-
-document.getElementById('btnDel').onclick=()=>kbInput.value=kbInput.value.slice(0,-1);
-document.getElementById('btnClose').onclick=closeKeyboard;
-document.getElementById('btnOk').onclick=()=>{
-  currentField.value=kbInput.value.trim();
-  if(currentField===num) openKeyboard(kunde,'letters');
-  else closeKeyboard();
-};
-kbInput.addEventListener('keydown',e=>{
-  if(e.key==='Enter'){
-    e.preventDefault();
-    if(currentField===num){
-      currentField.value=kbInput.value.trim();
-      openKeyboard(kunde,'letters');
-    } else if(currentField===kunde){
-      currentField.value=kbInput.value.trim();
-      closeKeyboard();
-    }
-  }
-});
-
-num.onclick=()=>openKeyboard(num,'numbers');
-kunde.onclick=()=>openKeyboard(kunde,'letters');
-
-function showPreview(txt){ out.innerHTML=txt; }
-
-function makeOutput(type){
-  const n=num.value.trim(),k=kunde.value.trim();
-  if(!n)return alert('Bitte Beistellnummer eingeben');
-  let html=`<div style="font-size:36pt;margin-bottom:6mm;">${n}</div>`;
-  const add=(main,sub='',name='')=>{
-    html+=`<div style="font-size:48pt;font-weight:900;">${main}</div>`;
-    if(sub)html+=`<div style="font-size:32pt;">„${sub}“</div>`;
-    if(name)html+=`<div style="font-size:32pt;">(${name})</div>`;
-  };
-  switch(type){
-    case'LP':add('L&P');break;
-    case'LPEILT':add('L&P','EILT SEHR');break;
-    case'SCHUETTE':add('Schütte');break;
-    case'SCHUETTEEILT':add('Schütte','EILT SEHR');break;
-    case'KLEY':add('Kleymann');break;
-    case'KLEYEILT':add('Kleymann','EILT SEHR');break;
-    case'COMTEZN8':add('Comte','ZN8',k);break;
-    case'CHEMISCH':add('Comte','Chemisch Vernickeln',k);break;
-    case'DICK':add('Comte','Dickschichtpassivierung',k);break;
-    case'BLAU':add('Comte','Blau ZN8',k);break;
-    case'PENTZ':add('Pentz & Gerdes','ZN8',k);break;
-    case'RCS':add('RCS GmbH','Schweißen',k);break;
-    case'COATINC':add('Coatinc 24 GmbH','Verzinken',k);break;
-  }
-  showPreview(html);
-  document.querySelectorAll('#kunden button').forEach(b=>b.classList.remove('active'));
-  document.querySelector(`button[data-type="${type}"]`).classList.add('active');
-}
-
-document.querySelectorAll('#kunden .action').forEach(btn=>btn.onclick=()=>makeOutput(btn.dataset.type));
-
-/* 🖨 DRUCK KORRIGIERT */
-document.getElementById('btnDrucken').onclick=()=>{
-  if(out.innerHTML.trim()==="")return alert("Bitte zuerst einen Kunden wählen!");
-  const printArea=document.getElementById('printArea').outerHTML;
-  const popup=window.open("","_blank","width=1200,height=850");
-  popup.document.write(`
-  <html><head><title>Drucken</title>
-  <style>
-    @page { size: A5 landscape; margin: 0; }
-    html, body {
-      width: 210mm; height: 148mm;
-      margin: 0; padding: 0;
-      background: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    #printArea {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-    }
-    #output-content {
-      text-align: center;
-      font-weight: 900;
-      margin-bottom: 10mm;
-    }
-    #output-footer {
-      position: absolute;
-      bottom: 6mm;
-      right: 8mm;
-    }
-    #output-footer img {
-      width: 4.3cm;
-      height: 1.6cm;
-      object-fit: contain;
-    }
-  </style>
-  </head><body>${printArea}</body></html>
-  `);
-  popup.document.close();
-  popup.focus();
-  setTimeout(()=>{ popup.print(); popup.close(); },600);
-};
-
-document.getElementById('btnBack').onclick=()=>window.location.href='index.html';
-</script>
 </body>
 </html>
