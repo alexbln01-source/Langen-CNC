@@ -211,38 +211,90 @@ function validate() {
 // Drucken
 // -------------------------
 function initPrintButton() {
-  var btn = $('#btnDrucken');
+  const btn = $('#btnDrucken');
   if (!btn) return;
 
-  btn.onclick = function () {
+  btn.onclick = () => {
     if (!validate()) return;
+
     if (out) out.innerHTML = buildOutput(selectedType);
 
-    var printArea = $('#printArea');
+    const printArea = $('#printArea');
     if (!printArea) return;
 
-    var popup = window.open('', '_blank', 'width=1200,height=850');
-    popup.document.write(
-      '<html><head><title>Drucken</title>' +
-      '<style>' +
-      '@page { size:A5 landscape; margin:0; }' +
-      'html,body{width:210mm;height:148mm;margin:0;padding:0;' +
-      'display:flex;justify-content:center;align-items:center;background:white;}' +
-      '#printArea{width:100%;height:100%;position:relative;display:flex;' +
-      'flex-direction:column;justify-content:center;align-items:center;padding:8mm;}' +
-      '#output-content{text-align:center;font-weight:900;}' +
-      '#output-footer{position:absolute;right:8mm;bottom:6mm;}' +
-      '#output-footer img{width:4.3cm;height:1.6cm;object-fit:contain;}' +
-      '</style></head><body>' +
-      printArea.outerHTML +
-      '</body></html>'
-    );
+    const popup = window.open("", "_blank", "width=1200,height=850");
+
+    popup.document.write(`
+      <html>
+      <head><title>Drucken</title>
+      <style>
+
+        /* --- DRUCKGENAUIGKEIT SICHERSTELLEN --- */
+        @page { 
+          size: A5 landscape; 
+          margin: 0;
+        }
+
+        html, body {
+          margin: 0;
+          padding: 0;
+          width: 210mm !important;
+          height: 148mm !important;
+          zoom: 1 !important;               /* verhindert Chrome-Auto-Skalierung */
+          overflow: hidden !important;      /* verhindert Umbruch auf 2. Seite */
+          background: white;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        /* --- DRUCKBEREICH EXACT DEFINIEREN --- */
+        #printArea {
+          width: 210mm !important;
+          height: 148mm !important;
+          overflow: hidden !important;
+          position: relative;
+
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+
+        #output-content {
+          text-align: center;
+          font-weight: 900;
+          line-height: 1.2;
+        }
+
+        #output-footer {
+          position: absolute;
+          bottom: 6mm;
+          right: 8mm;
+        }
+
+        #output-footer img {
+          width: 4.3cm;
+          height: 1.6cm;
+          object-fit: contain;
+        }
+
+      </style>
+      </head>
+
+      <body>
+        ${printArea.outerHTML}
+      </body>
+      </html>
+    `);
+
     popup.document.close();
     popup.focus();
-    setTimeout(function () {
+
+    setTimeout(() => {
       popup.print();
       popup.close();
-    }, 600);
+    }, 400);
   };
 }
 
