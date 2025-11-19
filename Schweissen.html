@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Schweißen (A6 Quer)</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  background: #f0f0f0;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+}
+
+/* --- Desktop-Layout --- */
+#form-container {
+  width: 50%;
+  background: #fff;
+  border-right: 2px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.preview-container {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ddd;
+}
+
+/* --- Formularelemente --- */
+h2 {
+  text-align: center;
+  margin: 0 0 16px 0;
+  color: #004b8d;
+  font-size: 1.8rem;
+}
+.button-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px;
+}
+button.action {
+  flex: 0 0 calc(48% - 6px);
+  height: 42px;
+  border: 1px solid #ccc;
+  background: linear-gradient(#f8f9fb,#eef1f4);
+  color: #2d2d2d;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  transition: all 0.2s ease;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
+
+.action-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+/* --- Vorschau (A6) --- */
+.output-box {
+  background: #fff;
+  border: 1px solid #aaa;
+  width: 148mm;
+  height: 105mm;
+  box-sizing: border-box;
+  padding: 8mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+#output-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.title {
+  font-size: 26pt;
+  font-weight: bold;
+  margin-bottom: 8mm;
+}
+.subtitle {
+  font-size: 36pt;
+  font-weight: 900;
+  margin-bottom: 8mm;
+}
+.line {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  font-size: 20pt;
+  font-weight: bold;
+  margin-bottom: 8mm;
+}
+.fill {
+  flex: 1;
+  border-bottom: 3px solid #000;
+  height: 1.2em;
+}
+
+/* --- Handyansicht --- */
+@media (max-width: 900px) {
+  body {
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+  }
+  #form-container, .preview-container {
+    width: 100%;
+    border: none;
+  }
+  .preview-container {
+    margin-top: 10px;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .output-box {
+    transform: scale(0.6);
+    transform-origin: top center;
+    margin-top: 4px;
+    height: auto;
+  }
+}
+
+/* --- Tastatur-Popup --- */
+#keyboardPopup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+#keyboardModal {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  padding: 20px;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+}
+#keyboardModal h3 { margin: 0 0 10px; color:#004b8d; }
+#keyboardInput {
+  width: 92%;
+  padding: 10px;
+  margin-bottom: 12px;
+  text-align: center;
+  font-size: 18px;
+  border: 1px solid #cfd3d7;
+  border-radius: 8px;
+}
+.keyboard-grid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 6px;
+}
+.keyboard-grid button {
+  padding: 10px 0;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #f2f2f2;
+  cursor: pointer;
+}
+.keyboard-actions {
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-top:14px;
+}
+.keyboard-actions button {
+  padding:8px 16px;
+  font-size:15px;
+  font-weight:bold;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  color:#fff;
+}
+.btn-del { background:#d9534f; }
+.btn-ok { background:#28a745; }
+.btn-close { background:#6c757d; }
+
+/* --- Druck --- */
+@media print {
+  @page { size: A6 landscape; margin: 0; }
+  body * { visibility: hidden; }
+  .output-box, .output-box * { visibility: visible; }
+  .output-box { position: absolute; left: 0; top: 0; border: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Linker Bereich -->
+<div id="form-container">
+  <h2>Schweißen</h2>
+
+  <div class="button-grid">
+    <button class="action" data-customer="Bergmann M-H">Bergmann M-H</button>
+    <button class="action" data-customer="Bücker">Bücker</button>
+    <button class="action" data-customer="Janzen">Janzen</button>
+    <button class="action" data-customer="Krone Spelle">Krone Spelle</button>
+    <button class="action" data-customer="L.Bergmann">L.Bergmann</button>
+    <button class="action" data-customer="PAUS">PAUS</button>
+    <button class="action" data-customer="Sonstige Kunden">Sonstige Kunden</button>
+    <button class="action" data-customer="TOS">TOS</button>
+  </div>
+
+  <div class="action-row">
+    <button id="btnBackSchweissen" class="action">⬅️ Zurück</button>
+    <button id="btnDruckenSchweissen" class="action">🖨 Drucken</button>
+  </div>
+</div>
+
+<!-- Rechte Vorschau -->
+<div class="preview-container">
+  <div class="output-box"><div id="output-content"></div></div>
+</div>
+
+<!-- Popup Tastatur -->
+<div id="keyboardPopup">
+  <div id="keyboardModal">
+    <h3>Kundenname eingeben</h3>
+    <input type="text" id="keyboardInput" autocomplete="off">
+    <div class="keyboard-grid" id="keyboardKeys"></div>
+    <div class="keyboard-actions">
+      <button id="keyboardDelete" class="btn-del">⌫ Löschen</button>
+      <button id="keyboardOK" class="btn-ok">OK</button>
+      <button id="keyboardClose" class="btn-close">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const out=document.getElementById('output-content');
+const popup=document.getElementById('keyboardPopup');
+const input=document.getElementById('keyboardInput');
+const grid=document.getElementById('keyboardKeys');
+
+/* Tastatur */
+(()=>{
+  const chars=[..."QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM"];
+  chars.forEach(c=>{
+    const b=document.createElement('button');
+    b.textContent=c;
+    b.onclick=()=>{input.value+=c; input.focus();}
+    grid.appendChild(b);
+  });
+})();
+
+function openKeyboard(){
+  input.value="";
+  popup.style.display='flex';
+  setTimeout(()=>input.focus(),100);
+}
+function closeKeyboard(){ popup.style.display='none'; }
+
+function showOutput(customer){
+  let html="";
+  switch(customer){
+    case 'Bergmann M-H':
+      html=`<div class="title">Bergmann M-H</div><div class="subtitle">Schweißen</div>
+      <div class="line"><label>Auftr.-NR:</label><span class="fill"></span></div>
+      <div class="line"><label>Pos.:</label><span class="fill"></span></div>
+      <div class="line"><label>SW-Termin:</label><span class="fill"></span></div>`;
+      break;
+    case 'Janzen':
+    case 'L.Bergmann':
+      html=`<div class="title">${customer}</div><div class="subtitle">Schweißen</div>
+      <div class="line"><label>SW-Termin:</label><span class="fill"></span></div>`;
+      break;
+    case 'Krone Spelle':
+      html=`<div class="title">Krone Spelle</div>
+      <div class="line"><label>Auftr.-NR:</label><span class="fill"></span></div>
+      <div class="line"><label>Bezeichnung:</label><span class="fill"></span></div>
+      <div class="line"><label>Stückzahl:</label><span style="width:3cm;" class="fill"></span>
+      <label>KW-SW:</label><span style="width:3cm;" class="fill"></span></div>
+      <div class="line"><label>Liefertermin:</label><span class="fill"></span></div>`;
+      break;
+    case 'PAUS':
+      html=`<div class="title">PAUS</div><div class="subtitle">Schweißen</div>
+      <div class="line"><label>Prod.-NR:</label><span class="fill"></span></div>
+      <div class="line"><label>SW-Termin:</label><span class="fill"></span></div>`;
+      break;
+    case 'TOS':
+      html=`<div class="title">TOS</div><div class="subtitle">Schweißen</div>
+      <div class="line"><label>Liefertermin:</label><span class="fill"></span></div>`;
+      break;
+    default:
+      html=`<div class="title">${customer}</div><div class="subtitle">Schweißen</div>
+      <div class="line"><label>SW-Termin:</label><span class="fill"></span></div>`;
+  }
+  out.innerHTML=html;
+}
+
+/* Button Events */
+document.querySelectorAll('.action[data-customer]').forEach(btn=>{
+  btn.onclick=()=>{
+    const name=btn.dataset.customer;
+    if(name==='Sonstige Kunden') openKeyboard();
+    else showOutput(name);
+  };
+});
+
+document.getElementById('keyboardOK').onclick=()=>{
+  const val=input.value.trim();
+  if(!val) return;
+  closeKeyboard(); showOutput(val);
+};
+document.getElementById('keyboardClose').onclick=closeKeyboard;
+document.getElementById('keyboardDelete').onclick=()=>input.value=input.value.slice(0,-1);
+
+/* Navigation */
+document.getElementById('btnBackSchweissen').onclick=()=>window.location.href='index.html';
+document.getElementById('btnDruckenSchweissen').onclick=()=>{
+  if(out.innerHTML.trim()===""){ alert("Bitte zuerst einen Kunden wählen!"); return; }
+  window.print();
+};
+
+/* Kein Doppeltap-Zoom */
+document.addEventListener('touchend',function(e){
+  const now=Date.now();
+  if(this.lastTouch && now-this.lastTouch<400)e.preventDefault();
+  this.lastTouch=now;
+},{passive:false});
+
+/* 30s Timeout */
+let timer;
+function resetTimer(){clearTimeout(timer);timer=setTimeout(()=>window.location.href='index.html',30000);}
+['click','keydown','touchstart'].forEach(e=>document.addEventListener(e,resetTimer));
+resetTimer();
+</script>
+</body>
+</html>

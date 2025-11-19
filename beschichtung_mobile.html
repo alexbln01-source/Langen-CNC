@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Beschichtung Mobile</title>
+
+<style>
+html, body {
+  margin: 0; padding: 0; height: 100%;
+  background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
+  font-family: "Segoe UI", Arial, sans-serif;
+  display: flex; justify-content: center; align-items: center;
+  overflow: hidden;
+}
+
+/* Hauptcontainer */
+#main {
+  width: 92%; max-width: 370px;
+  background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  padding: 18px 14px 20px;
+  text-align: center;
+}
+
+/* Titel */
+h2 {
+  font-size: 22px;
+  color: #003a73;
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+
+/* Eingabefelder */
+input[type="text"] {
+  width: 90%;
+  height: 36px;
+  margin: 6px 0;
+  text-align: center;
+  font-size: 16px;
+  border: 1px solid #bbb;
+  border-radius: 12px;
+  color: #222;
+}
+input::placeholder {
+  color: #777;
+  font-style: italic;
+}
+
+/* Kundenbuttons */
+#kunden {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 8px 0 10px;
+}
+#kunden button {
+  height: 34px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #004b8d;
+  background: linear-gradient(#f9f9fb, #edf0f3);
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+#kunden button:hover {
+  background: linear-gradient(#ffffff, #e8ecef);
+}
+
+/* Footer-Buttons */
+#actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+#actions button {
+  width: 46%;
+  height: 38px;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 10px;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+#btnBack { background: linear-gradient(#6c757d, #495057); }
+#btnDrucken { background: linear-gradient(#007bff, #0056b3); }
+
+/* ---------------- Vorschau (A5 Querformat) ---------------- */
+#previewPopup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 5000;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Vorschau-Inhalt */
+#previewBox {
+  background: #fff;
+  border-radius: 10px;
+  width: 90vw;
+  aspect-ratio: 210 / 148;
+  max-width: 480px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 15mm 12mm 25mm 12mm;
+  transform: scale(0.9);
+}
+
+/* Textblock */
+#output-content {
+  flex: 1;
+  width: 100%;
+  text-align: center;
+  font-weight: 900;
+  line-height: 1.15;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transform: scale(0.9);
+  word-break: keep-all;
+  white-space: nowrap;
+}
+#output-content div { margin: 3px 0; }
+
+/* Dynamische Schriftgröße */
+#output-content div[data-fit] {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Logo unten rechts */
+#output-footer {
+  position: absolute;
+  bottom: 10mm;
+  right: 10mm;
+}
+#output-footer img {
+  width: 2.6cm;
+  height: auto;
+  object-fit: contain;
+}
+
+/* X-Schließen-Button */
+#btnClosePreview {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  color: #666;
+  cursor: pointer;
+}
+
+/* Buttons unterhalb des weißen Felds */
+.preview-buttons {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+.preview-buttons button {
+  min-width: 140px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 14px;
+}
+#btnPrintNow { background: #28a745; }
+#btnCancelPreview { background: #d9534f; }
+
+/* --- Druckansicht --- */
+@media print {
+  body * { visibility: hidden !important; }
+  #previewBox, #previewBox * {
+    visibility: visible !important;
+  }
+  #previewBox {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    box-shadow: none;
+    border-radius: 0;
+    transform: none;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+  }
+  .preview-buttons, #btnClosePreview { display: none !important; }
+}
+
+/* ---------------- Popup Tastatur ---------------- */
+#keyboardPopup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 8000;
+  justify-content: center;
+  align-items: center;
+}
+#keyboardBox {
+  background: #fff;
+  border-radius: 14px;
+  width: 94%;
+  max-width: 360px;
+  text-align: center;
+  padding: 12px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+}
+#keyboardInput {
+  width: 90%;
+  height: 36px;
+  font-size: 18px;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px solid #bbb;
+  margin-bottom: 8px;
+}
+#keyboardGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+#keyboardGrid button {
+  height: 38px;
+  font-size: 18px;
+  border-radius: 8px;
+  background: #f1f1f1;
+  border: 1px solid #ccc;
+  color: #003a73;
+}
+#keyboardActions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+#keyboardActions button {
+  flex: 1;
+  height: 36px;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  margin: 0 3px;
+  border: none;
+}
+#btnDel { background: #dc3545; }
+#btnOk { background: #28a745; }
+#btnClose { background: #6c757d; }
+</style>
+</head>
+<body>
+
+<div id="main">
+  <h2>BESCHICHTUNG</h2>
+
+  <input id="numInput" type="text" placeholder="Beistellnummer" readonly>
+  <input id="kundeInput" type="text" placeholder="Kunde" readonly>
+
+  <div id="kunden">
+    <button data-type="LP">L&amp;P</button>
+    <button data-type="LPEILT">L&amp;P EILT SEHR</button>
+    <button data-type="SCHUETTE">Schütte</button>
+    <button data-type="SCHUETTEEILT">Schütte EILT SEHR</button>
+    <button data-type="KLEY">Kleymann</button>
+    <button data-type="KLEYEILT">Kleymann EILT SEHR</button>
+    <button data-type="COMTEZN8">Comte ZN8</button>
+    <button data-type="CHEMISCH">Comte Chemisch Vernickeln</button>
+    <button data-type="DICK">Comte Dickschichtpassivierung</button>
+    <button data-type="BLAU">Comte Blau ZN8</button>
+    <button data-type="PENTZ">Pentz &amp; Gerdes ZN8</button>
+    <button data-type="RCS">RCS Schweißen</button>
+    <button data-type="COATINC">Coatinc 24 Verzinken</button>
+  </div>
+
+  <div id="actions">
+    <button id="btnBack">⬅️ Zurück</button>
+    <button id="btnDrucken">🖨 Drucken</button>
+  </div>
+</div>
+
+<!-- Vorschau -->
+<div id="previewPopup">
+  <div id="previewBox">
+    <button id="btnClosePreview">✖</button>
+    <div id="output-content"></div>
+    <div id="output-footer"><img src="Langen.png" alt="Logo"></div>
+  </div>
+  <div class="preview-buttons">
+    <button id="btnPrintNow">Jetzt drucken</button>
+    <button id="btnCancelPreview">Abbrechen</button>
+  </div>
+</div>
+
+<!-- Tastatur -->
+<div id="keyboardPopup">
+  <div id="keyboardBox">
+    <input id="keyboardInput" type="text" readonly />
+    <div id="keyboardGrid"></div>
+    <div id="keyboardActions">
+      <button id="btnDel">⌫ Löschen</button>
+      <button id="btnOk">OK</button>
+      <button id="btnClose">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const num=document.getElementById('numInput');
+const kunde=document.getElementById('kundeInput');
+const popup=document.getElementById('keyboardPopup');
+const kbInput=document.getElementById('keyboardInput');
+const kbGrid=document.getElementById('keyboardGrid');
+let currentField=null;
+
+/* Tastatur */
+function buildKeyboard(type){
+  kbGrid.innerHTML='';
+  const chars=(type==='numbers')
+    ? ['1','2','3','4','5','6','7','8','9','0']
+    : 'QWERTZUIOPASDFGHJKLYXCVBNM'.split('');
+  chars.forEach(c=>{
+    const b=document.createElement('button');
+    b.textContent=c;
+    b.onclick=()=>kbInput.value+=c;
+    kbGrid.appendChild(b);
+  });
+}
+function openKeyboard(field,type){
+  currentField=field;
+  kbInput.value=field.value||'';
+  kbInput.dataset.type=type;
+  buildKeyboard(type);
+  popup.style.display='flex';
+  setTimeout(()=>kbInput.focus(),100);
+}
+function closeKeyboard(){ popup.style.display='none'; }
+document.getElementById('btnDel').onclick=()=>kbInput.value=kbInput.value.slice(0,-1);
+document.getElementById('btnClose').onclick=closeKeyboard;
+document.getElementById('btnOk').onclick=()=>{
+  currentField.value=kbInput.value.trim();
+  closeKeyboard();
+  if(currentField===num && kbInput.value.trim()!=='') openKeyboard(kunde,'letters');
+};
+num.onclick=()=>openKeyboard(num,'numbers');
+kunde.onclick=()=>openKeyboard(kunde,'letters');
+
+/* Vorschau + Druck */
+function makeOutput(type){
+  const n=num.value.trim(),k=kunde.value.trim();
+  if(!n||!k){alert('Bitte Beistellnummer UND Kunde eingeben.');return;}
+  let html=`<div style="font-size:36pt;margin-bottom:6mm;">${n}</div>`;
+  const add=(main,sub='',name='')=>{
+    html+=`<div data-fit style="font-size:48pt;">${main}</div>`;
+    if(sub)html+=`<div data-fit style="font-size:36pt;">„${sub}“</div>`;
+    if(name)html+=`<div data-fit style="font-size:32pt;">(${name})</div>`;
+  };
+  switch(type){
+    case'LP':add('L&P');break;
+    case'LPEILT':add('L&P','EILT SEHR');break;
+    case'SCHUETTE':add('Schütte');break;
+    case'SCHUETTEEILT':add('Schütte','EILT SEHR');break;
+    case'KLEY':add('Kleymann');break;
+    case'KLEYEILT':add('Kleymann','EILT SEHR');break;
+    case'COMTEZN8':add('Comte','ZN8',k);break;
+    case'CHEMISCH':add('Comte','Chemisch Vernickeln',k);break;
+    case'DICK':add('Comte','Dickschichtpassivierung',k);break;
+    case'BLAU':add('Comte','Blau ZN8',k);break;
+    case'PENTZ':add('Pentz & Gerdes','ZN8',k);break;
+    case'RCS':add('RCS GmbH','Schweißen',k);break;
+    case'COATINC':add('Coatinc 24 GmbH','Verzinken',k);break;
+  }
+  document.getElementById('output-content').innerHTML=html;
+  document.getElementById('previewPopup').style.display='flex';
+  autoResizeText();
+}
+document.querySelectorAll('#kunden button').forEach(btn=>btn.onclick=()=>makeOutput(btn.dataset.type));
+document.getElementById('btnPrintNow').onclick=()=>{
+  window.print();
+  document.getElementById('previewPopup').style.display='none';
+};
+document.getElementById('btnCancelPreview').onclick=()=>document.getElementById('previewPopup').style.display='none';
+document.getElementById('btnClosePreview').onclick=()=>document.getElementById('previewPopup').style.display='none';
+document.getElementById('btnBack').onclick=()=>history.back();
+
+/* Dynamische Schriftgrößenanpassung */
+function autoResizeText(){
+  const elements=document.querySelectorAll('#output-content [data-fit]');
+  elements.forEach(el=>{
+    let size=parseFloat(el.style.fontSize);
+    while(el.scrollWidth>el.clientWidth && size>10){
+      size-=1;
+      el.style.fontSize=size+'pt';
+    }
+  });
+}
+
+/* Zoom blockieren */
+document.addEventListener('gesturestart',e=>e.preventDefault());
+document.addEventListener('dblclick',e=>e.preventDefault());
+</script>
+</body>
+</html>

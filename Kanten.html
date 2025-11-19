@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Kanten (A6 Quer)</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  background: #f0f0f0;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+}
+
+/* --- Desktop Layout (50/50) --- */
+#form-container {
+  width: 50%;
+  background: #fff;
+  border-right: 2px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.preview-container {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ddd;
+}
+
+/* --- Formular --- */
+h2 {
+  text-align: center;
+  margin: 0 0 16px 0;
+  color: #004b8d;
+  font-size: 1.8rem;
+}
+
+label { display:block; margin-top:8px; font-weight:bold; }
+input[type="text"] {
+  width:90%;
+  padding:8px;
+  font-size:16px;
+  text-align:center;
+  border:1px solid #ccc;
+  border-radius:8px;
+  margin-bottom:10px;
+}
+
+.button-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 10px;
+}
+button.action {
+  flex: 0 0 calc(48% - 6px);
+  height: 42px;
+  border: 1px solid #ccc;
+  background: linear-gradient(#f8f9fb,#eef1f4);
+  color: #2d2d2d;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  transition: all 0.2s ease;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+button.action:hover { background: linear-gradient(#ffffff,#e9ecef); }
+
+.action-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+/* --- Vorschau (A6) --- */
+.output-box {
+  background: #fff;
+  border: 1px solid #aaa;
+  width: 148mm;
+  height: 105mm;
+  box-sizing: border-box;
+  padding: 8mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+#output-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.output-box img {
+  position: absolute;
+  right: 8mm;
+  bottom: 8mm;
+  width: 4cm;
+  height: auto;
+}
+
+.title {
+  font-size: 30pt;
+  font-weight: bold;
+  margin-top: 10mm;
+  margin-bottom: 10mm;
+}
+.line {
+  font-size: 20pt;
+  font-weight: bold;
+  margin-bottom: 8mm;
+}
+
+/* --- Handyansicht --- */
+@media (max-width: 900px) {
+  body {
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+  }
+  #form-container, .preview-container {
+    width: 100%;
+    border: none;
+  }
+  .preview-container {
+    margin-top: 10px;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .output-box {
+    transform: scale(0.6);
+    transform-origin: top center;
+    margin-top: 4px;
+    height: auto;
+  }
+}
+
+/* --- Popup Tastatur --- */
+#keyboardPopup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+#keyboardModal {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  padding: 20px;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+}
+#keyboardModal h3 { margin: 0 0 10px; color:#004b8d; }
+#keyboardInput {
+  width: 92%;
+  padding: 10px;
+  margin-bottom: 12px;
+  text-align: center;
+  font-size: 18px;
+  border: 1px solid #cfd3d7;
+  border-radius: 8px;
+}
+.keyboard-grid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 6px;
+}
+.keyboard-grid button {
+  padding: 10px 0;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #f2f2f2;
+  cursor: pointer;
+}
+.keyboard-actions {
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-top:14px;
+}
+.keyboard-actions button {
+  padding:8px 16px;
+  font-size:15px;
+  font-weight:bold;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  color:#fff;
+}
+.btn-del { background:#d9534f; }
+.btn-ok { background:#28a745; }
+.btn-close { background:#6c757d; }
+
+/* --- Druck --- */
+@media print {
+  @page { size: A6 landscape; margin: 0; }
+  body * { visibility: hidden; }
+  .output-box, .output-box * { visibility: visible; }
+  .output-box { position: absolute; left: 0; top: 0; border: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Linker Bereich -->
+<div id="form-container">
+  <h2>Kanten</h2>
+
+  <label>K-Termin:</label>
+  <input id="terminInput" type="text" readonly>
+  <label>Palettennummer:</label>
+  <input id="palettenInput" type="text" readonly>
+
+  <div class="button-grid">
+    <button class="action" data-customer="Bergmann M-H">Bergmann M-H</button>
+    <button class="action" data-customer="Bücker">Bücker</button>
+    <button class="action" data-customer="Grimme">Grimme</button>
+    <button class="action" data-customer="Janzen">Janzen</button>
+    <button class="action" data-customer="Krone Spelle">Krone Spelle</button>
+    <button class="action" data-customer="L.Bergmann">L.Bergmann</button>
+    <button class="action" data-customer="PAUS">PAUS</button>
+    <button class="action" data-customer="TOS">TOS</button>
+    <button class="action" data-customer="Sonstige Kunden">Sonstige Kunden</button>
+  </div>
+
+  <div class="action-row">
+    <button id="btnBackKanten" class="action">⬅️ Zurück</button>
+    <button id="btnDruckenKanten" class="action">🖨 Drucken</button>
+  </div>
+</div>
+
+<!-- Rechte Vorschau -->
+<div class="preview-container">
+  <div class="output-box">
+    <div id="output-content"></div>
+    <img src="Langen.png" alt="Logo">
+  </div>
+</div>
+
+<!-- Popup Tastatur -->
+<div id="keyboardPopup">
+  <div id="keyboardModal">
+    <h3>Eingabe</h3>
+    <input type="text" id="keyboardInput" autocomplete="off">
+    <div class="keyboard-grid" id="keyboardKeys"></div>
+    <div class="keyboard-actions">
+      <button id="keyboardDelete" class="btn-del">⌫ Löschen</button>
+      <button id="keyboardOK" class="btn-ok">OK</button>
+      <button id="keyboardClose" class="btn-close">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const out=document.getElementById('output-content');
+const popup=document.getElementById('keyboardPopup');
+const input=document.getElementById('keyboardInput');
+const grid=document.getElementById('keyboardKeys');
+let currentField=null;
+
+/* Tastatur aufbauen */
+(()=>{
+  const chars=[..."QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM1234567890"];
+  chars.forEach(c=>{
+    const b=document.createElement('button');
+    b.textContent=c;
+    b.onclick=()=>{input.value+=c; input.focus();}
+    grid.appendChild(b);
+  });
+})();
+
+function openKeyboard(field){
+  currentField=field;
+  input.value=field.value||"";
+  popup.style.display='flex';
+  setTimeout(()=>input.focus(),100);
+}
+function closeKeyboard(){ popup.style.display='none'; }
+
+document.getElementById('keyboardOK').onclick=()=>{
+  currentField.value=input.value.trim();
+  closeKeyboard();
+};
+document.getElementById('keyboardClose').onclick=closeKeyboard;
+document.getElementById('keyboardDelete').onclick=()=>input.value=input.value.slice(0,-1);
+
+document.getElementById('terminInput').onclick=()=>openKeyboard(terminInput);
+document.getElementById('palettenInput').onclick=()=>openKeyboard(palettenInput);
+
+/* Vorschau erzeugen */
+function showOutput(kunde){
+  const termin=document.getElementById('terminInput').value||"________";
+  const palette=document.getElementById('palettenInput').value||"________";
+  out.innerHTML=`
+    <div class="title">${kunde}</div>
+    <div class="line">Kanten</div>
+    <div class="line">K-Termin: ${termin}</div>
+    <div class="line">Palettennummer: ${palette}</div>`;
+}
+
+/* Buttons */
+document.querySelectorAll('.action[data-customer]').forEach(btn=>{
+  btn.onclick=()=>{
+    const name=btn.dataset.customer;
+    if(name==='Sonstige Kunden') openKeyboard({value:"",id:"kunde"});
+    else showOutput(name);
+  };
+});
+
+document.getElementById('btnBackKanten').onclick=()=>window.location.href='index.html';
+document.getElementById('btnDruckenKanten').onclick=()=>{
+  if(out.innerHTML.trim()===""){ alert("Bitte zuerst einen Kunden wählen!"); return; }
+  window.print();
+};
+
+/* Kein Doppeltap-Zoom */
+document.addEventListener('touchend',function(e){
+  const now=Date.now();
+  if(this.lastTouch && now-this.lastTouch<400)e.preventDefault();
+  this.lastTouch=now;
+},{passive:false});
+
+/* 30s Timeout */
+let timer;
+function resetTimer(){clearTimeout(timer);timer=setTimeout(()=>window.location.href='index.html',30000);}
+['click','keydown','touchstart'].forEach(e=>document.addEventListener(e,resetTimer));
+resetTimer();
+</script>
+</body>
+</html>
