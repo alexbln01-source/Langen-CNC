@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Beschichtung Mobile</title>
+
+  <!-- externe CSS -->
+  <link rel="stylesheet" href="beschichtung_mobile.css">
+</head>
+
+<body>
+
+<div id="main">
+  <h2>BESCHICHTUNG</h2>
+
+  <input id="numInput" type="text" placeholder="Beistellnummer" readonly>
+  <input id="kundeInput" type="text" placeholder="Kunde" readonly>
+
+  <div id="kunden">
+    <button data-type="LP">L&P</button>
+    <button data-type="LPEILT">L&P EILT SEHR</button>
+    <button data-type="SCHUETTE">Schütte</button>
+    <button data-type="SCHUETTEEILT">Schütte EILT SEHR</button>
+    <button data-type="KLEY">Kleymann</button>
+    <button data-type="KLEYEILT">Kleymann EILT SEHR</button>
+    <button data-type="COMTEZN8">Comte ZN8</button>
+    <button data-type="CHEMISCH">Comte Chemisch Vernickeln</button>
+    <button data-type="DICK">Comte Dickschichtpassivierung</button>
+    <button data-type="BLAU">Comte Blau ZN8</button>
+    <button data-type="PENTZ">Pentz & Gerdes ZN8</button>
+    <button data-type="RCS">RCS Schweißen</button>
+    <button data-type="COATINC">Coatinc 24 Verzinken</button>
+  </div>
+
+  <div id="actions">
+    <button id="btnBack">⬅️ Zurück</button>
+    <button id="btnDrucken">🖨 Drucken</button>
+  </div>
+</div>
+
+<!-- Vorschau -->
+<div id="previewPopup">
+  <div id="previewBox">
+    <button id="btnClosePreview">✖</button>
+    <div id="output-content"></div>
+    <div id="output-footer"><img src="langen.png" alt="Logo"></div>
+  </div>
+
+  <div class="preview-buttons">
+    <button id="btnPrintNow">Jetzt drucken</button>
+    <button id="btnCancelPreview">Abbrechen</button>
+  </div>
+</div>
+
+<!-- Tastatur -->
+<div id="keyboardPopup">
+  <div id="keyboardBox">
+    <h3 id="keyboardTitle">Eingabe</h3>
+    <input id="keyboardInput" type="text" readonly />
+    <div id="keyboardGrid"></div>
+
+    <div id="keyboardActions">
+      <button id="btnDel">⌫ Löschen</button>
+      <button id="btnOk">OK</button>
+      <button id="btnClose">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<!-- externe JS -->
+<script src="beschichtung_mobile.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,227 @@
+html, body {
+  margin: 0; padding: 0; height: 100%;
+  background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
+  font-family: "Segoe UI", Arial, sans-serif;
+  display: flex; justify-content: center; align-items: center;
+  overflow: hidden;
+}
+
+/* Hauptcontainer */
+#main {
+  width: 92%; max-width: 370px;
+  background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  padding: 18px 14px 20px;
+  text-align: center;
+}
+
+/* Titel */
+h2 {
+  font-size: 22px;
+  color: #003a73;
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+
+/* Eingabefelder */
+input[type="text"] {
+  width: 90%;
+  height: 36px;
+  margin: 6px 0;
+  text-align: center;
+  font-size: 16px;
+  border: 1px solid #bbb;
+  border-radius: 12px;
+  color: #222;
+}
+input::placeholder {
+  color: #777;
+  font-style: italic;
+}
+
+/* Kundenbuttons */
+#kunden {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 8px 0 10px;
+}
+#kunden button {
+  height: 34px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #004b8d;
+  background: linear-gradient(#f9f9fb, #edf0f3);
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+#kunden button:hover {
+  background: linear-gradient(#ffffff, #e8ecef);
+}
+
+/* Footer Buttons */
+#actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+#actions button {
+  width: 46%;
+  height: 38px;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 10px;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+#btnBack { background: linear-gradient(#6c757d, #495057); }
+#btnDrucken { background: linear-gradient(#007bff, #0056b3); }
+
+/* Vorschau */
+#previewPopup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 5000;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#previewBox {
+  background: #fff;
+  border-radius: 10px;
+  width: 90vw;
+  aspect-ratio: 210 / 148;
+  max-width: 480px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 15mm 12mm 25mm 12mm;
+  transform: scale(0.9);
+}
+
+/* Textblock */
+#output-content {
+  flex: 1;
+  width: 100%;
+  text-align: center;
+  font-weight: 900;
+  line-height: 1.15;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transform: scale(0.9);
+  white-space: nowrap;
+}
+#output-content div { margin: 3px 0; }
+
+/* Logo rechts unten */
+#output-footer {
+  position: absolute;
+  bottom: 10mm;
+  right: 10mm;
+}
+#output-footer img {
+  width: 2.6cm;
+  height: auto;
+}
+
+/* Vorschau Buttons */
+.preview-buttons {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+.preview-buttons button {
+  min-width: 140px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 14px;
+}
+#btnPrintNow { background: #28a745; }
+#btnCancelPreview { background: #d9534f; }
+
+/* Druckansicht */
+@media print {
+  body * { visibility: hidden !important; }
+  #previewBox, #previewBox * { visibility: visible !important; }
+  #previewBox {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    padding: 0;
+    transform: none;
+  }
+}
+
+/* Tastatur */
+#keyboardPopup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 8000;
+  justify-content: center;
+  align-items: center;
+}
+#keyboardBox {
+  background: #fff;
+  border-radius: 14px;
+  width: 94%;
+  max-width: 360px;
+  text-align: center;
+  padding: 12px;
+}
+#keyboardInput {
+  width: 90%;
+  height: 36px;
+  font-size: 18px;
+  margin-bottom: 8px;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px solid #bbb;
+}
+#keyboardGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+#keyboardGrid button {
+  height: 38px;
+  font-size: 18px;
+  border-radius: 8px;
+  background: #f1f1f1;
+  border: 1px solid #ccc;
+}
+#keyboardActions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+#keyboardActions button {
+  flex: 1;
+  height: 36px;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  margin: 0 3px;
+}
+#btnDel { background: #dc3545; }
+#btnOk { background: #28a745; }
+#btnClose { background: #6c757d; }
