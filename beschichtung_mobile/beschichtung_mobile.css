@@ -1,140 +1,190 @@
-body {
-  margin: 0;
-  background: radial-gradient(circle at top, #eef2f7, #d9dde4);
-  font-family: "Segoe UI", sans-serif;
+/* ===== Allgemein ===== */
+* {
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
-#wrapper { padding: 20px; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(circle at top, #eef2f7, #d9dde4);
+  font-family: "Segoe UI", sans-serif;
+  height: 100%;
+  overflow: hidden; /* wichtig → kein Scrollen */
+}
+
+#wrapper {
+  padding: 10px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 #card {
   background: white;
-  margin: auto;
-  padding: 25px;
-  border-radius: 28px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-  max-width: 480px;
+  width: 100%;
+  max-width: 450px;
+  padding: 18px;
+  border-radius: 22px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
 }
 
+/* ===== Titel ===== */
 h1 {
   text-align: center;
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 900;
   color: #003a73;
+  margin-top: 0;
+  margin-bottom: 10px;
 }
 
+/* ===== Eingabefelder ===== */
 .inp {
   width: 100%;
-  margin-top: 12px;
-  height: 48px;
-  border-radius: 14px;
-  border: 1px solid #ccc;
-  font-size: 20px;
+  height: 45px;
+  border-radius: 12px;
+  border: 1px solid #bbb;
+  font-size: 18px;
   text-align: center;
-  background: #f8f9fa;
+  background: #f3f4f6;
+  margin-bottom: 12px;
 }
 
+/* ===== Kundenbuttons – 2 Spalten ===== */
+#kundenButtons {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+
+/* Buttons kompakt & fingerfreundlich */
 #kundenButtons button {
-  width: 100%;
-  height: 52px;
-  border-radius: 14px;
+  height: 44px;
+  border-radius: 10px;
   border: 1px solid #c5c9cf;
-  margin-top: 10px;
-  font-size: 18px;
+  background: linear-gradient(#ffffff, #eef1f4);
+  font-size: 14px;
   font-weight: 700;
-  background: linear-gradient(#fff,#eef1f4);
+  padding: 0;
   color: #003a73;
+  white-space: normal;
 }
 
 #kundenButtons button.active {
-  background: #007bff;
-  color: white;
-  font-weight: 900;
+  background: #0b67ff;
+  color: #fff;
+  border-color: #003a9c;
 }
 
-/* Buttons unten */
+/* ===== Footer Buttons ===== */
 #footerBtns {
-  margin-top: 25px;
+  margin-top: 18px;
   display: flex;
   justify-content: space-between;
 }
 
-.btn-dark, .btn-blue {
+.btn-dark,
+.btn-blue {
   width: 48%;
-  height: 55px;
+  height: 52px;
   border-radius: 14px;
-  font-size: 20px;
-  font-weight: 700;
-  color: white;
   border: none;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
 }
 
 .btn-dark {
-  background: linear-gradient(#60656c,#3a3f44);
+  background: linear-gradient(#60656c, #3a3f44);
 }
 
 .btn-blue {
-  background: linear-gradient(#007bff,#0056b3);
+  background: linear-gradient(#007bff, #0056b3);
 }
 
-/* Tastatur */
+/* ===== Popup Tastatur ===== */
 #keyboardPopup {
   display: none;
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.55);
+  z-index: 9999;
   justify-content: center;
   align-items: center;
-  z-index: 5000;
 }
 
 #keyboardBox {
-  width: 90%;
+  width: 92%;
   max-width: 420px;
   background: white;
-  padding: 18px;
+  padding: 16px;
   border-radius: 18px;
   text-align: center;
 }
 
-#keyboardInput {
-  width: 90%;
-  height: 50px;
-  border-radius: 12px;
-  border: 1px solid #aaa;
-  margin-bottom: 12px;
-  text-align: center;
-  font-size: 26px;   /* 👈 groß = keine Mini-Schrift mehr */
+#keyboardTitle {
+  font-size: 18px;
+  font-weight: 900;
+  margin-bottom: 6px;
 }
 
+#keyboardInput {
+  width: 90%;
+  height: 45px;
+  border-radius: 12px;
+  border: 1px solid #888;
+  margin-bottom: 12px;
+  text-align: center;
+  font-size: 20px;
+}
+
+/* Tastaturfeld */
 #keyboardGrid {
   display: grid;
-  grid-template-columns: repeat(5,1fr);
-  gap: 8px;
-  margin-bottom: 15px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  margin-bottom: 14px;
 }
 
 #keyboardGrid button {
-  height: 50px;
-  font-size: 24px;
+  height: 46px;
   border-radius: 10px;
-  border: 1px solid #ccc;
-  background: #f1f1f1;
+  border: 1px solid #bbb;
+  background: #f0f0f0;
+  font-size: 20px;
+  font-weight: 700;
 }
 
+/* Bottom row */
 #kbActions {
   display: flex;
   justify-content: space-between;
 }
 
-.kb-red, .kb-green, .kb-grey {
-  width: 30%;
-  height: 48px;
+.kb-red,
+.kb-grey,
+.kb-green {
+  width: 32%;
+  height: 46px;
   border-radius: 12px;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 900;
-  color: white;
+  color: #fff;
+  border: none;
 }
 
-.kb-red  { background: #d9534f; }
-.kb-green{ background: #28a745; }
+.kb-red { background: #d9534f; }
+.kb-green { background: #28a745; }
 .kb-grey { background: #6c757d; }
+/* ===== Aktiv ausgewählter Kunden-Button ===== */
+#kundenButtons button.active {
+  background: #005eff;
+  color: white;
+  border-color: #003a9c;
+  transform: scale(1.06);
+  box-shadow: 0 0 6px rgba(0, 94, 255, 0.6);
+}

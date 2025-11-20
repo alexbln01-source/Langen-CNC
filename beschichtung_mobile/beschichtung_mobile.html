@@ -1,51 +1,64 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no" />
 <title>Beschichtung Mobile</title>
-<link rel="stylesheet" href="beschichtung_mobile.css">
+
+<link rel="stylesheet" href="beschichtung_mobile.css" />
+<script defer src="beschichtung_mobile.js"></script>
+
+<style>
+    /* WICHTIG: Basis-Fixes direkt hier */
+    body, html {
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /* Kein Scrollen */
+        touch-action: manipulation; /* Kein Zoomen */
+    }
+</style>
+
 </head>
 
 <body>
 
 <div id="wrapper">
-  <div id="card">
 
-    <h1>BESCHICHTUNG</h1>
+    <div id="card">
 
-    <input id="numInput" class="inp" placeholder="Beistellnummer" readonly>
-    <input id="kundeInput" class="inp" placeholder="Kunde" readonly>
+        <h1>BESCHICHTUNG</h1>
 
-    <div id="kundenButtons"></div>
+        <input id="numInput" class="inp" placeholder="Beistellnummer" readonly />
+        <input id="kundeInput" class="inp" placeholder="Kundenname" readonly />
 
-    <div id="footerBtns">
-      <button id="btnBack" class="btn-dark">⬅️ Zurück</button>
-      <button id="btnDrucken" class="btn-blue">🖨 Drucken</button>
+        <!-- ❗❗❗ GANZ WICHTIG: Nur EIN Container! -->
+        <div id="kundenButtons"></div>
+
+        <div id="footerBtns">
+            <button id="btnBack" class="btn-dark">⬅️ Zurück</button>
+            <button id="btnDrucken" class="btn-blue">🖨️ Drucken</button>
+        </div>
+
     </div>
 
-  </div>
 </div>
 
 <!-- Tastatur -->
 <div id="keyboardPopup">
-  <div id="keyboardBox">
+    <div id="keyboardBox">
+        <h3 id="keyboardTitle">Eingabe</h3>
 
-    <h3 id="keyboardTitle">Eingabe</h3>
-    <input id="keyboardInput" type="text">
+        <input id="keyboardInput" />
 
-    <div id="keyboardGrid"></div>
+        <div id="keyboardGrid"></div>
 
-    <div id="kbActions">
-      <button id="btnDel" class="kb-red">⌫</button>
-      <button id="btnOk" class="kb-green">OK</button>
-      <button id="btnClose" class="kb-grey">X</button>
+        <div id="kbActions">
+            <button id="btnDel" class="kb-red">⌫</button>
+            <button id="btnClose" class="kb-grey">X</button>
+            <button id="btnOk" class="kb-green">OK</button>
+        </div>
     </div>
-
-  </div>
 </div>
 
-<script src="beschichtung_mobile.js"></script>
 </body>
 </html>

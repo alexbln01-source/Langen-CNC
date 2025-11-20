@@ -1,178 +1,304 @@
-var $  = s => document.querySelector(s);
-var $$ = s => Array.from(document.querySelectorAll(s));
+// ===============================
+// Schnellzugriffe
+// ===============================
+const $  = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
 
-var out       = $("#output-content");
-var numInput  = $("#numInput");
-var kundeInput = $("#kundeInput");
+const out        = $("#output-content");
+const numInput   = $("#numInput");
+const kundeInput = $("#kundeInput");
 
-var kbPopup = $("#keyboardPopup");
-var kbInput = $("#keyboardInput");
-var kbGrid  = $("#keyboardGrid");
-var kbTitle = $("#keyboardTitle");
+const kbPopup = $("#keyboardPopup");
+const kbInput = $("#keyboardInput");
+const kbGrid  = $("#keyboardGrid");
+const kbTitle = $("#keyboardTitle");
 
-var currentField = null;
-var selectedType = null;
+let currentField = null;
+let selectedType = null;
 
-// ====================================
+// ===============================
 // Kundenliste
-// ====================================
-var kundenListe = [
-  ["LP","L&P"],
-  ["LPEILT","L&P EILT SEHR"],
-  ["SCHUETTE","Schütte"],
-  ["SCHUETTEEILT","Schütte EILT SEHR"],
-  ["KLEY","Kleymann"],
-  ["KLEYEILT","Kleymann EILT SEHR"],
-  ["COMTEZN8","Comte ZN8"],
-  ["CHEMISCH","Comte Chemisch Vernickeln"],
-  ["DICK","Comte Dickschichtpassivierung"],
-  ["BLAU","Comte Blau ZN8"],
-  ["PENTZ","Pentz & Gerdes ZN8"],
-  ["RCS","RCS Schweißen"],
-  ["COATINC","Coatinc 24 Verzinken"]
+// ===============================
+const kundenListe = [
+  ["LP", "L&P"],
+  ["LPEILT", "L&P EILT SEHR"],
+  ["SCHUETTE", "Schütte"],
+  ["SCHUETTEEILT", "Schütte EILT SEHR"],
+  ["KLEY", "Kleymann"],
+  ["KLEYEILT", "Kleymann EILT SEHR"],
+  ["COMTEZN8", "Comte ZN8"],
+  ["CHEMISCH", "Comte Chemisch Vernickeln"],
+  ["DICK", "Comte Dickschichtpassivierung"],
+  ["BLAU", "Comte Blau ZN8"],
+  ["PENTZ", "Pentz & Gerdes ZN8"],
+  ["RCS", "RCS Schweißen"],
+  ["COATINC", "Coatinc 24 Verzinken"]
 ];
 
+// ===============================
 // Buttons erzeugen
-var btnContainer = $("#kundenButtons");
+// ===============================
+const btnContainer = $("#kundenButtons");
 kundenListe.forEach(k => {
-  let b = document.createElement("button");
+  const b = document.createElement("button");
   b.textContent = k[1];
   b.dataset.type = k[0];
   b.onclick = () => makeOutput(k[0]);
   btnContainer.appendChild(b);
 });
 
-// ====================================
-// Ausgabe wie PC Version
-// ====================================
-function buildOutput(type){
-  var n = numInput.value.trim();
-  var k = kundeInput.value.trim();
+// ===============================
+// Ausgabe – Textblock wie PC
+// ===============================
+function buildOutput(type) {
+  const n = numInput.value.trim();
+  const k = kundeInput.value.trim();
 
-  var z2="",z3="",z4="";
+  let z1 = n;
+  let z2 = "";
+  let z3 = "";
+  let z4 = "";
 
-  switch(type){
-    case "LP": z2="L&P"; break;
-    case "LPEILT": z2="L&P"; z3="EILT SEHR"; break;
-    case "SCHUETTE": z2="Schütte"; break;
-    case "SCHUETTEEILT": z2="Schütte"; z3="EILT SEHR"; break;
-    case "KLEY": z2="Kleymann"; break;
-    case "KLEYEILT": z2="Kleymann"; z3="EILT SEHR"; break;
+  switch (type) {
+    case "LP":           z2 = "L&P"; break;
+    case "LPEILT":       z2 = "L&P"; z3 = "EILT SEHR"; break;
 
-    case "COMTEZN8": z2="Comte"; z3="„ZN8“"; z4=k; break;
-    case "CHEMISCH": z2="Comte"; z3="„Chemisch Vernickeln“"; z4=k; break;
-    case "DICK": z2="Comte"; z3="„Dickschichtpassivierung“"; z4=k; break;
-    case "BLAU": z2="Comte"; z3="„Blau ZN8“"; z4=k; break;
+    case "SCHUETTE":     z2 = "Schütte"; break;
+    case "SCHUETTEEILT": z2 = "Schütte"; z3 = "EILT SEHR"; break;
 
-    case "PENTZ": z2="Pentz & Gerdes"; z3="„ZN8“"; z4=k; break;
-    case "RCS": z2="RCS GmbH"; z3="„Schweißen“"; z4=k; break;
-    case "COATINC": z2="Coatinc 24 GmbH"; z3="„Verzinken“"; z4=k; break;
+    case "KLEY":         z2 = "Kleymann"; break;
+    case "KLEYEILT":     z2 = "Kleymann"; z3 = "EILT SEHR"; break;
+
+    case "COMTEZN8":     z2 = "Comte"; z3 = "„ZN8“"; z4 = k; break;
+    case "CHEMISCH":     z2 = "Comte"; z3 = "„Chemisch Vernickeln“"; z4 = k; break;
+    case "DICK":         z2 = "Comte"; z3 = "„Dickschichtpassivierung“"; z4 = k; break;
+    case "BLAU":         z2 = "Comte"; z3 = "„Blau ZN8“"; z4 = k; break;
+
+    case "PENTZ":        z2 = "Pentz & Gerdes"; z3 = "„ZN8“"; z4 = k; break;
+    case "RCS":          z2 = "RCS GmbH";       z3 = "„Schweißen“";    z4 = k; break;
+
+    case "COATINC":      z2 = "Coatinc 24 GmbH"; z3 = "„Verzinken“";   z4 = k; break;
   }
 
-  let html = `
-    <div style="font-size:60pt;margin-bottom:8mm;">${n}</div>
-    <div style="font-size:60pt;font-weight:900;">${z2}</div>
-  `;
+  let html = "";
 
-  if (z3) html += `<div style="font-size:32pt;">${z3}</div>`;
-  if (z4) html += `<div style="font-size:32pt;">(${z4})</div>`;
+  // Zeile 1 – Beistellnummer
+  html += `<div class="line line-big line-num">${z1}</div>`;
+
+  // Zeile 2 – Kunde / Firma (immer groß & fett)
+  if (z2) {
+    html += `<div class="line line-big line-main">${z2}</div>`;
+  }
+
+  // Zeile 3 – Zusatz (EILT SEHR groß, der Rest kleiner)
+  if (z3) {
+    if (z3.includes("EILT SEHR")) {
+      html += `<div class="line line-big line-eilt">„EILT SEHR“</div>`;
+    } else {
+      html += `<div class="line line-mid line-sub">${z3}</div>`;
+    }
+  }
+
+  // Zeile 4 – Kundenname in Klammern
+  if (z4) {
+    html += `<div class="line line-mid line-name">(${z4})</div>`;
+  }
 
   return html;
 }
 
-function makeOutput(type){
+// Preview im rechten Bereich
+function makeOutput(type) {
   selectedType = type;
+  out.innerHTML = buildOutput(type);
 
-  $$("#kundenButtons button").forEach(b => b.classList.remove("active"));
-  document.querySelector(`[data-type="${type}"]`).classList.add("active");
+  // aktive Buttonfarbe klar anzeigen
+$$("#kundenButtons button").forEach(b => b.classList.remove("active"));
+const activeBtn = document.querySelector(`#kundenButtons button[data-type="${type}"]`);
+if (activeBtn) activeBtn.classList.add("active");
 }
 
-// ====================================
+// ===============================
 // Tastatur
-// ====================================
-function buildKeyboard(type){
+// ===============================
+function buildKeyboard(type) {
   kbGrid.innerHTML = "";
-  var chars = (type=="numbers")
-    ? ["1","2","3","4","5","6","7","8","9","0"]
-    : "QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM".split("");
+  const chars =
+    type === "numbers"
+      ? ["1","2","3","4","5","6","7","8","9","0"]
+      : "QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM".split("");
 
-  chars.forEach(ch=>{
-    let b=document.createElement("button");
+  chars.forEach(ch => {
+    const b = document.createElement("button");
     b.textContent = ch;
-    b.onclick=()=>kbInput.value+=ch;
+    b.onclick = () => (kbInput.value += ch);
     kbGrid.appendChild(b);
   });
 }
 
-function openKeyboard(field,type){
+function openKeyboard(field, type) {
   currentField = field;
-  kbTitle.textContent = (type=="numbers") ? "Beistellnummer" : "Kundenname";
+  kbTitle.textContent = type === "numbers" ? "Beistellnummer" : "Kundenname";
+
   kbInput.value = field.value || "";
+  kbPopup.style.display = "flex";
+
   buildKeyboard(type);
-  kbPopup.style.display="flex";
+  setTimeout(() => kbInput.focus(), 50);
 }
 
-$("#btnDel").onclick = ()=> kbInput.value = kbInput.value.slice(0,-1);
-$("#btnClose").onclick = ()=> kbPopup.style.display="none";
+$("#btnDel").onclick   = () => (kbInput.value = kbInput.value.slice(0, -1));
+$("#btnClose").onclick = () => (kbPopup.style.display = "none");
 
-$("#btnOk").onclick = ()=>{
-  currentField.value = kbInput.value.trim();
-  kbPopup.style.display="none";
+$("#btnOk").onclick = () => {
+  if (!currentField) return;
+  currentField.value = kbInput.value;
+  kbPopup.style.display = "none";
+
+  // nach Nummer automatisch Kunden-Tastatur öffnen
+  if (currentField === numInput) {
+    openKeyboard(kundeInput, "letters");
+  }
 };
 
-numInput.onclick   = ()=> openKeyboard(numInput,"numbers");
-kundeInput.onclick = ()=> openKeyboard(kundeInput,"letters");
+numInput.onclick   = () => openKeyboard(numInput, "numbers");
+kundeInput.onclick = () => openKeyboard(kundeInput, "letters");
 
-// ====================================
-// DRUCKEN — wie PC Version, keine Vorschau
-// ====================================
-$("#btnDrucken").onclick = ()=>{
+kbInput.addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    $("#btnOk").click();
+  }
+});
 
-  if(!selectedType) return alert("Kunde wählen!");
-  if(!numInput.value.trim()) return alert("Beistellnummer fehlt!");
+// ===============================
+// Validierung
+// ===============================
+function validate() {
+  if (!selectedType) {
+    alert("Bitte einen Kunden wählen!");
+    return false;
+  }
+  if (!numInput.value.trim()) {
+    alert("Bitte Beistellnummer eingeben!");
+    return false;
+  }
 
-  let html = buildOutput(selectedType);
+  const need = [
+    "COMTEZN8",
+    "CHEMISCH",
+    "DICK",
+    "BLAU",
+    "PENTZ",
+    "RCS",
+    "COATINC"
+  ];
+  if (need.includes(selectedType) && !kundeInput.value.trim()) {
+    alert("Bitte Kundenname eingeben!");
+    return false;
+  }
+  return true;
+}
 
-  let w = window.open("","_blank","width=1200,height=850");
+// ===============================
+// Drucken – 1× A5 quer, Logo unten rechts
+// ===============================
+$("#btnDrucken").onclick = () => {
+  if (!validate()) return;
 
-  w.document.write(`
+  const outputHTML = buildOutput(selectedType);
+
+  const pw = window.open("", "_blank", "width=1200,height=850");
+
+  pw.document.write(`
     <html>
     <head>
       <style>
-        @page { size: A5 landscape; margin:0; }
-        body {
-          margin:0;
-          width:210mm;
-          height:148mm;
-          display:flex;
-          justify-content:center;
-          align-items:center;
-          font-family:Arial;
-          text-align:center;
+        @page {
+          size: A5 landscape;
+          margin: 0;
         }
-        img { width:45mm; margin-top:10mm; }
+        * {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+        html, body {
+          width: 210mm;
+          height: 148mm;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          font-family: Arial, sans-serif;
+        }
+        #wrapper {
+          position: relative;
+          box-sizing: border-box;
+          width: 210mm;
+          height: 148mm;
+
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          padding-bottom: 18mm; /* Platz für Logo abziehen */
+        }
+        .line {
+          width: 100%;
+          text-align: center;
+          font-weight: 900;
+          margin: 0;
+          padding: 0;
+        }
+        .line-big {
+          font-size: 60pt;
+          line-height: 1.0;
+        }
+        .line-mid {
+          font-size: 32pt;
+          line-height: 1.0;
+        }
+        .line-num {
+          margin-bottom: 4mm;
+        }
+        .line-main {
+          margin-bottom: 2mm;
+        }
+        .line-sub {
+          margin-top: 1mm;
+        }
+        .line-name {
+          margin-top: 1mm;
+        }
+        #logo {
+          position: absolute;
+          right: 8mm;
+          bottom: 6mm;
+          width: 36mm;
+          height: auto;
+        }
       </style>
     </head>
     <body>
-      <div>
-        ${html}
-        <img src="../langen.png">
+      <div id="wrapper">
+        ${outputHTML}
+        <img id="logo" src="../langen.png">
       </div>
     </body>
     </html>
   `);
 
-  w.document.close();
+  pw.document.close();
 
-  setTimeout(()=>{
-    w.print();
-    w.close();
-  },300);
+  setTimeout(() => {
+    pw.print();
+    pw.close();
+  }, 350);
 };
 
-// ====================================
+// ===============================
 // Zurück
-// ====================================
-$("#btnBack").onclick = ()=>{
-  window.location.href="../index.html";
+// ===============================
+$("#btnBack").onclick = () => {
+  window.location.href = "../index.html";
 };
