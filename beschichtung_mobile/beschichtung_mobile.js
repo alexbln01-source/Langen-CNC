@@ -1,4 +1,6 @@
-// beschichtung_mobile.js – MOBILE VERSION (ohne eigene Vorschau)
+// ============================
+// beschichtung_mobile.js – MOBILE VERSION (ohne Vorschau)
+// ============================
 
 var $  = s => document.querySelector(s);
 var $$ = s => Array.from(document.querySelectorAll(s));
@@ -16,6 +18,7 @@ var kbTitle  = $('#keyboardTitle');
 var currentField = null;
 
 var selectedType = null;
+
 
 // ===============================
 // Kundenliste
@@ -36,8 +39,9 @@ var kundenListe = [
   ["COATINC", "Coatinc 24 Verzinken"]
 ];
 
+
 // ===============================
-// Ausgabe generieren
+// Ausgabe generieren (A5 Drucklayout)
 // ===============================
 function buildOutput(type) {
   var n = numInput.value.trim();
@@ -74,6 +78,7 @@ function buildOutput(type) {
   return html;
 }
 
+
 // ===============================
 // Vorschau aktualisieren (rechte Seite)
 // ===============================
@@ -92,12 +97,10 @@ function makeOutput(type) {
   if (btn) btn.classList.add('active');
 }
 
-// Events für Kundenbuttons
-$$('#kunden button').forEach(function (btn) {
-  btn.addEventListener('click', function () {
-    makeOutput(btn.dataset.type);
-  });
+$$('#kunden button').forEach(btn => {
+  btn.addEventListener('click', () => makeOutput(btn.dataset.type));
 });
+
 
 // ===============================
 // Popup-Tastatur (bunte Tasten)
@@ -109,16 +112,15 @@ function buildKeyboard(type) {
     ? ['1','2','3','4','5','6','7','8','9','0']
     : 'QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM'.split('');
 
-  chars.forEach(function (c) {
+  chars.forEach(c => {
     var b = document.createElement('button');
     b.textContent = c;
     b.className = 'kb-key';
-    b.addEventListener('click', function () {
-      kbInput.value += c;
-    });
+    b.addEventListener('click', () => kbInput.value += c);
     kbGrid.appendChild(b);
   });
 }
+
 
 function openKeyboard(field, type) {
   currentField = field;
@@ -132,7 +134,7 @@ function openKeyboard(field, type) {
   buildKeyboard(type);
 
   kbPopup.style.display = 'flex';
-  setTimeout(function () { kbInput.focus(); }, 50);
+  setTimeout(() => kbInput.focus(), 50);
 }
 
 function closeKeyboard() {
@@ -140,16 +142,15 @@ function closeKeyboard() {
   currentField = null;
 }
 
-// Aktionen unten
-document.getElementById('btnDel').addEventListener('click', function () {
+$('#btnDel').onclick = () => {
   kbInput.value = kbInput.value.slice(0, -1);
-});
+};
 
-document.getElementById('btnClose').addEventListener('click', function () {
+$('#btnClose').onclick = () => {
   closeKeyboard();
-});
+};
 
-document.getElementById('btnOk').addEventListener('click', function () {
+$('#btnOk').onclick = () => {
   if (!currentField) return;
   currentField.value = kbInput.value.trim();
 
@@ -158,23 +159,20 @@ document.getElementById('btnOk').addEventListener('click', function () {
   } else {
     closeKeyboard();
   }
-});
+};
 
-// Enter-Taste auf externer / System-Tastatur
-kbInput.addEventListener('keydown', function (e) {
+// ENTER auf externer Tastatur
+kbInput.addEventListener('keydown', e => {
   if (e.key === 'Enter') {
     e.preventDefault();
-    document.getElementById('btnOk').click();
+    $('#btnOk').click();
   }
 });
 
 // Eingabefelder öffnen Tastatur
-numInput.addEventListener('click', function () {
-  openKeyboard(numInput, 'numbers');
-});
-kundeInput.addEventListener('click', function () {
-  openKeyboard(kundeInput, 'letters');
-});
+numInput.onclick   = () => openKeyboard(numInput, 'numbers');
+kundeInput.onclick = () => openKeyboard(kundeInput, 'letters');
+
 
 // ===============================
 // Validierung
@@ -183,55 +181,47 @@ function validate() {
   var n = numInput.value.trim();
   var k = kundeInput.value.trim();
 
-  if (!selectedType) {
-    alert('Bitte einen Kunden wählen.');
-    return false;
-  }
-  if (!n) {
-    alert('Bitte Beistellnummer eingeben.');
-    return false;
-  }
+  if (!selectedType) { alert('Bitte einen Kunden wählen.'); return false; }
+  if (!n) { alert('Bitte Beistellnummer eingeben.'); return false; }
 
   var need = ['COMTEZN8','CHEMISCH','DICK','BLAU','PENTZ','RCS','COATINC'];
-  if (need.indexOf(selectedType) !== -1 && !k) {
+  if (need.includes(selectedType) && !k) {
     alert('Bitte Kundenname eingeben.');
     return false;
   }
   return true;
 }
 
+
 // ===============================
-// DRUCKEN – MOBILE: direkt Browser-Druck
+// DRUCKEN – direkt Systemdruck
 // ===============================
 function initPrintButton() {
-
-  document.getElementById('btnDrucken').onclick = function () {
+  $('#btnDrucken').onclick = () => {
 
     if (!validate()) return;
 
-    // rechte Vorschau mit dem aktuellen Inhalt füllen
     out.innerHTML = buildOutput(selectedType);
 
-    // Direkt den Druckdialog des Browsers öffnen
-    // (die System-Vorschau übernimmt dann alles)
-    window.print();
+    window.print(); // System-Vorschau übernimmt alles
   };
 }
 
+
 // ===============================
-// Zurück-Button – immer eine Ebene hoch
+// Zurück – eine Ebene hoch
 // ===============================
 function initBackButton() {
-  document.getElementById('btnBack').onclick = function () {
-    // von /beschichtung_mobile/beschichtung_mobile.html zurück zur Haupt-index
-    window.location.href = '../index.html';
+  $('#btnBack').onclick = () => {
+    window.location.href = '../index.html';  // IMMER eine Ebene hoch
   };
 }
 
+
 // ===============================
-// Init
+// INIT
 // ===============================
-window.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('DOMContentLoaded', () => {
   initPrintButton();
   initBackButton();
 });
