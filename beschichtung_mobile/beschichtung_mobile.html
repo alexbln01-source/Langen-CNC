@@ -2,10 +2,10 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Beschichtung Mobile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" href="./beschichtung_mobile.css">
+<title>Beschichtung Mobile</title>
+<link rel="stylesheet" href="beschichtung_mobile.css">
 </head>
 
 <body>
@@ -18,21 +18,7 @@
     <input id="numInput" class="inp" placeholder="Beistellnummer" readonly>
     <input id="kundeInput" class="inp" placeholder="Kunde" readonly>
 
-    <div id="kundenButtons">
-      <button data-type="LP">L&P</button>
-      <button data-type="LPEILT">L&P EILT SEHR</button>
-      <button data-type="SCHUETTE">Schütte</button>
-      <button data-type="SCHUETTEEILT">Schütte EILT SEHR</button>
-      <button data-type="KLEY">Kleymann</button>
-      <button data-type="KLEYEILT">Kleymann EILT SEHR</button>
-      <button data-type="COMTEZN8">Comte ZN8</button>
-      <button data-type="CHEMISCH">Comte Chemisch Vernickeln</button>
-      <button data-type="DICK">Comte Dickschichtpassivierung</button>
-      <button data-type="BLAU">Comte Blau ZN8</button>
-      <button data-type="PENTZ">Pentz & Gerdes ZN8</button>
-      <button data-type="RCS">RCS Schweißen</button>
-      <button data-type="COATINC">Coatinc 24 Verzinken</button>
-    </div>
+    <div id="kundenButtons"></div>
 
     <div id="footerBtns">
       <button id="btnBack" class="btn-dark">⬅️ Zurück</button>
@@ -45,19 +31,21 @@
 <!-- Tastatur -->
 <div id="keyboardPopup">
   <div id="keyboardBox">
-    <h3 id="keyboardTitle"></h3>
-    <input id="keyboardInput" type="text" readonly>
+
+    <h3 id="keyboardTitle">Eingabe</h3>
+    <input id="keyboardInput" type="text">
+
     <div id="keyboardGrid"></div>
 
     <div id="kbActions">
-      <button id="btnDel" class="kb-red">⌫ Löschen</button>
+      <button id="btnDel" class="kb-red">⌫</button>
       <button id="btnOk" class="kb-green">OK</button>
-      <button id="btnClose" class="kb-grey">Schließen</button>
+      <button id="btnClose" class="kb-grey">X</button>
     </div>
+
   </div>
 </div>
 
-<script src="./beschichtung_mobile.js"></script>
-
+<script src="beschichtung_mobile.js"></script>
 </body>
 </html>
