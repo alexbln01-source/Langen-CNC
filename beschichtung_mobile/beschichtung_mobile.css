@@ -1,4 +1,6 @@
-/* ===== Allgemein ===== */
+/* ===========================
+   GLOBAL
+   =========================== */
 * {
   box-sizing: border-box;
   -webkit-user-select: none;
@@ -8,12 +10,15 @@
 html, body {
   margin: 0;
   padding: 0;
+  height: 100%;
+  overflow: hidden; /* Kein Scrollen auf 5-Zoll */
   background: radial-gradient(circle at top, #eef2f7, #d9dde4);
   font-family: "Segoe UI", sans-serif;
-  height: 100%;
-  overflow: hidden; /* wichtig → kein Scrollen */
 }
 
+/* ===========================
+   LAYOUT CARD
+   =========================== */
 #wrapper {
   padding: 10px;
   height: 100%;
@@ -23,7 +28,7 @@ html, body {
 }
 
 #card {
-  background: white;
+  background: #fff;
   width: 100%;
   max-width: 450px;
   padding: 18px;
@@ -31,7 +36,9 @@ html, body {
   box-shadow: 0 6px 18px rgba(0,0,0,0.25);
 }
 
-/* ===== Titel ===== */
+/* ===========================
+   TITEL
+   =========================== */
 h1 {
   text-align: center;
   font-size: 22px;
@@ -41,10 +48,12 @@ h1 {
   margin-bottom: 10px;
 }
 
-/* ===== Eingabefelder ===== */
+/* ===========================
+   EINGABEFELDER
+   =========================== */
 .inp {
   width: 100%;
-  height: 45px;
+  height: 46px;
   border-radius: 12px;
   border: 1px solid #bbb;
   font-size: 18px;
@@ -53,7 +62,9 @@ h1 {
   margin-bottom: 12px;
 }
 
-/* ===== Kundenbuttons – 2 Spalten ===== */
+/* ===========================
+   KUNDENBUTTONS (2 Spalten)
+   =========================== */
 #kundenButtons {
   margin-top: 8px;
   display: grid;
@@ -61,41 +72,37 @@ h1 {
   gap: 6px;
 }
 
-/* Buttons kompakt & fingerfreundlich */
 #kundenButtons button {
-  height: 44px;
+  height: 46px;
   border-radius: 10px;
   border: 1px solid #c5c9cf;
   background: linear-gradient(#ffffff, #eef1f4);
   font-size: 14px;
   font-weight: 700;
-  padding: 0;
   color: #003a73;
+  padding: 0;
   white-space: normal;
+  transition: all 0.15s ease;
 }
 
-#kundenButtons button.active {
-  background: #0b67ff;
-  color: #fff;
-  border-color: #003a9c;
-}
-
-/* ===== Footer Buttons ===== */
+/* ===========================
+   FOOTER BUTTONS
+   =========================== */
 #footerBtns {
   margin-top: 18px;
   display: flex;
   justify-content: space-between;
+  gap: 10px;
 }
 
-.btn-dark,
-.btn-blue {
-  width: 48%;
+.btn-dark, .btn-blue {
+  width: 50%;
   height: 52px;
   border-radius: 14px;
-  border: none;
   font-size: 18px;
   font-weight: 700;
   color: #fff;
+  border: none;
 }
 
 .btn-dark {
@@ -106,7 +113,9 @@ h1 {
   background: linear-gradient(#007bff, #0056b3);
 }
 
-/* ===== Popup Tastatur ===== */
+/* ===========================
+   POPUP TASTATUR
+   =========================== */
 #keyboardPopup {
   display: none;
   position: fixed;
@@ -120,7 +129,7 @@ h1 {
 #keyboardBox {
   width: 92%;
   max-width: 420px;
-  background: white;
+  background: #fff;
   padding: 16px;
   border-radius: 18px;
   text-align: center;
@@ -153,13 +162,13 @@ h1 {
 #keyboardGrid button {
   height: 46px;
   border-radius: 10px;
-  border: 1px solid #bbb;
   background: #f0f0f0;
+  border: 1px solid #bbb;
   font-size: 20px;
   font-weight: 700;
 }
 
-/* Bottom row */
+/* Bottom row buttons */
 #kbActions {
   display: flex;
   justify-content: space-between;
@@ -180,11 +189,17 @@ h1 {
 .kb-red { background: #d9534f; }
 .kb-green { background: #28a745; }
 .kb-grey { background: #6c757d; }
-/* ===== Aktiv ausgewählter Kunden-Button ===== */
 #kundenButtons button.active {
-  background: #005eff;
-  color: white;
-  border-color: #003a9c;
-  transform: scale(1.06);
-  box-shadow: 0 0 6px rgba(0, 94, 255, 0.6);
+    background: #d93025 !important;    /* dezentes Rot */
+    color: #fff !important;
+    border: 2px solid #9a1c16 !important;
+    box-shadow: 0 0 6px rgba(217,48,37,0.6);
+    transform: scale(1.03);            /* kaum spürbar */
 }
+/* verhindert echte Handy-Tastatur */
+.fake-input {
+  caret-color: transparent;
+}
+.fake-input:focus {
+  outline: none;
+}    

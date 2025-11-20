@@ -9,12 +9,11 @@
 <script defer src="beschichtung_mobile.js"></script>
 
 <style>
-    /* WICHTIG: Basis-Fixes direkt hier */
     body, html {
         margin: 0;
         padding: 0;
-        overflow: hidden; /* Kein Scrollen */
-        touch-action: manipulation; /* Kein Zoomen */
+        overflow: hidden;
+        touch-action: manipulation;
     }
 </style>
 
@@ -28,10 +27,10 @@
 
         <h1>BESCHICHTUNG</h1>
 
-        <input id="numInput" class="inp" placeholder="Beistellnummer" readonly />
-        <input id="kundeInput" class="inp" placeholder="Kundenname" readonly />
+        <!-- Fingertap aber KEINE echte Tastatur -->
+        <input id="numInput" class="inp fake-input" placeholder="Beistellnummer" />
+        <input id="kundeInput" class="inp fake-input" placeholder="Kundenname" />
 
-        <!-- ❗❗❗ GANZ WICHTIG: Nur EIN Container! -->
         <div id="kundenButtons"></div>
 
         <div id="footerBtns">
@@ -43,7 +42,7 @@
 
 </div>
 
-<!-- Tastatur -->
+<!-- Popup Tastatur -->
 <div id="keyboardPopup">
     <div id="keyboardBox">
         <h3 id="keyboardTitle">Eingabe</h3>

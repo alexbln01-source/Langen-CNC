@@ -41,8 +41,9 @@ const kundenListe = [
 const btnContainer = $("#kundenButtons");
 kundenListe.forEach(k => {
   const b = document.createElement("button");
-  b.textContent = k[1];
-  b.dataset.type = k[0];
+b.textContent = k[1];
+b.dataset.type = k[0];
+b.classList.add("action");   // <- WICHTIG!
   b.onclick = () => makeOutput(k[0]);
   btnContainer.appendChild(b);
 });
@@ -110,7 +111,7 @@ function buildOutput(type) {
 // Preview im rechten Bereich
 function makeOutput(type) {
   selectedType = type;
-  out.innerHTML = buildOutput(type);
+  
 
   // aktive Buttonfarbe klar anzeigen
 $$("#kundenButtons button").forEach(b => b.classList.remove("active"));
@@ -161,9 +162,27 @@ $("#btnOk").onclick = () => {
   }
 };
 
-numInput.onclick   = () => openKeyboard(numInput, "numbers");
-kundeInput.onclick = () => openKeyboard(kundeInput, "letters");
+// Echte Tastatur blockieren + Popup öffnen
+numInput.addEventListener("focus", e => {
+    e.preventDefault();
+    numInput.blur();
+    openKeyboard(numInput, "numbers");
+});
+kundeInput.addEventListener("focus", e => {
+    e.preventDefault();
+    kundeInput.blur();
+    openKeyboard(kundeInput, "letters");
+});
 
+// Tipp-Events (z.B. Android)
+numInput.addEventListener("click", () => {
+    numInput.blur();
+    openKeyboard(numInput, "numbers");
+});
+kundeInput.addEventListener("click", () => {
+    kundeInput.blur();
+    openKeyboard(kundeInput, "letters");
+});
 kbInput.addEventListener("keydown", e => {
   if (e.key === "Enter") {
     e.preventDefault();
