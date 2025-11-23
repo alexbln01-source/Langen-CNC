@@ -169,31 +169,35 @@ h1 {
   font-weight:bold;
 }
 
-/* ✅ DRUCKMODUS – funktioniert auf Android + GitHub */
-@media print{
+@media print {
 
-  /* nichts aggressive verstecken */
-  * {
-    visibility:hidden !important;
+  /* komplette Seite aus dem sichtbaren Bereich schieben */
+  body * {
+    position: fixed !important;
+    top: -9999px !important;
+    left: -9999px !important;
   }
 
-  /* nur Druckbereich sichtbar */
-  #printPreview, #printPreview *{
-    visibility:visible !important;
+  /* Druckinhalt sichtbar machen */
+  #printPreview, #printPreview * {
+    position: static !important;
+    top: 0 !important;
+    left: 0 !important;
+    display: block !important;
+    visibility: visible !important;
   }
 
-  #printPreview{
-    position:absolute;
-    top:0;
-    left:0;
-    width:148mm;   /* ✅ echtes A6 Querformat */
-    height:105mm;
-    margin:0;
-    padding:0;
+  #printPreview {
+    width: 148mm !important;
+    height: 105mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background:white !important;
+    -webkit-print-color-adjust: exact !important;
   }
 
-  @page{
-    size:A6 landscape;
-    margin:0;
+  @page {
+    size: A6 landscape;
+    margin: 0;
   }
 }
