@@ -86,4 +86,3 @@ document.getElementById("doPrint").onclick = ()=>{
     window.location.reload();
   }, 600);
 };
-};
