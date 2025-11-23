@@ -127,7 +127,7 @@ h1 {
   font-size:18px;
   border-radius:10px;
 }
-/* PRINT POPUP (angepasst für 5 Zoll Screens) */
+/* PRINT POPUP passend für 5-Zoll Android */
 #printPopup{
   position:fixed;
   left:0; top:0;
@@ -144,24 +144,22 @@ h1 {
   padding:14px;
   border-radius:14px;
   width:94%;
-  max-width:320px;  /* ✅ passt auf 5 Zoll */
+  max-width:320px;
   text-align:center;
 }
 
 #printPreview{
-  width:90vw;        /* ✅ statt mm – passt auf Display */
-  height:64vw;       /* ✅ Seitenverhältnis A6 quer */
+  width:92vw;          /* ✅ passt auf 5-Zoll */
+  height:64vw;         /* ✅ Seitenverhältnis A6 quer */
   border:1px solid #777;
-  margin:0 auto 12px auto;
+  background:white;
   display:flex;
   justify-content:center;
   align-items:center;
   flex-direction:column;
-  font-family:Arial, sans-serif;
-  background:white;
 }
 
-/* Buttons kleiner */
+/* Buttons kompakter */
 #printButtons button{
   width:48%;
   margin:3px;
@@ -171,17 +169,16 @@ h1 {
   font-weight:bold;
 }
 
-/* DRUCKMODUS – garantiert NICHT LEER */
+/* ✅ DRUCKMODUS – funktioniert auf Android + GitHub */
 @media print{
 
-  /* ALLES ausblenden außer Druckbereich */
-  body *{
-    display:none !important;
+  /* nichts aggressive verstecken */
+  * {
+    visibility:hidden !important;
   }
 
-  /* Druckbereich zeigen */
+  /* nur Druckbereich sichtbar */
   #printPreview, #printPreview *{
-    display:block !important;
     visibility:visible !important;
   }
 
@@ -189,7 +186,7 @@ h1 {
     position:absolute;
     top:0;
     left:0;
-    width:148mm;   /* ✅ echtes Druckmaß */
+    width:148mm;   /* ✅ echtes A6 Querformat */
     height:105mm;
     margin:0;
     padding:0;
