@@ -54,7 +54,7 @@ document.getElementById("btnBack").onclick = ()=>{
   history.back();
 };
 
-// Drucken (Android: echter Druckdialog, iPhone: stabil)
+// Drucken (Chrome Android: echter Druckdialog)
 document.getElementById("btnDrucken").onclick = ()=>{
 
   if (!selectedCustomer) {
@@ -112,6 +112,6 @@ document.getElementById("btnDrucken").onclick = ()=>{
   w.document.close();
   w.focus();
 
-  // Android will NUR hier drucken
+  // *** Chrome Android: NUR HIER funktioniert der Druckdialog ***
   try { w.print(); } catch(e){}
 };
