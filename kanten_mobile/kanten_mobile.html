@@ -2,61 +2,50 @@
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>KANTEN (Mobile)</title>
-
 <link rel="stylesheet" href="kanten_mobile.css">
+<script defer src="kanten_mobile.js"></script>
 </head>
 
 <body>
+  <div id="card">
 
-<div id="app">
+    <h1>KANTEN</h1>
 
-  <!-- Titel -->
-  <h1 id="appTitle">KANTEN</h1>
+    <div id="kundenArea">
+      <button class="kundeBtn" data-kunde="Bergmann M-H">Bergmann M-H</button>
+      <button class="kundeBtn" data-kunde="Bücker">Bücker</button>
+      <button class="kundeBtn" data-kunde="Grimme">Grimme</button>
+      <button class="kundeBtn" data-kunde="Janzen">Janzen</button>
+      <button class="kundeBtn" data-kunde="Krone Spelle">Krone Spelle</button>
+      <button class="kundeBtn" data-kunde="L.Bergmann">L.Bergmann</button>
+      <button class="kundeBtn" data-kunde="PAUS">PAUS</button>
+      <button class="kundeBtn" data-kunde="TOS">TOS</button>
+      <button class="kundeBtn" id="sonstigeBtn" data-kunde="SONSTIGE">Sonstige Kunden</button>
+    </div>
 
-  <!-- Kundenbuttons (2-Spalten wie Beschichtung Mobile) -->
-  <div id="kundenButtons">
-
-    <button class="kundeBtn" data-kunde="Bergmann M-H">Bergmann M-H</button>
-    <button class="kundeBtn" data-kunde="Bücker">Bücker</button>
-    <button class="kundeBtn" data-kunde="Grimme">Grimme</button>
-    <button class="kundeBtn" data-kunde="Janzen">Janzen</button>
-    <button class="kundeBtn" data-kunde="Krone Spelle">Krone Spelle</button>
-    <button class="kundeBtn" data-kunde="L.Bergmann">L.Bergmann</button>
-    <button class="kundeBtn" data-kunde="PAUS">PAUS</button>
-    <button class="kundeBtn" data-kunde="TOS">TOS</button>
-    <button class="kundeBtn" data-kunde="SONSTIGE">Sonstige Kunden</button>
+    <div id="actionButtons">
+      <button id="btnBack">⬅ Zurück</button>
+      <button id="btnDrucken">🖨 Drucken</button>
+    </div>
 
   </div>
 
-  <!-- Aktionen -->
-  <div id="actionRow">
-    <button id="btnBack" class="actionBtn">⬅️ Zurück</button>
-    <button id="btnDrucken" class="actionBtn">🖨 Drucken</button>
-  </div>
+  <!-- Tastatur Popup -->
+  <div id="keyboardPopup">
+    <div id="keyboardBox">
+      <h2>Kundenname eingeben</h2>
+      <input type="text" id="keyboardInput">
+      <div id="keyboardGrid"></div>
 
-</div>
-
-<!-- Bildschirm-Tastatur NUR für Sonstige -->
-<div id="keyboardPopup">
-  <div id="keyboardBox">
-    <h3 id="keyboardTitle">Kundenname eingeben</h3>
-
-    <input id="keyboardInput" type="text" autocomplete="off">
-
-    <div id="keyboardGrid"></div>
-
-    <div class="kb-actions">
-      <button id="btnDel" class="kb-red">⌫ Löschen</button>
-      <button id="btnOk" class="kb-green">OK</button>
-      <button id="btnClose" class="kb-grey">Schließen</button>
+      <div id="kbActions">
+        <button id="kbDel">Löschen</button>
+        <button id="kbOk">OK</button>
+        <button id="kbClose">Abbrechen</button>
+      </div>
     </div>
   </div>
-</div>
-
-<script src="kanten_mobile.js" defer></script>
 
 </body>
 </html>
