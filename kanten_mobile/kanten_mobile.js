@@ -118,3 +118,4 @@ document.getElementById("btnDrucken").onclick = ()=>{
     try { w.close(); } catch(e){}
   }, 1200);
 };
+  };
