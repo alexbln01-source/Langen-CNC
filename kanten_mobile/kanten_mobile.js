@@ -54,7 +54,7 @@ document.getElementById("btnBack").onclick = ()=>{
   history.back();
 };
 
-// Drucken – iOS/Android/PC kompatibel, ohne zweite HTML-Datei
+// Drucken – A6 quer + zentriert + iPhone kompatibel
 document.getElementById("btnDrucken").onclick = ()=>{
 
   if (!selectedCustomer) {
@@ -62,7 +62,7 @@ document.getElementById("btnDrucken").onclick = ()=>{
     return;
   }
 
-  const w = window.open("", "_blank");
+  const w = window.open("", "_blank", "width=1200,height=900");
 
   w.document.write(`
     <html>
@@ -70,36 +70,41 @@ document.getElementById("btnDrucken").onclick = ()=>{
       <meta charset="utf-8" />
       <title>Druck</title>
       <style>
+
         @page{
-          size:A6 landscape;
-          margin:0;
+          size: A6 landscape;
+          margin: 0;
         }
-        body{
+
+        html, body{
           margin:0;
+          padding:0;
           width:148mm;
           height:105mm;
+        }
+
+        #printArea{
+          width:148mm;
+          height:105mm;
+          position:absolute;
+          top:0;
+          left:0;
+          text-align:center;
+          font-family:Arial, sans-serif;
+          font-weight:900;
           display:flex;
+          flex-direction:column;
           justify-content:center;
           align-items:center;
-          font-family:Arial, sans-serif;
         }
-        #printArea{
-          text-align:center;
-          font-weight:900;
-        }
-        .big{
-          font-size:46pt;
-        }
-        .mid{
-          font-size:32pt;
-          margin-top:6mm;
-        }
-        .line{
-          font-size:26pt;
-          margin-top:4mm;
-        }
+
+        .big{ font-size:46pt; }
+        .mid{ font-size:32pt; margin-top:4mm; }
+        .line{ font-size:26pt; margin-top:3mm; }
+
       </style>
     </head>
+
     <body>
       <div id="printArea">
         <div class="big">${selectedCustomer}</div>
@@ -107,12 +112,17 @@ document.getElementById("btnDrucken").onclick = ()=>{
         <div class="line">K-Termin: ________</div>
         <div class="line">Palettennummer: ________</div>
       </div>
+
       <script>
         setTimeout(()=>{
           window.print();
-          setTimeout(()=>{ window.close(); window.location.href = "kanten_mobile.html"; }, 500);
-        }, 150);
+          setTimeout(()=>{
+            window.close();
+            window.location.href = "kanten_mobile.html";
+          }, 300);
+        }, 200);
       <\/script>
+
     </body>
     </html>
   `);
