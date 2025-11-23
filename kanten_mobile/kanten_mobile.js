@@ -54,7 +54,7 @@ document.getElementById("btnBack").onclick = ()=>{
   history.back();
 };
 
-// Drucken (mobil-kompatibel A6-Simulation)
+// Drucken (mobil-kompatibel für iPhone & Android)
 document.getElementById("btnDrucken").onclick = ()=>{
 
   if (!selectedCustomer) {
@@ -68,23 +68,16 @@ document.getElementById("btnDrucken").onclick = ()=>{
     <html>
     <head>
       <style>
-        /* WICHTIG: verhindert Kopf-/Fußzeilen auf Android */
-        @page { 
-          margin: 0 !important;
-        }
-
-        /* Simulierter A6-Bereich */
+        @page { size: A6 landscape; margin:0; }
         body{
           margin:0;
-          width:148mm;
-          height:105mm;
-          overflow:hidden;
           display:flex;
           justify-content:center;
           align-items:center;
+          width:148mm;
+          height:105mm;
           font-family:Arial, sans-serif;
         }
-
         #printArea{
           text-align:center;
           font-weight:900;
@@ -115,8 +108,13 @@ document.getElementById("btnDrucken").onclick = ()=>{
 
   w.document.close();
 
-  w.onload = () => {
-    w.focus();
-    w.print();
-  };
+  // Wichtig: erst drucken, wenn das Dokument vollständig geladen ist
+ w.onload = () => {
+  w.focus();
+  w.print();
+
+  // sicherer Auto-Close für Android & iPhone
+  setTimeout(() => {
+    try { w.close(); } catch(e){}
+  }, 1200);
 };
