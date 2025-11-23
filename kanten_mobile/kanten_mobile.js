@@ -83,20 +83,20 @@ document.getElementById("btnDrucken").onclick = ()=>{
           height:105mm;
         }
 
-        #printArea{
-          width:148mm;
-          height:105mm;
-          position:absolute;
-          top:0;
-          left:0;
-          text-align:center;
-          font-family:Arial, sans-serif;
-          font-weight:900;
-          display:flex;
-          flex-direction:column;
-          justify-content:center;
-          align-items:center;
-        }
+     #printArea{
+  width:148mm;
+  height:111mm;          /* erhöht */
+  position:absolute;
+  top:-3mm;              /* leicht hochgeschoben */
+  left:0;
+  text-align:center;
+  font-family:Arial, sans-serif;
+  font-weight:900;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
 
         .big{ font-size:46pt; }
         .mid{ font-size:32pt; margin-top:4mm; }
