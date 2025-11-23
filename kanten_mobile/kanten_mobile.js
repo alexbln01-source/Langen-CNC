@@ -54,7 +54,7 @@ document.getElementById("btnBack").onclick = ()=>{
   history.back();
 };
 
-// Drucken mit Auto-Close auch auf Android Chrome
+// Drucken mit Popup-Vorschau (A6 quer) + Auto-Return nach dem Druck
 document.getElementById("btnDrucken").onclick = ()=>{
 
   if (!selectedCustomer) {
@@ -62,79 +62,29 @@ document.getElementById("btnDrucken").onclick = ()=>{
     return;
   }
 
-  const w = window.open("", "_blank", "width=1200,height=850");
+  document.getElementById("printPreview").innerHTML = `
+    <div style="font-size:46pt; font-weight:900;">${selectedCustomer}</div>
+    <div style="font-size:32pt; margin-top:6mm;">Kanten</div>
+    <div style="font-size:26pt; margin-top:4mm;">K-Termin: ________</div>
+    <div style="font-size:26pt; margin-top:4mm;">Palettennummer: ________</div>
+  `;
 
-  w.document.write(`
-    <html>
-    <head>
-      <style>
-        @page { margin:0 !important; }
+  document.getElementById("printPopup").style.display = "flex";
+};
 
-        body{
-          margin:0;
-          width:148mm;
-          height:105mm;
-          overflow:hidden;
-          display:flex;
-          justify-content:center;
-          align-items:center;
-          font-family:Arial, sans-serif;
-        }
+// Abbrechen
+document.getElementById("cancelPrint").onclick = ()=>{
+  document.getElementById("printPopup").style.display = "none";
+};
 
-        #printArea{
-          text-align:center;
-          font-weight:900;
-        }
-        .big{
-          font-size:46pt;
-        }
-        .mid{
-          font-size:32pt;
-          margin-top:6mm;
-        }
-        .line{
-          font-size:26pt;
-          margin-top:4mm;
-        }
-      </style>
-    </head>
-    <body>
-      <div id="printArea">
-        <div class="big">${selectedCustomer}</div>
-        <div class="mid">Kanten</div>
-        <div class="line">K-Termin: ________</div>
-        <div class="line">Palettennummer: ________</div>
-      </div>
-    </body>
-    </html>
-  `);
+// Drucken + automatisch zurück zur Kundenauswahl
+document.getElementById("doPrint").onclick = ()=>{
+  window.print();
+  document.getElementById("printPopup").style.display = "none";
 
-  w.document.close();
-  w.focus();
-
-  // Auto-Close auch auf Android Chrome
-  let printDone = false;
-
-  // wenn Druckdialog verlassen wird → schließen
-  w.addEventListener("visibilitychange", () => {
-    if (printDone) {
-      try { w.close(); } catch(e){}
-    }
-  });
-
-  // Druck starten
-  try { w.print(); } catch(e){}
-
-  // Wenn Print beendet wurde → markieren
-  if (w.matchMedia) {
-    const mq = w.matchMedia('print');
-    mq.addEventListener('change', (e) => {
-      if (!e.matches) {
-        printDone = true;
-      }
-    });
-  } else {
-    // Fallback
-    setTimeout(()=>{ printDone = true; }, 1500);
-  }
+  // kurze Verzögerung, damit mobile Browser fertig sind
+  setTimeout(()=>{
+    // zurück zur Auswahl
+    window.location.reload();
+  }, 600);
 };
