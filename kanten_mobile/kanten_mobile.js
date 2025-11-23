@@ -54,7 +54,7 @@ document.getElementById("btnBack").onclick = ()=>{
   history.back();
 };
 
-// Drucken (K3 – wie Beschichtung Style)
+// Drucken (mobil-kompatibel für iPhone & Android)
 document.getElementById("btnDrucken").onclick = ()=>{
 
   if (!selectedCustomer) {
@@ -107,7 +107,10 @@ document.getElementById("btnDrucken").onclick = ()=>{
   `);
 
   w.document.close();
-  w.focus();
 
-  setTimeout(()=>{ w.print(); w.close(); }, 300);
+  // Wichtig: erst drucken, wenn das Dokument vollständig geladen ist
+  w.onload = () => {
+    w.focus();
+    w.print();
+  };
 };
