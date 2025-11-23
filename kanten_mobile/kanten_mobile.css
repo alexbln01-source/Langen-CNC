@@ -174,18 +174,31 @@ h1 {
 
 /* DRUCKMODUS */
 @media print{
-  body *{
-    visibility:hidden !important;
+
+  /* alles ausblenden, aber nicht das Popup */
+  body > *:not(#printPopup){
+    display:none !important;
   }
-  #printPreview, #printPreview *{
-    visibility:visible !important;
+
+  /* Popup selbst ausblenden */
+  #printBox, #printButtons{
+    display:none !important;
   }
+
+  /* Druckbereich sichtbar und allein */
   #printPreview{
+    display:block !important;
     position:absolute;
-    top:0; left:0;
+    top:0;
+    left:0;
+    width:148mm;
+    height:105mm;
+    overflow:hidden;
   }
+
+  /* Druckgröße festlegen */
   @page{
-    margin:0 !important;
     size:A6 landscape;
+    margin:0;
   }
 }
