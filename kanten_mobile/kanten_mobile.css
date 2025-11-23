@@ -171,29 +171,39 @@ h1 {
 
 @media print {
 
-  /* komplette Seite aus dem sichtbaren Bereich schieben */
+  /* alles entfernen */
   body * {
-    position: fixed !important;
-    top: -9999px !important;
-    left: -9999px !important;
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
   }
 
-  /* Druckinhalt sichtbar machen */
-  #printPreview, #printPreview * {
+  /* Popup neutralisieren */
+  #printPopup, #printBox {
+    display: block !important;
     position: static !important;
-    top: 0 !important;
-    left: 0 !important;
+    background: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+  }
+
+  /* Druckbereich sichtbar machen */
+  #printPreview, #printPreview * {
     display: block !important;
     visibility: visible !important;
+    opacity: 1 !important;
   }
 
   #printPreview {
+    position: absolute !important;
+    top: 0;
+    left: 0;
     width: 148mm !important;
     height: 105mm !important;
     margin: 0 !important;
     padding: 0 !important;
-    background:white !important;
-    -webkit-print-color-adjust: exact !important;
+    background: white !important;
   }
 
   @page {
