@@ -54,7 +54,6 @@ function buildOutput(type) {
   html += `<div style="font-size:60pt;margin-bottom:6mm;">${z1}</div>`;
   if (z2) html += `<div style="font-size:60pt;font-weight:900;">${z2}</div>`;
 
-  // 🔥 Nur EILT SEHR groß
   if (z3){
     if (z3.includes("EILT SEHR")) {
       html += `<div style="font-size:60pt;font-weight:900;">„EILT SEHR“</div>`;
@@ -120,6 +119,11 @@ function openKeyboard(field,type){
   buildKeyboard(type);
 
   kbPopup.style.display = "flex";
+
+  // ✅ Cursor sofort im Eingabefeld
+  setTimeout(() => {
+    kbInput.focus();
+  }, 10);
 }
 
 function closeKeyboard(){
@@ -141,11 +145,21 @@ btnOk.onclick = () => {
   }
 };
 
+// =========================
+// Enter / Return Eingabe
+// =========================
+kbInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    btnOk.click();
+  }
+});
+
 numInput.onclick   = () => openKeyboard(numInput, "numbers");
 kundeInput.onclick = () => openKeyboard(kundeInput, "letters");
 
+
 // =========================
-// Drucken
+// Drucken – exakt wie Vorschau
 // =========================
 document.getElementById("btnDrucken").onclick = () => {
   if (!selectedType) return alert("Bitte Kunde wählen!");
@@ -160,11 +174,52 @@ document.getElementById("btnDrucken").onclick = () => {
     <head>
       <style>
         @page { size: A5 landscape; margin:0; }
+
         html,body{
-          margin:0; padding:0;
-          width:210mm; height:148mm;
-          display:flex; justify-content:center; align-items:center;
-          font-family:Arial;
+          margin:0;
+          padding:0;
+          width:210mm;
+          height:148mm;
+          font-family:Arial, sans-serif;
+        }
+
+        body{
+          display:flex;
+          justify-content:center;
+          align-items:center;
+        }
+
+        #printArea{
+          background:#ffffff;
+          width:210mm;
+          height:148mm;
+          box-sizing:border-box;
+          padding:8mm;
+          position:relative;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          justify-content:center;
+        }
+
+        #output-content{
+          text-align:center;
+          font-weight:700;
+          line-height:1.2;
+          font-family:Arial, sans-serif;
+        }
+
+        #output-footer{
+          position:absolute;
+          right:8mm;
+          bottom:6mm;
+        }
+
+        #output-footer img{
+          width:40mm;
+          height:auto;
+          max-height:15mm;
+          object-fit:contain;
         }
       </style>
     </head>
@@ -182,7 +237,7 @@ document.getElementById("btnDrucken").onclick = () => {
 };
 
 // =========================
-// Zurück – immer Ordner hoch
+// Zurück
 // =========================
 document.getElementById("btnBack").onclick = () => {
   window.location.href = "../index.html";
