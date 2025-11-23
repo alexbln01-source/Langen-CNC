@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Start</title>
+
+<script>
+  // Bereich aus URL lesen (?bereich=...)
+  const params  = new URLSearchParams(location.search);
+  const bereich = params.get("bereich");
+
+  // Geräteerkennung
+  const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+
+  // Weiterleitungslogik
+  function route() {
+
+    if (!bereich) {
+      alert("Kein Bereich angegeben!");
+      return;
+    }
+
+    if (bereich === "beschichtung") {
+      window.location.href = isMobile
+        ? "beschichtung_mobile/beschichtung_mobile.html"
+        : "beschichtung_pc/beschichtung_pc.html";
+      return;
+    }
+
+    if (bereich === "kanten") {
+      window.location.href = isMobile
+        ? "kanten_mobile/kanten_mobile.html"
+        : "kanten_pc/kanten_pc.html";
+      return;
+    }
+
+    if (bereich === "schweissen") {
+      window.location.href = isMobile
+        ? "schweissen_mobile/schweissen_mobile.html"
+        : "schweissen_pc/schweissen_pc.html";
+      return;
+    }
+
+    if (bereich === "paus") {
+      window.location.href = isMobile
+        ? "paus_mobile/paus_mobile.html"
+        : "paus_pc/paus_pc.html";
+      return;
+    }
+
+    alert("Unbekannter Bereich: " + bereich);
+  }
+
+  // Starten
+  route();
+</script>
+
+</head>
+<body>
+<p>Lade passende Version...</p>
+</body>
+</html>

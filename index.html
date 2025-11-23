@@ -106,15 +106,19 @@ function isMobileDevice() {
 }
 
 function openBeschichtung() {
-  window.location.href = isMobileDevice()
-    ? "beschichtung_mobile/beschichtung_mobile.html"
-    : "beschichtung_pc/beschichtung_pc.html";
+  window.location.href = "start.html?bereich=beschichtung";
 }
 
 function openKanten() {
-  window.location.href = isMobileDevice()
-    ? "kanten_mobile/kanten_mobile.html"
-    : "kanten_pc/kanten_pc.html";
+  window.location.href = "start.html?bereich=kanten";
+}
+
+function openPaus() {
+  window.location.href = "start.html?bereich=paus";
+}
+
+function openSchweissen() {
+  window.location.href = "start.html?bereich=schweissen";
 }
 </script>
 </head>
