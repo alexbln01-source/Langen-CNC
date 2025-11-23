@@ -127,8 +127,7 @@ h1 {
   font-size:18px;
   border-radius:10px;
 }
-
-/* PRINT POPUP */
+/* PRINT POPUP (angepasst für 5 Zoll Screens) */
 #printPopup{
   position:fixed;
   left:0; top:0;
@@ -142,59 +141,58 @@ h1 {
 
 #printBox{
   background:white;
-  padding:22px;
-  border-radius:18px;
-  width:92%;
-  max-width:420px;
+  padding:14px;
+  border-radius:14px;
+  width:94%;
+  max-width:320px;  /* ✅ passt auf 5 Zoll */
   text-align:center;
 }
 
 #printPreview{
-  width:148mm;
-  height:105mm;
+  width:90vw;        /* ✅ statt mm – passt auf Display */
+  height:64vw;       /* ✅ Seitenverhältnis A6 quer */
   border:1px solid #777;
-  margin:0 auto 18px auto;
+  margin:0 auto 12px auto;
   display:flex;
   justify-content:center;
   align-items:center;
   flex-direction:column;
   font-family:Arial, sans-serif;
+  background:white;
 }
 
+/* Buttons kleiner */
 #printButtons button{
   width:48%;
-  margin:4px;
-  padding:16px 0;
-  font-size:20px;
-  border-radius:14px;
+  margin:3px;
+  padding:12px 0;
+  font-size:18px;
+  border-radius:10px;
   font-weight:bold;
 }
 
-#doPrint{ background:#007bff; color:white; }
-#cancelPrint{ background:#444; color:white; }
-
-/* DRUCKMODUS – funktioniert auf iPhone & Android, NICHT leer! */
+/* DRUCKMODUS – garantiert NICHT LEER */
 @media print{
 
-  /* alles ausblenden außer dem Druckbereich */
-  body > *:not(#printPopup){
+  /* ALLES ausblenden außer Druckbereich */
+  body *{
     display:none !important;
   }
 
-  /* Popup-Steuerung ausblenden */
-  #printBox, #printButtons{
-    display:none !important;
-  }
-
-  /* Druckbereich sichtbar */
-  #printPreview{
+  /* Druckbereich zeigen */
+  #printPreview, #printPreview *{
     display:block !important;
+    visibility:visible !important;
+  }
+
+  #printPreview{
     position:absolute;
     top:0;
     left:0;
-    width:148mm;
+    width:148mm;   /* ✅ echtes Druckmaß */
     height:105mm;
-    overflow:hidden;
+    margin:0;
+    padding:0;
   }
 
   @page{
