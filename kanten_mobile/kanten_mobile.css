@@ -81,6 +81,7 @@ h1 {
   background:rgba(0,0,0,0.45);
   justify-content:center;
   align-items:center;
+  z-index:9000;
 }
 
 #keyboardBox {
@@ -172,20 +173,20 @@ h1 {
 #doPrint{ background:#007bff; color:white; }
 #cancelPrint{ background:#444; color:white; }
 
-/* DRUCKMODUS */
+/* DRUCKMODUS – funktioniert auf iPhone & Android, NICHT leer! */
 @media print{
 
-  /* alles ausblenden, aber nicht das Popup */
+  /* alles ausblenden außer dem Druckbereich */
   body > *:not(#printPopup){
     display:none !important;
   }
 
-  /* Popup selbst ausblenden */
+  /* Popup-Steuerung ausblenden */
   #printBox, #printButtons{
     display:none !important;
   }
 
-  /* Druckbereich sichtbar und allein */
+  /* Druckbereich sichtbar */
   #printPreview{
     display:block !important;
     position:absolute;
@@ -196,7 +197,6 @@ h1 {
     overflow:hidden;
   }
 
-  /* Druckgröße festlegen */
   @page{
     size:A6 landscape;
     margin:0;
