@@ -54,7 +54,7 @@ document.getElementById("btnBack").onclick = ()=>{
   history.back();
 };
 
-// Drucken mit Popup-Vorschau (A6 quer) + Auto-Return nach Druck
+// Drucken – iOS/Android/PC kompatibel, ohne zweite HTML-Datei
 document.getElementById("btnDrucken").onclick = ()=>{
 
   if (!selectedCustomer) {
@@ -62,27 +62,61 @@ document.getElementById("btnDrucken").onclick = ()=>{
     return;
   }
 
-  document.getElementById("printPreview").innerHTML = `
-    <div style="font-size:46pt; font-weight:900;">${selectedCustomer}</div>
-    <div style="font-size:32pt; margin-top:6mm;">Kanten</div>
-    <div style="font-size:26pt; margin-top:4mm;">K-Termin: ________</div>
-    <div style="font-size:26pt; margin-top:4mm;">Palettennummer: ________</div>
-  `;
+  const w = window.open("", "_blank");
 
-  document.getElementById("printPopup").style.display = "flex";
-};
+  w.document.write(`
+    <html>
+    <head>
+      <meta charset="utf-8" />
+      <title>Druck</title>
+      <style>
+        @page{
+          size:A6 landscape;
+          margin:0;
+        }
+        body{
+          margin:0;
+          width:148mm;
+          height:105mm;
+          display:flex;
+          justify-content:center;
+          align-items:center;
+          font-family:Arial, sans-serif;
+        }
+        #printArea{
+          text-align:center;
+          font-weight:900;
+        }
+        .big{
+          font-size:46pt;
+        }
+        .mid{
+          font-size:32pt;
+          margin-top:6mm;
+        }
+        .line{
+          font-size:26pt;
+          margin-top:4mm;
+        }
+      </style>
+    </head>
+    <body>
+      <div id="printArea">
+        <div class="big">${selectedCustomer}</div>
+        <div class="mid">Kanten</div>
+        <div class="line">K-Termin: ________</div>
+        <div class="line">Palettennummer: ________</div>
+      </div>
+      <script>
+        setTimeout(()=>{
+          window.print();
+          setTimeout(()=>{ window.close(); window.location.href = "kanten_mobile.html"; }, 500);
+        }, 150);
+      <\/script>
+    </body>
+    </html>
+  `);
 
-// Abbrechen
-document.getElementById("cancelPrint").onclick = ()=>{
-  document.getElementById("printPopup").style.display = "none";
-};
-
-// Drucken → zurück zur Kundenauswahl
-document.getElementById("doPrint").onclick = ()=>{
-  window.print();
-  document.getElementById("printPopup").style.display = "none";
-
-  setTimeout(()=>{
-    window.location.reload();
-  }, 600);
+  w.document.close();
+  w.focus();
 };
