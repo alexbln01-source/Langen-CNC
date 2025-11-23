@@ -54,7 +54,7 @@ document.getElementById("btnBack").onclick = ()=>{
   history.back();
 };
 
-// Drucken (mobil-kompatibel für iPhone & Android)
+// Drucken (Android: echter Druckdialog, iPhone: stabil)
 document.getElementById("btnDrucken").onclick = ()=>{
 
   if (!selectedCustomer) {
@@ -68,16 +68,19 @@ document.getElementById("btnDrucken").onclick = ()=>{
     <html>
     <head>
       <style>
-        @page { size: A6 landscape; margin:0; }
+        @page { margin:0 !important; }
+
         body{
           margin:0;
+          width:148mm;
+          height:105mm;
+          overflow:hidden;
           display:flex;
           justify-content:center;
           align-items:center;
-          width:148mm;
-          height:105mm;
           font-family:Arial, sans-serif;
         }
+
         #printArea{
           text-align:center;
           font-weight:900;
@@ -107,15 +110,8 @@ document.getElementById("btnDrucken").onclick = ()=>{
   `);
 
   w.document.close();
-
-  // Wichtig: erst drucken, wenn das Dokument vollständig geladen ist
- w.onload = () => {
   w.focus();
-  w.print();
 
-  // sicherer Auto-Close für Android & iPhone
-  setTimeout(() => {
-    try { w.close(); } catch(e){}
-  }, 1200);
+  // Android will NUR hier drucken
+  try { w.print(); } catch(e){}
 };
-  };
