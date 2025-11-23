@@ -54,7 +54,7 @@ document.getElementById("btnBack").onclick = ()=>{
   history.back();
 };
 
-// Drucken (Chrome Android: echter Druckdialog)
+// Drucken mit Auto-Close auch auf Android Chrome
 document.getElementById("btnDrucken").onclick = ()=>{
 
   if (!selectedCustomer) {
@@ -112,6 +112,29 @@ document.getElementById("btnDrucken").onclick = ()=>{
   w.document.close();
   w.focus();
 
-  // *** Chrome Android: NUR HIER funktioniert der Druckdialog ***
+  // Auto-Close auch auf Android Chrome
+  let printDone = false;
+
+  // wenn Druckdialog verlassen wird → schließen
+  w.addEventListener("visibilitychange", () => {
+    if (printDone) {
+      try { w.close(); } catch(e){}
+    }
+  });
+
+  // Druck starten
   try { w.print(); } catch(e){}
+
+  // Wenn Print beendet wurde → markieren
+  if (w.matchMedia) {
+    const mq = w.matchMedia('print');
+    mq.addEventListener('change', (e) => {
+      if (!e.matches) {
+        printDone = true;
+      }
+    });
+  } else {
+    // Fallback
+    setTimeout(()=>{ printDone = true; }, 1500);
+  }
 };
