@@ -54,7 +54,7 @@ document.getElementById("btnBack").onclick = ()=>{
   history.back();
 };
 
-// Drucken mit Popup-Vorschau (A6 quer) + Auto-Return nach dem Druck
+// Drucken mit Popup-Vorschau (A6 quer) + Auto-Return nach Druck
 document.getElementById("btnDrucken").onclick = ()=>{
 
   if (!selectedCustomer) {
@@ -77,15 +77,12 @@ document.getElementById("cancelPrint").onclick = ()=>{
   document.getElementById("printPopup").style.display = "none";
 };
 
-// Drucken + automatisch zurück zur Kundenauswahl
+// Drucken → zurück zur Kundenauswahl
 document.getElementById("doPrint").onclick = ()=>{
   window.print();
   document.getElementById("printPopup").style.display = "none";
 
-  // kurze Verzögerung, damit mobile Browser fertig sind
   setTimeout(()=>{
-    // zurück zur Auswahl
     window.location.reload();
   }, 600);
-};
 };
