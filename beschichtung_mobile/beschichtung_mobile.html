@@ -21,7 +21,6 @@
 <body>
 
 <div id="wrapper">
-
     <div id="card">
 
         <h1>BESCHICHTUNG</h1>
@@ -37,21 +36,13 @@
         </div>
 
     </div>
-
 </div>
 
-<!-- Unsichtbarer PDF-Renderbereich -->
-<div id="output-content"
-     style="position:absolute; left:-9999px; top:-9999px;
-            width:150mm; height:110mm; background:white;"></div>
-
-<!-- Popup-Tastatur -->
+<!-- Popup Tastatur -->
 <div id="keyboardPopup">
     <div id="keyboardBox">
         <h3 id="keyboardTitle">Eingabe</h3>
-
         <input id="keyboardInput" />
-
         <div id="keyboardGrid"></div>
 
         <div id="kbActions">
@@ -62,7 +53,7 @@
     </div>
 </div>
 
-<!-- DIESE 3 Reihenfolge ist WICHTIG! -->
+<!-- Reihenfolge ist WICHTIG -->
 <script src="html2canvas.min.js"></script>
 <script src="jspdf.umd.min.js"></script>
 <script src="beschichtung_mobile.js"></script>
