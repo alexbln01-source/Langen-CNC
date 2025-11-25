@@ -219,43 +219,10 @@ function validate() {
   return true;
 }
 
-// ===============================
-// DRUCKEN – PDF erzeugen aus Vorschau
-// ===============================
-$("#btnDrucken").onclick = async () => {
+true;
+}
 
-    if (!validate()) return;
-
-    // Vorschau erzeugen
-    const type = selectedType;
-    const html = buildOutput(type);
-    out.innerHTML = html;
-
-    // Etikett rendern als Bild
-    const canvas = await html2canvas(out, {
-        backgroundColor: "#FFFFFF",
-        scale: 3
-    });
-
-    const imgData = canvas.toDataURL("image/png");
-
-    // PDF erzeugen
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({
-        orientation: "landscape",
-        unit: "mm",
-        format: "a6"
-    });
-
-    // Bild einfügen (A6: 148 x 105 mm)
-    pdf.addImage(imgData, "PNG", 0, 0, 148, 105);
-
-    // PDF als Blob öffnen
-    const blob = pdf.output("blob");
-    const url = URL.createObjectURL(blob);
-
-    window.open(url, "_blank");
-};
+/
 // ===============================
 // Zurück
 // ===============================
