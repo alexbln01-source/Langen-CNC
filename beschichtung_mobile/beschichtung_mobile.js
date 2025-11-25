@@ -35,9 +35,7 @@ const kundenListe = [
   ["COATINC", "Coatinc 24 Verzinken"]
 ];
 
-// ===============================
 // Buttons erzeugen
-// ===============================
 const btnContainer = $("#kundenButtons");
 kundenListe.forEach(k => {
   const b = document.createElement("button");
@@ -49,12 +47,12 @@ kundenListe.forEach(k => {
 });
 
 // ===============================
-// Vorschau
+// Vorschau markieren
 // ===============================
 function makeOutput(type) {
   selectedType = type;
   $$("#kundenButtons button").forEach(b => b.classList.remove("active"));
-  const activeBtn = document.querySelector(`#kundenButtons button[data-type="${type}"]`);
+  const activeBtn = document.querySelector(`[data-type="${type}"]`);
   if (activeBtn) activeBtn.classList.add("active");
 }
 
@@ -90,15 +88,12 @@ $("#btnDel").onclick = () => kbInput.value = kbInput.value.slice(0, -1);
 $("#btnClose").onclick = () => kbPopup.style.display = "none";
 
 $("#btnOk").onclick = () => {
-  if (!currentField) return;
-
   currentField.value = kbInput.value;
   kbPopup.style.display = "none";
-
   if (currentField === numInput) openKeyboard(kundeInput, "letters");
 };
 
-// Eingabefeld Events
+// Eingabefeld Öffnen
 numInput.addEventListener("focus", e => { e.preventDefault(); numInput.blur(); openKeyboard(numInput, "numbers"); });
 kundeInput.addEventListener("focus", e => { e.preventDefault(); kundeInput.blur(); openKeyboard(kundeInput, "letters"); });
 
@@ -113,12 +108,11 @@ function validate() {
   if (need.includes(selectedType) && !kundeInput.value.trim()) {
     return alert("Bitte Kundenname eingeben!"), false;
   }
-
   return true;
 }
 
 // ===============================
-// PDF DRUCKEN – A5 quer mit Logo
+// PDF A5 QUER ERSTELLEN
 // ===============================
 $("#btnDrucken").onclick = () => {
   if (!validate()) return;
@@ -126,8 +120,7 @@ $("#btnDrucken").onclick = () => {
   const n = numInput.value.trim();
   const k = kundeInput.value.trim();
 
-  let z1 = n, z2="", z3="", z4="";
-
+  let z1=n, z2="", z3="", z4="";
   switch (selectedType) {
     case "LP": z2="L&P"; break;
     case "LPEILT": z2="L&P"; z3="EILT SEHR"; break;
@@ -145,50 +138,38 @@ $("#btnDrucken").onclick = () => {
   }
 
   const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF({ orientation: "landscape", unit: "mm", format: "a5" });
+  const pdf = new jsPDF({ orientation:"landscape", unit:"mm", format:"a5" });
 
-  const pageWidth = pdf.internal.pageSize.getWidth();
-  const pageHeight = pdf.internal.pageSize.getHeight();
-  const centerX = pageWidth / 2;
+  const W = pdf.internal.pageSize.getWidth();
+  const H = pdf.internal.pageSize.getHeight();
+  const C = W / 2;
 
-  const draw = (logoImg) => {
-    pdf.setFont("helvetica", "bold");
+  pdf.setFont("helvetica", "bold");
 
-    pdf.setFontSize(60);
-    pdf.text(z1, centerX, 50, { align:"center" });
+  pdf.setFontSize(60);
+  pdf.text(z1, C, 50, { align: "center" });
 
-    if (z2) { pdf.setFontSize(60); pdf.text(z2, centerX, 85, { align:"center" }); }
+  if (z2) { pdf.setFontSize(60); pdf.text(z2, C, 85, { align: "center" }); }
 
-    if (z3) {
-      if (z3.includes("EILT SEHR")) {
-        pdf.setFontSize(60);
-        pdf.text("„EILT SEHR“", centerX, 120, { align:"center" });
-      } else {
-        pdf.setFontSize(32);
-        pdf.text(z3, centerX, 120, { align:"center" });
-      }
+  if (z3) {
+    if (z3.includes("EILT SEHR")) {
+      pdf.setFontSize(60);
+      pdf.text("„EILT SEHR“", C, 120, { align:"center" });
+    } else {
+      pdf.setFontSize(32);
+      pdf.text(z3, C, 120, { align:"center" });
     }
+  }
 
-    if (z4) { pdf.setFontSize(32); pdf.text(`(${z4})`, centerX, 140, { align:"center" }); }
+  if (z4) {
+    pdf.setFontSize(32);
+    pdf.text(`(${z4})`, C, 140, { align:"center" });
+  }
 
-    if (logoImg) {
-      const w = 40, h = 14;
-      pdf.addImage(logoImg, "PNG", pageWidth - w - 8, pageHeight - h - 8, w, h);
-    }
-
-    window.open(URL.createObjectURL(pdf.output("blob")), "_blank");
-  };
-
-  const logo = new Image();
-  logo.onload = () => draw(logo);
-  logo.onerror = () => draw(null);
-
-  logo.src = "langen.png";   // ← KORREKT
+  window.open(URL.createObjectURL(pdf.output("blob")), "_blank");
 };
 
 // ===============================
 // Zurück
 // ===============================
-$("#btnBack").onclick = () => {
-  window.location.href = "../index.html";
-};
+$("#btnBack").onclick = () => window.location.href = "../index.html";

@@ -33,7 +33,7 @@
 
         <div id="footerBtns">
             <button id="btnBack" class="btn-dark">⬅️ Zurück</button>
-            <button id="btnDrucken" class="btn-blue">🖨️ Drucken</button>
+            <button id="btnDrucken" class="btn-blue">🖨 Drucken</button>
         </div>
 
     </div>
@@ -43,10 +43,9 @@
 <!-- Unsichtbarer PDF-Renderbereich -->
 <div id="output-content"
      style="position:absolute; left:-9999px; top:-9999px;
-            width:150mm; height:110mm; background:white;">
-</div>
+            width:150mm; height:110mm; background:white;"></div>
 
-<!-- Popup Tastatur -->
+<!-- Popup-Tastatur -->
 <div id="keyboardPopup">
     <div id="keyboardBox">
         <h3 id="keyboardTitle">Eingabe</h3>
@@ -63,9 +62,10 @@
     </div>
 </div>
 
+<!-- DIESE 3 Reihenfolge ist WICHTIG! -->
 <script src="html2canvas.min.js"></script>
 <script src="jspdf.umd.min.js"></script>
-<script src="./beschichtung_mobile.js"></script>
+<script src="beschichtung_mobile.js"></script>
 
 </body>
 </html>
