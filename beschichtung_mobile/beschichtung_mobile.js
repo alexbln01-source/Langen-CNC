@@ -219,81 +219,43 @@ function validate() {
   return true;
 }
 
-// ===============================
-// Drucken – 1× A5 quer, Logo unten rechts
-// ===============================
-// Drucken – HTML im Hintergrund (Logo funktioniert, auch in Chrome)
-// ===============================
-$("#btnDrucken").onclick = () => {
-    if (!validate()) return;
+// PDF-Drucken – stabil für Android (öffnen → Benutzer druckt)
+document.getElementById("btnDrucken").onclick = async ()=>{
 
-    const outputHTML = buildOutput(selectedType);
+  if (!selectedCustomer) {
+    alert("Bitte Kunde auswählen!");
+    return;
+  }
 
-    const pdfHTML = `
-        <html>
-        <head>
-          <meta charset="UTF-8" />
-          <style>
-            @page { size: A5 landscape; margin: 0; }
-            body {
-              font-family: Arial, sans-serif;
-              margin: 0;
-              width: 210mm;
-              height: 148mm;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              position: relative;
-              padding-bottom: 18mm;
-            }
-            .line { width: 100%; text-align: center; font-weight: 900; }
-            .line-big { font-size: 60pt; }
-            .line-mid { font-size: 32pt; }
-            #logo {
-              position: absolute;
-              right: 8mm;
-              bottom: 6mm;
-              width: 36mm;
-            }
-          </style>
-        </head>
-        <body>
-          ${outputHTML}
-          <!-- wenn dein Logo eine Ebene höher liegt wie index.html -->
-          <img id="logo" src="../langen.png">
-          <!-- falls das Logo im gleichen Ordner wie beschichtung_mobile.html liegt:
-          <img id="logo" src="langen.png">
-          -->
-        </body>
-        </html>
-    `;
+  // PDF Bibliothek laden (jsPDF)
+  const { jsPDF } = window.jspdf;
 
-    // unsichtbares iframe ohne Blob
-    const frame = document.createElement("iframe");
-    frame.style.position = "fixed";
-    frame.style.right = "0";
-    frame.style.bottom = "0";
-    frame.style.width = "0";
-    frame.style.height = "0";
-    frame.style.border = "0";
-    document.body.appendChild(frame);
+  // Neues PDF im A6 Querformat
+  const doc = new jsPDF({
+    orientation: "landscape",
+    unit: "mm",
+    format: "a6"
+  });
 
-    // wenn Inhalt geladen ist → drucken
-    frame.onload = () => {
-        frame.contentWindow.focus();
-        frame.contentWindow.print();
-        setTimeout(() => {
-            document.body.removeChild(frame);
-        }, 1500);
-    };
+  // Layout
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(36);
+  doc.text(selectedCustomer, 74, 25, { align: "center" });
 
-    // HTML direkt in das iframe schreiben (Basis-URL = Hauptseite)
-    const doc = frame.contentWindow.document;
-    doc.open();
-    doc.write(pdfHTML);
-    doc.close();
+  doc.setFontSize(24);
+  doc.text("Kanten", 74, 40, { align: "center" });
+
+  doc.setFontSize(18);
+  doc.text("K-Termin: ____________________", 10, 60);
+  doc.text("Palettennummer: _______________", 10, 75);
+
+  // PDF erzeugen und als BlobURL öffnen
+  const pdfBlob = doc.output("blob");
+  const pdfURL = URL.createObjectURL(pdfBlob);
+
+  // Neues Tab öffnen (Benutzer klickt auf Drucken)
+  window.open(pdfURL, "_blank");
 };
-
 // ===============================
 // Zurück
 // ===============================
