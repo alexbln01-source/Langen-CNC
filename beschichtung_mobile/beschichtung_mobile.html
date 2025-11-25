@@ -40,15 +40,11 @@
 
 </div>
 
-<!-- ❗WICHTIG: Unsichtbarer Bereich für PDF-Erstellung -->
-<div id="output-content" style="
-    position:absolute;
-    left:-9999px;
-    top:-9999px;
-    width:150mm;
-    height:110mm;
-    background:white;
-"></div>
+<!-- Unsichtbarer PDF-Renderbereich -->
+<div id="output-content"
+     style="position:absolute; left:-9999px; top:-9999px;
+            width:150mm; height:110mm; background:white;">
+</div>
 
 <!-- Popup Tastatur -->
 <div id="keyboardPopup">
@@ -69,6 +65,7 @@
 
 <script src="html2canvas.min.js"></script>
 <script src="jspdf.umd.min.js"></script>
-<script src="beschichtung_mobile.js"></script>
+<script src="./beschichtung_mobile.js"></script>
+
 </body>
 </html>
