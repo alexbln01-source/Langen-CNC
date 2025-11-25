@@ -8,7 +8,7 @@
 
 <style>
 
-/* 🔥 Druckseite 100% ohne Browser-Ränder / Kopf / Fuß */
+/* Keine Browser-Ränder */
 @page {
     margin: 0;
     size: A5 landscape;
@@ -17,43 +17,56 @@
 html, body {
     margin: 0;
     padding: 0;
+    overflow: hidden;
+    background: #fff;
 }
 
-/* Druckbereich */
+/* A5-Seite exakt */
 #page {
     width: 210mm;
     height: 148mm;
-    padding: 10mm;
+
+    /* Kein Scrollen, sauberer Druckbereich */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    padding-top: 12mm;
     box-sizing: border-box;
+
     font-family: Arial, sans-serif;
     position: relative;
 }
 
+/* Optimierte Schriftgrößen für A5 */
 .big {
-    font-size: 48pt;
+    font-size: 46pt;
     font-weight: bold;
+    margin: 6mm 0 2mm 0;
     text-align: center;
-    margin-top: 10mm;
 }
 
 .med {
-    font-size: 36pt;
+    font-size: 34pt;
     font-weight: bold;
+    margin: 4mm 0 2mm 0;
     text-align: center;
-    margin-top: 8mm;
 }
 
 .small {
     font-size: 26pt;
+    margin: 3mm 0 0 0;
     text-align: center;
-    margin-top: 6mm;
 }
 
+/* Logo unten rechts */
 #logo {
     position: absolute;
-    right: 10mm;
-    bottom: 10mm;
-    width: 40mm;
+    right: 8mm;
+    bottom: 8mm;
+    width: 38mm;
+    height: auto;
 }
 
 </style>
@@ -72,6 +85,8 @@ html, body {
 
 <script>
 window.onload = () => {
+
+    // Daten holen
     const data = JSON.parse(localStorage.getItem("DRUCKDATEN") || "{}");
 
     const map = {
@@ -102,9 +117,13 @@ window.onload = () => {
         document.getElementById("line4").style.display = "none";
     }
 
+    // WICHTIG: Zeitverzögerung für Android Druckdialog
     setTimeout(() => {
         window.print();
-        setTimeout(() => window.close(), 500);
+
+        // Danach sofort schließen
+        setTimeout(() => window.close(), 400);
+
     }, 300);
 };
 </script>

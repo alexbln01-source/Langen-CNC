@@ -7,6 +7,12 @@ const $$ = s => Array.from(document.querySelectorAll(s));
 const numInput   = $("#numInput");
 const kundeInput = $("#kundeInput");
 
+const kbPopup = $("#keyboardPopup");
+const kbInput = $("#keyboardInput");
+const kbGrid  = $("#keyboardGrid");
+const kbTitle = $("#keyboardTitle");
+
+let currentField = null;
 let selectedType = null;
 
 // ===============================
@@ -31,12 +37,12 @@ const kundenListe = [
 // Buttons erzeugen
 const btnContainer = $("#kundenButtons");
 kundenListe.forEach(k => {
-  const btn = document.createElement("button");
-  btn.textContent = k[1];
-  btn.dataset.type = k[0];
-  btn.classList.add("action");
-  btn.onclick = () => makeOutput(k[0]);
-  btnContainer.appendChild(btn);
+  const b = document.createElement("button");
+  b.textContent = k[1];
+  b.dataset.type = k[0];
+  b.classList.add("action");
+  b.onclick = () => makeOutput(k[0]);
+  btnContainer.appendChild(b);
 });
 
 // ===============================
@@ -47,6 +53,51 @@ function makeOutput(type) {
   $$("#kundenButtons button").forEach(b => b.classList.remove("active"));
   document.querySelector(`[data-type="${type}"]`).classList.add("active");
 }
+
+// ===============================
+// Popup-Tastatur
+// ===============================
+function buildKeyboard(type) {
+  kbGrid.innerHTML = "";
+  const chars = type === "numbers"
+    ? ["1","2","3","4","5","6","7","8","9","0"]
+    : "QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM".split("");
+
+  chars.forEach(ch => {
+    const btn = document.createElement("button");
+    btn.textContent = ch;
+    btn.onclick = () => kbInput.value += ch;
+    kbGrid.appendChild(btn);
+  });
+}
+
+function openKeyboard(field, type) {
+  currentField = field;
+
+  kbTitle.textContent = type === "numbers" ? "Beistellnummer" : "Kundenname";
+  kbInput.value = field.value;
+  kbPopup.style.display = "flex";
+
+  buildKeyboard(type);
+}
+
+// Aktionen
+$("#btnDel").onclick = () => kbInput.value = kbInput.value.slice(0, -1);
+$("#btnClose").onclick = () => kbPopup.style.display = "none";
+
+$("#btnOk").onclick = () => {
+  currentField.value = kbInput.value;
+  kbPopup.style.display = "none";
+
+  // Automatisch weiter zum Kundenname
+  if (currentField === numInput) {
+    openKeyboard(kundeInput, "letters");
+  }
+};
+
+// Öffnen per Tap (Focus blockieren!)
+numInput.addEventListener("focus", e => { e.preventDefault(); numInput.blur(); openKeyboard(numInput, "numbers"); });
+kundeInput.addEventListener("focus", e => { e.preventDefault(); kundeInput.blur(); openKeyboard(kundeInput, "letters"); });
 
 // ===============================
 // Validierung
@@ -63,21 +114,26 @@ function validate() {
 }
 
 // ===============================
-// DRUCKEN – HTML Übergabe an druck.html
+// DRUCKEN → Öffnet druck.html
 // ===============================
 $("#btnDrucken").onclick = () => {
   if (!validate()) return;
 
-  const beistell   = numInput.value.trim();
-  const kundename  = kundeInput.value.trim();
+  const payload = {
+    selectedType,
+    beistell: numInput.value.trim(),
+    kundename: kundeInput.value.trim()
+  };
 
-  // Daten speichern
-  const payload = { selectedType, beistell, kundename };
   localStorage.setItem("DRUCKDATEN", JSON.stringify(payload));
 
-  // Druckseite öffnen
-  window.open("druck.html", "_blank");
+  const win = window.open("druck.html", "_blank");
+
+  // 1 Sekunde später App schließen
+  setTimeout(() => window.close(), 1000);
 };
 
+// ===============================
 // Zurück
+// ===============================
 $("#btnBack").onclick = () => window.location.href = "../index.html";
