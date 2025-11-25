@@ -41,9 +41,9 @@ const kundenListe = [
 const btnContainer = $("#kundenButtons");
 kundenListe.forEach(k => {
   const b = document.createElement("button");
-b.textContent = k[1];
-b.dataset.type = k[0];
-b.classList.add("action");   // <- WICHTIG!
+  b.textContent = k[1];
+  b.dataset.type = k[0];
+  b.classList.add("action");
   b.onclick = () => makeOutput(k[0]);
   btnContainer.appendChild(b);
 });
@@ -83,15 +83,9 @@ function buildOutput(type) {
 
   let html = "";
 
-  // Zeile 1 – Beistellnummer
   html += `<div class="line line-big line-num">${z1}</div>`;
+  if (z2) html += `<div class="line line-big line-main">${z2}</div>`;
 
-  // Zeile 2 – Kunde / Firma (immer groß & fett)
-  if (z2) {
-    html += `<div class="line line-big line-main">${z2}</div>`;
-  }
-
-  // Zeile 3 – Zusatz (EILT SEHR groß, der Rest kleiner)
   if (z3) {
     if (z3.includes("EILT SEHR")) {
       html += `<div class="line line-big line-eilt">„EILT SEHR“</div>`;
@@ -100,23 +94,20 @@ function buildOutput(type) {
     }
   }
 
-  // Zeile 4 – Kundenname in Klammern
-  if (z4) {
-    html += `<div class="line line-mid line-name">(${z4})</div>`;
-  }
+  if (z4) html += `<div class="line line-mid line-name">(${z4})</div>`;
 
   return html;
 }
 
-// Preview im rechten Bereich
+// ===============================
+// Vorschau aktualisieren
+// ===============================
 function makeOutput(type) {
   selectedType = type;
-  
 
-  // aktive Buttonfarbe klar anzeigen
-$$("#kundenButtons button").forEach(b => b.classList.remove("active"));
-const activeBtn = document.querySelector(`#kundenButtons button[data-type="${type}"]`);
-if (activeBtn) activeBtn.classList.add("active");
+  $$("#kundenButtons button").forEach(b => b.classList.remove("active"));
+  const activeBtn = document.querySelector(`#kundenButtons button[data-type="${type}"]`);
+  if (activeBtn) activeBtn.classList.add("active");
 }
 
 // ===============================
@@ -124,15 +115,14 @@ if (activeBtn) activeBtn.classList.add("active");
 // ===============================
 function buildKeyboard(type) {
   kbGrid.innerHTML = "";
-  const chars =
-    type === "numbers"
-      ? ["1","2","3","4","5","6","7","8","9","0"]
-      : "QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM".split("");
+  const chars = type === "numbers"
+    ? ["1","2","3","4","5","6","7","8","9","0"]
+    : "QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM".split("");
 
   chars.forEach(ch => {
     const b = document.createElement("button");
     b.textContent = ch;
-    b.onclick = () => (kbInput.value += ch);
+    b.onclick = () => kbInput.value += ch;
     kbGrid.appendChild(b);
   });
 }
@@ -148,46 +138,28 @@ function openKeyboard(field, type) {
   setTimeout(() => kbInput.focus(), 50);
 }
 
-$("#btnDel").onclick   = () => (kbInput.value = kbInput.value.slice(0, -1));
-$("#btnClose").onclick = () => (kbPopup.style.display = "none");
+$("#btnDel").onclick = () => kbInput.value = kbInput.value.slice(0, -1);
+$("#btnClose").onclick = () => kbPopup.style.display = "none";
 
 $("#btnOk").onclick = () => {
   if (!currentField) return;
+
   currentField.value = kbInput.value;
   kbPopup.style.display = "none";
 
-  // nach Nummer automatisch Kunden-Tastatur öffnen
   if (currentField === numInput) {
     openKeyboard(kundeInput, "letters");
   }
 };
 
-// Echte Tastatur blockieren + Popup öffnen
+// Virtual Keyboard Triggering
 numInput.addEventListener("focus", e => {
-    e.preventDefault();
-    numInput.blur();
-    openKeyboard(numInput, "numbers");
+  e.preventDefault(); numInput.blur();
+  openKeyboard(numInput, "numbers");
 });
 kundeInput.addEventListener("focus", e => {
-    e.preventDefault();
-    kundeInput.blur();
-    openKeyboard(kundeInput, "letters");
-});
-
-// Tipp-Events (z.B. Android)
-numInput.addEventListener("click", () => {
-    numInput.blur();
-    openKeyboard(numInput, "numbers");
-});
-kundeInput.addEventListener("click", () => {
-    kundeInput.blur();
-    openKeyboard(kundeInput, "letters");
-});
-kbInput.addEventListener("keydown", e => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    $("#btnOk").click();
-  }
+  e.preventDefault(); kundeInput.blur();
+  openKeyboard(kundeInput, "letters");
 });
 
 // ===============================
@@ -204,25 +176,47 @@ function validate() {
   }
 
   const need = [
-    "COMTEZN8",
-    "CHEMISCH",
-    "DICK",
-    "BLAU",
-    "PENTZ",
-    "RCS",
-    "COATINC"
+    "COMTEZN8", "CHEMISCH", "DICK", "BLAU",
+    "PENTZ", "RCS", "COATINC"
   ];
   if (need.includes(selectedType) && !kundeInput.value.trim()) {
     alert("Bitte Kundenname eingeben!");
     return false;
   }
+
   return true;
 }
 
-true;
-}
+// ===============================
+// PDF DRUCKEN
+// ===============================
+$("#btnDrucken").onclick = async () => {
+  if (!validate()) return;
 
-/
+  out.innerHTML = buildOutput(selectedType);
+
+  const canvas = await html2canvas(out, {
+    backgroundColor: "#FFF",
+    scale: 3
+  });
+
+  const img = canvas.toDataURL("image/png");
+
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({
+    orientation: "landscape",
+    unit: "mm",
+    format: "a6"
+  });
+
+  pdf.addImage(img, "PNG", 0, 0, 148, 105);
+
+  const blob = pdf.output("blob");
+  const url = URL.createObjectURL(blob);
+
+  window.open(url, "_blank");
+};
+
 // ===============================
 // Zurück
 // ===============================
