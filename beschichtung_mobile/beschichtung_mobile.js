@@ -116,71 +116,79 @@ function validate() {
 }
 
 // ===============================
-// PDF A5 QUER + LOGO (Base64)
+// PDF ERSTELLEN + AN druck.html ÜBERGEBEN
 // ===============================
 $("#btnDrucken").onclick = () => {
-  if (!validate()) return;
+    if (!validate()) return;
 
-  const n = numInput.value.trim();
-  const k = kundeInput.value.trim();
+    const n = numInput.value.trim();
+    const k = kundeInput.value.trim();
 
-  let z1=n, z2="", z3="", z4="";
-  switch (selectedType) {
-    case "LP":       z2="L&P"; break;
-    case "LPEILT":   z2="L&P"; z3="EILT SEHR"; break;
-    case "SCHUETTE": z2="Schütte"; break;
-    case "SCHUETTEEILT": z2="Schütte"; z3="EILT SEHR"; break;
-    case "KLEY":     z2="Kleymann"; break;
-    case "KLEYEILT": z2="Kleymann"; z3="EILT SEHR"; break;
-    case "COMTEZN8": z2="Comte"; z3="„ZN8“"; z4=k; break;
-    case "CHEMISCH": z2="Comte"; z3="„Chemisch Vernickeln“"; z4=k; break;
-    case "DICK":     z2="Comte"; z3="„Dickschichtpassivierung“"; z4=k; break;
-    case "BLAU":     z2="Comte"; z3="„Blau ZN8“"; z4=k; break;
-    case "PENTZ":    z2="Pentz & Gerdes"; z3="„ZN8“"; z4=k; break;
-    case "RCS":      z2="RCS";  z3="„Schweißen“"; z4=k; break;
-    case "COATINC":  z2="Coatinc 24"; z3="„Verzinken“"; z4=k; break;
-  }
+    let z1 = n, z2="", z3="", z4="";
 
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF({ orientation:"landscape", unit:"mm", format:"a5" });
+    switch(selectedType){
+        case "LP": z2="L&P"; break;
+        case "LPEILT": z2="L&P"; z3="EILT SEHR"; break;
 
-  const W = pdf.internal.pageSize.getWidth();
-  const H = pdf.internal.pageSize.getHeight();
-  const C = W / 2;
+        case "SCHUETTE": z2="Schütte"; break;
+        case "SCHUETTEEILT": z2="Schütte"; z3="EILT SEHR"; break;
 
-  pdf.setFont("helvetica", "bold");
+        case "KLEY": z2="Kleymann"; break;
+        case "KLEYEILT": z2="Kleymann"; z3="EILT SEHR"; break;
 
-  pdf.setFontSize(60);
-  pdf.text(z1, C, 50, { align:"center" });
+        case "COMTEZN8": z2="Comte"; z3="„ZN8“"; z4=k; break;
+        case "CHEMISCH": z2="Comte"; z3="„Chemisch Vernickeln“"; z4=k; break;
+        case "DICK": z2="Comte"; z3="„Dickschichtpassivierung“"; z4=k; break;
+        case "BLAU": z2="Comte"; z3="„Blau ZN8“"; z4=k; break;
 
-  if (z2) {
-    pdf.setFontSize(60);
-    pdf.text(z2, C, 85, { align:"center" });
-  }
-
-  if (z3) {
-    if (z3.includes("EILT SEHR")) {
-      pdf.setFontSize(60);
-      pdf.text("„EILT SEHR“", C, 120, { align:"center" });
-    } else {
-      pdf.setFontSize(32);
-      pdf.text(z3, C, 120, { align:"center" });
+        case "PENTZ": z2="Pentz & Gerdes"; z3="„ZN8“"; z4=k; break;
+        case "RCS": z2="RCS"; z3="„Schweißen“"; z4=k; break;
+        case "COATINC": z2="Coatinc 24"; z3="„Verzinken“"; z4=k; break;
     }
-  }
 
-  if (z4) {
-    pdf.setFontSize(32);
-    pdf.text(`(${z4})`, C, 140, { align:"center" });
-  }
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ orientation:"landscape", unit:"mm", format:"a5" });
 
-  // Logo unten rechts (40mm breit, 14mm hoch)
-  pdf.addImage(logoBase64, "JPEG", W - 48, H - 22, 40, 14);
+    const W = pdf.internal.pageSize.getWidth();
+    const H = pdf.internal.pageSize.getHeight();
+    const C = W/2;
 
-  const blob = pdf.output("blob");
-  const url  = URL.createObjectURL(blob);
-  window.open(url, "_blank");
+    pdf.setFont("helvetica","bold");
+
+    pdf.setFontSize(60);
+    pdf.text(z1, C, 50, {align:"center"});
+
+    if(z2){ pdf.setFontSize(60); pdf.text(z2, C, 85, {align:"center"}); }
+
+    if(z3){
+        if(z3.includes("EILT SEHR")){
+            pdf.setFontSize(60);
+            pdf.text("„EILT SEHR“", C, 120, {align:"center"});
+        } else {
+            pdf.setFontSize(32);
+            pdf.text(z3, C, 120, {align:"center"});
+        }
+    }
+
+    if(z4){
+        pdf.setFontSize(32);
+        pdf.text(`(${z4})`, C, 140, {align:"center"});
+    }
+
+
+   // LOGO EINBINDEN (BASE64)
+pdf.addImage(logoBase64, "JPEG", W - 48, H - 22, 40, 14);
+
+
+    // PDF → Base64 String
+    const pdfBase64 = pdf.output("datauristring");
+
+    // Speichern
+    localStorage.setItem("PDF_PRINT", pdfBase64);
+
+    // druck.html öffnen
+    window.open("druck.html", "_blank");
 };
-
 // ===============================
 // Zurück
 // ===============================

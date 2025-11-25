@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drucken</title>
+
+<style>
+body {
+  margin: 0;
+  background: #fff;
+}
+
+#topbar {
+  background: #333;
+  color: white;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  padding: 10px 15px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+}
+
+#btnPrint { background: #1e88e5; color: white; }
+#btnClose { background: #e53935; color: white; }
+
+iframe {
+  width: 100vw;
+  height: calc(100vh - 60px);
+  border: none;
+}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <button id="btnPrint">🖨 Drucken</button>
+  <button id="btnClose">❌ Schließen</button>
+</div>
+
+<iframe id="pdfFrame"></iframe>
+
+<script>
+// PDF laden
+const base64 = localStorage.getItem("PDF_PRINT");
+document.getElementById("pdfFrame").src = base64;
+
+// Drucken
+document.getElementById("btnPrint").onclick = () => {
+    const f = document.getElementById("pdfFrame");
+    f.contentWindow.focus();
+    f.contentWindow.print();
+
+    // Optional Fenster schließen
+    setTimeout(() => window.close(), 1000);
+};
+
+document.getElementById("btnClose").onclick = () => window.close();
+</script>
+
+</body>
+</html>
