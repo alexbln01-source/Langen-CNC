@@ -219,42 +219,42 @@ function validate() {
   return true;
 }
 
-// PDF-Drucken – stabil für Android (öffnen → Benutzer druckt)
-document.getElementById("btnDrucken").onclick = async ()=>{
+// ===============================
+// DRUCKEN – PDF erzeugen aus Vorschau
+// ===============================
+$("#btnDrucken").onclick = async () => {
 
-  if (!selectedCustomer) {
-    alert("Bitte Kunde auswählen!");
-    return;
-  }
+    if (!validate()) return;
 
-  // PDF Bibliothek laden (jsPDF)
-  const { jsPDF } = window.jspdf;
+    // Vorschau erzeugen
+    const type = selectedType;
+    const html = buildOutput(type);
+    out.innerHTML = html;
 
-  // Neues PDF im A6 Querformat
-  const doc = new jsPDF({
-    orientation: "landscape",
-    unit: "mm",
-    format: "a6"
-  });
+    // Etikett rendern als Bild
+    const canvas = await html2canvas(out, {
+        backgroundColor: "#FFFFFF",
+        scale: 3
+    });
 
-  // Layout
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(36);
-  doc.text(selectedCustomer, 74, 25, { align: "center" });
+    const imgData = canvas.toDataURL("image/png");
 
-  doc.setFontSize(24);
-  doc.text("Kanten", 74, 40, { align: "center" });
+    // PDF erzeugen
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({
+        orientation: "landscape",
+        unit: "mm",
+        format: "a6"
+    });
 
-  doc.setFontSize(18);
-  doc.text("K-Termin: ____________________", 10, 60);
-  doc.text("Palettennummer: _______________", 10, 75);
+    // Bild einfügen (A6: 148 x 105 mm)
+    pdf.addImage(imgData, "PNG", 0, 0, 148, 105);
 
-  // PDF erzeugen und als BlobURL öffnen
-  const pdfBlob = doc.output("blob");
-  const pdfURL = URL.createObjectURL(pdfBlob);
+    // PDF als Blob öffnen
+    const blob = pdf.output("blob");
+    const url = URL.createObjectURL(blob);
 
-  // Neues Tab öffnen (Benutzer klickt auf Drucken)
-  window.open(pdfURL, "_blank");
+    window.open(url, "_blank");
 };
 // ===============================
 // Zurück
