@@ -3,64 +3,110 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Drucken</title>
+
+<title>Druck</title>
 
 <style>
-body {
-  margin: 0;
-  background: #fff;
+
+/* 🔥 Druckseite 100% ohne Browser-Ränder / Kopf / Fuß */
+@page {
+    margin: 0;
+    size: A5 landscape;
 }
 
-#topbar {
-  background: #333;
-  color: white;
-  padding: 10px;
-  display: flex;
-  gap: 10px;
+html, body {
+    margin: 0;
+    padding: 0;
 }
 
-button {
-  padding: 10px 15px;
-  font-size: 18px;
-  border: none;
-  border-radius: 5px;
+/* Druckbereich */
+#page {
+    width: 210mm;
+    height: 148mm;
+    padding: 10mm;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    position: relative;
 }
 
-#btnPrint { background: #1e88e5; color: white; }
-#btnClose { background: #e53935; color: white; }
-
-iframe {
-  width: 100vw;
-  height: calc(100vh - 60px);
-  border: none;
+.big {
+    font-size: 48pt;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10mm;
 }
+
+.med {
+    font-size: 36pt;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 8mm;
+}
+
+.small {
+    font-size: 26pt;
+    text-align: center;
+    margin-top: 6mm;
+}
+
+#logo {
+    position: absolute;
+    right: 10mm;
+    bottom: 10mm;
+    width: 40mm;
+}
+
 </style>
 </head>
+
 <body>
 
-<div id="topbar">
-  <button id="btnPrint">🖨 Drucken</button>
-  <button id="btnClose">❌ Schließen</button>
+<div id="page">
+    <div id="line1" class="big"></div>
+    <div id="line2" class="big"></div>
+    <div id="line3" class="med"></div>
+    <div id="line4" class="small"></div>
+
+    <img id="logo" src="langen.png">
 </div>
 
-<iframe id="pdfFrame"></iframe>
-
 <script>
-// PDF laden
-const base64 = localStorage.getItem("PDF_PRINT");
-document.getElementById("pdfFrame").src = base64;
+window.onload = () => {
+    const data = JSON.parse(localStorage.getItem("DRUCKDATEN") || "{}");
 
-// Drucken
-document.getElementById("btnPrint").onclick = () => {
-    const f = document.getElementById("pdfFrame");
-    f.contentWindow.focus();
-    f.contentWindow.print();
+    const map = {
+        "LP": ["L&P"],
+        "LPEILT": ["L&P", "„EILT SEHR“"],
+        "SCHUETTE": ["Schütte"],
+        "SCHUETTEEILT": ["Schütte", "„EILT SEHR“"],
+        "KLEY": ["Kleymann"],
+        "KLEYEILT": ["Kleymann", "„EILT SEHR“"],
+        "COMTEZN8": ["Comte", "„ZN8“"],
+        "CHEMISCH": ["Comte", "„Chemisch Vernickeln“"],
+        "DICK": ["Comte", "„Dickschichtpassivierung“"],
+        "BLAU": ["Comte", "„Blau ZN8“"],
+        "PENTZ": ["Pentz & Gerdes", "„ZN8“"],
+        "RCS": ["RCS", "„Schweißen“"],
+        "COATINC": ["Coatinc 24", "„Verzinken“"]
+    };
 
-    // Optional Fenster schließen
-    setTimeout(() => window.close(), 1000);
+    const [z2, z3] = map[data.selectedType] || ["", ""];
+
+    document.getElementById("line1").textContent = data.beistell;
+    document.getElementById("line2").textContent = z2;
+    document.getElementById("line3").textContent = z3;
+
+    if (data.kundename) {
+        document.getElementById("line4").textContent = `(${data.kundename})`;
+    } else {
+        document.getElementById("line4").style.display = "none";
+    }
+
+    setTimeout(() => {
+        window.print();
+        setTimeout(() => window.close(), 500);
+    }, 300);
 };
-
-document.getElementById("btnClose").onclick = () => window.close();
 </script>
 
 </body>
