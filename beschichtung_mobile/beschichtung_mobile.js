@@ -222,97 +222,76 @@ function validate() {
 // ===============================
 // Drucken – 1× A5 quer, Logo unten rechts
 // ===============================
+// Drucken – HTML im Hintergrund (Logo funktioniert, auch in Chrome)
+// ===============================
 $("#btnDrucken").onclick = () => {
-  if (!validate()) return;
+    if (!validate()) return;
 
-  const outputHTML = buildOutput(selectedType);
+    const outputHTML = buildOutput(selectedType);
 
-  const pw = window.open("", "_blank", "width=1200,height=850");
+    const pdfHTML = `
+        <html>
+        <head>
+          <meta charset="UTF-8" />
+          <style>
+            @page { size: A5 landscape; margin: 0; }
+            body {
+              font-family: Arial, sans-serif;
+              margin: 0;
+              width: 210mm;
+              height: 148mm;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              position: relative;
+              padding-bottom: 18mm;
+            }
+            .line { width: 100%; text-align: center; font-weight: 900; }
+            .line-big { font-size: 60pt; }
+            .line-mid { font-size: 32pt; }
+            #logo {
+              position: absolute;
+              right: 8mm;
+              bottom: 6mm;
+              width: 36mm;
+            }
+          </style>
+        </head>
+        <body>
+          ${outputHTML}
+          <!-- wenn dein Logo eine Ebene höher liegt wie index.html -->
+          <img id="logo" src="../langen.png">
+          <!-- falls das Logo im gleichen Ordner wie beschichtung_mobile.html liegt:
+          <img id="logo" src="langen.png">
+          -->
+        </body>
+        </html>
+    `;
 
-  pw.document.write(`
-    <html>
-    <head>
-      <style>
-        @page {
-          size: A5 landscape;
-          margin: 0;
-        }
-        * {
-          -webkit-print-color-adjust: exact;
-          print-color-adjust: exact;
-        }
-        html, body {
-          width: 210mm;
-          height: 148mm;
-          margin: 0;
-          padding: 0;
-          overflow: hidden;
-          font-family: Arial, sans-serif;
-        }
-        #wrapper {
-          position: relative;
-          box-sizing: border-box;
-          width: 210mm;
-          height: 148mm;
+    // unsichtbares iframe ohne Blob
+    const frame = document.createElement("iframe");
+    frame.style.position = "fixed";
+    frame.style.right = "0";
+    frame.style.bottom = "0";
+    frame.style.width = "0";
+    frame.style.height = "0";
+    frame.style.border = "0";
+    document.body.appendChild(frame);
 
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
+    // wenn Inhalt geladen ist → drucken
+    frame.onload = () => {
+        frame.contentWindow.focus();
+        frame.contentWindow.print();
+        setTimeout(() => {
+            document.body.removeChild(frame);
+        }, 1500);
+    };
 
-          padding-bottom: 18mm; /* Platz für Logo abziehen */
-        }
-        .line {
-          width: 100%;
-          text-align: center;
-          font-weight: 900;
-          margin: 0;
-          padding: 0;
-        }
-        .line-big {
-          font-size: 60pt;
-          line-height: 1.0;
-        }
-        .line-mid {
-          font-size: 32pt;
-          line-height: 1.0;
-        }
-        .line-num {
-          margin-bottom: 4mm;
-        }
-        .line-main {
-          margin-bottom: 2mm;
-        }
-        .line-sub {
-          margin-top: 1mm;
-        }
-        .line-name {
-          margin-top: 1mm;
-        }
-        #logo {
-          position: absolute;
-          right: 8mm;
-          bottom: 6mm;
-          width: 36mm;
-          height: auto;
-        }
-      </style>
-    </head>
-    <body>
-      <div id="wrapper">
-        ${outputHTML}
-        <img id="logo" src="../langen.png">
-      </div>
-    </body>
-    </html>
-  `);
-
-  pw.document.close();
-
-  setTimeout(() => {
-    pw.print();
-    pw.close();
-  }, 350);
+    // HTML direkt in das iframe schreiben (Basis-URL = Hauptseite)
+    const doc = frame.contentWindow.document;
+    doc.open();
+    doc.write(pdfHTML);
+    doc.close();
 };
 
 // ===============================
