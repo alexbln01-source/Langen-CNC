@@ -6,57 +6,41 @@
 <title>Beschichtung Mobile</title>
 
 <link rel="stylesheet" href="beschichtung_mobile.css" />
-
-<style>
-    body, html {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        touch-action: manipulation;
-    }
-</style>
-
 </head>
 
 <body>
 
 <div id="wrapper">
-    <div id="card">
+  <div id="card">
+    <h1>BESCHICHTUNG</h1>
 
-        <h1>BESCHICHTUNG</h1>
+    <input id="numInput" class="inp fake-input" placeholder="Beistellnummer" />
+    <input id="kundeInput" class="inp fake-input" placeholder="Kundenname" />
 
-        <input id="numInput" class="inp fake-input" placeholder="Beistellnummer" />
-        <input id="kundeInput" class="inp fake-input" placeholder="Kundenname" />
+    <div id="kundenButtons"></div>
 
-        <div id="kundenButtons"></div>
-
-        <div id="footerBtns">
-            <button id="btnBack" class="btn-dark">⬅️ Zurück</button>
-            <button id="btnDrucken" class="btn-blue">🖨 Drucken</button>
-        </div>
-
+    <div id="footerBtns">
+      <button id="btnBack" class="btn-dark">⬅️ Zurück</button>
+      <button id="btnDrucken" class="btn-blue">🖨 Drucken</button>
     </div>
+  </div>
 </div>
 
-<!-- Popup Tastatur -->
+<!-- Popup-Tastatur -->
 <div id="keyboardPopup">
-    <div id="keyboardBox">
-        <h3 id="keyboardTitle">Eingabe</h3>
-        <input id="keyboardInput" />
-        <div id="keyboardGrid"></div>
-
-        <div id="kbActions">
-            <button id="btnDel" class="kb-red">⌫</button>
-            <button id="btnClose" class="kb-grey">X</button>
-            <button id="btnOk" class="kb-green">OK</button>
-        </div>
+  <div id="keyboardBox">
+    <h3 id="keyboardTitle">Eingabe</h3>
+    <input id="keyboardInput" />
+    <div id="keyboardGrid"></div>
+    <div id="kbActions">
+      <button id="btnDel">⌫</button>
+      <button id="btnClose">X</button>
+      <button id="btnOk">OK</button>
     </div>
+  </div>
 </div>
 
-<!-- Reihenfolge ist WICHTIG -->
-<script src="html2canvas.min.js"></script>
 <script src="jspdf.umd.min.js"></script>
 <script src="beschichtung_mobile.js"></script>
-
 </body>
 </html>
