@@ -8,6 +8,7 @@
 
 <style>
 
+/* Grundlayout */
 html, body {
     margin: 0;
     padding: 0;
@@ -17,14 +18,13 @@ html, body {
     font-family: Arial, sans-serif;
 }
 
-/* Kopfzeile */
+/* Buttonleiste oben */
 #topBar {
     height: 85px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
-    background: #dcdcdc;
 }
 
 button {
@@ -35,22 +35,20 @@ button {
     color: white;
     font-weight: bold;
 }
-
 #cancelBtn { background: #cc0000; }
 #printBtn  { background: #007bff; }
 
-/* Vorschau-Bereich */
+/* Vorschau-Zentrierung */
 #previewWrapper {
     width: 100%;
     height: calc(100% - 85px);
-
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
 }
 
-/* Das druckbare A5-Blatt */
+/* --- DIE A5-SEITE, im SCREEN gedreht --- */
 #printArea {
     width: 210mm;
     height: 148mm;
@@ -64,14 +62,14 @@ button {
 
     box-shadow: 0 0 25px rgba(0,0,0,0.25);
 
-    /* WICHTIG: zentrales Skalieren */
-    transform: scale(0.50);
-    transform-origin: top center;
+    /* 👇 Wichtig: Querformat-VORSCHAU fürs Handy */
+    transform: rotate(90deg) scale(0.50);
+    transform-origin: center center;
 }
 
 /* Typografie */
-.big { font-size: 44pt; font-weight: bold; margin: 20px 0; text-align: center; }
-.med { font-size: 32pt; font-weight: bold; margin: 20px 0; text-align: center; }
+.big   { font-size: 44pt; font-weight: bold; margin: 20px 0; text-align: center; }
+.med   { font-size: 32pt; font-weight: bold; margin: 20px 0; text-align: center; }
 .small { font-size: 24pt; margin-top: 14px; text-align: center; }
 
 /* Logo */
@@ -82,22 +80,29 @@ button {
     width: 38mm;
 }
 
-/* --- DRUCKANSICHT --- */
+/* --- DRUCKMODUS --- */
 @media print {
 
-    @page { size: A5 landscape; margin: 0; }
+    @page {
+        size: A5 landscape;
+        margin: 0;
+    }
 
     #topBar { display: none !important; }
     #previewWrapper { display: block; }
 
     #printArea {
+        /* Drehung entfernen für echten Druck */
         transform: none !important;
         width: 210mm !important;
         height: 148mm !important;
-        padding: 22mm 10mm 0 10mm !important;
+        padding-top: 22mm !important;
+        padding-left: 10mm !important;
+        padding-right: 10mm !important;
         box-shadow: none !important;
     }
 }
+
 </style>
 </head>
 
