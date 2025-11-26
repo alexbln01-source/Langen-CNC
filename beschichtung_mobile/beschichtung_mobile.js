@@ -158,7 +158,22 @@ $("#btnDrucken").onclick = () => {
     localStorage.setItem("DRUCKDATEN", JSON.stringify(data));
 
     // --- Weiter zur Druckseite (manuelles Drucken auf Android) ---
-    window.location.href = "druck.html";
+    const w = window.open("druck.html", "_blank");
+
+// Sicherstellen, dass die Seite WIRKLICH geladen wird
+const printCheck = setInterval(() => {
+    if (w.document.readyState === "complete") {
+        clearInterval(printCheck);
+
+        w.focus();
+        w.print();
+
+        // nach dem Drucken schließen
+        w.onafterprint = () => {
+            w.close();
+        };
+    }
+}, 150);
 };
 
 // Zurück
