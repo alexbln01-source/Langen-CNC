@@ -141,7 +141,6 @@ $("#btnDrucken").onclick = () => {
         return;
     }
 
-    // Einige Typen benötigen zusätzlich einen Kundennamen
     const needName = ["COMTEZN8", "CHEMISCH", "DICK", "BLAU", "PENTZ", "RCS", "COATINC"];
     if (needName.includes(selectedType) && !kundeInput.value.trim()) {
         alert("Bitte Kundenname eingeben!");
@@ -157,25 +156,9 @@ $("#btnDrucken").onclick = () => {
 
     localStorage.setItem("DRUCKDATEN", JSON.stringify(data));
 
-    // --- Weiter zur Druckseite (manuelles Drucken auf Android) ---
-    const w = window.open("druck.html", "_blank");
-
-// Sicherstellen, dass die Seite WIRKLICH geladen wird
-const printCheck = setInterval(() => {
-    if (w.document.readyState === "complete") {
-        clearInterval(printCheck);
-
-        w.focus();
-        w.print();
-
-        // nach dem Drucken schließen
-        w.onafterprint = () => {
-            w.close();
-        };
-    }
-}, 150);
+    // --- Weiter zur Druckseite (KEIN Autodruck!) ---
+    window.location.href = "druck.html";
 };
-
 // Zurück
 $("#btnBack").onclick = () => {
   history.back();
