@@ -16,13 +16,13 @@ html, body {
     font-family: Arial, sans-serif;
 }
 
-/* Kopfbereich */
+/* BUTTON LEISTE */
 #topBar {
     height: 85px;
-    padding: 0 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 20px;
 }
 
 button {
@@ -36,7 +36,7 @@ button {
 #cancelBtn { background: #cc0000; }
 #printBtn  { background: #007bff; }
 
-/* Vorschau um die Seite herum */
+/* VORSCHAU */
 #previewWrapper {
     width: 100%;
     height: calc(100% - 85px);
@@ -45,42 +45,44 @@ button {
     align-items: center;
 }
 
-/* A5 Querformat-Vorschau (gedreht) */
+/* äußere Rotation → Vorschau quer */
 #previewRotate {
     width: 210mm;
     height: 148mm;
     transform: rotate(90deg) scale(0.45);
     transform-origin: center center;
+
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Inhalt wird wieder zurückgedreht */
+/* innen: richtig gedreht */
 #printArea {
     width: 210mm;
     height: 148mm;
     background: white;
-    box-shadow: 0 0 25px rgba(0,0,0,0.25);
     transform: rotate(-90deg);
     transform-origin: center center;
-    position: relative;
 
-    padding: 18mm 12mm 12mm 12mm;
+    position: relative;
+    box-shadow: 0 0 25px rgba(0,0,0,0.25);
+
     box-sizing: border-box;
+    padding: 20mm 15mm 15mm 15mm;
 }
 
-/* Textgrößen */
-.big   { font-size: 42pt; font-weight: bold; text-align: center; margin: 8mm 0 4mm 0; }
-.med   { font-size: 30pt; font-weight: bold; text-align: center; margin: 6mm 0 4mm 0; }
-.small { font-size: 24pt; text-align: center; margin-top: 4mm; }
+/* Text */
+.big   { font-size: 42pt; font-weight: bold; text-align: center; margin: 10px 0; }
+.med   { font-size: 30pt; font-weight: bold; text-align: center; margin: 10px 0; }
+.small { font-size: 24pt; text-align: center; margin-top: 12px; }
 
 /* Logo */
 #logo {
     position: absolute;
-    right: 12mm;
-    bottom: 12mm;
-    width: 38mm;
+    right: 15mm;
+    bottom: 15mm;
+    width: 40mm;
 }
 
 </style>
@@ -96,19 +98,16 @@ button {
 <div id="previewWrapper">
     <div id="previewRotate">
         <div id="printArea">
-
             <div id="line1" class="big"></div>
             <div id="line2" class="big"></div>
             <div id="line3" class="med"></div>
             <div id="line4" class="small"></div>
-
             <img id="logo" src="langen.png">
-
         </div>
     </div>
 </div>
 
-<!-- Scripts müssen vorhanden sein -->
+<!-- Benötigt -->
 <script src="html2canvas.min.js"></script>
 <script src="jspdf.umd.min.js"></script>
 
@@ -145,8 +144,13 @@ window.onload = () => {
     else
         line4.style.display = "none";
 
-    cancelBtn.onclick = () => window.history.back();
 
+    /* ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+       FUNKTIONIERENDER DRUCK-BUTTON IN PWA (iOS/Android)
+       → PDF erzeugen
+       → PDF unsichtbar in iframe laden
+       → iframe.print() ausführen
+       ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ */
     printBtn.onclick = async () => {
 
         const { jsPDF } = window.jspdf;
@@ -157,7 +161,7 @@ window.onload = () => {
             format: "a5"
         });
 
-        // DOM → Canvas
+        // Screenshot erzeugen
         const canvas = await html2canvas(document.querySelector("#printArea"), {
             scale: 3,
             useCORS: true
@@ -165,13 +169,36 @@ window.onload = () => {
 
         const imgData = canvas.toDataURL("image/jpeg", 1.0);
 
+        // ins PDF einfügen
         pdf.addImage(imgData, "JPEG", 0, 0, 210, 148);
 
-        // PDF öffnen → Drucken → KEIN Browser nötig
-        pdf.output("dataurlnewwindow");
-    };
-};
+        const pdfData = pdf.output("datauristring");
 
+        // verstecktes iframe erstellen
+        let iframe = document.getElementById("printFrame");
+        if (!iframe) {
+            iframe = document.createElement("iframe");
+            iframe.id = "printFrame";
+            iframe.style.position = "fixed";
+            iframe.style.right = "0";
+            iframe.style.bottom = "0";
+            iframe.style.width = "0";
+            iframe.style.height = "0";
+            iframe.style.border = "none";
+            document.body.appendChild(iframe);
+        }
+
+        iframe.src = pdfData;
+
+        // Druckdialog öffnen
+        iframe.onload = () => {
+            iframe.contentWindow.focus();
+            iframe.contentWindow.print();
+        };
+    };
+
+    cancelBtn.onclick = () => window.history.back();
+};
 </script>
 
 </body>
