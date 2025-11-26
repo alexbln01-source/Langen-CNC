@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Druck</title>
+
+<style>
+
+/* Keine Browser-Ränder */
+@page {
+    margin: 0;
+    size: A5 landscape;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #fff;
+}
+
+/* A5-Seite exakt */
+#page {
+    width: 210mm;
+    height: 148mm;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    padding-top: 12mm;
+    box-sizing: border-box;
+
+    font-family: Arial, sans-serif;
+    position: relative;
+}
+
+/* Optimierte Schriftgrößen für A5 */
+.big {
+    font-size: 46pt;
+    font-weight: bold;
+    margin: 6mm 0 2mm 0;
+    text-align: center;
+}
+
+.med {
+    font-size: 34pt;
+    font-weight: bold;
+    margin: 4mm 0 2mm 0;
+    text-align: center;
+}
+
+.small {
+    font-size: 26pt;
+    margin: 3mm 0 0 0;
+    text-align: center;
+}
+
+/* Logo unten rechts */
+#logo {
+    position: absolute;
+    right: 8mm;
+    bottom: 8mm;
+    width: 38mm;
+    height: auto;
+}
+
+/* Druckbutton */
+#printBtn {
+    position: absolute;
+    top: 8mm;
+    right: 8mm;
+    padding: 12px 20px;
+    font-size: 22pt;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+}
+
+/* Button beim Drucken ausblenden */
+@media print {
+    #printBtn {
+        display: none !important;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="page">
+    <button id="printBtn">🖨 Drucken</button>
+
+    <div id="line1" class="big"></div>
+    <div id="line2" class="big"></div>
+    <div id="line3" class="med"></div>
+    <div id="line4" class="small"></div>
+
+    <img id="logo" src="langen.png">
+</div>
+
+<script>
+window.onload = () => {
+    // Daten holen
+    const data = JSON.parse(localStorage.getItem("DRUCKDATEN") || "{}");
+
+    const map = {
+        "LP": ["L&P"],
+        "LPEILT": ["L&P", "„EILT SEHR“"],
+        "SCHUETTE": ["Schütte"],
+        "SCHUETTEEILT": ["Schütte", "„EILT SEHR“"],
+        "KLEY": ["Kleymann"],
+        "KLEYEILT": ["Kleymann", "„EILT SEHR“"],
+        "COMTEZN8": ["Comte", "„ZN8“"],
+        "CHEMISCH": ["Comte", "„Chemisch Vernickeln“"],
+        "DICK": ["Comte", "„Dickschichtpassivierung“"],
+        "BLAU": ["Comte", "„Blau ZN8“"],
+        "PENTZ": ["Pentz & Gerdes", "„ZN8“"],
+        "RCS": ["RCS", "„Schweißen“"],
+        "COATINC": ["Coatinc 24", "„Verzinken“"]
+    };
+
+    const [z2, z3] = map[data.selectedType] || ["", ""];
+
+    document.getElementById("line1").textContent = data.beistell;
+    document.getElementById("line2").textContent = z2;
+    document.getElementById("line3").textContent = z3;
+
+    if (data.kundename) {
+        document.getElementById("line4").textContent = `(${data.kundename})`;
+    } else {
+        document.getElementById("line4").style.display = "none";
+    }
+
+    // Druck-Button aktivieren
+    document.getElementById("printBtn").onclick = () => {
+        window.print();
+    };
+};
+</script>
+
+</body>
+</html>
