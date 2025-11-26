@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 
-<!-- WICHTIG: verhindert Zoom auf Android & iPhone -->
+<!-- Verhindert Zoom-Probleme auf Android & iPhone -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <title>Druck</title>
@@ -20,7 +20,7 @@ html, body {
     overflow: hidden;
 }
 
-/* Druckseite auf Bildschirm */
+/* Druckseite auf dem Bildschirm */
 #page {
     width: 100vw;
     height: 100vh;
@@ -94,7 +94,7 @@ html, body {
     }
 }
 
-/* Richtiges A5 Layout NUR BEIM DRUCK */
+/* Richtiges A5 Layout NUR beim Drucken */
 @media print {
     @page {
         size: A5 landscape;
@@ -157,20 +157,17 @@ window.onload = () => {
         document.getElementById("line4").style.display = "none";
     }
 
-    // Drucken
+    // Drucken NUR per Benutzer-Klick
     document.getElementById("printBtn").onclick = () => {
         window.print();
     };
 
-    // Abbrechen
+    // Abbrechen (zurück)
     document.getElementById("cancelBtn").onclick = () => {
         window.history.back();
     };
 
-    // Automatisch zurück nach dem Drucken
-    window.onafterprint = () => {
-        window.history.back();
-    };
+    // ❗ KEIN onafterprint → sonst blockieren iOS/Android das Drucken
 };
 </script>
 
