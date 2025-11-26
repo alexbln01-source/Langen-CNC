@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width">
 <title>Druck</title>
 
 <style>
@@ -16,13 +16,13 @@ html, body {
     font-family: Arial, sans-serif;
 }
 
-/* BUTTON LEISTE */
+/* Top Buttons */
 #topBar {
     height: 85px;
+    padding: 0 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
 }
 
 button {
@@ -36,7 +36,7 @@ button {
 #cancelBtn { background: #cc0000; }
 #printBtn  { background: #007bff; }
 
-/* VORSCHAU */
+/* Vorschau */
 #previewWrapper {
     width: 100%;
     height: calc(100% - 85px);
@@ -45,39 +45,32 @@ button {
     align-items: center;
 }
 
-/* äußere Rotation → Vorschau quer */
 #previewRotate {
     width: 210mm;
     height: 148mm;
     transform: rotate(90deg) scale(0.45);
     transform-origin: center center;
-
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* innen: richtig gedreht */
 #printArea {
     width: 210mm;
     height: 148mm;
     background: white;
     transform: rotate(-90deg);
     transform-origin: center center;
-
-    position: relative;
-    box-shadow: 0 0 25px rgba(0,0,0,0.25);
-
     box-sizing: border-box;
     padding: 20mm 15mm 15mm 15mm;
+    position: relative;
+    box-shadow: 0 0 25px rgba(0,0,0,0.25);
 }
 
-/* Text */
 .big   { font-size: 42pt; font-weight: bold; text-align: center; margin: 10px 0; }
 .med   { font-size: 30pt; font-weight: bold; text-align: center; margin: 10px 0; }
 .small { font-size: 24pt; text-align: center; margin-top: 12px; }
 
-/* Logo */
 #logo {
     position: absolute;
     right: 15mm;
@@ -107,7 +100,6 @@ button {
     </div>
 </div>
 
-<!-- Benötigt -->
 <script src="html2canvas.min.js"></script>
 <script src="jspdf.umd.min.js"></script>
 
@@ -134,23 +126,15 @@ window.onload = () => {
     };
 
     const [z2, z3] = map[data.selectedType] || ["", ""];
-
     line1.textContent = data.beistell || "";
     line2.textContent = z2;
     line3.textContent = z3;
+    if (data.kundename) line4.textContent = `(${data.kundename})`;
 
-    if (data.kundename)
-        line4.textContent = `(${data.kundename})`;
-    else
-        line4.style.display = "none";
+    cancelBtn.onclick = () => window.history.back();
 
 
-    /* ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-       FUNKTIONIERENDER DRUCK-BUTTON IN PWA (iOS/Android)
-       → PDF erzeugen
-       → PDF unsichtbar in iframe laden
-       → iframe.print() ausführen
-       ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ */
+    // ----------------- FUNKTIONIERENDER PDF-DRUCK (iOS/Android PWA!) -----------------
     printBtn.onclick = async () => {
 
         const { jsPDF } = window.jspdf;
@@ -161,43 +145,41 @@ window.onload = () => {
             format: "a5"
         });
 
-        // Screenshot erzeugen
         const canvas = await html2canvas(document.querySelector("#printArea"), {
-            scale: 3,
+            scale: 2,
             useCORS: true
         });
 
-        const imgData = canvas.toDataURL("image/jpeg", 1.0);
+        const img = canvas.toDataURL("image/jpeg", 1.0);
 
-        // ins PDF einfügen
-        pdf.addImage(imgData, "JPEG", 0, 0, 210, 148);
+        pdf.addImage(img, "JPEG", 0, 0, 210, 148);
 
-        const pdfData = pdf.output("datauristring");
+        // iOS-kompatibler PDF-String
+        const pdfBase64 = pdf.output("datauristring").replace("data:application/pdf;filename=generated.pdf;base64,", "");
 
-        // verstecktes iframe erstellen
-        let iframe = document.getElementById("printFrame");
-        if (!iframe) {
-            iframe = document.createElement("iframe");
-            iframe.id = "printFrame";
-            iframe.style.position = "fixed";
-            iframe.style.right = "0";
-            iframe.style.bottom = "0";
-            iframe.style.width = "0";
-            iframe.style.height = "0";
-            iframe.style.border = "none";
-            document.body.appendChild(iframe);
+        const finalData = "data:application/pdf;base64," + pdfBase64;
+
+        // iframe erzeugen
+        let frame = document.getElementById("printFrame");
+        if (!frame) {
+            frame = document.createElement("iframe");
+            frame.id = "printFrame";
+            frame.style.position = "fixed";
+            frame.style.right = "0";
+            frame.style.bottom = "0";
+            frame.style.width = "0";
+            frame.style.height = "0";
+            frame.style.border = "none";
+            document.body.appendChild(frame);
         }
 
-        iframe.src = pdfData;
+        frame.src = finalData;
 
-        // Druckdialog öffnen
-        iframe.onload = () => {
-            iframe.contentWindow.focus();
-            iframe.contentWindow.print();
+        frame.onload = () => {
+            frame.contentWindow.focus();
+            frame.contentWindow.print();
         };
     };
-
-    cancelBtn.onclick = () => window.history.back();
 };
 </script>
 
