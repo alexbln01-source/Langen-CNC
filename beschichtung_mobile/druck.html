@@ -40,33 +40,35 @@ button {
 #previewWrapper {
     width: 100%;
     height: calc(100% - 85px);
-
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
 }
 
-/* ÄUSSERE Rotation für Querformat-Vorschau */
+/* Äußere Rotation → Vorschau wirkt wie Querformat */
 #pageRotate {
-    width: 210mm;
-    height: 148mm;
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 210 / 148;   /* A5 Seitenverhältnis */
+    background: transparent;
 
-    transform: rotate(90deg) scale(0.52);
+    transform: rotate(90deg) scale(0.80);
     transform-origin: center center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* INNERE Seite → zurückdrehen = normale Ausrichtung */
+/* Innere Seite, zurückgedreht */
 #printArea {
-    width: 210mm;
-    height: 148mm;
+    width: 100%;
+    height: 100%;
     background: white;
-    position: relative;
     box-sizing: border-box;
 
-    padding-top: 22mm;
-    padding-left: 10mm;
-    padding-right: 10mm;
+    padding: 40px 40px 40px 40px;
 
     transform: rotate(-90deg);
     transform-origin: center center;
@@ -82,9 +84,9 @@ button {
 /* Logo */
 #logo {
     position: absolute;
-    right: 10mm;
-    bottom: 10mm;
-    width: 38mm;
+    right: 40px;
+    bottom: 40px;
+    width: 140px;
 }
 
 /* --- DRUCK --- */
@@ -96,41 +98,25 @@ button {
     }
 
     #topBar { display: none !important; }
+    #previewWrapper { display: block; }
 
-    /* max. verfügbare Fläche ausnutzen */
-    #previewWrapper {
-        display: block;
-        position: static;
-        width: 100vw;
-        height: 100vh;
-        overflow: hidden;
-        margin: 0;
-        padding: 0;
-    }
-
-    /* beim Drucken: volle Breite/Höhe des A5-Querformats */
     #pageRotate {
         transform: none !important;
         width: 100vw !important;
         height: 100vh !important;
-        overflow: hidden !important;
-        box-shadow: none !important;
+        max-width: none !important;
     }
 
     #printArea {
         transform: none !important;
+        width: 100vw !important;
+        height: 100vh !important;
         box-shadow: none !important;
 
-        /* füllt die Seite exakt */
-        width: 100%;
-        height: 100%;
-
-        padding-top: 18mm;
-        padding-left: 12mm;
-        padding-right: 12mm;
-        padding-bottom: 10mm;
+        padding: 30px 30px 30px 30px;
     }
 }
+
 </style>
 </head>
 
