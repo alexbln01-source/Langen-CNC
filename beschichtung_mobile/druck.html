@@ -7,12 +7,7 @@
 <title>Druck</title>
 
 <style>
-
-/* Keine Browser-Ränder */
-@page {
-    margin: 0;
-    size: A5 landscape;
-}
+@page { margin: 0; size: A5 landscape; }
 
 html, body {
     margin: 0;
@@ -21,12 +16,11 @@ html, body {
     background: #fff;
 }
 
-/* A5-Seite exakt */
+/* A5-Seite */
 #page {
     width: 210mm;
     height: 148mm;
 
-    /* Kein Scrollen, sauberer Druckbereich */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -39,28 +33,28 @@ html, body {
     position: relative;
 }
 
-/* Optimierte Schriftgrößen für A5 */
+/* Schriftgrößen */
 .big {
     font-size: 46pt;
     font-weight: bold;
-    margin: 6mm 0 2mm 0;
+    margin: 6mm 0 2mm;
     text-align: center;
 }
 
 .med {
     font-size: 34pt;
     font-weight: bold;
-    margin: 4mm 0 2mm 0;
+    margin: 4mm 0 2mm;
     text-align: center;
 }
 
 .small {
     font-size: 26pt;
-    margin: 3mm 0 0 0;
+    margin: 3mm 0 0;
     text-align: center;
 }
 
-/* Logo unten rechts */
+/* Logo */
 #logo {
     position: absolute;
     right: 8mm;
@@ -69,12 +63,53 @@ html, body {
     height: auto;
 }
 
+/* Druck-Button */
+#printBtn {
+    position: absolute;
+    top: 8mm;
+    right: 8mm;
+    padding: 12px 20px;
+    font-size: 20pt;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+}
+
+/* Abbrechen-Button */
+#cancelBtn {
+    position: absolute;
+    top: 8mm;
+    left: 8mm;
+    padding: 12px 20px;
+    font-size: 20pt;
+    background: #cc0000;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+}
+
+/* Buttons beim Drucken ausblenden */
+@media print {
+    #printBtn,
+    #cancelBtn {
+        display: none !important;
+    }
+}
 </style>
 </head>
 
 <body>
 
 <div id="page">
+
+    <button id="cancelBtn">✖ Abbrechen</button>
+    <button id="printBtn">🖨 Drucken</button>
+
     <div id="line1" class="big"></div>
     <div id="line2" class="big"></div>
     <div id="line3" class="med"></div>
@@ -117,14 +152,20 @@ window.onload = () => {
         document.getElementById("line4").style.display = "none";
     }
 
-    // WICHTIG: Zeitverzögerung für Android Druckdialog
-    setTimeout(() => {
+    // Druck-Button
+    document.getElementById("printBtn").onclick = () => {
         window.print();
+    };
 
-        // Danach sofort schließen
-        setTimeout(() => window.close(), 400);
+    // Abbrechen → zurück
+    document.getElementById("cancelBtn").onclick = () => {
+        window.history.back();
+    };
 
-    }, 300);
+    // Nach dem Drucken automatisch zurück
+    window.onafterprint = () => {
+        window.history.back();
+    };
 };
 </script>
 

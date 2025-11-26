@@ -54,35 +54,48 @@ function selectType(type, btn) {
 // Tastatur
 // ===============================
 function buildKeyboard(type) {
-  kbGrid.innerHTML = "";
-  const chars = type === "numbers"
-    ? ["1","2","3","4","5","6","7","8","9","0"]
-    : "QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM".split("");
+  keyboardGrid.innerHTML = "";
+
+  let chars;
+  if (type === "numbers") {
+    chars = ["1","2","3","4","5","6","7","8","9","0"];
+  } else {
+    chars = "QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM".split("");
+  }
 
   chars.forEach(ch => {
-    const b = document.createElement("button");
-    b.textContent = ch;
-    b.onclick = () => kbInput.value += ch;
-    kbGrid.appendChild(b);
+    const btn = document.createElement("button");
+    btn.textContent = ch;
+    btn.onclick = () => keyboardInput.value += ch;
+    keyboardGrid.appendChild(btn);
   });
 }
 
 function openKeyboard(field, type) {
   currentField = field;
-  kbTitle.textContent = type === "numbers" ? "Beistellnummer" : "Kundenname";
-  kbInput.value = field.value || "";
+  keyboardTitle.textContent = field.placeholder;
+  keyboardInput.value = field.value || "";
+
   buildKeyboard(type);
-  kbPopup.style.display = "flex";
-  setTimeout(() => kbInput.focus(), 50);
+  keyboardPopup.style.display = "flex";
+
+  setTimeout(() => keyboardInput.focus(), 80);
 }
 
-$("#btnDel").onclick   = () => kbInput.value = kbInput.value.slice(0, -1);
-$("#btnClose").onclick = () => kbPopup.style.display = "none";
-$("#btnOk").onclick    = () => {
-  if (!currentField) return;
-  currentField.value = kbInput.value;
-  kbPopup.style.display = "none";
-  if (currentField === numInput) openKeyboard(kundeInput, "letters");
+// Aktionen
+btnDel.onclick = () => {
+  keyboardInput.value = keyboardInput.value.slice(0, -1);
+};
+btnOk.onclick = () => {
+  if (currentField) {
+    currentField.value = keyboardInput.value;
+  }
+  btnClose.onclick = () => {
+  keyboardPopup.style.display = "none";
+};
+
+
+  keyboardPopup.style.display = "none";
 };
 
 numInput.addEventListener("click", () => openKeyboard(numInput, "numbers"));
@@ -117,80 +130,35 @@ const logoBase64 = "data:image/png;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/4QAiRXhpZg
 // PDF erstellen & öffnen
 // ===============================
 $("#btnDrucken").onclick = () => {
-  if (!validate()) return;
 
-  const n = numInput.value.trim();
-  const k = kundeInput.value.trim();
-
-  let z1 = n, z2 = "", z3 = "", z4 = "";
-
-  switch (selectedType) {
-    case "LP":           z2 = "L&P"; break;
-    case "LPEILT":       z2 = "L&P"; z3 = "EILT SEHR"; break;
-    case "SCHUETTE":     z2 = "Schütte"; break;
-    case "SCHUETTEEILT": z2 = "Schütte"; z3 = "EILT SEHR"; break;
-    case "KLEY":         z2 = "Kleymann"; break;
-    case "KLEYEILT":     z2 = "Kleymann"; z3 = "EILT SEHR"; break;
-    case "COMTEZN8":     z2 = "Comte"; z3 = "„ZN8“"; z4 = k; break;
-    case "CHEMISCH":     z2 = "Comte"; z3 = "„Chemisch Vernickeln“"; z4 = k; break;
-    case "DICK":         z2 = "Comte"; z3 = "„Dickschichtpassivierung“"; z4 = k; break;
-    case "BLAU":         z2 = "Comte"; z3 = "„Blau ZN8“"; z4 = k; break;
-    case "PENTZ":        z2 = "Pentz & Gerdes"; z3 = "„ZN8“"; z4 = k; break;
-    case "RCS":          z2 = "RCS";            z3 = "„Schweißen“";    z4 = k; break;
-    case "COATINC":      z2 = "Coatinc 24";     z3 = "„Verzinken“";    z4 = k; break;
-  }
-
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF({ orientation:"landscape", unit:"mm", format:"a5" });
-
-  const W = pdf.internal.pageSize.getWidth();
-  const H = pdf.internal.pageSize.getHeight();
-  const C = W / 2;
-
-  pdf.setFont("helvetica", "bold");
-
-  pdf.setFontSize(60);
-  pdf.text(z1, C, 50, { align:"center" });
-
-  if (z2) {
-    pdf.setFontSize(60);
-    pdf.text(z2, C, 85, { align:"center" });
-  }
-
-  if (z3) {
-    if (z3.includes("EILT SEHR")) {
-      pdf.setFontSize(60);
-      pdf.text("„EILT SEHR“", C, 120, { align:"center" });
-    } else {
-      pdf.setFontSize(32);
-      pdf.text(z3, C, 120, { align:"center" });
+    // --- Validierung ---
+    if (!selectedType) {
+        alert("Bitte einen Kunden wählen!");
+        return;
     }
-  }
+    if (!numInput.value.trim()) {
+        alert("Bitte Beistellnummer eingeben!");
+        return;
+    }
 
-  if (z4) {
-    pdf.setFontSize(32);
-    pdf.text(`({z4})`, C, 140, { align:"center" });
-  }
+    // Einige Typen benötigen zusätzlich einen Kundennamen
+    const needName = ["COMTEZN8", "CHEMISCH", "DICK", "BLAU", "PENTZ", "RCS", "COATINC"];
+    if (needName.includes(selectedType) && !kundeInput.value.trim()) {
+        alert("Bitte Kundenname eingeben!");
+        return;
+    }
 
-  try {
-    pdf.addImage(logoBase64, "PNG", W - 48, H - 22, 40, 14);
-  } catch(e) {
-    console.warn("Logo konnte nicht eingebunden werden:", e);
-  }
-
-  const blob = pdf.output("blob");
-  const url  = URL.createObjectURL(blob);
-
-  const w = window.open(url, "_blank");
-  if (w) {
-    w.onload = () => {
-      w.focus();
-      w.print();
-      setTimeout(() => {
-        try { w.close(); } catch(e) {}
-      }, 1500);
+    // --- Daten speichern für druck.html ---
+    const data = {
+        selectedType,
+        beistell: numInput.value,
+        kundename: kundeInput.value
     };
-  }
+
+    localStorage.setItem("DRUCKDATEN", JSON.stringify(data));
+
+    // --- Weiter zur Druckseite (manuelles Drucken auf Android) ---
+    window.location.href = "druck.html";
 };
 
 // Zurück
