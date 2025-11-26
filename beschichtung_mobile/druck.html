@@ -3,14 +3,13 @@
 <head>
 <meta charset="UTF-8">
 
-<!-- Verhindert Zoom-Probleme auf Android & iPhone -->
+<!-- Verhindert Zoom-Probleme auf Mobilgeräten -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <title>Druck</title>
 
 <style>
 
-/* Bildschirmdarstellung: Vollbild, kein Zoom */
 html, body {
     margin: 0;
     padding: 0;
@@ -18,35 +17,33 @@ html, body {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+    font-family: Arial, sans-serif;
 }
 
-/* Druckseite auf dem Bildschirm */
+/* Die Seite auf dem Bildschirm */
 #page {
     width: 100vw;
     height: 100vh;
-    position: relative;
     box-sizing: border-box;
-
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 20px;
-
-    font-family: Arial, sans-serif;
 }
 
 /* Schriftgrößen */
 .big {
     font-size: 46pt;
     font-weight: bold;
-    margin: 10px 0;
+    margin: 6px 0;
     text-align: center;
 }
 
 .med {
     font-size: 34pt;
     font-weight: bold;
-    margin: 10px 0;
+    margin: 6px 0;
     text-align: center;
 }
 
@@ -62,7 +59,6 @@ html, body {
     right: 20px;
     bottom: 20px;
     width: 160px;
-    height: auto;
 }
 
 /* Buttons */
@@ -77,29 +73,32 @@ html, body {
     box-shadow: 0 3px 8px rgba(0,0,0,0.2);
 }
 
-#printBtn { 
-    right: 20px; 
-    background: #007bff; 
+#printBtn {
+    right: 20px;
+    background: #007bff;
 }
 
-#cancelBtn { 
-    left: 20px; 
-    background: #cc0000; 
+#cancelBtn {
+    left: 20px;
+    background: #cc0000;
 }
 
-/* Buttons beim Drucken ausblenden */
+/* Buttons im Druck ausblenden */
 @media print {
-    #printBtn, #cancelBtn {
+    #printBtn,
+    #cancelBtn {
         display: none !important;
     }
 }
 
-/* Richtiges A5 Layout NUR beim Drucken */
+/* A5 Querformat nur beim Drucken */
 @media print {
+
     @page {
         size: A5 landscape;
         margin: 0;
     }
+
     #page {
         width: 210mm !important;
         height: 148mm !important;
@@ -147,7 +146,7 @@ window.onload = () => {
 
     const [z2, z3] = map[data.selectedType] || ["", ""];
 
-    document.getElementById("line1").textContent = data.beistell;
+    document.getElementById("line1").textContent = data.beistell || "";
     document.getElementById("line2").textContent = z2;
     document.getElementById("line3").textContent = z3;
 
@@ -157,17 +156,20 @@ window.onload = () => {
         document.getElementById("line4").style.display = "none";
     }
 
-    // Drucken NUR per Benutzer-Klick
+    /* 
+       WICHTIG:
+       - KEIN AUTOPRINT!
+       - KEIN onafterprint!
+       Sonst sperren iOS & Android den Druck.
+    */
+
     document.getElementById("printBtn").onclick = () => {
         window.print();
     };
 
-    // Abbrechen (zurück)
     document.getElementById("cancelBtn").onclick = () => {
         window.history.back();
     };
-
-    // ❗ KEIN onafterprint → sonst blockieren iOS/Android das Drucken
 };
 </script>
 
