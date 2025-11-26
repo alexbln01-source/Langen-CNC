@@ -2,66 +2,78 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>Druck</title>
 
 <style>
 
-/* --- Bildschirm-Darstellung --- */
+/* Vollbild */
 html, body {
     margin: 0;
     padding: 0;
-    width: 100%;
+    background: #f2f2f2;
     height: 100%;
-    background: #fff;
+    width: 100%;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
 }
 
-/* WICHTIG:
-   Diese Box wird gedruckt, NICHT der Bildschirm-Viewport!
-*/
+/* Container für A5 Vorschau */
+#previewWrapper {
+    width: 100%;
+    height: calc(100% - 80px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* DIE A5-SEITE (druckbares Element) */
 #printArea {
     width: 210mm;
     height: 148mm;
-    margin: 0 auto;
+    background: white;
     position: relative;
     box-sizing: border-box;
+    padding-top: 20mm;
+    text-align: center;
 
-    /* Für Bildschirm zentriert */
+    /* Vorschau verkleinern */
     transform: scale(0.45);
     transform-origin: top center;
+    border: 1px solid #ddd;
 }
 
-/* Schriftgrößen */
-.big { font-size: 46pt; font-weight: bold; text-align: center; margin: 10px 0; }
-.med { font-size: 34pt; font-weight: bold; text-align: center; margin: 10px 0; }
-.small { font-size: 26pt; text-align: center; margin-top: 10px; }
-
-/* Logo */
-#logo {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-    width: 160px;
-}
-
-/* Druck & Abbrechen Buttons */
+/* Buttons oben */
 #printBtn, #cancelBtn {
     position: fixed;
-    top: 20px;
+    top: 15px;
     padding: 12px 22px;
     font-size: 20px;
     border: none;
     border-radius: 12px;
     color: white;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-    z-index: 999;
+    z-index: 9999;
 }
 
 #printBtn { right: 20px; background: #007bff; }
 #cancelBtn { left: 20px; background: #cc0000; }
 
-/* --- DRUCK-Regeln --- */
+/* Text */
+.big { font-size: 42pt; font-weight: bold; margin: 10px 0; }
+.med { font-size: 30pt; font-weight: bold; margin: 10px 0; }
+.small { font-size: 22pt; margin-top: 10px; }
+
+/* Logo */
+#logo {
+    position: absolute;
+    right: 10mm;
+    bottom: 10mm;
+    width: 38mm;
+}
+
+/* --- DRUCK --- */
 @media print {
 
     @page {
@@ -69,16 +81,21 @@ html, body {
         margin: 0;
     }
 
-    /* Buttons ausblenden */
-    #printBtn, #cancelBtn {
+    #printBtn,
+    #cancelBtn {
         display: none !important;
     }
 
-    /* KEIN transform im Druck */
+    #previewWrapper {
+        display: block;
+    }
+
+    /* Vollgröße drucken */
     #printArea {
         transform: none !important;
         width: 210mm !important;
         height: 148mm !important;
+        border: none !important;
     }
 }
 </style>
@@ -89,14 +106,15 @@ html, body {
 <button id="cancelBtn">✖ Abbrechen</button>
 <button id="printBtn">🖨 Drucken</button>
 
-<!-- DIESE BOX wird gedruckt -->
-<div id="printArea">
-    <div id="line1" class="big"></div>
-    <div id="line2" class="big"></div>
-    <div id="line3" class="med"></div>
-    <div id="line4" class="small"></div>
+<div id="previewWrapper">
+    <div id="printArea">
+        <div id="line1" class="big"></div>
+        <div id="line2" class="big"></div>
+        <div id="line3" class="med"></div>
+        <div id="line4" class="small"></div>
 
-    <img id="logo" src="langen.png">
+        <img id="logo" src="langen.png">
+    </div>
 </div>
 
 <script>
@@ -126,8 +144,11 @@ window.onload = () => {
     line2.textContent = z2;
     line3.textContent = z3;
 
-    if (data.kundename) line4.textContent = `(${data.kundename})`;
-    else line4.style.display = "none";
+    if (data.kundename) {
+        line4.textContent = `(${data.kundename})`;
+    } else {
+        line4.style.display = "none";
+    }
 
     printBtn.onclick = () => window.print();
     cancelBtn.onclick = () => window.history.back();
