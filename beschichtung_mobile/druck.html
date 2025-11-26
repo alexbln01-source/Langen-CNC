@@ -90,18 +90,45 @@ button {
 /* --- DRUCK --- */
 @media print {
 
-    @page { size: A5 landscape; margin: 0; }
+    @page {
+        size: A5 landscape;
+        margin: 0;
+    }
 
     #topBar { display: none !important; }
-    #previewWrapper { display: block; }
 
-    /* Beim Drucken: NICHT drehen */
-    #pageRotate,
+    /* max. verfügbare Fläche ausnutzen */
+    #previewWrapper {
+        display: block;
+        position: static;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* beim Drucken: volle Breite/Höhe des A5-Querformats */
+    #pageRotate {
+        transform: none !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        overflow: hidden !important;
+        box-shadow: none !important;
+    }
+
     #printArea {
         transform: none !important;
-        width: 210mm !important;
-        height: 148mm !important;
         box-shadow: none !important;
+
+        /* füllt die Seite exakt */
+        width: 100%;
+        height: 100%;
+
+        padding-top: 18mm;
+        padding-left: 12mm;
+        padding-right: 12mm;
+        padding-bottom: 10mm;
     }
 }
 </style>
