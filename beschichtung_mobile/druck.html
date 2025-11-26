@@ -16,7 +16,7 @@ html, body {
     font-family: Arial, sans-serif;
 }
 
-/* Kopfzeile */
+/* Kopfbereich */
 #topBar {
     height: 85px;
     display: flex;
@@ -36,7 +36,7 @@ button {
 #cancelBtn { background: #cc0000; }
 #printBtn  { background: #007bff; }
 
-/* Vorschau-Zentrierung */
+/* Vorschau-Wrapper */
 #previewWrapper {
     width: 100%;
     height: calc(100% - 85px);
@@ -46,30 +46,29 @@ button {
     overflow: hidden;
 }
 
-/* Äußere Rotation → Vorschau wirkt wie Querformat */
+/* AUSSEN: A5 GRÖSSE IN MM → iOS erkennt Papierformat richtig */
 #pageRotate {
-    width: 100%;
-    max-width: 500px;
-    aspect-ratio: 210 / 148;   /* A5 Seitenverhältnis */
-    background: transparent;
-
-    transform: rotate(90deg) scale(0.80);
-    transform-origin: center center;
-
+    width: 210mm;
+    height: 148mm;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    /* Vorschau-Drehung */
+    transform: rotate(90deg) scale(0.42);
+    transform-origin: center center;
 }
 
-/* Innere Seite, zurückgedreht */
+/* INNEN: echte A5-Seite, zurückgedreht */
 #printArea {
-    width: 100%;
-    height: 100%;
+    width: 210mm;
+    height: 148mm;
     background: white;
     box-sizing: border-box;
 
-    padding: 40px 40px 40px 40px;
+    padding: 20mm 15mm 15mm 15mm;
 
+    /* Inhalt normal */
     transform: rotate(-90deg);
     transform-origin: center center;
 
@@ -77,34 +76,32 @@ button {
 }
 
 /* Typografie */
-.big   { font-size: 44pt; font-weight: bold; margin: 20px 0; text-align: center; }
-.med   { font-size: 32pt; font-weight: bold; margin: 20px 0; text-align: center; }
+.big   { font-size: 42pt; font-weight: bold; margin: 14px 0; text-align: center; }
+.med   { font-size: 30pt; font-weight: bold; margin: 14px 0; text-align: center; }
 .small { font-size: 24pt; margin-top: 14px; text-align: center; }
 
 /* Logo */
 #logo {
     position: absolute;
-    right: 40px;
-    bottom: 40px;
-    width: 140px;
+    right: 15mm;
+    bottom: 15mm;
+    width: 40mm;
 }
 
 /* --- DRUCK --- */
 @media print {
 
-    @page {
-        size: A5 landscape;
-        margin: 0;
-    }
+    @page { size: A5 landscape; margin: 0; }
 
     #topBar { display: none !important; }
     #previewWrapper { display: block; }
 
+    /* ZURÜCK ZU NORMALOHNE DREHUNG */
     #pageRotate {
         transform: none !important;
         width: 100vw !important;
         height: 100vh !important;
-        max-width: none !important;
+        box-shadow: none !important;
     }
 
     #printArea {
@@ -113,7 +110,7 @@ button {
         height: 100vh !important;
         box-shadow: none !important;
 
-        padding: 30px 30px 30px 30px;
+        padding: 20mm 15mm 15mm 15mm;
     }
 }
 
@@ -130,12 +127,14 @@ button {
 <div id="previewWrapper">
     <div id="pageRotate">
         <div id="printArea">
+
             <div id="line1" class="big"></div>
             <div id="line2" class="big"></div>
             <div id="line3" class="med"></div>
             <div id="line4" class="small"></div>
 
             <img id="logo" src="langen.png">
+
         </div>
     </div>
 </div>
