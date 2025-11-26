@@ -11,22 +11,22 @@
 html, body {
     margin: 0;
     padding: 0;
-    background: #e6e6e6;
+    background: #dcdcdc;
     height: 100%;
     overflow: hidden;
     font-family: Arial, sans-serif;
 }
 
-/* Obere Button-Leiste */
+/* Kopfzeile */
 #topBar {
-    height: 80px;
+    height: 85px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
+    background: #dcdcdc;
 }
 
-/* Buttons */
 button {
     padding: 14px 26px;
     font-size: 22px;
@@ -37,52 +37,55 @@ button {
 }
 
 #cancelBtn { background: #cc0000; }
-#printBtn { background: #007bff; }
+#printBtn  { background: #007bff; }
 
 /* Vorschau-Bereich */
 #previewWrapper {
-    height: calc(100% - 80px);
+    width: 100%;
+    height: calc(100% - 85px);
+
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
 }
 
-/* DIE A5-SEITE (SIMULATION) */
+/* Das druckbare A5-Blatt */
 #printArea {
     width: 210mm;
     height: 148mm;
     background: white;
     position: relative;
     box-sizing: border-box;
+
     padding-top: 22mm;
+    padding-left: 10mm;
+    padding-right: 10mm;
+
     box-shadow: 0 0 25px rgba(0,0,0,0.25);
 
-    /* Auf 5-Zoll-Handy vergrößern */
-    transform: scale(0.62);
-    transform-origin: center center;
+    /* WICHTIG: zentrales Skalieren */
+    transform: scale(0.50);
+    transform-origin: top center;
 }
 
-/* Typografien */
-.big { font-size: 44pt; font-weight: bold; margin: 10px 0; }
-.med { font-size: 32pt; font-weight: bold; margin: 10px 0; }
-.small { font-size: 24pt; margin-top: 14px; }
+/* Typografie */
+.big { font-size: 44pt; font-weight: bold; margin: 20px 0; text-align: center; }
+.med { font-size: 32pt; font-weight: bold; margin: 20px 0; text-align: center; }
+.small { font-size: 24pt; margin-top: 14px; text-align: center; }
 
 /* Logo */
 #logo {
     position: absolute;
-    right: 12mm;
+    right: 10mm;
     bottom: 10mm;
     width: 38mm;
 }
 
-/* --- DRUCK --- */
+/* --- DRUCKANSICHT --- */
 @media print {
 
-    @page {
-        size: A5 landscape;
-        margin: 0;
-    }
+    @page { size: A5 landscape; margin: 0; }
 
     #topBar { display: none !important; }
     #previewWrapper { display: block; }
@@ -91,7 +94,7 @@ button {
         transform: none !important;
         width: 210mm !important;
         height: 148mm !important;
-        padding-top: 22mm !important;
+        padding: 22mm 10mm 0 10mm !important;
         box-shadow: none !important;
     }
 }
@@ -118,6 +121,7 @@ button {
 
 <script>
 window.onload = () => {
+
     const data = JSON.parse(localStorage.getItem("DRUCKDATEN") || "{}");
 
     const map = {
