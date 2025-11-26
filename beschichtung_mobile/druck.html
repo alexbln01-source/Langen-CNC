@@ -3,12 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
 <title>Druck</title>
 
 <style>
 
-/* Grundlayout */
 html, body {
     margin: 0;
     padding: 0;
@@ -18,7 +16,7 @@ html, body {
     font-family: Arial, sans-serif;
 }
 
-/* Buttonleiste oben */
+/* Kopfzeile */
 #topBar {
     height: 85px;
     display: flex;
@@ -42,13 +40,23 @@ button {
 #previewWrapper {
     width: 100%;
     height: calc(100% - 85px);
+
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
 }
 
-/* --- DIE A5-SEITE, im SCREEN gedreht --- */
+/* ÄUSSERE Rotation für Querformat-Vorschau */
+#pageRotate {
+    width: 210mm;
+    height: 148mm;
+
+    transform: rotate(90deg) scale(0.52);
+    transform-origin: center center;
+}
+
+/* INNERE Seite → zurückdrehen = normale Ausrichtung */
 #printArea {
     width: 210mm;
     height: 148mm;
@@ -60,11 +68,10 @@ button {
     padding-left: 10mm;
     padding-right: 10mm;
 
-    box-shadow: 0 0 25px rgba(0,0,0,0.25);
-
-    /* 👇 Wichtig: Querformat-VORSCHAU fürs Handy */
-    transform: rotate(90deg) scale(0.50);
+    transform: rotate(-90deg);
     transform-origin: center center;
+
+    box-shadow: 0 0 25px rgba(0,0,0,0.25);
 }
 
 /* Typografie */
@@ -80,29 +87,23 @@ button {
     width: 38mm;
 }
 
-/* --- DRUCKMODUS --- */
+/* --- DRUCK --- */
 @media print {
 
-    @page {
-        size: A5 landscape;
-        margin: 0;
-    }
+    @page { size: A5 landscape; margin: 0; }
 
     #topBar { display: none !important; }
     #previewWrapper { display: block; }
 
+    /* Beim Drucken: NICHT drehen */
+    #pageRotate,
     #printArea {
-        /* Drehung entfernen für echten Druck */
         transform: none !important;
         width: 210mm !important;
         height: 148mm !important;
-        padding-top: 22mm !important;
-        padding-left: 10mm !important;
-        padding-right: 10mm !important;
         box-shadow: none !important;
     }
 }
-
 </style>
 </head>
 
@@ -114,13 +115,15 @@ button {
 </div>
 
 <div id="previewWrapper">
-    <div id="printArea">
-        <div id="line1" class="big"></div>
-        <div id="line2" class="big"></div>
-        <div id="line3" class="med"></div>
-        <div id="line4" class="small"></div>
+    <div id="pageRotate">
+        <div id="printArea">
+            <div id="line1" class="big"></div>
+            <div id="line2" class="big"></div>
+            <div id="line3" class="med"></div>
+            <div id="line4" class="small"></div>
 
-        <img id="logo" src="langen.png">
+            <img id="logo" src="langen.png">
+        </div>
     </div>
 </div>
 
