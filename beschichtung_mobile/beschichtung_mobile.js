@@ -98,8 +98,11 @@ btnDrucken.onclick = () => {
         kundename
     }));
 
+    // DIREKT zur Druckseite, kein Verlauf-Spam
     window.location.href = "druck.html";
 };
 
+// SAUBER ZURÜCK
+btnBack.onclick = () => window.location.href = "index.html";
 // Zurück
 btnBack.onclick = () => history.back();

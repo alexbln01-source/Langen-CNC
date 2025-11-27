@@ -129,9 +129,10 @@ window.onload = () => {
     line3.textContent = z3;
     if (data.kundename) line4.textContent = `(${data.kundename})`;
 
-    cancelBtn.onclick = () => window.history.back();
+    // SAUBERES ZURÜCK – kein history.back() mehr
+    cancelBtn.onclick = () => window.location.href = "beschichtung_mobile.html";
 
-    /* ---------- FUNKTIONIERENDER PDF-DRUCK ---------- */
+    // FUNKTIONIERENDER PDF-DRUCK
     printBtn.onclick = async () => {
 
         const { jsPDF } = window.jspdf;
