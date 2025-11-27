@@ -94,13 +94,14 @@ button {
             <div id="line3" class="med"></div>
             <div id="line4" class="small"></div>
 
-            <img id="logo" src="langen.png">
+            <img id="logo" src="langen.png?v=5">
         </div>
     </div>
 </div>
 
-<script src="html2canvas.min.js"></script>
+<!-- Reihenfolge wichtig -->
 <script src="jspdf.umd.min.js"></script>
+<script src="html2canvas.min.js"></script>
 
 <script>
 window.onload = () => {
@@ -129,12 +130,10 @@ window.onload = () => {
     line3.textContent = z3;
     if (data.kundename) line4.textContent = `(${data.kundename})`;
 
-    // SAUBERES ZURÜCK – kein history.back() mehr
-    cancelBtn.onclick = () => window.location.href = "beschichtung_mobile.html";
+    cancelBtn.onclick = () =>
+        window.location.href = "beschichtung_mobile.html";
 
-    // FUNKTIONIERENDER PDF-DRUCK
     printBtn.onclick = async () => {
-
         const { jsPDF } = window.jspdf;
 
         const canvas = await html2canvas(document.querySelector("#printArea"), {
@@ -152,29 +151,12 @@ window.onload = () => {
 
         pdf.addImage(img, "JPEG", 0, 0, 210, 148);
 
-        const finalData = pdf.output("datauristring");
-
-        let frame = document.getElementById("printFrame");
-        if (!frame) {
-            frame = document.createElement("iframe");
-            frame.id = "printFrame";
-            frame.style.position = "fixed";
-            frame.style.right = "0";
-            frame.style.bottom = "0";
-            frame.style.width = "0";
-            frame.style.height = "0";
-            frame.style.border = "none";
-            document.body.appendChild(frame);
-        }
-
-        frame.src = finalData;
-
-        frame.onload = () => {
-            frame.contentWindow.focus();
-            frame.contentWindow.print();
-        };
+        // PDF in neuem Tab öffnen
+        pdf.output("dataurlnewwindow");
     };
-};
+
+}; // ← HIER endet window.onload
+
 </script>
 
 </body>

@@ -104,5 +104,3 @@ btnDrucken.onclick = () => {
 
 // SAUBER ZURÜCK
 btnBack.onclick = () => window.location.href = "index.html";
-// Zurück
-btnBack.onclick = () => history.back();
