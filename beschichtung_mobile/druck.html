@@ -14,8 +14,6 @@ html, body {
     overflow: hidden;
     font-family: Arial, sans-serif;
 }
-
-/* Top Buttons */
 #topBar {
     height: 85px;
     padding: 0 20px;
@@ -23,7 +21,6 @@ html, body {
     justify-content: space-between;
     align-items: center;
 }
-
 button {
     padding: 14px 26px;
     font-size: 22px;
@@ -35,7 +32,6 @@ button {
 #cancelBtn { background: #cc0000; }
 #printBtn  { background: #007bff; }
 
-/* Vorschau */
 #previewWrapper {
     width: 100%;
     height: calc(100% - 85px);
@@ -94,14 +90,14 @@ button {
             <div id="line3" class="med"></div>
             <div id="line4" class="small"></div>
 
-            <img id="logo" src="langen.png?v=5">
+            <img id="logo" src="langen.png">
         </div>
     </div>
 </div>
 
-<!-- Reihenfolge wichtig -->
-<script src="jspdf.umd.min.js"></script>
+<!-- WICHTIG: Reihenfolge GENAU so -->
 <script src="html2canvas.min.js"></script>
+<script src="jspdf.umd.min.js"></script>
 
 <script>
 window.onload = () => {
@@ -130,33 +126,33 @@ window.onload = () => {
     line3.textContent = z3;
     if (data.kundename) line4.textContent = `(${data.kundename})`;
 
-    cancelBtn.onclick = () =>
-        window.location.href = "beschichtung_mobile.html";
+    cancelBtn.onclick = () => window.location.href = "beschichtung_mobile.html";
 
-    printBtn.onclick = async () => {
-        const { jsPDF } = window.jspdf;
+    document.getElementById("printBtn").onclick = async () => {
 
-        const canvas = await html2canvas(document.querySelector("#printArea"), {
+        const area = document.getElementById("printArea");
+
+        const canvas = await html2canvas(area, {
             scale: 2,
             useCORS: true
         });
 
-        const img = canvas.toDataURL("image/jpeg", 1.0);
+        const img = canvas.toDataURL("image/png", 1.0);
 
+        const { jsPDF } = window.jspdf;
         const pdf = new jsPDF({
             orientation: "landscape",
             unit: "mm",
             format: "a5"
         });
 
-        pdf.addImage(img, "JPEG", 0, 0, 210, 148);
+        pdf.addImage(img, "PNG", 0, 0, 210, 148);
 
-        // PDF in neuem Tab öffnen
-        pdf.output("dataurlnewwindow");
+        // *** WICHTIG: nicht newwindow (blockiert), sondern inline ***
+        const blobUrl = pdf.output("bloburl");
+        window.location.href = blobUrl;
     };
-
-}; // ← HIER endet window.onload
-
+};
 </script>
 
 </body>

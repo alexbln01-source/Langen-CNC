@@ -103,4 +103,6 @@ btnDrucken.onclick = () => {
 };
 
 // SAUBER ZURÜCK
-btnBack.onclick = () => window.location.href = "index.html";
+document.getElementById("btnBack").onclick = () => {
+  window.location.href = "../index.html";
+};
