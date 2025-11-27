@@ -150,7 +150,8 @@ button {
 
 <script>
 window.onload = () => {
-    // Daten aus der Hauptseite holen
+
+    // Daten aus localStorage holen
     const data = JSON.parse(localStorage.getItem("DRUCKDATEN") || "{}");
 
     const map = {
@@ -185,14 +186,19 @@ window.onload = () => {
         document.getElementById(printIds[i]).textContent   = values[i];
     }
 
-    // Zurück
-    cancelBtn.onclick = () => {
+    // Abbrechen
+    document.getElementById("cancelBtn").onclick = () => {
         window.location.href = "beschichtung_mobile.html";
     };
 
-    // Direkt drucken – nur aktuelles DOM, kein PDF
-    printBtn.onclick = () => {
+    // DRUCKEN — Fix für Chrome / Android: immer neu laden!
+    document.getElementById("printBtn").onclick = () => {
         window.print();
+
+        // Danach Seite neu laden, damit erneutes Drucken wieder möglich ist
+        setTimeout(() => {
+            location.reload();
+        }, 300);
     };
 };
 </script>
