@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Druck</title>
 
 <style>
@@ -15,9 +15,9 @@ html, body {
     font-family: Arial, sans-serif;
 }
 
-/* Toolbar */
+/* Toolbar oben */
 #topBar {
-    height: 85px;
+    height: 80px;
     padding: 0 20px;
     display: flex;
     justify-content: space-between;
@@ -28,24 +28,24 @@ button {
     font-size: 22px;
     border: none;
     border-radius: 12px;
-    color: white;
+    color: #fff;
     font-weight: bold;
 }
 #cancelBtn { background: #cc0000; }
 #printBtn  { background: #007bff; }
 
-/* ============================
-   1) Vorschau (gedreht)
-============================ */
+/* =========================
+   VORSCHAU (gedreht)
+   ========================= */
 #previewWrapper {
-    height: calc(100% - 85px);
+    height: calc(100% - 80px);
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Dieser Container hält die Vorschau */
+/* Container für gedrehte Vorschau */
 #previewRotate {
     width: 100%;
     height: 100%;
@@ -54,37 +54,36 @@ button {
     align-items: center;
 }
 
-/* Das Etikett, das wir in der Vorschau drehen */
+/* Etikett in der Vorschau – hier drehen wir */
 #previewArea {
     width: 210mm;
     height: 148mm;
-    background: white;
+    background: #fff;
     padding: 20mm 15mm 15mm 15mm;
-    position: relative;
     box-sizing: border-box;
+    position: relative;
     box-shadow: 0 0 20px rgba(0,0,0,0.25);
 
-    /* Sichtbare Drehung der Vorschau */
     transform: rotate(90deg) scale(0.55);
     transform-origin: center center;
 }
 
-/* ============================
-   2) Druckbereich (NICHT gedreht)
-============================ */
+/* =========================
+   DRUCKBEREICH (ungedreht)
+   ========================= */
 #printArea {
-    display: none; /* unsichtbar am Bildschirm */
+    display: none;        /* Bildschirm: unsichtbar */
     width: 210mm;
     height: 148mm;
-    background: white;
+    background: #fff;
     padding: 20mm 15mm 15mm 15mm;
+    box-sizing: border-box;
     position: fixed;
     top: 0;
     left: 0;
-    box-sizing: border-box;
 }
 
-/* Text */
+/* Textformat */
 .big   { font-size: 42pt; font-weight: bold; text-align: center; }
 .med   { font-size: 30pt; font-weight: bold; text-align: center; }
 .small { font-size: 24pt; text-align: center; margin-top: 10px; }
@@ -96,17 +95,17 @@ button {
     width: 40mm;
 }
 
-/* ============================
-   DRUCKMODUS
-============================ */
+/* =========================
+   PRINT-MODUS
+   ========================= */
 @media print {
 
-    /* Toolbar und Vorschau verbergen */
+    /* UI & Vorschau ausblenden */
     #topBar, #previewWrapper {
         display: none !important;
     }
 
-    /* Den echten Druckbereich aktivieren */
+    /* Nur den ungedrehten Bereich drucken */
     #printArea {
         display: block !important;
     }
@@ -127,9 +126,7 @@ button {
     <button id="printBtn">🖨 Drucken</button>
 </div>
 
-<!-- ============================
-     GEDREHTE VORSCHAU
-============================ -->
+<!-- GEDREHTE VORSCHAU -->
 <div id="previewWrapper">
     <div id="previewRotate">
         <div id="previewArea">
@@ -142,9 +139,7 @@ button {
     </div>
 </div>
 
-<!-- ============================
-     UNGEDREHTER, ECHTER DRUCKBEREICH
-============================ -->
+<!-- UNGEDREHTER DRUCKBEREICH -->
 <div id="printArea">
     <div id="d_line1" class="big"></div>
     <div id="d_line2" class="big"></div>
@@ -155,8 +150,7 @@ button {
 
 <script>
 window.onload = () => {
-
-    /* Daten bringen */
+    // Daten aus der Hauptseite holen
     const data = JSON.parse(localStorage.getItem("DRUCKDATEN") || "{}");
 
     const map = {
@@ -175,29 +169,28 @@ window.onload = () => {
         "COATINC": ["Coatinc 24", "„Verzinken“"]
     };
 
-    const [Z2, Z3] = map[data.selectedType] || ["",""];
-
-    const previewLines = ["p_line1","p_line2","p_line3","p_line4"];
-    const printLines   = ["d_line1","d_line2","d_line3","d_line4"];
-
+    const [z2, z3] = map[data.selectedType] || ["", ""];
     const values = [
         data.beistell || "",
-        Z2,
-        Z3,
+        z2,
+        z3,
         data.kundename ? "(" + data.kundename + ")" : ""
     ];
 
-    /* Vorschau + Druck korrekt mit Daten füllen */
+    const previewIds = ["p_line1","p_line2","p_line3","p_line4"];
+    const printIds   = ["d_line1","d_line2","d_line3","d_line4"];
+
     for (let i = 0; i < 4; i++) {
-        document.getElementById(previewLines[i]).textContent = values[i];
-        document.getElementById(printLines[i]).textContent   = values[i];
+        document.getElementById(previewIds[i]).textContent = values[i];
+        document.getElementById(printIds[i]).textContent   = values[i];
     }
 
-    /* zurück */
-    cancelBtn.onclick = () =>
+    // Zurück
+    cancelBtn.onclick = () => {
         window.location.href = "beschichtung_mobile.html";
+    };
 
-    /* DIREKTDRUCK */
+    // Direkt drucken – nur aktuelles DOM, kein PDF
     printBtn.onclick = () => {
         window.print();
     };
