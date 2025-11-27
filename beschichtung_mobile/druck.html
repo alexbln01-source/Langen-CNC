@@ -6,7 +6,6 @@
 <title>Druck</title>
 
 <style>
-
 html, body {
     margin: 0;
     padding: 0;
@@ -77,7 +76,6 @@ button {
     bottom: 15mm;
     width: 40mm;
 }
-
 </style>
 </head>
 
@@ -95,6 +93,7 @@ button {
             <div id="line2" class="big"></div>
             <div id="line3" class="med"></div>
             <div id="line4" class="small"></div>
+
             <img id="logo" src="langen.png">
         </div>
     </div>
@@ -104,7 +103,6 @@ button {
 <script src="jspdf.umd.min.js"></script>
 
 <script>
-
 window.onload = () => {
 
     const data = JSON.parse(localStorage.getItem("DRUCKDATEN") || "{}");
@@ -133,17 +131,10 @@ window.onload = () => {
 
     cancelBtn.onclick = () => window.history.back();
 
-
-    // ----------------- FUNKTIONIERENDER PDF-DRUCK (iOS/Android PWA!) -----------------
+    /* ---------- FUNKTIONIERENDER PDF-DRUCK ---------- */
     printBtn.onclick = async () => {
 
         const { jsPDF } = window.jspdf;
-
-        const pdf = new jsPDF({
-            orientation: "landscape",
-            unit: "mm",
-            format: "a5"
-        });
 
         const canvas = await html2canvas(document.querySelector("#printArea"), {
             scale: 2,
@@ -152,14 +143,16 @@ window.onload = () => {
 
         const img = canvas.toDataURL("image/jpeg", 1.0);
 
+        const pdf = new jsPDF({
+            orientation: "landscape",
+            unit: "mm",
+            format: "a5"
+        });
+
         pdf.addImage(img, "JPEG", 0, 0, 210, 148);
 
-        // iOS-kompatibler PDF-String
-        const pdfBase64 = pdf.output("datauristring").replace("data:application/pdf;filename=generated.pdf;base64,", "");
+        const finalData = pdf.output("datauristring");
 
-        const finalData = "data:application/pdf;base64," + pdfBase64;
-
-        // iframe erzeugen
         let frame = document.getElementById("printFrame");
         if (!frame) {
             frame = document.createElement("iframe");
