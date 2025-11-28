@@ -3,89 +3,97 @@
 <head>
 <meta charset="UTF-8">
 <title>Etikett Drucken</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
 <style>
     body {
-        margin: 0;
-        padding: 0;
-        background: #dcdcdc;
-        font-family: Arial, sans-serif;
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
+        margin:0;
+        padding:0;
+        background:#dcdcdc;
+        font-family:Arial, sans-serif;
+        height:100vh;
+        display:flex;
+        flex-direction:column;
+        overflow:hidden;
     }
 
-    /* ===== MOBILE / DESKTOP Kompatible Preview ===== */
+    /* --- A5 FORMAT --- */
     .preview-wrapper {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        padding: 10px;
+        flex:1;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        overflow:hidden;
     }
 
     .preview-area {
-        width: 780px;      /* ~ A5 quer Verhältnis */
-        height: 520px;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 0 15px rgba(0,0,0,0.25);
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        width:210mm;
+        height:148mm;
+        background:white;
+        position:relative;
+        box-shadow:0 0 14px rgba(0,0,0,0.25);
+        transform-origin:center center;
     }
 
-    .textblock {
-        text-align: center;
-        width: 100%;
+    /* AUTOMATISCHE SKALIERUNG HANDY */
+    @media (max-width:900px) {
+        .preview-area {
+            transform:scale(0.38);   /* perfekt für Handy */
+        }
     }
 
-    .logo-wrapper {
-        position: absolute;
-        right: 25px;
-        bottom: 25px;
+    /* PC */
+    @media (min-width:901px) {
+        .preview-area {
+            transform:scale(0.45);
+        }
     }
 
-    .logo-wrapper img {
-        width: 160px;
+    .etikett {
+        width:210mm;
+        height:148mm;
+        background:white;
+        padding:10mm;
+        box-sizing:border-box;
+        text-align:center;
+        font-size:60pt;
+        font-weight:bold;
     }
 
-    /* ===== Buttons unten ===== */
+    .logo {
+        position:absolute;
+        right:10mm;
+        bottom:10mm;
+        width:42mm;
+    }
+
+    /* BUTTON-BAR */
     .bottom-bar {
-        display: flex;
-        gap: 10px;
-        padding: 10px;
-        background: #ffffff;
-        box-shadow: 0 -3px 6px rgba(0,0,0,0.25);
+        display:flex;
+        gap:10px;
+        padding:10px;
+        background:white;
+        box-shadow:0 -3px 6px rgba(0,0,0,0.25);
     }
     .btn {
-        flex: 1;
-        padding: 16px;
-        font-size: 20px;
-        border-radius: 10px;
-        border: none;
-        font-weight: bold;
-        color: white;
+        flex:1;
+        padding:16px 12px;
+        font-size:22px;
+        border-radius:12px;
+        font-weight:bold;
+        color:white;
+        border:none;
     }
-    .back-btn { background: #9e9e9e; }
-    .print-btn { background: #2e7d32; }
-    .btn:focus { outline: 5px solid #1a73e8; }
+    .btn:focus { outline:5px solid #1a73e8; }
 
-    /* ===== PRINT ===== */
+    .back-btn  { background:#9e9e9e; }
+    .print-btn { background:#2e7d32; }
+
     @media print {
-        body { background: white !important; }
-        .bottom-bar, .preview-wrapper { display: none !important; }
-
-        #printArea {
-            display: block !important;
-            width: 100%;
-            height: 100%;
-        }
-
-        @page { size: A5 landscape; margin: 0; }
+        body, html { margin:0; padding:0; }
+        .bottom-bar, .preview-wrapper { display:none !important; }
+        #printArea { display:flex !important; }
+        @page { size:A5 landscape; margin:0; }
     }
 </style>
 </head>
@@ -94,66 +102,73 @@
 
 <div class="preview-wrapper">
     <div class="preview-area">
-        <div id="previewContent" class="textblock"></div>
-
-        <div class="logo-wrapper">
-            <img src="langen.png">
-        </div>
+        <div id="previewContent" class="etikett"></div>
+        <img class="logo" src="langen.png">
     </div>
 </div>
 
-<div id="printArea" style="display:none;">
-    <div id="printContent" class="textblock"></div>
-    <div class="logo-wrapper">
-        <img src="langen.png">
-    </div>
+<div id="printArea" class="etikett" style="display:none;">
+    <div id="printContent"></div>
+    <img class="logo" src="langen.png">
 </div>
 
 <div class="bottom-bar">
-    <button class="btn back-btn" id="backBtn" tabindex="0">◀ Zurück</button>
-    <button class="btn print-btn" id="printBtn" tabindex="0">Drucken</button>
+    <button class="btn back-btn" id="backBtn">◀ Zurück</button>
+    <button class="btn print-btn" id="printBtn">Drucken</button>
 </div>
 
 <script>
 window.onload = () => {
 
-    const params = new URLSearchParams(location.search);
-    let data = params.has("data") ? JSON.parse(params.get("data")) : {};
+    const url = new URLSearchParams(location.search);
+    let data = {};
 
+    if (url.has("data")) {
+        data = JSON.parse(decodeURIComponent(url.get("data")));
+    }
+
+    /* Werte */
     const beistell = data.beistell || "";
-    const type     = data.selectedType || "";
-    const kunde    = data.kundename || "";
+    const type = data.selectedType || "";
+    const kunde = data.kundename || "";
 
     let html = "";
 
-    html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:20px;">${beistell}</div>`;
+    html += `<div style="margin-bottom:10mm;">${beistell}</div>`;
+
+    const row = (t, sub="") =>
+        `<div style="margin-bottom:6mm;">${t}</div>${sub ? `<div style="font-size:32pt">${sub}</div>` : ""}`;
 
     switch(type) {
-        case "LP": html += `<div style="font-size:60pt; font-weight:bold;">L&P</div>`; break;
-        case "LPEILT": html += `<div style="font-size:60pt; font-weight:bold;margin-bottom:20px;">L&P</div><div style="font-size:60pt;font-weight:bold;">„EILT SEHR“</div>`; break;
-
-        case "SCHUETTE": html += `<div style="font-size:60pt; font-weight:bold;">Schütte</div>`; break;
-        case "SCHUETTEEILT": html += `<div style="font-size:60pt; font-weight:bold;margin-bottom:20px;">Schütte</div><div style="font-size:60pt;font-weight:bold;">„EILT SEHR“</div>`; break;
-
-        case "KLEY": html += `<div style="font-size:60pt; font-weight:bold;">Kleymann</div>`; break;
-        case "KLEYEILT": html += `<div style="font-size:60pt; font-weight:bold;margin-bottom:20px;">Kleymann</div><div style="font-size:60pt;font-weight:bold;">„EILT SEHR“</div>`; break;
-
-        case "COMTEZN8": html += `<div style="font-size:60pt; font-weight:bold;margin-bottom:20px;">Comte</div><div style="font-size:32pt;font-weight:bold;">„Zn8“</div>`; break;
-        case "COMTEZNI8": html += `<div style="font-size:60pt; font-weight:bold;margin-bottom:20px;">Comte</div><div style="font-size:32pt;font-weight:bold;">„ZNi8“</div>`; break;
+        case "LP":               html += row("L&P"); break;
+        case "LPEILT":           html += row("L&P", "„EILT SEHR“"); break;
+        case "SCHUETTE":         html += row("Schütte"); break;
+        case "SCHUETTEEILT":     html += row("Schütte", "„EILT SEHR“"); break;
+        case "KLEY":             html += row("Kleymann"); break;
+        case "KLEYEILT":         html += row("Kleymann", "„EILT SEHR“"); break;
+        case "COMTEZN8":         html += row("Comte", "„Zn8“"); break;
+        case "COMTEZNI8":        html += row("Comte", "„ZNi8“"); break;
+        case "CHEMISCH":         html += row("Comte", "„Chemisch Vernickeln“"); break;
+        case "DICK":             html += row("Comte", "„Dickschichtpassivierung“"); break;
+        case "BLAU":             html += row("Comte", "„Blau ZN8“"); break;
+        case "PENTZ":            html += row("Pentz & Gerdes", "„ZN8“"); break;
+        case "RCS":              html += row("RCS", "„Schweißen“"); break;
+        case "COATINC":          html += row("Coatinc 24", "„Verzinken“"); break;
     }
 
-    if (kunde) html += `<div style="font-size:32pt; margin-top:20px;">(${kunde})</div>`;
+    if (kunde)
+        html += `<div style="font-size:32pt;">(${kunde})</div>`;
 
     document.getElementById("previewContent").innerHTML = html;
-    document.getElementById("printContent").innerHTML   = html;
+    document.getElementById("printContent").innerHTML = html;
 
     const backBtn  = document.getElementById("backBtn");
     const printBtn = document.getElementById("printBtn");
 
-    printBtn.focus();
+    setTimeout(() => printBtn.focus(), 200);
 
-    printBtn.onclick  = () => window.print();
-    backBtn.onclick   = () => window.location.href = "beschichtung_mobile.html";
+    printBtn.onclick = () => window.print();
+    backBtn.onclick  = () => window.location.href = "../index.html";
 };
 </script>
 
