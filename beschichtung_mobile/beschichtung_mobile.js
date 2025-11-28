@@ -1,26 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
   const beistellInput = document.getElementById("beistellInput");
   const kundeInput = document.getElementById("kundeInput");
-  const kundenButtons = document.querySelectorAll(".kunde-btn");
+  const kundenBtns = document.querySelectorAll(".kunde-btn");
   const eiltBtn = document.getElementById("eiltBtn");
   const druckenBtn = document.getElementById("druckenBtn");
+  const backBtn = document.getElementById("backBtn");
 
   let selectedType = null;
-  let eiltActive = false;
+  let eilt = false;
 
-  // Kunde wählen
-  kundenButtons.forEach(btn => {
+  // Kunde auswählen
+  kundenBtns.forEach(btn => {
     btn.addEventListener("click", () => {
-      kundenButtons.forEach(b => b.classList.remove("active"));
+      kundenBtns.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
-      selectedType = btn.dataset.type || null;
+      selectedType = btn.dataset.type;
     });
   });
 
   // EILT Toggle
   eiltBtn.addEventListener("click", () => {
-    eiltActive = !eiltActive;
-    if (eiltActive) {
+    eilt = !eilt;
+    if (eilt) {
       eiltBtn.classList.add("active");
       eiltBtn.textContent = "EILT SEHR: EIN";
     } else {
@@ -29,44 +30,41 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Drucken / Weiter zur Druckvorschau
+  // ZURÜCK-BUTTON (funktioniert IMMER)
+  backBtn.addEventListener("click", () => {
+    window.location.href = "../index.html";
+  });
+
+  // DRUCKEN
   druckenBtn.addEventListener("click", () => {
     if (!selectedType) {
-      alert("Bitte einen Kunden auswählen!");
+      alert("Bitte Kunde wählen!");
       return;
     }
 
-    const beistell = beistellInput.value.trim();
-    const kundename = kundeInput.value.trim();
-
-    if (!beistell) {
-      alert("Bitte eine Beistellnummer eingeben!");
+    if (!beistellInput.value.trim()) {
+      alert("Beistellnummer fehlt!");
       return;
     }
 
-    // Typ inkl. EILT für L&P, Schütte, Kleymann
-    let typeToSend = selectedType;
+    let outType = selectedType;
 
-    if (eiltActive) {
-      if (selectedType === "LP") {
-        typeToSend = "LPEILT";
-      } else if (selectedType === "SCHUETTE") {
-        typeToSend = "SCHUETTEEILT";
-      } else if (selectedType === "KLEY") {
-        typeToSend = "KLEYEILT";
-      }
-      // für alle anderen Kunden bleibt EILT ohne Wirkung
+    // EILT nur bei L&P, Schütte, Kleymann
+    if (eilt) {
+      if (selectedType === "LP") outType = "LPEILT";
+      if (selectedType === "SCHUETTE") outType = "SCHUETTEEILT";
+      if (selectedType === "KLEY") outType = "KLEYEILT";
     }
 
     const payload = {
-      selectedType: typeToSend,
-      beistell,
-      kundename
+      selectedType: outType,
+      beistell: beistellInput.value.trim(),
+      kundename: kundeInput.value.trim()
     };
 
     const encoded = encodeURIComponent(JSON.stringify(payload));
 
-    // zur Druckseite gehen (kein automatischer Druck, nur Vorschau)
     window.open("druck.html?data=" + encoded, "_blank");
   });
+
 });
