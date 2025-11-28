@@ -92,17 +92,23 @@ button {
 
     #printArea {
         display: block !important;
+        width: 210mm !important;
+        height: 148mm !important;
+        overflow: hidden;
+        page-break-inside: avoid;
     }
 
     @page {
-        size: A5 landscape;
+        size: 210mm 148mm;   /* A5 Quer – exakte Maße statt A5 landscape */
         margin: 0;
     }
 
     html, body {
+        width: 210mm !important;
+        height: 148mm !important;
         margin: 0 !important;
         padding: 0 !important;
-        background: #fff;
+        background: #fff !important;
     }
 }
 </style>
