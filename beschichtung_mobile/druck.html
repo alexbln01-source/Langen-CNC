@@ -1,300 +1,225 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <title>Etikett Drucken</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<title>Etikett Drucken</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
+<style>
     body {
-      margin: 0;
-      padding: 0;
-      background: #dcdcdc;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
+        margin: 0;
+        padding: 0;
+        background: #dcdcdc;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
     }
 
-    /* ============================
-       VORSCHAU – A5 QUER (mm)
-       ============================ */
+    /* ==== VORSCHAU-BEREICH (immer zentriert) ==== */
     .preview-wrapper {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
     }
 
-    /* A5 quer: 210 x 148 mm – skaliert damit es auf Handy/PC passt */
+    /* ==== A5 LANDSCAPE – feste Breite/Höhe ==== */
     .preview-area {
-      width: 210mm;
-      height: 148mm;
-      background: #ffffff;
-      padding: 8mm;
-      box-sizing: border-box;
-      box-shadow: 0 0 12px rgba(0,0,0,0.25);
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transform: scale(0.45);
-      transform-origin: center center;
+        width: 210mm;
+        height: 148mm;
+        background: white;
+        padding: 8mm;
+        box-sizing: border-box;
+        position: relative;
+        box-shadow: 0 0 12px rgba(0,0,0,0.3);
+        transform-origin: center center;
+    }
+
+    .etikett {
+        width: 210mm;
+        height: 148mm;
+        background: white;
+        padding: 8mm;
+        box-sizing: border-box;
+        text-align: center;
+        position: relative;
     }
 
     .textblock {
-      text-align: center;
-      width: 100%;
+        width: 100%;
+        text-align: center;
     }
 
     .logo-wrapper {
-      position: absolute;
-      right: 10mm;
-      bottom: 10mm;
+        position: absolute;
+        right: 10mm;
+        bottom: 10mm;
     }
-
     .logo-wrapper img {
-      width: 42mm;
-      height: auto;
+        width: 42mm;
+        height: auto;
     }
 
-    /* ============================
-       DRUCKBEREICH (für @media print)
-       ============================ */
-    #printArea {
-      display: none;
-      width: 210mm;
-      height: 148mm;
-      background: #ffffff;
-      padding: 8mm;
-      box-sizing: border-box;
-      position: relative;
-    }
-
-    #printArea .textblock {
-      text-align: center;
-      width: 100%;
-    }
-
-    #printArea .logo-wrapper {
-      position: absolute;
-      right: 10mm;
-      bottom: 10mm;
-    }
-
-    #printArea .logo-wrapper img {
-      width: 42mm;
-      height: auto;
-    }
-
-    /* ============================
-       BUTTON-LEISTE UNTEN
-       ============================ */
+    /* ==== BOTTOM BAR ==== */
     .bottom-bar {
-      display: flex;
-      gap: 10px;
-      padding: 10px;
-      background: #ffffff;
-      box-shadow: 0 -3px 6px rgba(0,0,0,0.25);
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+        background: white;
+        box-shadow: 0 -4px 8px rgba(0,0,0,0.25);
     }
 
     .btn {
-      flex: 1;
-      padding: 16px 10px;
-      font-size: 20px;
-      border-radius: 10px;
-      border: none;
-      font-weight: bold;
-      color: #ffffff;
-      cursor: pointer;
+        flex: 1;
+        padding: 15px 10px;
+        font-size: 22px;
+        border: none;
+        border-radius: 10px;
+        font-weight: bold;
+        color: white;
     }
-
-    .back-btn  { background: #9e9e9e; }
-    .print-btn { background: #2e7d32; }
+    .back-btn { background:#9e9e9e; }
+    .print-btn { background:#2e7d32; }
 
     .btn:focus {
-      outline: 5px solid #1a73e8;
-      outline-offset: 0;
+        outline: 5px solid #1a73e8;
     }
 
-    /* ============================
-       PRINT
-       ============================ */
+    /* ==== DRUCK ==== */
     @media print {
-      body {
-        background: #ffffff !important;
-        margin: 0;
-        padding: 0;
-      }
+        body { background:white !important; }
+        .bottom-bar, .preview-wrapper { display:none !important; }
 
-      .preview-wrapper,
-      .bottom-bar {
-        display: none !important;
-      }
+        #printArea {
+            display:flex !important;
+        }
 
-      #printArea {
-        display: block !important;
-      }
-
-      @page {
-        size: A5 landscape;
-        margin: 0;
-      }
+        @page {
+            size: A5 landscape;
+            margin: 0;
+        }
     }
-  </style>
+</style>
 </head>
 
 <body>
 
-<!-- VORSCHAU -->
 <div class="preview-wrapper">
-  <div class="preview-area">
-    <div id="previewContent" class="textblock"></div>
+    <div id="scaleContainer">
+        <div class="preview-area">
+            <div id="previewContent" class="textblock"></div>
+
+            <div class="logo-wrapper">
+                <img src="langen.png">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- DRUCKVERSION -->
+<div id="printArea" class="etikett" style="display:none;">
+    <div id="printContent" class="textblock"></div>
 
     <div class="logo-wrapper">
-      <img src="langen.png" alt="Langen Logo">
+        <img src="langen.png">
     </div>
-  </div>
 </div>
 
-<!-- BEREICH FÜR DEN EIGENTLICHEN DRUCK -->
-<div id="printArea">
-  <div id="printContent" class="textblock"></div>
-
-  <div class="logo-wrapper">
-    <img src="langen.png" alt="Langen Logo">
-  </div>
-</div>
-
-<!-- BUTTONS UNTEN -->
 <div class="bottom-bar">
-  <button class="btn back-btn"  id="backBtn"  tabindex="0">◀ Zurück</button>
-  <button class="btn print-btn" id="printBtn" tabindex="0">Drucken</button>
+    <button class="btn back-btn" id="backBtn">◀ Zurück</button>
+    <button class="btn print-btn" id="printBtn">Drucken</button>
 </div>
 
 <script>
+/* ============================================================
+   DATEN LADEN
+============================================================ */
 window.onload = () => {
-  const params = new URLSearchParams(location.search);
-  let data = {};
 
-  if (params.has("data")) {
-    try {
-      data = JSON.parse(decodeURIComponent(params.get("data")));
-    } catch (e) {
-      data = {};
+    const url = new URLSearchParams(location.search);
+    let data = {};
+
+    if (url.has("data")) {
+        data = JSON.parse(decodeURIComponent(url.get("data")));
     }
-  }
 
-  const beistell = data.beistell || "";
-  const type     = data.selectedType || "";
-  const kunde    = data.kundename || "";
+    const beistell = data.beistell || "";
+    const type     = data.selectedType || "";
+    const kunde    = data.kundename || "";
 
-  let html = "";
+    let html = "";
 
-  // Zeile 1 – Beistellnummer
-  html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">${beistell}</div>`;
+    /* ===== ZEILE 1 ===== */
+    html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">${beistell}</div>`;
 
-  // Zeilen 2/3 – Kunde + Zusatz
-  switch (type) {
-    case "LP":
-      html += `<div style="font-size:60pt; font-weight:bold;">L&P</div>`;
-      break;
+    /* ===== ZEILE 2/3 KUNDE ===== */
+    const mapping = {
+        LP:               "L&P",
+        LPEILT:           "L&P|EILT",
+        SCHUETTE:         "Schütte",
+        SCHUETTEEILT:     "Schütte|EILT",
+        KLEY:             "Kleymann",
+        KLEYEILT:         "Kleymann|EILT",
+        COMTEZN8:         "Comte|„Zn8“",
+        COMTEZNI8:        "Comte|„ZNi8“",
+        CHEMISCH:         "Comte|„Chemisch Vernickeln“",
+        DICK:             "Comte|„Dickschichtpassivierung“",
+        BLAU:             "Comte|„Blau ZN8“",
+        PENTZ:            "Pentz & Gerdes|„ZN8“",
+        RCS:              "RCS|„Schweißen“",
+        COATINC:          "Coatinc 24|„Verzinken“"
+    };
 
-    case "LPEILT":
-      html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">L&P</div>`;
-      html += `<div style="font-size:60pt; font-weight:bold;">„EILT SEHR“</div>`;
-      break;
+    if (mapping[type]) {
+        const parts = mapping[type].split("|");
+        html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">${parts[0]}</div>`;
+        if (parts[1]) html += `<div style="font-size:32pt; font-weight:bold;">${parts[1]}</div>`;
+    }
 
-    case "SCHUETTE":
-      html += `<div style="font-size:60pt; font-weight:bold;">Schütte</div>`;
-      break;
+    /* ===== KUNDENNAME OPTIONAL ===== */
+    if (kunde) {
+        html += `<div style="font-size:32pt; margin-top:6mm;">(${kunde})</div>`;
+    }
 
-    case "SCHUETTEEILT":
-      html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Schütte</div>`;
-      html += `<div style="font-size:60pt; font-weight:bold;">„EILT SEHR“</div>`;
-      break;
+    document.getElementById("previewContent").innerHTML = html;
+    document.getElementById("printContent").innerHTML   = html;
 
-    case "KLEY":
-      html += `<div style="font-size:60pt; font-weight:bold;">Kleymann</div>`;
-      break;
+    /* ============================================================
+       AUTO-SKALIERUNG FÜR HANDY & PC
+    ============================================================ */
+    function scalePreview() {
+        const container = document.getElementById("scaleContainer");
+        const area = document.querySelector(".preview-area");
 
-    case "KLEYEILT":
-      html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Kleymann</div>`;
-      html += `<div style="font-size:60pt; font-weight:bold;">„EILT SEHR“</div>`;
-      break;
+        const cw = container.clientWidth;
+        const ch = container.clientHeight;
 
-    case "COMTEZN8":
-      html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Comte</div>`;
-      html += `<div style="font-size:32pt; font-weight:bold;">„Zn8“</div>`;
-      break;
+        const aw = area.offsetWidth;
+        const ah = area.offsetHeight;
 
-    case "COMTEZNI8":
-      html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Comte</div>`;
-      html += `<div style="font-size:32pt; font-weight:bold;">„ZNi8“</div>`;
-      break;
+        let scale = Math.min(cw / aw, ch / ah);
+        if (scale > 1) scale = 1;
 
-    case "CHEMISCH":
-      html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Comte</div>`;
-      html += `<div style="font-size:32pt; font-weight:bold;">„Chemisch Vernickeln“</div>`;
-      break;
+        area.style.transform = `scale(${scale})`;
+    }
 
-    case "DICK":
-      html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Comte</div>`;
-      html += `<div style="font-size:32pt; font-weight:bold;">„Dickschichtpassivierung“</div>`;
-      break;
+    scalePreview();
+    window.addEventListener("resize", scalePreview);
 
-    case "BLAU":
-      html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Comte</div>`;
-      html += `<div style="font-size:32pt; font-weight:bold;">„Blau ZN8“</div>`;
-      break;
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
 
-    case "PENTZ":
-      html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Pentz & Gerdes</div>`;
-      html += `<div style="font-size:32pt; font-weight:bold;">„ZN8“</div>`;
-      break;
+    const backBtn = document.getElementById("backBtn");
+    const printBtn = document.getElementById("printBtn");
 
-    case "RCS":
-      html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">RCS</div>`;
-      html += `<div style="font-size:32pt; font-weight:bold;">„Schweißen“</div>`;
-      break;
+    setTimeout(() => printBtn.focus(), 150);
 
-    case "COATINC":
-      html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Coatinc 24</div>`;
-      html += `<div style="font-size:32pt; font-weight:bold;">„Verzinken“</div>`;
-      break;
-  }
-
-  // optionale Kundenzeile
-  if (kunde) {
-    html += `<div style="font-size:32pt; margin-top:6mm;">(${kunde})</div>`;
-  }
-
-  // In Vorschau und Druckbereich einsetzen
-  document.getElementById("previewContent").innerHTML = html;
-  document.getElementById("printContent").innerHTML   = html;
-
-  const backBtn  = document.getElementById("backBtn");
-  const printBtn = document.getElementById("printBtn");
-
-  // beim Öffnen Fokus auf Drucken (für Tastatur)
-  setTimeout(() => printBtn.focus(), 150);
-
-  // Klick-Logik
-  printBtn.onclick = () => window.print();
-  backBtn.onclick  = () => window.location.href = "beschichtung_mobile.html";
-
-  // Tastatur-Navigation
-  printBtn.addEventListener("keydown", e => {
-    if (e.key === "ArrowLeft") { e.preventDefault(); backBtn.focus(); }
-    if (e.key === "Enter")     { e.preventDefault(); window.print(); }
-  });
-
-  backBtn.addEventListener("keydown", e => {
-    if (e.key === "ArrowRight") { e.preventDefault(); printBtn.focus(); }
-    if (e.key === "Enter")      { e.preventDefault(); window.location.href = "beschichtung_mobile.html"; }
-  });
+    backBtn.onclick = () => window.location.href = "index.html";
+    printBtn.onclick = () => window.print();
 };
 </script>
 
