@@ -1,196 +1,159 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <title>Etikett Drucken</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<title>Etikett Drucken</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
+<style>
     body {
-      margin: 0;
-      padding: 0;
-      background: #dcdcdc;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
+        margin: 0;
+        padding: 0;
+        background: #dcdcdc;
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
     }
 
+    /* ===== MOBILE / DESKTOP Kompatible Preview ===== */
     .preview-wrapper {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        padding: 10px;
     }
 
     .preview-area {
-      width: 210mm;
-      height: 148mm;
-      background: white;
-      padding: 8mm;
-      box-sizing: border-box;
-      transform: scale(0.45);
-      transform-origin: center;
-      box-shadow: 0 0 12px rgba(0,0,0,0.25);
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
+        width: 780px;      /* ~ A5 quer Verhältnis */
+        height: 520px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.25);
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
-    .etikett {
-      width: 210mm;
-      height: 148mm;
-      position: relative;
-      background: white;
-      padding: 8mm;
-      box-sizing: border-box;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    .textblock {
+        text-align: center;
+        width: 100%;
     }
-
-    .textblock { text-align: center; width: 100%; }
 
     .logo-wrapper {
-      position: absolute;
-      right: 10mm;
-      bottom: 10mm;
+        position: absolute;
+        right: 25px;
+        bottom: 25px;
     }
 
     .logo-wrapper img {
-      width: 42mm;
-      height: auto;
+        width: 160px;
     }
 
+    /* ===== Buttons unten ===== */
     .bottom-bar {
-      display: flex;
-      gap: 10px;
-      padding: 10px;
-      background: #ffffff;
-      box-shadow: 0 -3px 6px rgba(0,0,0,0.25);
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+        background: #ffffff;
+        box-shadow: 0 -3px 6px rgba(0,0,0,0.25);
     }
-
     .btn {
-      flex: 1;
-      padding: 16px 10px;
-      font-size: 20px;
-      border-radius: 10px;
-      border: none;
-      font-weight: bold;
-      color: white;
+        flex: 1;
+        padding: 16px;
+        font-size: 20px;
+        border-radius: 10px;
+        border: none;
+        font-weight: bold;
+        color: white;
     }
-
-    .btn:focus {
-      outline: 5px solid #1a73e8;
-    }
-
     .back-btn { background: #9e9e9e; }
     .print-btn { background: #2e7d32; }
+    .btn:focus { outline: 5px solid #1a73e8; }
 
+    /* ===== PRINT ===== */
     @media print {
-      .bottom-bar, .preview-wrapper { display: none !important; }
-      #printArea { display: flex !important; }
-      @page { size: A5 landscape; margin: 0; }
-      body { background: white !important; }
+        body { background: white !important; }
+        .bottom-bar, .preview-wrapper { display: none !important; }
+
+        #printArea {
+            display: block !important;
+            width: 100%;
+            height: 100%;
+        }
+
+        @page { size: A5 landscape; margin: 0; }
     }
-  </style>
+</style>
 </head>
 
 <body>
 
 <div class="preview-wrapper">
-  <div class="preview-area">
-    <div id="previewContent" class="textblock"></div>
+    <div class="preview-area">
+        <div id="previewContent" class="textblock"></div>
 
-    <div class="logo-wrapper">
-      <img src="langen.png" />
+        <div class="logo-wrapper">
+            <img src="langen.png">
+        </div>
     </div>
-  </div>
 </div>
 
-<div id="printArea" class="etikett" style="display:none;">
-  <div id="printContent" class="textblock"></div>
-
-  <div class="logo-wrapper">
-    <img src="langen.png" />
-  </div>
+<div id="printArea" style="display:none;">
+    <div id="printContent" class="textblock"></div>
+    <div class="logo-wrapper">
+        <img src="langen.png">
+    </div>
 </div>
 
 <div class="bottom-bar">
-  <button class="btn back-btn" id="backBtn" tabindex="0">◀ Zurück</button>
-  <button class="btn print-btn" id="printBtn" tabindex="0">Drucken</button>
+    <button class="btn back-btn" id="backBtn" tabindex="0">◀ Zurück</button>
+    <button class="btn print-btn" id="printBtn" tabindex="0">Drucken</button>
 </div>
 
 <script>
 window.onload = () => {
 
-  /* ========= URL-DATEN LADEN ========= */
-  const url = new URLSearchParams(location.search);
-  let data = {};
+    const params = new URLSearchParams(location.search);
+    let data = params.has("data") ? JSON.parse(params.get("data")) : {};
 
-  if (url.has("data")) data = JSON.parse(decodeURIComponent(url.get("data")));
+    const beistell = data.beistell || "";
+    const type     = data.selectedType || "";
+    const kunde    = data.kundename || "";
 
-  const beistell = data.beistell || "";
-  const type     = data.selectedType || "";
-  const kunde    = data.kundename || "";
+    let html = "";
 
-  /* ========= ETIKETT HTML ========= */
-  let html = "";
+    html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:20px;">${beistell}</div>`;
 
-  html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">${beistell}</div>`;
+    switch(type) {
+        case "LP": html += `<div style="font-size:60pt; font-weight:bold;">L&P</div>`; break;
+        case "LPEILT": html += `<div style="font-size:60pt; font-weight:bold;margin-bottom:20px;">L&P</div><div style="font-size:60pt;font-weight:bold;">„EILT SEHR“</div>`; break;
 
-  switch(type) {
-    case "LP":               html += `<div style="font-size:60pt; font-weight:bold;">L&P</div>`; break;
-    case "LPEILT":           html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">L&P</div><div style="font-size:60pt; font-weight:bold;">„EILT SEHR“</div>`; break;
-    case "SCHUETTE":         html += `<div style="font-size:60pt; font-weight:bold;">Schütte</div>`; break;
-    case "SCHUETTEEILT":     html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Schütte</div><div style="font-size:60pt; font-weight:bold;">„EILT SEHR“</div>`; break;
-    case "KLEY":             html += `<div style="font-size:60pt; font-weight:bold;">Kleymann</div>`; break;
-    case "KLEYEILT":         html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Kleymann</div><div style="font-size:60pt; font-weight:bold;">„EILT SEHR“</div>`; break;
-    case "COMTEZN8":         html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Comte</div><div style="font-size:32pt; font-weight:bold;">„Zn8“</div>`; break;
-    case "COMTEZNI8":        html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Comte</div><div style="font-size:32pt; font-weight:bold;">„ZNi8“</div>`; break;
-    case "CHEMISCH":         html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Comte</div><div style="font-size:32pt; font-weight:bold;">„Chemisch Vernickeln“</div>`; break;
-    case "DICK":             html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Comte</div><div style="font-size:32pt; font-weight:bold;">„Dickschichtpassivierung“</div>`; break;
-    case "BLAU":             html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Comte</div><div style="font-size:32pt; font-weight:bold;">„Blau ZN8“</div>`; break;
-    case "PENTZ":            html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Pentz & Gerdes</div><div style="font-size:32pt; font-weight:bold;">„ZN8“</div>`; break;
-    case "RCS":              html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">RCS</div><div style="font-size:32pt; font-weight:bold;">„Schweißen“</div>`; break;
-    case "COATINC":          html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Coatinc 24</div><div style="font-size:32pt; font-weight:bold;">„Verzinken“</div>`; break;
-  }
+        case "SCHUETTE": html += `<div style="font-size:60pt; font-weight:bold;">Schütte</div>`; break;
+        case "SCHUETTEEILT": html += `<div style="font-size:60pt; font-weight:bold;margin-bottom:20px;">Schütte</div><div style="font-size:60pt;font-weight:bold;">„EILT SEHR“</div>`; break;
 
-  if (kunde) html += `<div style="font-size:32pt; margin-top:6mm;">(${kunde})</div>`;
+        case "KLEY": html += `<div style="font-size:60pt; font-weight:bold;">Kleymann</div>`; break;
+        case "KLEYEILT": html += `<div style="font-size:60pt; font-weight:bold;margin-bottom:20px;">Kleymann</div><div style="font-size:60pt;font-weight:bold;">„EILT SEHR“</div>`; break;
 
-  document.getElementById("previewContent").innerHTML = html;
-  document.getElementById("printContent").innerHTML   = html;
+        case "COMTEZN8": html += `<div style="font-size:60pt; font-weight:bold;margin-bottom:20px;">Comte</div><div style="font-size:32pt;font-weight:bold;">„Zn8“</div>`; break;
+        case "COMTEZNI8": html += `<div style="font-size:60pt; font-weight:bold;margin-bottom:20px;">Comte</div><div style="font-size:32pt;font-weight:bold;">„ZNi8“</div>`; break;
+    }
 
-  /* Buttons */
-  const backBtn  = document.getElementById("backBtn");
-  const printBtn = document.getElementById("printBtn");
+    if (kunde) html += `<div style="font-size:32pt; margin-top:20px;">(${kunde})</div>`;
 
-  /* ========= AUTOFOKUS DRUCKEN ========= */
-  setTimeout(() => printBtn.focus(), 150);
+    document.getElementById("previewContent").innerHTML = html;
+    document.getElementById("printContent").innerHTML   = html;
 
-  /* ========= Navigation Pfeile ========= */
-  printBtn.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowLeft") { e.preventDefault(); backBtn.focus(); }
-    if (e.key === "Enter")     { e.preventDefault(); window.print(); }
-  });
+    const backBtn  = document.getElementById("backBtn");
+    const printBtn = document.getElementById("printBtn");
 
-  backBtn.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowRight") { e.preventDefault(); printBtn.focus(); }
-    if (e.key === "Enter")      { e.preventDefault(); goBack(); }
-  });
+    printBtn.focus();
 
-  backBtn.onclick = () => goBack();
-
-  /* ========= Eingaben löschen & zurück zur index ========= */
-  function goBack() {
-    sessionStorage.clear();
-    window.location.href = "beschichtung_mobile.html";
-  }
-
+    printBtn.onclick  = () => window.print();
+    backBtn.onclick   = () => window.location.href = "beschichtung_mobile.html";
 };
 </script>
 
