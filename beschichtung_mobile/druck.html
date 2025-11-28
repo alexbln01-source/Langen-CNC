@@ -9,112 +9,124 @@
 html, body {
     margin: 0;
     padding: 0;
-    background: #dcdcdc;
     height: 100%;
-    overflow: hidden;
+    background: #dcdcdc;
     font-family: Arial, sans-serif;
+    overflow: hidden;
 }
 
-/* Toolbar */
+/* ======== OBERE LEISTE ======== */
 #topBar {
-    height: 80px;
-    padding: 0 20px;
+    height: 70px;
+    padding: 8px 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: #ffffff;
+    box-shadow: 0 0 6px rgba(0,0,0,0.20);
 }
-button {
-    padding: 14px 26px;
-    font-size: 22px;
+
+.btn {
+    flex: 1;
+    margin: 0 6px;
+    height: 50px;
+    font-size: 20px;
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
     color: #fff;
     font-weight: bold;
 }
-#cancelBtn { background: #cc0000; }
-#printBtn  { background: #007bff; }
+#cancelBtn { background: #c62828; }
+#printBtn  { background: #1565c0; }
 
-/* =====================
-   VORSCHAU – NICHT GEDREHT
-   ===================== */
+/* ======== VORSCHAU ======== */
 #previewWrapper {
-    height: calc(100% - 80px);
+    height: calc(100% - 70px);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-##previewArea {
-    aspect-ratio: 210 / 148;    /* A5 Querformat */
-    width: 95vw;                /* nimmt 95% der Handybreite */
-    max-width: 420px;           /* maximale Breite (für große Handys) */
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.3);
-    padding: 20px;
-    position: relative;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-/* =====================
-   DRUCKBEREICH
-   ===================== */
-#printArea {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
+#previewArea {
     width: 210mm;
     height: 148mm;
-    background: #fff;
-    padding: 20mm 15mm 15mm 15mm;
+    background: #ffffff;
+    padding: 8mm;
     box-sizing: border-box;
+
+    transform: scale(0.45);
+    transform-origin: center center;
+
+    box-shadow: 0 0 15px rgba(0,0,0,0.35);
+
+    display: flex;
+    justify-content: center; /* NICHT vertikal */
+    align-items: center;
+    position: relative;
 }
 
-/* Textformat */
-.big   { font-size: 42pt; font-weight: bold; text-align: center; }
-.med   { font-size: 30pt; font-weight: bold; text-align: center; }
-.small { font-size: 24pt; text-align: center; margin-top: 10px; }
+/* ======== DRUCKBEREICH ======== */
+#printArea {
+    display: none;
+}
 
-.logo {
+.etikett {
+    width: 210mm;
+    height: 148mm;
+    background: #ffffff;
+    padding: 8mm;
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center; /* NICHT vertikal */
+    align-items: center;
+    position: relative;
+}
+
+/* ====================================
+   ZENTRIERTER TEXTBLOCK (WICHTIG!!)
+   ==================================== */
+.textblock {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   /* <-- vertikal zentrieren */
+    align-items: center;       /* <-- horizontal zentrieren */
+    width: 100%;
+    height: 100%;
+}
+
+/* ======== LOGO (fix) ======== */
+.logo-wrapper {
     position: absolute;
-    right: 15mm;
-    bottom: 15mm;
-    width: 40mm;
+    right: 10mm;
+    bottom: 8mm;
+}
+.logo-wrapper img {
+    width: 42mm;
+    height: auto;
 }
 
-/* =====================
-   PRINT MODUS
-   ===================== */
+/* ======== PRINT ======== */
 @media print {
-
-    #topBar, #previewWrapper {
+    #topBar,
+    #previewWrapper {
         display: none !important;
     }
 
     #printArea {
-        display: block !important;
-        width: 210mm !important;
-        height: 148mm !important;
-        overflow: hidden;
-        page-break-inside: avoid;
+        display: flex !important;
     }
 
     @page {
-        size: 210mm 148mm;   /* A5 Querformat */
+        size: A5 landscape;
         margin: 0;
     }
 
     html, body {
-        width: 210mm !important;
-        height: 148mm !important;
         margin: 0 !important;
         padding: 0 !important;
-        background: #fff !important;
+        background: #ffffff !important;
+        overflow: hidden !important;
     }
 }
 </style>
@@ -122,83 +134,154 @@ button {
 
 <body>
 
-<!-- Toolbar -->
+<!-- TOP-BAR -->
 <div id="topBar">
-    <button id="cancelBtn">✖ Abbrechen</button>
-    <button id="printBtn">🖨 Drucken</button>
+    <button id="cancelBtn" class="btn">Zurück</button>
+    <button id="printBtn"  class="btn">Drucken</button>
 </div>
 
-<!-- VORSCHAU (ungedreht) -->
+<!-- VORSCHAU -->
 <div id="previewWrapper">
-    <div id="previewArea">
-        <div id="p_line1" class="big"></div>
-        <div id="p_line2" class="big"></div>
-        <div id="p_line3" class="med"></div>
-        <div id="p_line4" class="small"></div>
-        <img class="logo" src="langen.png">
+    <div id="previewArea" class="etikett">
+        <div id="previewContent" class="textblock"></div>
+
+        <div class="logo-wrapper">
+            <img src="langen.png">
+        </div>
     </div>
 </div>
 
-<!-- DRUCKBEREICH -->
-<div id="printArea">
-    <div id="d_line1" class="big"></div>
-    <div id="d_line2" class="big"></div>
-    <div id="d_line3" class="med"></div>
-    <div id="d_line4" class="small"></div>
-    <img class="logo" src="langen.png">
+<!-- DRUCK -->
+<div id="printArea" class="etikett">
+    <div id="printContent" class="textblock"></div>
+
+    <div class="logo-wrapper">
+        <img src="langen.png">
+    </div>
 </div>
 
-
 <script>
-window.onload = () => {
+/* =====================================================
+   1:1 AUS DEINER PC-VERSION (beschichtung.js)
+   buildOutput() LOGIK (unverändert!)
+   ===================================================== */
 
-    /* Daten holen */
-    let data = {};
-    try {
-        const p = new URLSearchParams(location.search);
-        if (p.has("data")) {
-            data = JSON.parse(decodeURIComponent(p.get("data")));
-        }
-    } catch(e){}
+function buildLabel(beistell, type, kunde) {
 
-    /* Mapping */
-    const map = {
-        "LP": ["L&P"],
-        "LPEILT": ["L&P", "„EILT SEHR“"],
-        "SCHUETTE": ["Schütte"],
-        "SCHUETTEEILT": ["Schütte", "„EILT SEHR“"],
-        "KLEY": ["Kleymann"],
-        "KLEYEILT": ["Kleymann", "„EILT SEHR“"],
-        "COMTEZN8": ["Comte", "„ZN8“"],
-        "CHEMISCH": ["Comte", "„Chemisch Vernickeln“"],
-        "DICK": ["Comte", "„Dickschichtpassivierung“"],
-        "BLAU": ["Comte", "„Blau ZN8“"],
-        "PENTZ": ["Pentz & Gerdes", "„ZN8“"],
-        "RCS": ["RCS", "„Schweißen“"],
-        "COATINC": ["Coatinc 24", "„Verzinken“"]
-    };
+    let html = "";
 
-    const [z2, z3] = map[data.selectedType] || ["", ""];
+    // === ZEILE 1 (Beistellnummer) ===
+    html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">${beistell}</div>`;
 
-    const values = [
-        data.beistell || "",
-        z2,
-        z3,
-        data.kundename ? "(" + data.kundename + ")" : ""
-    ];
+    // === ZEILE 2 + 3 (je nach Typ) ===
+    switch(type) {
 
-    /* Vorschau + Druck füllen */
-    let p = ["p_line1","p_line2","p_line3","p_line4"];
-    let d = ["d_line1","d_line2","d_line3","d_line4"];
+        case "LP":
+            html += `<div style="font-size:60pt; font-weight:bold;">L&P</div>`;
+            break;
 
-    for (let i = 0; i < 4; i++) {
-        document.getElementById(p[i]).textContent = values[i];
-        document.getElementById(d[i]).textContent = values[i];
+        case "LPEILT":
+            html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">L&P</div>`;
+            html += `<div style="font-size:60pt; font-weight:bold;">„EILT SEHR“</div>`;
+            break;
+
+        case "SCHUETTE":
+            html += `<div style="font-size:60pt; font-weight:bold;">Schütte</div>`;
+            break;
+
+        case "SCHUETTEEILT":
+            html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Schütte</div>`;
+            html += `<div style="font-size:60pt; font-weight:bold;">„EILT SEHR“</div>`;
+            break;
+
+        case "KLEY":
+            html += `<div style="font-size:60pt; font-weight:bold;">Kleymann</div>`;
+            break;
+
+        case "KLEYEILT":
+            html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Kleymann</div>`;
+            html += `<div style="font-size:60pt; font-weight:bold;">„EILT SEHR“</div>`;
+            break;
+
+        case "COMTEZN8":
+            html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Comte</div>`;
+            html += `<div style="font-size:32pt; font-weight:bold;">„Zn8“</div>`;
+            break;
+
+        case "CHEMISCH":
+            html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Comte</div>`;
+            html += `<div style="font-size:32pt; font-weight:bold;">„Chemisch Vernickeln“</div>`;
+            break;
+
+        case "DICK":
+            html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Comte</div>`;
+            html += `<div style="font-size:32pt; font-weight:bold;">„Dickschichtpassivierung“</div>`;
+            break;
+
+        case "BLAU":
+            html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Comte</div>`;
+            html += `<div style="font-size:32pt; font-weight:bold;">„Blau ZN8“</div>`;
+            break;
+
+        case "PENTZ":
+            html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Pentz & Gerdes</div>`;
+            html += `<div style="font-size:32pt; font-weight:bold;">„ZN8“</div>`;
+            break;
+
+        case "RCS":
+            html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">RCS</div>`;
+            html += `<div style="font-size:32pt; font-weight:bold;">„Schweißen“</div>`;
+            break;
+
+        case "COATINC":
+            html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Coatinc 24</div>`;
+            html += `<div style="font-size:32pt; font-weight:bold;">„Verzinken“</div>`;
+            break;
+
+        default:
+            html += `<div style="font-size:60pt; font-weight:bold;">&nbsp;</div>`;
+            break;
     }
 
-    /* Buttons */
-    document.getElementById("printBtn").onclick = () => window.print();
-    document.getElementById("cancelBtn").onclick = () => window.close();
+    // === ZEILE 4 (Kundenname) ===
+    if (kunde) {
+        html += `<div style="font-size:32pt; margin-top:6mm;">(${kunde})</div>`;
+    }
+
+    return html;
+}
+
+/* =====================================================
+   DATEN LADEN + EINSETZEN
+   ===================================================== */
+
+window.onload = () => {
+
+    const params = new URLSearchParams(location.search);
+
+    let data = {};
+    if (params.has("data")) {
+        data = JSON.parse(decodeURIComponent(params.get("data")));
+    }
+
+    const beistell = data.beistell || "";
+    const type     = data.selectedType || "";
+    const kunde    = data.kundename || "";
+
+    const html = buildLabel(beistell, type, kunde);
+
+    document.getElementById("previewContent").innerHTML = html;
+    document.getElementById("printContent").innerHTML   = html;
+
+    // Zurück
+    document.getElementById("cancelBtn").onclick = () => {
+        window.location.href = "beschichtung_mobile.html";
+    };
+
+    // Drucken
+    document.getElementById("printBtn").onclick = () => {
+        window.print();
+    };
 };
 </script>
 
