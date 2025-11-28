@@ -11,10 +11,11 @@ html, body {
     padding: 0;
     background: #dcdcdc;
     height: 100%;
+    overflow: hidden;
     font-family: Arial, sans-serif;
 }
 
-/* Toolbar */
+/* Toolbar oben */
 #topBar {
     height: 80px;
     padding: 0 20px;
@@ -27,72 +28,97 @@ button {
     font-size: 22px;
     border: none;
     border-radius: 12px;
-    color: white;
+    color: #fff;
     font-weight: bold;
+    cursor: pointer;
 }
 #cancelBtn { background: #cc0000; }
 #printBtn  { background: #007bff; }
 
-/* Vorschau-Container */
+/* =========================
+   VORSCHAU (gedreht)
+   ========================= */
 #previewWrapper {
-    width: 100%;
     height: calc(100% - 80px);
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Für Vorschau drehen (nur Bildschirm) */
+/* Container für gedrehte Vorschau */
 #previewRotate {
-    transform: rotate(90deg) scale(0.45);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Etikett in der Vorschau – hier drehen wir */
+#previewArea {
+    width: 210mm;
+    height: 148mm;
+    background: #fff;
+    padding: 20mm 15mm 15mm 15mm;
+    box-sizing: border-box;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0,0,0,0.25);
+
+    transform: rotate(90deg) scale(0.55);
     transform-origin: center center;
 }
 
-/* Druckbereich – ORIGINAL ohne rotation */
+/* =========================
+   DRUCKBEREICH (ungedreht)
+   ========================= */
 #printArea {
+    display: none;        /* Bildschirm: unsichtbar */
     width: 210mm;
     height: 148mm;
-    background: white;
-    box-sizing: border-box;
+    background: #fff;
     padding: 20mm 15mm 15mm 15mm;
-    position: relative;
-    box-shadow: 0 0 20px rgba(0,0,0,0.25);
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 
-/* Textgrößen */
-.big   { font-size: 42pt; font-weight: bold; text-align: center; margin: 10px 0; }
-.med   { font-size: 30pt; font-weight: bold; text-align: center; margin: 10px 0; }
-.small { font-size: 24pt; text-align: center; margin-top: 12px; }
+/* Textformat */
+.big   { font-size: 42pt; font-weight: bold; text-align: center; }
+.med   { font-size: 30pt; font-weight: bold; text-align: center; }
+.small { font-size: 24pt; text-align: center; margin-top: 10px; }
 
-/* Logo */
-#logo {
+.logo {
     position: absolute;
     right: 15mm;
     bottom: 15mm;
     width: 40mm;
 }
 
-/* ----------- PRINT MODE ----------- */
+/* =========================
+   PRINT-MODUS
+   ========================= */
 @media print {
 
-    /* Toolbar ausblenden */
     #topBar, #previewWrapper {
         display: none !important;
     }
 
-    /* Nur das Etikett drucken */
     #printArea {
-        display: block;
-        position: fixed;
-        top: 0;
-        left: 0;
-        transform: none !important;
-        box-shadow: none !important;
+        display: block !important;
     }
 
     @page {
-        size: A5 landscape;
+        size: 210mm 148mm;   /* A5 Querformat */
         margin: 0;
+    }
+
+    html, body {
+        width: 210mm;
+        height: 148mm;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 }
 </style>
@@ -100,30 +126,50 @@ button {
 
 <body>
 
+<!-- Toolbar -->
 <div id="topBar">
     <button id="cancelBtn">✖ Abbrechen</button>
     <button id="printBtn">🖨 Drucken</button>
 </div>
 
+<!-- GEDREHTE VORSCHAU -->
 <div id="previewWrapper">
     <div id="previewRotate">
-        <div id="printArea">
-            <div id="line1" class="big"></div>
-            <div id="line2" class="big"></div>
-            <div id="line3" class="med"></div>
-            <div id="line4" class="small"></div>
-
-            <img id="logo" src="langen.png">
+        <div id="previewArea">
+            <div id="p_line1" class="big"></div>
+            <div id="p_line2" class="big"></div>
+            <div id="p_line3" class="med"></div>
+            <div id="p_line4" class="small"></div>
+            <img class="logo" src="langen.png">
         </div>
     </div>
 </div>
 
+<!-- UNGEDREHTER DRUCKBEREICH -->
+<div id="printArea">
+    <div id="d_line1" class="big"></div>
+    <div id="d_line2" class="big"></div>
+    <div id="d_line3" class="med"></div>
+    <div id="d_line4" class="small"></div>
+    <img class="logo" src="langen.png">
+</div>
+
 <script>
 window.onload = () => {
+    // 1) Daten aus URL oder localStorage holen
+    let data = {};
+    try {
+        const params = new URLSearchParams(window.location.search);
+        if (params.has("data")) {
+            data = JSON.parse(decodeURIComponent(params.get("data")));
+        } else {
+            data = JSON.parse(localStorage.getItem("DRUCKDATEN") || "{}");
+        }
+    } catch (e) {
+        data = {};
+    }
 
-    // Daten laden
-    const data = JSON.parse(localStorage.getItem("DRUCKDATEN") || "{}");
-
+    // 2) Mapping wie bisher
     const map = {
         "LP": ["L&P"],
         "LPEILT": ["L&P", "„EILT SEHR“"],
@@ -141,21 +187,50 @@ window.onload = () => {
     };
 
     const [z2, z3] = map[data.selectedType] || ["", ""];
-    line1.textContent = data.beistell || "";
-    line2.textContent = z2;
-    line3.textContent = z3;
+    const values = [
+        data.beistell || "",
+        z2,
+        z3,
+        data.kundename ? "(" + data.kundename + ")" : ""
+    ];
 
-    if (data.kundename)
-        line4.textContent = `(${data.kundename})`;
+    const previewIds = ["p_line1","p_line2","p_line3","p_line4"];
+    const printIds   = ["d_line1","d_line2","d_line3","d_line4"];
 
-    // Zurück
-    cancelBtn.onclick = () =>
-        window.location.href = "beschichtung_mobile.html";
+    for (let i = 0; i < 4; i++) {
+        document.getElementById(previewIds[i]).textContent = values[i];
+        document.getElementById(printIds[i]).textContent   = values[i];
+    }
 
-    // DIREKT DRUCKEN
-    printBtn.onclick = () => {
-        window.print();   // ← Direkt-Druckdialog
+    // 3) Buttons
+
+    // Cancel: versucht erst das Fenster zu schließen,
+    // fällt sonst auf Startseite zurück
+    document.getElementById("cancelBtn").onclick = () => {
+        try {
+            window.close();
+        } catch (e) {
+            window.location.href = "beschichtung_mobile.html";
+        }
     };
+
+    // Manueller Druck-Button (Fallback)
+    document.getElementById("printBtn").onclick = () => {
+        window.print();
+    };
+
+    // 4) Automatisch drucken + Fenster nach kurzer Zeit schließen
+    setTimeout(() => {
+        window.print();
+
+        setTimeout(() => {
+            try {
+                window.close();
+            } catch (e) {
+                // Wenn nicht möglich, bleibt das Fenster einfach offen
+            }
+        }, 600);
+    }, 300);
 };
 </script>
 
