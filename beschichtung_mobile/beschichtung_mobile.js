@@ -1,70 +1,159 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const beistellInput = document.getElementById("beistellInput");
-  const kundeInput = document.getElementById("kundeInput");
-  const kundenBtns = document.querySelectorAll(".kunde-btn");
-  const eiltBtn = document.getElementById("eiltBtn");
-  const druckenBtn = document.getElementById("druckenBtn");
-  const backBtn = document.getElementById("backBtn");
+let selectedType = null;
+let isEilt = false;
 
-  let selectedType = null;
-  let eilt = false;
+/* ============================================================
+   POPUP TASTATUREN (NUM / ALPHA)
+   — NICHTS am Design verändert
+============================================================ */
+let activeInput = null;
 
-  // Kunde auswählen
-  kundenBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      kundenBtns.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      selectedType = btn.dataset.type;
+const numKb = document.getElementById("numKeyboard");
+const alphaKb = document.getElementById("alphaKeyboard");
+
+const beistell = document.getElementById("beistellInput");
+const kundenname = document.getElementById("kundeInput");
+
+// Systemtastatur ganz deaktivieren
+beistell.readOnly = true;
+kundenname.readOnly = true;
+
+/* === BEISTELLNUMMER → NUMERISCHE TASTATUR === */
+beistell.addEventListener("click", () => {
+    activeInput = beistell;
+    alphaKb.style.display = "none";
+    numKb.style.display = "block";
+});
+
+/* === KUNDENNAME → ALPHA TASTATUR === */
+kundenname.addEventListener("click", () => {
+    activeInput = kundenname;
+    numKb.style.display = "none";
+    alphaKb.style.display = "block";
+});
+
+/* === NUMERISCHE TASTEN === */
+document.querySelectorAll("#numKeyboard .kb-key").forEach(key => {
+    key.addEventListener("click", () => {
+
+        if (!activeInput) return;
+
+        if (key.id === "numDel") {
+            activeInput.value = activeInput.value.slice(0, -1);
+            return;
+        }
+
+        if (key.id === "numOk") {
+            numKb.style.display = "none";
+            activeInput.blur();
+            return;
+        }
+
+        activeInput.value += key.textContent;
     });
-  });
+});
 
-  // EILT Toggle
-  eiltBtn.addEventListener("click", () => {
-    eilt = !eilt;
-    if (eilt) {
-      eiltBtn.classList.add("active");
-      eiltBtn.textContent = "EILT SEHR: EIN";
+/* === ALPHA TASTEN (QWERTZ, NUR GROSZ) === */
+document.querySelectorAll("#alphaKeyboard .kb-key").forEach(key => {
+    key.addEventListener("click", () => {
+
+        if (!activeInput) return;
+
+        if (key.id === "alphaDel") {
+            activeInput.value = activeInput.value.slice(0, -1);
+            return;
+        }
+
+        if (key.id === "alphaOk") {
+            alphaKb.style.display = "none";
+            activeInput.blur();
+            return;
+        }
+
+        activeInput.value += key.textContent;
+    });
+});
+
+
+
+/* ============================================================
+   EILT BUTTON
+============================================================ */
+const eiltBtn = document.getElementById("eiltBtn");
+
+eiltBtn.onclick = () => {
+    isEilt = !isEilt;
+    if (isEilt) {
+        eiltBtn.textContent = "EILT SEHR: AN";
+        eiltBtn.classList.add("on");
     } else {
-      eiltBtn.classList.remove("active");
-      eiltBtn.textContent = "EILT SEHR: AUS";
+        eiltBtn.textContent = "EILT SEHR: AUS";
+        eiltBtn.classList.remove("on");
     }
-  });
+};
 
-  // ZURÜCK-BUTTON (funktioniert IMMER)
-  backBtn.addEventListener("click", () => {
-    window.location.href = "../index.html";
-  });
 
-  // DRUCKEN
-  druckenBtn.addEventListener("click", () => {
-    if (!selectedType) {
-      alert("Bitte Kunde wählen!");
-      return;
-    }
 
-    if (!beistellInput.value.trim()) {
-      alert("Beistellnummer fehlt!");
-      return;
-    }
+/* ============================================================
+   KUNDEN BUTTONS
+============================================================ */
+document.querySelectorAll(".kunde-btn").forEach(btn => {
 
-    let outType = selectedType;
+    btn.onclick = () => {
 
-    // EILT nur bei L&P, Schütte, Kleymann
-    if (eilt) {
-      if (selectedType === "LP") outType = "LPEILT";
-      if (selectedType === "SCHUETTE") outType = "SCHUETTEEILT";
-      if (selectedType === "KLEY") outType = "KLEYEILT";
-    }
+        document.querySelectorAll(".kunde-btn")
+          .forEach(b => b.classList.remove("active"));
 
-    const payload = {
-      selectedType: outType,
-      beistell: beistellInput.value.trim(),
-      kundename: kundeInput.value.trim()
+        btn.classList.add("active");
+
+        selectedType = btn.getAttribute("data-type");
     };
 
-    const encoded = encodeURIComponent(JSON.stringify(payload));
-
-    window.open("druck.html?data=" + encoded, "_blank");
-  });
-
 });
+
+
+
+/* ============================================================
+   DRUCKEN BUTTON
+============================================================ */
+document.getElementById("druckenBtn").onclick = () => {
+
+    const beistellwert = beistell.value.trim();
+    const kundenameWert = kundenname.value.trim();
+
+    if (!beistellwert) {
+        alert("Bitte Beistellnummer eingeben!");
+        return;
+    }
+
+    if (!selectedType) {
+        alert("Bitte einen Kunden auswählen!");
+        return;
+    }
+
+    let finalType = selectedType;
+
+    // EILT gilt nur für LP, SCHUETTE, KLEY
+    if (isEilt) {
+        if (selectedType === "LP") finalType = "LPEILT";
+        if (selectedType === "SCHUETTE") finalType = "SCHUETTEEILT";
+        if (selectedType === "KLEY") finalType = "KLEYEILT";
+    }
+
+    const data = {
+        beistell: beistellwert,
+        selectedType: finalType,
+        kundename: kundenameWert
+    };
+
+    window.location.href =
+      "druck.html?data=" + encodeURIComponent(JSON.stringify(data));
+};
+
+
+
+/* ============================================================
+   ZURÜCK BUTTON
+============================================================ */
+document.getElementById("backBtn").onclick = () => {
+    history.back();
+};

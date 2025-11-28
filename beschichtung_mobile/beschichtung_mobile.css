@@ -1,6 +1,4 @@
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html, body {
   margin: 0;
@@ -17,7 +15,6 @@ html, body {
   padding: 8px;
 }
 
-/* HEADER */
 .header {
   text-align: center;
   margin-bottom: 4px;
@@ -29,7 +26,6 @@ html, body {
   font-weight: 700;
 }
 
-/* INPUT FELDER */
 .field-group {
   display: flex;
   flex-direction: column;
@@ -47,7 +43,6 @@ html, body {
   border: 1px solid #888;
 }
 
-/* GRID TITEL */
 .grid-label {
   margin-top: 6px;
   margin-bottom: 4px;
@@ -56,10 +51,10 @@ html, body {
 }
 
 .kunden-grid {
-    padding: 10px 20px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+  padding: 10px 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
 }
 
 .kunde-btn {
@@ -72,16 +67,13 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 4px;
 }
 
 .kunde-btn.active {
   background: #007bff;
-  color: #fff;
+  color: white;
 }
 
-/* EILT BUTTON */
 #eiltBtn {
   width: 100%;
   padding: 12px;
@@ -93,11 +85,8 @@ html, body {
   margin-top: 10px;
 }
 
-#eiltBtn.active {
-  background: #c80000;
-}
+#eiltBtn.active { background: #c80000; }
 
-/* UNTERE BUTTONS */
 .bottom-row {
   display: flex;
   justify-content: space-between;
@@ -124,5 +113,35 @@ html, body {
   border: none;
   background: #00963d;
   color: white;
+  font-weight: bold;
+}
+
+/* ================================
+   TASTATUR STYLES
+================================ */
+.kb {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #dcdcdc;
+  padding: 12px;
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
+}
+
+.kb-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.kb-key {
+  flex: 1;
+  padding: 18px 0;
+  font-size: 28px;
+  background: white;
+  border: none;
+  border-radius: 10px;
   font-weight: bold;
 }
