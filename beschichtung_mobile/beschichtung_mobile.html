@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Beschichtung Etikett</title>
+  <title>Etikett Beschichtung</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="beschichtung_mobile.css">
 </head>
@@ -14,43 +14,44 @@
     <h1>Etikett Beschichtung</h1>
   </header>
 
-  <main class="content">
-    <div class="field-group">
-      <label for="beistellInput">Beistellnummer</label>
-      <input id="beistellInput" type="text" autocomplete="off">
-    </div>
+  <div class="field-group">
+    <label>Beistellnummer</label>
+    <input id="beistellInput" type="text">
+  </div>
 
-    <div class="field-group">
-      <label for="kundeInput">Kundenname (optional)</label>
-      <input id="kundeInput" type="text" autocomplete="off">
-    </div>
+  <div class="field-group">
+    <label>Kundenname (optional)</label>
+    <input id="kundeInput" type="text">
+  </div>
 
-    <div class="grid-label">Kunde wählen</div>
+  <div class="grid-label">Kunde wählen:</div>
 
-    <div class="kunden-grid">
-      <button class="kunde-btn" data-type="LP">L&amp;P</button>
-      <button class="kunde-btn" data-type="SCHUETTE">Schütte</button>
+  <div class="kunden-grid">
 
-      <button class="kunde-btn" data-type="KLEY">Kleymann</button>
-      <button class="kunde-btn" data-type="COMTEZN8">Comte – ZN8</button>
+    <button class="kunde-btn" data-type="LP">L&amp;P</button>
+    <button class="kunde-btn" data-type="SCHUETTE">Schütte</button>
 
-      <button class="kunde-btn" data-type="CHEMISCH">Comte – Chemisch</button>
-      <button class="kunde-btn" data-type="DICK">Comte – Dickschicht</button>
+    <button class="kunde-btn" data-type="KLEY">Kleymann</button>
+    <button class="kunde-btn" data-type="COMTEZN8">Comte – ZN8</button>
 
-      <button class="kunde-btn" data-type="BLAU">Comte – Blau ZN8</button>
-      <button class="kunde-btn" data-type="PENTZ">Pentz &amp; Gerdes – ZN8</button>
+    <button class="kunde-btn" data-type="CHEMISCH">Comte – Chemisch</button>
+    <button class="kunde-btn" data-type="DICK">Comte – Dick</button>
 
-      <button class="kunde-btn" data-type="RCS">RCS – Schweißen</button>
-      <button class="kunde-btn" data-type="COATINC">Coatinc 24 – Verzinken</button>
-    </div>
+    <button class="kunde-btn" data-type="BLAU">Comte – Blau ZN8</button>
+    <button class="kunde-btn" data-type="PENTZ">Pentz & Gerdes – ZN8</button>
 
-    <button id="eiltBtn" class="wide-btn">EILT SEHR: AUS</button>
+    <button class="kunde-btn" data-type="RCS">RCS – Schweißen</button>
+    <button class="kunde-btn" data-type="COATINC">Coatinc 24 – Verzinken</button>
 
-    <button id="druckenBtn" class="primary-btn wide-btn">Weiter zur Druckvorschau</button>
-  </main>
+  </div>
+
+  <button id="eiltBtn">EILT SEHR: AUS</button>
+
+  <button id="druckenBtn" class="primary-btn">Weiter zur Druckvorschau</button>
 
 </div>
 
 <script src="beschichtung_mobile.js"></script>
+
 </body>
 </html>

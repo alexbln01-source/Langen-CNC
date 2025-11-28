@@ -6,84 +6,74 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
+  background: #f0f0f0;
   font-family: Arial, sans-serif;
-  background: #dcdcdc;
 }
 
 .page {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 6px;
+  padding: 8px;
 }
 
-/* Kopfbereich */
+/* HEADER */
 .header {
-  flex: 0 0 auto;
   text-align: center;
   margin-bottom: 4px;
 }
 
 .header h1 {
-  font-size: 18px;
-  margin: 4px 0;
+  font-size: 20px;
+  margin: 6px 0;
+  font-weight: 700;
 }
 
-/* Inhalt */
-.content {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-/* Eingabefelder */
+/* FELDER */
 .field-group {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  margin-bottom: 4px;
 }
 
 .field-group label {
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .field-group input {
-  font-size: 16px;
-  padding: 6px 8px;
-  border-radius: 6px;
-  border: 1px solid #aaa;
+  font-size: 18px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #888;
 }
 
-/* Grid Titel */
+/* GRID TITEL */
 .grid-label {
-  margin-top: 2px;
-  font-size: 13px;
+  margin-top: 6px;
+  margin-bottom: 4px;
+  font-size: 14px;
   font-weight: bold;
 }
 
-/* Kunden-Grid */
+/* KUNDEN GRID */
 .kunden-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  margin-top: 2px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 6px;
 }
 
 .kunde-btn {
-  flex: 1 1 calc(50% - 2px);
-  min-width: calc(50% - 2px);
-  padding: 6px;
-  height: 56px;              /* kompakt für 5 Zoll */
-  font-size: 14px;
-  border-radius: 8px;
+  height: 62px;
+  font-size: 15px;
+  border-radius: 10px;
   border: none;
-  background: #ffffff;
-  box-shadow: 0 0 4px rgba(0,0,0,0.2);
-  text-align: center;
+  background: white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4px;
 }
 
 .kunde-btn.active {
@@ -91,44 +81,31 @@ html, body {
   color: #fff;
 }
 
-/* EILT-Button + Drucken */
-.wide-btn {
+/* EILT BUTTON */
+#eiltBtn {
   width: 100%;
-  padding: 10px;
-  font-size: 16px;
+  padding: 12px;
+  font-size: 18px;
   border-radius: 10px;
   border: none;
-  margin-top: 4px;
-}
-
-#eiltBtn {
   background: #888;
-  color: #fff;
+  color: white;
+  margin-top: 10px;
 }
 
 #eiltBtn.active {
-  background: #c82333;  /* rot */
+  background: #c80000;
 }
 
+/* DRUCK BUTTON */
 .primary-btn {
-  background: #28a745;
-  color: #fff;
+  width: 100%;
+  padding: 14px;
+  font-size: 20px;
+  border-radius: 10px;
+  border: none;
+  margin-top: 10px;
+  background: #00963d;
+  color: white;
   font-weight: bold;
-}
-
-/* Für sehr kleine Displays etwas enger machen */
-@media (max-height: 640px) {
-  .header h1 {
-    font-size: 16px;
-  }
-
-  .kunde-btn {
-    height: 52px;
-    font-size: 13px;
-  }
-
-  .wide-btn {
-    padding: 8px;
-    font-size: 15px;
-  }
 }
