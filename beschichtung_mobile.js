@@ -103,7 +103,7 @@ if (isMobile) {
         if (e.key === "Enter") {
             e.preventDefault();
             if (kundenButtons.length > 0) {
-                kundenButtons[0].focus(); 
+                kundenButtons[0].focus();
             }
         }
     });
@@ -111,7 +111,7 @@ if (isMobile) {
 
 
 /* ============================================================
-   EILT BUTTON – JETZT MIT AUTO-SPRUNG ZU DRUCKEN
+   EILT BUTTON – Jetzt mit Auto-Sprung zu Druck
 ============================================================ */
 eiltBtn.onclick = () => {
     isEilt = !isEilt;
@@ -119,10 +119,7 @@ eiltBtn.onclick = () => {
     if (isEilt) {
         eiltBtn.textContent = "EILT SEHR: AN";
         eiltBtn.classList.add("on");
-
-        // >>> NEU: Wenn EILT aktiviert wird → sofort DRUCKEN
-        druckenBtn.focus();
-
+        druckenBtn.focus();   // sofort springen
     } else {
         eiltBtn.textContent = "EILT SEHR: AUS";
         eiltBtn.classList.remove("on");
@@ -139,12 +136,13 @@ kundenButtons.forEach((btn, index) => {
         kundenButtons.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
 
-        selectedType = btn.dataset.type;
-        lastCustomerIndex = index;
+        selectedType       = btn.dataset.type;
+        lastCustomerIndex  = index;
 
         eiltBtn.focus();  // Nur nach Auswahl
     };
 
+    // Klick
     btn.onclick = () => selectCustomer();
 
     btn.addEventListener("focus", () => {
@@ -153,8 +151,8 @@ kundenButtons.forEach((btn, index) => {
 
     btn.addEventListener("keydown", (e) => {
 
-        const cols = 3; 
-        const upIndex = index - cols;
+        const cols = 3;
+        const upIndex   = index - cols;
         const downIndex = index + cols;
 
         if (e.key === "ArrowLeft") {
@@ -196,7 +194,7 @@ kundenButtons.forEach((btn, index) => {
 
 
 /* ============================================================
-   EILT NAVIGATION
+   EILT – Navigation
 ============================================================ */
 eiltBtn.addEventListener("keydown", (e) => {
 
@@ -228,7 +226,7 @@ eiltBtn.addEventListener("keydown", (e) => {
 
 
 /* ============================================================
-   DRUCKEN
+   DRUCKEN BUTTON
 ============================================================ */
 druckenBtn.addEventListener("keydown", (e) => {
 
@@ -250,7 +248,7 @@ druckenBtn.addEventListener("keydown", (e) => {
 
 
 /* ============================================================
-   ZURÜCK
+   ZURÜCK BUTTON
 ============================================================ */
 backBtn.addEventListener("keydown", (e) => {
 
@@ -272,7 +270,7 @@ backBtn.addEventListener("keydown", (e) => {
 
 
 /* ============================================================
-   DRUCKLOGIK
+   DRUCK STARTEN
 ============================================================ */
 druckenBtn.onclick = () => {
 
@@ -309,6 +307,10 @@ druckenBtn.onclick = () => {
 
 
 /* ============================================================
-   ZURÜCK BUTTON
+   ZURÜCK ZU INDEX
 ============================================================ */
-backBtn.onclick = () => history.back();
+backBtn.onclick = () => {
+    beistell.value   = "";
+    kundenname.value = "";
+     window.location.href = "../index.html";
+};
