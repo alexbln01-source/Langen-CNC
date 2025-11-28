@@ -15,7 +15,7 @@ html, body {
     font-family: Arial, sans-serif;
 }
 
-/* Toolbar */
+/* Toolbar oben */
 #topBar {
     height: 80px;
     padding: 0 20px;
@@ -30,11 +30,14 @@ button {
     border-radius: 12px;
     color: #fff;
     font-weight: bold;
+    cursor: pointer;
 }
 #cancelBtn { background: #cc0000; }
 #printBtn  { background: #007bff; }
 
-/* ========== VORSCHAU (gedreht) ========== */
+/* =========================
+   VORSCHAU (gedreht)
+   ========================= */
 #previewWrapper {
     height: calc(100% - 80px);
     width: 100%;
@@ -42,6 +45,8 @@ button {
     justify-content: center;
     align-items: center;
 }
+
+/* Container für gedrehte Vorschau */
 #previewRotate {
     width: 100%;
     height: 100%;
@@ -49,29 +54,34 @@ button {
     justify-content: center;
     align-items: center;
 }
+
+/* Etikett in der Vorschau – hier drehen wir */
 #previewArea {
     width: 210mm;
     height: 148mm;
+    background: #fff;
+    padding: 20mm 15mm 15mm 15mm;
+    box-sizing: border-box;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0,0,0,0.25);
+
     transform: rotate(90deg) scale(0.55);
     transform-origin: center center;
-    background: #fff;
-    padding: 20mm 15mm 15mm 15mm;
-    box-shadow: 0 0 20px rgba(0,0,0,0.25);
-    position: relative;
-    box-sizing: border-box;
 }
 
-/* ========== DRUCKBEREICH (ungedreht) ========== */
+/* =========================
+   DRUCKBEREICH (ungedreht)
+   ========================= */
 #printArea {
-    display: none;
+    display: none;        /* Bildschirm: unsichtbar */
+    width: 210mm;
+    height: 148mm;
     background: #fff;
     padding: 20mm 15mm 15mm 15mm;
+    box-sizing: border-box;
     position: fixed;
     top: 0;
     left: 0;
-    box-sizing: border-box;
-    width: 210mm;
-    height: 148mm;
 }
 
 /* Textformat */
@@ -86,37 +96,27 @@ button {
     width: 40mm;
 }
 
-
-/* ========== PRINT-MODUS (Android-kompatibel) ========== */
+/* =========================
+   PRINT-MODUS
+   ========================= */
 @media print {
 
+    /* UI & Vorschau ausblenden */
     #topBar, #previewWrapper {
         display: none !important;
     }
 
-    /* WICHTIG: Druckbereich sichtbar machen */
+    /* Nur den ungedrehten Bereich drucken */
     #printArea {
         display: block !important;
-        width: 210mm !important;
-        height: 148mm !important;
-        page-break-inside: avoid;
-        overflow: hidden;
     }
 
     @page {
-        size: A5 landscape; /* Wird korrekt akzeptiert */
+        size: A5 landscape;
         margin: 0;
-    }
-
-    html, body {
-        margin: 0 !important;
-        padding: 0 !important;
-        width: auto !important;
-        height: auto !important;
     }
 }
 </style>
-
 </head>
 
 <body>
@@ -149,20 +149,22 @@ button {
     <img class="logo" src="langen.png">
 </div>
 
-
 <script>
 window.onload = () => {
-
-    /* 1) Daten holen (URL → JSON) */
+    // 1) Daten aus URL oder localStorage holen
     let data = {};
     try {
         const params = new URLSearchParams(window.location.search);
         if (params.has("data")) {
             data = JSON.parse(decodeURIComponent(params.get("data")));
+        } else {
+            data = JSON.parse(localStorage.getItem("DRUCKDATEN") || "{}");
         }
-    } catch(e){}
+    } catch (e) {
+        data = {};
+    }
 
-    /* 2) Map für Text */
+    // 2) Mapping wie bisher
     const map = {
         "LP": ["L&P"],
         "LPEILT": ["L&P", "„EILT SEHR“"],
@@ -180,7 +182,6 @@ window.onload = () => {
     };
 
     const [z2, z3] = map[data.selectedType] || ["", ""];
-
     const values = [
         data.beistell || "",
         z2,
@@ -188,27 +189,42 @@ window.onload = () => {
         data.kundename ? "(" + data.kundename + ")" : ""
     ];
 
-    /* 3) Vorschau + Druckfüllung */
-    const p = ["p_line1","p_line2","p_line3","p_line4"];
-    const d = ["d_line1","d_line2","d_line3","d_line4"];
+    const previewIds = ["p_line1","p_line2","p_line3","p_line4"];
+    const printIds   = ["d_line1","d_line2","d_line3","d_line4"];
 
     for (let i = 0; i < 4; i++) {
-        document.getElementById(p[i]).textContent = values[i];
-        document.getElementById(d[i]).textContent = values[i];
+        document.getElementById(previewIds[i]).textContent = values[i];
+        document.getElementById(printIds[i]).textContent   = values[i];
     }
 
-    /* 4) Manuelle Buttons */
-    document.getElementById("printBtn").onclick = () => window.print();
-    document.getElementById("cancelBtn").onclick = () => window.close();
+    // 3) Buttons
 
-    /* 5) AUTO-DRUCK + AUTO-SCHLIEßEN → Android Stabil Version */
+    // Cancel: versucht erst das Fenster zu schließen,
+    // fällt sonst auf Startseite zurück
+    document.getElementById("cancelBtn").onclick = () => {
+        try {
+            window.close();
+        } catch (e) {
+            window.location.href = "beschichtung_mobile.html";
+        }
+    };
+
+    // Manueller Druck-Button (Fallback)
+    document.getElementById("printBtn").onclick = () => {
+        window.print();
+    };
+
+    // 4) Automatisch drucken + Fenster nach kurzer Zeit schließen
     setTimeout(() => {
         window.print();
 
         setTimeout(() => {
-            window.close();
+            try {
+                window.close();
+            } catch (e) {
+                // Wenn nicht möglich, bleibt das Fenster einfach offen
+            }
         }, 600);
-
     }, 300);
 };
 </script>
