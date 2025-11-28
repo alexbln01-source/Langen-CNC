@@ -85,7 +85,9 @@ html, body {
   margin-top: 10px;
 }
 
-#eiltBtn.active { background: #c80000; }
+#eiltBtn.on {
+  background: #c80000;
+}
 
 .bottom-row {
   display: flex;
@@ -116,32 +118,42 @@ html, body {
   font-weight: bold;
 }
 
-/* ================================
-   TASTATUR STYLES
-================================ */
+/* ======================================================
+   POPUP TASTATUR (OPTION A — MITTELGROSS / 30% KLEINER)
+====================================================== */
+
 .kb {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
   background: #dcdcdc;
-  padding: 12px;
+  padding: 6px; /* kleiner */
   box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
 }
 
 .kb-row {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 8px; /* kleiner */
+  margin-bottom: 6px; /* kleiner */
 }
 
 .kb-key {
   flex: 1;
-  padding: 18px 0;
-  font-size: 28px;
-  background: white;
+  padding: 10px 0; /* kleiner */
+  font-size: 20px; /* kleiner */
+  background: #ffffff;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px; /* etwas kleiner */
   font-weight: bold;
+}
+/* ======================================================
+   FOKUS OHNE VERGRÖSSERUNG FÜR ALLE BUTTONS
+====================================================== */
+button:focus {
+    outline: 3px solid #007bff;   /* blauer Rand */
+    outline-offset: 0;            /* KEINE Verschiebung */
+    box-shadow: none;             /* Schatten aus */
+    transform: none;              /* keine Vergrößerung */
 }
