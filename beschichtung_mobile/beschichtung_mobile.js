@@ -79,7 +79,7 @@ grid.forEach(ch => {
 });
 
 //--------------------------------------------
-// Drucken
+// Drucken – NEU: Übergabe per URL an druck.html
 //--------------------------------------------
 
 btnDrucken.onclick = () => {
@@ -89,17 +89,23 @@ btnDrucken.onclick = () => {
         return;
     }
 
-    const beistell = document.getElementById("numInput").value.trim();
-    const kundename = document.getElementById("kundeInput").value.trim();
+    const beistell   = document.getElementById("numInput").value.trim();
+    const kundename  = document.getElementById("kundeInput").value.trim();
 
-    localStorage.setItem("DRUCKDATEN", JSON.stringify({
+    const payload = {
         selectedType,
         beistell,
         kundename
-    }));
+    };
 
-    // DIREKT zur Druckseite, kein Verlauf-Spam
-    window.location.href = "druck.html";
+    // Optional: weiterhin im localStorage ablegen (Fallback)
+    localStorage.setItem("DRUCKDATEN", JSON.stringify(payload));
+
+    // Daten als JSON kodiert in die URL packen
+    const encoded = encodeURIComponent(JSON.stringify(payload));
+
+    // Neues Fenster/Tab im normalen Chrome -> dort wird gedruckt
+    window.open("druck.html?data=" + encoded, "_blank");
 };
 
 // SAUBER ZURÜCK
