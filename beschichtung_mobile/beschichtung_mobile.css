@@ -55,11 +55,11 @@ html, body {
   font-weight: bold;
 }
 
-/* KUNDEN GRID */
 .kunden-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 6px;
+    padding: 10px 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
 }
 
 .kunde-btn {
