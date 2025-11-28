@@ -1,50 +1,56 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, user-scalable=no" />
-<title>Beschichtung Mobile</title>
-
-<link rel="stylesheet" href="beschichtung_mobile.css" />
+  <meta charset="UTF-8">
+  <title>Beschichtung Etikett</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="beschichtung_mobile.css">
 </head>
-
 <body>
 
-<div id="wrapper">
-  <div id="card">
-    <h1>BESCHICHTUNG</h1>
+<div class="page">
 
-    <input id="numInput" class="inp fake-input" placeholder="Beistellnummer" />
-    <input id="kundeInput" class="inp fake-input" placeholder="Kundenname" />
+  <header class="header">
+    <h1>Etikett Beschichtung</h1>
+  </header>
 
-    <div id="kundenButtons"></div>
-
-    <div id="footerBtns">
-      <button id="btnBack" class="btn-dark">⬅️ Zurück</button>
-      <button id="btnDrucken" class="btn-blue">🖨 Drucken</button>
-    </div>
-  </div>
-</div>
-
-<!-- Popup-Tastatur -->
-<div id="keyboardPopup">
-  <div id="keyboardBox">
-    <h3 id="keyboardTitle">Eingabe</h3>
-
-    <input id="keyboardInput" />
-
-    <div id="keyboardGrid"></div>
-
-    <div id="kbActions">
-      <button id="btnDel">⌫</button>
-      <button id="btnClose">X</button>
-      <button id="btnOk">OK</button>
+  <main class="content">
+    <div class="field-group">
+      <label for="beistellInput">Beistellnummer</label>
+      <input id="beistellInput" type="text" autocomplete="off">
     </div>
 
-  </div>
+    <div class="field-group">
+      <label for="kundeInput">Kundenname (optional)</label>
+      <input id="kundeInput" type="text" autocomplete="off">
+    </div>
+
+    <div class="grid-label">Kunde wählen</div>
+
+    <div class="kunden-grid">
+      <button class="kunde-btn" data-type="LP">L&amp;P</button>
+      <button class="kunde-btn" data-type="SCHUETTE">Schütte</button>
+
+      <button class="kunde-btn" data-type="KLEY">Kleymann</button>
+      <button class="kunde-btn" data-type="COMTEZN8">Comte – ZN8</button>
+
+      <button class="kunde-btn" data-type="CHEMISCH">Comte – Chemisch</button>
+      <button class="kunde-btn" data-type="DICK">Comte – Dickschicht</button>
+
+      <button class="kunde-btn" data-type="BLAU">Comte – Blau ZN8</button>
+      <button class="kunde-btn" data-type="PENTZ">Pentz &amp; Gerdes – ZN8</button>
+
+      <button class="kunde-btn" data-type="RCS">RCS – Schweißen</button>
+      <button class="kunde-btn" data-type="COATINC">Coatinc 24 – Verzinken</button>
+    </div>
+
+    <button id="eiltBtn" class="wide-btn">EILT SEHR: AUS</button>
+
+    <button id="druckenBtn" class="primary-btn wide-btn">Weiter zur Druckvorschau</button>
+  </main>
+
 </div>
-<script src="jspdf.umd.min.js"></script>
-<script src="html2canvas.min.js"></script>   <!-- HIER EINBAUEN -->
+
 <script src="beschichtung_mobile.js"></script>
 </body>
 </html>
