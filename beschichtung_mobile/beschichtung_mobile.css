@@ -1,89 +1,77 @@
-/* Global */
+* { box-sizing: border-box; }
+
 html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
+    background: linear-gradient(180deg,#ffffff,#eef1f4);
     font-family: Arial, sans-serif;
     overflow: hidden;
-
     display: flex;
     justify-content: center;
-    align-items: center;
-
-    transform: scale(var(--scale, 1));
-    transform-origin: top center;
+    align-items: flex-start;
 }
 
-/* Hauptcontainer */
 .page {
-    width: 92vw;
-    height: 86vh;        /* WICHTIG – weniger Höhe */
+    width: 94vw;
+    max-width: 550px;
+    height: auto;
     background: white;
     border-radius: 28px;
     padding: 18px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.25);
     border: 1px solid #c9c9c9;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;  /* verteilt Inhalt top → bottom */
-    overflow: hidden;                /* verhindert Überlauf */
 }
 
-/* Header */
 .header h1 {
     text-align: center;
     font-size: 22px;
-    color: #003a73;
     font-weight: 900;
-    margin-top: 5px;
-    margin-bottom: 10px;
+    color: #003a73;
 }
 
-/* Eingabefelder */
 .field-group {
-    margin: 4px 0;
+    margin-bottom: 8px;
 }
 
 .field-group input {
     width: 100%;
-    padding: 10px;
     font-size: 18px;
-    border-radius: 12px;
-    border: 1px solid #888;
+    padding: 10px;
+    border-radius: 14px;
+    border: 1px solid #999;
 }
 
-/* Kundenraster */
+.grid-label {
+    font-weight: 700;
+    margin-top: 10px;
+}
+
 .kunden-grid {
+    margin-top: 8px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3,1fr);
     gap: 10px;
-    padding: 6px;
 }
 
 .kunde-btn {
     height: 56px;
     border-radius: 14px;
     background: white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
     border: none;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
     font-size: 14px;
 }
 
-.kunde-btn.active {
-    background: #007bff;
-    color: white;
-}
+.kunde-btn.active { background: #0066ff; color: white; }
 
-/* EILT Button */
 #eiltBtn {
-    width: 100%;
+    margin-top: 14px;
     padding: 14px;
-    font-size: 20px;
     border-radius: 14px;
     border: none;
-    background: #666;
+    font-size: 20px;
+    background: #555;
     color: white;
 }
 
@@ -91,32 +79,21 @@ html, body {
     background: #c80000;
 }
 
-/* Bottom Buttons */
 .bottom-row {
     display: flex;
-    width: 100%;
-    gap: 12px;
+    gap: 10px;
+    margin-top: 14px;
 }
 
-.bottom-row button {
+.back-btn, .primary-btn {
     flex: 1;
     padding: 14px;
-    font-size: 20px;
-    border-radius: 14px;
     border: none;
-    color: white;
+    border-radius: 14px;
+    font-size: 20px;
     font-weight: bold;
+    color: white;
 }
 
-.back-btn { background: #444; }
+.back-btn { background: #333; }
 .primary-btn { background: #00963d; }
-
-/* On-screen keyboard */
-.kb {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #dcdcdc;
-    padding: 6px;
-}
