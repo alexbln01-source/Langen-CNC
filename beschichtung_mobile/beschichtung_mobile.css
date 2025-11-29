@@ -1,114 +1,106 @@
-/* ============================================================
-   GLOBAL
-============================================================ */
-* {
-  box-sizing: border-box;
-}
+/* ===============================================
+   Global Layout / Hintergrund
+=============================================== */
 
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
+  font-family: Arial, sans-serif;
   background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
-  font-family: "Segoe UI", Arial, sans-serif;
   overflow: hidden;
 }
 
-/* ============================================================
-   ZENTRIERTER CARD-CONTAINER (wie INDEX)
-============================================================ */
+/* ZENTRALER GERÄTE-CONTAINER – automatische Skalierung! */
 .page {
-  width: 92%;
-  max-width: 900px;
-
-  height: calc(100% - env(safe-area-inset-bottom) - 10px);
-
-  margin: auto;
-  margin-top: 10px;
-  margin-bottom: env(safe-area-inset-bottom);
-
-  background: linear-gradient(180deg,#ffffff 0%,#eef1f4 100%);
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  background: white;
+  padding: 18px;
   border-radius: 28px;
-
   box-shadow: 0 10px 40px rgba(0,0,0,0.25);
-  padding: 20px 14px 30px;
-
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
+  transform-origin: top center;
 }
 
-/* ============================================================
-   TITEL
-============================================================ */
-.header {
-  text-align: center;
-  margin-bottom: 10px;
+/* ===============================================
+   Automatische Skalierungsregeln
+=============================================== */
+
+/* ░░ iPhone 12/13/14/15 (6.1") – Normalgröße ░░ */
+@media (min-width: 380px) and (max-width: 420px) {
+  .page { transform: scale(1.00); }
 }
+
+/* ░░ TC22 (6") – etwas kleiner machen ░░ */
+@media (min-width: 410px) and (max-width: 460px) {
+  .page { transform: scale(0.88); }
+}
+
+/* ░░ TC21 (5") – merkbar kleiner ░░ */
+@media (max-width: 400px) {
+  .page { transform: scale(0.80); }
+}
+
+/* Falls Navigation-Bar viel Platz frisst (Android) */
+@media (max-height: 720px) {
+  .page { transform: scale(0.75); }
+}
+
+/* ===============================================
+   Header
+=============================================== */
 
 .header h1 {
+  text-align: center;
   font-size: 26px;
-  font-weight: 800;
+  font-weight: 900;
   color: #003a73;
-  margin: 0;
+  margin-top: 0;
+  margin-bottom: 16px;
 }
 
-/* ============================================================
-   FELDER
-============================================================ */
+/* ===============================================
+   Eingabefelder
+=============================================== */
+
 .field-group {
   margin-bottom: 10px;
 }
 
 .field-group label {
-  font-size: 15px;
-  color: #003a73;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .field-group input {
-  width: 100%;
-  padding: 12px;
   font-size: 18px;
-
-  border-radius: 14px;
-  border: 1px solid #b0b9c3;
-
-  background: white;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid #b8b8b8;
+  width: 100%;
 }
 
-/* ============================================================
-   GRID
-============================================================ */
-.grid-label {
-  font-size: 16px;
-  font-weight: 700;
-  text-align: center;
-  margin: 12px 0 8px;
-  color: #003a73;
-}
+/* ===============================================
+   Kunden-Buttons (3-Spalten-Raster)
+=============================================== */
 
 .kunden-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
-  padding: 0 8px;
+  margin-top: 10px;
+  margin-bottom: 16px;
 }
 
 .kunde-btn {
-  padding: 10px;
-  height: 68px;
-
-  font-size: 15px;
-  font-weight: 600;
-  text-align: center;
-
+  background: white;
   border-radius: 14px;
   border: none;
-  background: #ffffff;
-
-  box-shadow: 0 2px 6px rgba(0,0,0,0.20);
+  font-size: 14px;
+  padding: 12px 6px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  font-weight: bold;
 }
 
 .kunde-btn.active {
@@ -116,96 +108,51 @@ html, body {
   color: white;
 }
 
-/* ============================================================
-   EILT BUTTON
-============================================================ */
-#eiltBtn {
-  margin: 16px auto 10px;
-  width: 94%;
-  padding: 14px;
-  font-size: 20px;
+/* ===============================================
+   EILT-Button
+=============================================== */
 
-  border-radius: 16px;
+#eiltBtn {
+  width: 100%;
+  padding: 14px;
+  font-size: 18px;
+  border-radius: 14px;
   border: none;
-  background: #888;
+  margin-top: 10px;
+  background: #777;
   color: white;
-  font-weight: 700;
+  font-weight: bold;
 }
 
 #eiltBtn.on {
-  background: #c80000;
+  background: #cc0000;
 }
 
-/* ============================================================
-   UNTERE BUTTONLEISTE
-============================================================ */
+/* ===============================================
+   Unten: Zurück + Drucken
+=============================================== */
+
 .bottom-row {
   display: flex;
-  gap: 12px;
-  margin-top: 14px;
-  padding: 0 4px;
+  gap: 10px;
+  margin-top: 16px;
 }
 
-.back-btn {
-  flex: 1;
-  padding: 16px;
-  font-size: 20px;
-  border-radius: 16px;
-  border: none;
-  background: #444;
-  color: white;
-  font-weight: 700;
-}
-
+.back-btn,
 .primary-btn {
   flex: 1;
   padding: 16px;
   font-size: 20px;
-  border-radius: 16px;
+  border-radius: 14px;
   border: none;
-  background: #00963d;
+  font-weight: bold;
   color: white;
-  font-weight: 700;
 }
 
-/* ============================================================
-   AUTOMATISCHE SKALIERUNG JE GERÄT
-============================================================ */
-
-/* iPhone – perfekte Darstellung */
-@media (max-width: 420px) {
-  .page {
-    transform: scale(1);
-    transform-origin: top center;
-  }
+.back-btn {
+  background: #444;
 }
 
-/* TC21 (5 Zoll) → kleiner skalieren */
-@media screen and (device-width: 360px) and (device-height: 640px) {
-  .page {
-    transform: scale(0.70);
-    transform-origin: top center;
-  }
-}
-
-/* TC22 (6 Zoll) → leicht skalieren */
-@media screen and (device-width: 412px) and (device-height: 915px) {
-  .page {
-    transform: scale(0.70);
-    transform-origin: top center;
-  }
-}
-
-/* fallback für große Android Geräte */
-@media (min-width: 500px) {
-  .page {
-    transform: scale(1);
-  }
-}
-
-/* Kein Button-Hüpfen beim Fokus */
-button:focus {
-  outline: 3px solid #1a73e8;
-  outline-offset: 0;
-  transform: none;
+.primary-btn {
+  background: #00963d;
 }
