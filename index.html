@@ -2,136 +2,44 @@
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>Warenanhänger</title>
-
-<link rel="icon" href="icon192.png" sizes="192x192">
-<link rel="icon" href="icon512.png" sizes="512x512">
-<link rel="apple-touch-icon" href="icon192.png">
-
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#003a73">
-
-<style>
-html, body {
-    margin:0;
-    padding:0;
-    height:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
-    font-family:"Segoe UI", Arial, sans-serif;
-}
-
-/* Hauptkarte */
-#main {
-    width: 90%;
-    max-width: 850px;           /* kleiner als vorher -> TC21 passt */
-    text-align:center;
-    padding: 40px 20px 50px;
-    border-radius:28px;
-    background:white;
-    box-shadow:0 8px 30px rgba(0,0,0,0.25);
-    border: 1px solid #bfc5cc;
-}
-
-/* Logo */
-#logo {
-    width: 240px;
-    max-width: 80%;
-    margin-bottom: 20px;
-}
-
-/* Titel */
-h1 {
-    font-size: 30px;
-    font-weight: 800;
-    color:#003a73;
-    margin:15px 0 35px;
-}
-
-/* Buttons */
-button {
-    width: 85%;
-    max-width: 450px;
-    height: 80px;
-    margin: 12px auto;
-    border:none;
-    border-radius:16px;
-    color:white;
-    font-size:22px;
-    font-weight:700;
-    box-shadow:0 6px 18px rgba(0,0,0,0.25);
-    display:block;
-}
-
-/* Farben */
-#btnBeschichtung { background: linear-gradient(180deg,#007bff,#0056b3); }
-#btnKanten       { background: linear-gradient(180deg,#ff9800,#d97a00); }
-#btnPaus         { background: linear-gradient(180deg,#28a745,#1d7f31); }
-#btnSchweissen   { background: linear-gradient(180deg,#9c27b0,#6a0080); }
-
-/* Footer */
-footer {
-    margin-top:30px;
-    font-size:14px;
-    color:#666;
-}
-
-/* Handy → skalieren! */
-@media (max-width: 600px) {
-    #main { 
-        transform: scale(0.88);    /* TC21 perfekt */
-    }
-}
-
-/* Extra kleine Screens (TC21 im Hochformat!!) */
-@media (max-width: 420px) {
-    #main { 
-        transform: scale(0.78); 
-    }
-    button {
-        height: 70px;
-        font-size: 18px;
-    }
-    h1 {
-        font-size: 26px;
-    }
-}
-
-/* Größere Geräte (TC22, iPhone Max etc.) */
-@media (min-width: 650px) {
-    #main {
-        transform: scale(1.0);
-    }
-}
-</style>
-
-<script>
-function loadBereich(bereich){
-    window.location.href = "start.html?bereich=" + bereich;
-}
-</script>
-
+<link rel="stylesheet" href="index.css">
 </head>
+
 <body>
 
-<div id="main">
+<div id="card">
 
-    <img id="logo" src="langen.png" alt="Logo">
+    <img id="logo" src="langen.png">
 
     <h1>WARENANHÄNGER</h1>
 
-    <button id="btnBeschichtung" onclick="loadBereich('beschichtung')">Beschichtung (A5)</button>
-    <button id="btnKanten" onclick="loadBereich('kanten')">Kanten (A6)</button>
-    <button id="btnPaus" onclick="window.location.href='Paus-Lieferung.html'">PAUS Lieferung (A6)</button>
-    <button id="btnSchweissen" onclick="loadBereich('schweissen')">Schweißen</button>
+    <button class="big-btn blue" onclick="openBereich('beschichtung')">
+        Beschichtung (A5)
+    </button>
+
+    <button class="big-btn orange" onclick="openBereich('kanten')">
+        Kanten (A6)
+    </button>
+
+    <button class="big-btn green" onclick="openBereich('paus')">
+        PAUS Lieferung (A6)
+    </button>
+
+    <button class="big-btn purple" onclick="openBereich('schweissen')">
+        Schweißen
+    </button>
 
     <footer>Langen CNC Metalltechnik GmbH & Co. KG</footer>
 </div>
+
+
+<script>
+function openBereich(bereich) {
+    window.location.href = "start.html?bereich=" + bereich;
+}
+</script>
 
 </body>
 </html>
