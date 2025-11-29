@@ -2,22 +2,22 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Etikett Drucken</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Druckvorschau</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
     body {
         margin: 0;
         padding: 0;
         background: #dcdcdc;
+        font-family: Arial, sans-serif;
         height: 100vh;
         display: flex;
         flex-direction: column;
-        font-family: Arial, sans-serif;
         overflow: hidden;
     }
 
-    /* --- A5-LANDSCAPE FIXE GRÖSSE --- */
+    /* --- Vorschaucontainer --- */
     .preview-wrapper {
         flex: 1;
         display: flex;
@@ -26,25 +26,27 @@
         overflow: hidden;
     }
 
+    /* --- A5 Querformat 210 × 148 mm --- */
     .preview-area {
         width: 210mm;
         height: 148mm;
         background: white;
+        box-shadow: 0 0 14px rgba(0,0,0,0.3);
         position: relative;
-        box-shadow: 0 0 12px rgba(0,0,0,0.3);
-        transform-origin: center center;
+        transform-origin: center;
     }
 
-    /* 🔥 AUTOMATISCHE SKALIERUNG WIE PC, NUR KLEINER */
+    /* --- Skalierung für Handy --- */
     @media (max-width: 900px) {
         .preview-area {
-            transform: scale(0.32);     /* perfekt für Handy */
+            transform: scale(0.35);
         }
     }
 
+    /* --- Skalierung für PC --- */
     @media (min-width: 901px) {
         .preview-area {
-            transform: scale(0.48);
+            transform: scale(0.45);
         }
     }
 
@@ -56,6 +58,8 @@
         text-align: center;
         font-size: 60pt;
         font-weight: bold;
+        background: white;
+        position: relative;
     }
 
     .logo {
@@ -65,47 +69,56 @@
         width: 42mm;
     }
 
-    /* --- BUTTON LEISTE --- */
+    /* --- Buttons --- */
     .bottom-bar {
         display: flex;
-        gap: 10px;
         padding: 10px;
-        background: #fff;
-        box-shadow: 0 -3px 6px rgba(0,0,0,0.25);
+        gap: 10px;
+        background: white;
+        box-shadow: 0 -3px 6px rgba(0,0,0,0.2);
     }
 
     .btn {
         flex: 1;
-        padding: 16px;
-        font-size: 20px;
+        padding: 16px 12px;
+        font-size: 22px;
+        border-radius: 12px;
+        font-weight: bold;
         border: none;
         color: white;
-        font-weight: bold;
-        border-radius: 10px;
     }
 
     .btn:focus { outline: 5px solid #1a73e8; }
 
-    .back-btn { background: #9e9e9e; }
+    .back-btn  { background: #9e9e9e; }
     .print-btn { background: #2e7d32; }
 
-    /* --- PRINT --- */
+    /* --- DRUCKEN --- */
     @media print {
-        body, html { margin:0; padding:0; }
-        .bottom-bar, .preview-wrapper { display:none !important; }
 
-        #printArea {
-            display: flex !important;
+        body * {
+            visibility: hidden !important;
         }
 
-        @page { size: A5 landscape; margin: 0; }
+        #printArea, #printArea * {
+            visibility: visible !important;
+        }
+
+        #printArea {
+            position: fixed;
+            inset: 0;
+        }
+
+        @page {
+            size: A5 landscape;
+            margin: 0;
+        }
     }
 </style>
 </head>
 
 <body>
 
-<!-- VORSCHAU -->
 <div class="preview-wrapper">
     <div class="preview-area">
         <div id="previewContent" class="etikett"></div>
@@ -113,13 +126,12 @@
     </div>
 </div>
 
-<!-- DRUCK-SEITE -->
+<!-- Druckbereich (nur 1 Seite!) -->
 <div id="printArea" class="etikett" style="display:none;">
     <div id="printContent"></div>
     <img class="logo" src="langen.png">
 </div>
 
-<!-- BUTTON LEISTE -->
 <div class="bottom-bar">
     <button class="btn back-btn" id="backBtn">◀ Zurück</button>
     <button class="btn print-btn" id="printBtn">Drucken</button>
@@ -128,56 +140,50 @@
 <script>
 window.onload = () => {
 
-    const url = new URLSearchParams(location.search);
-    let data = {};
-
-    if (url.has("data")) {
-        data = JSON.parse(decodeURIComponent(url.get("data")));
-    }
+    const qs = new URLSearchParams(location.search);
+    const data = qs.has("data") ? JSON.parse(decodeURIComponent(qs.get("data"))) : {};
 
     const beistell = data.beistell || "";
     const type     = data.selectedType || "";
     const kunde    = data.kundename || "";
 
-    let html = "";
-    html += `<div style="margin-bottom:10mm;">${beistell}</div>`;
+    let html = `<div style="margin-bottom:10mm;">${beistell}</div>`;
 
     const row = (t, sub="") =>
-        `<div style="margin-bottom:6mm;">${t}</div>${
-            sub ? `<div style="font-size:32pt">${sub}</div>` : ""
-        }`;
+        `<div style="margin-bottom:6mm;">${t}</div>` +
+        (sub ? `<div style="font-size:32pt">${sub}</div>` : "");
 
     switch(type) {
         case "LP": html += row("L&P"); break;
-        case "LPEILT": html += row("L&P", "„EILT SEHR“"); break;
+        case "LPEILT": html += row("L&P","„EILT SEHR“"); break;
+
         case "SCHUETTE": html += row("Schütte"); break;
-        case "SCHUETTEEILT": html += row("Schütte", "„EILT SEHR“"); break;
+        case "SCHUETTEEILT": html += row("Schütte","„EILT SEHR“"); break;
+
         case "KLEY": html += row("Kleymann"); break;
-        case "KLEYEILT": html += row("Kleymann", "„EILT SEHR“"); break;
-        case "COMTEZN8": html += row("Comte", "„Zn8“"); break;
-        case "COMTEZNI8": html += row("Comte", "„ZNi8“"); break;
-        case "CHEMISCH": html += row("Comte", "„Chemisch Vernickeln“"); break;
-        case "DICK": html += row("Comte", "„Dickschichtpassivierung“"); break;
-        case "BLAU": html += row("Comte", "„Blau ZN8“"); break;
-        case "PENTZ": html += row("Pentz & Gerdes", "„ZN8“"); break;
-        case "RCS": html += row("RCS", "„Schweißen“"); break;
-        case "COATINC": html += row("Coatinc 24", "„Verzinken“"); break;
+        case "KLEYEILT": html += row("Kleymann","„EILT SEHR“"); break;
+
+        case "COMTEZN8": html += row("Comte","„Zn8“"); break;
+        case "COMTEZNI8": html += row("Comte","„ZNi8“"); break;
+
+        case "CHEMISCH": html += row("Comte","„Chemisch Vernickeln“"); break;
+        case "DICK": html += row("Comte","„Dickschichtpassivierung“"); break;
+        case "BLAU": html += row("Comte","„Blau ZN8“"); break;
+
+        case "PENTZ": html += row("Pentz & Gerdes","„ZN8“"); break;
+        case "RCS": html += row("RCS","„Schweißen“"); break;
+        case "COATINC": html += row("Coatinc 24","„Verzinken“"); break;
     }
 
-    if (kunde)
-        html += `<div style="font-size:32pt;">(${kunde})</div>`;
+    if (kunde) html += `<div style="font-size:32pt;">(${kunde})</div>`;
 
     document.getElementById("previewContent").innerHTML = html;
     document.getElementById("printContent").innerHTML   = html;
 
-    /* Buttons */
-    const printBtn = document.getElementById("printBtn");
-    const backBtn  = document.getElementById("backBtn");
+    document.getElementById("printBtn").onclick = () => window.print();
+    document.getElementById("backBtn").onclick  = () => window.location.href = "index.html";
 
-    setTimeout(() => printBtn.focus(), 200);
-
-    printBtn.onclick = () => window.print();
-    backBtn.onclick  = () => window.location.href = "index.html";
+    setTimeout(() => document.getElementById("printBtn").focus(), 150);
 };
 </script>
 
