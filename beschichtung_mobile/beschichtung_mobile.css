@@ -2,7 +2,9 @@
    GLOBAL
 ============================== */
 
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
 html, body {
     margin: 0;
@@ -11,21 +13,19 @@ html, body {
     background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
     font-family: Arial, sans-serif;
 
-    overflow: hidden;
-
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+
+    overflow: hidden;
 }
 
 /* ==============================
-   PAGE CONTAINER
+   PAGE CONTAINER (wie Index)
 ============================== */
-.page {
-    width: 90vw;              /* NEU: feste Breite vermeiden */
-    max-width: 500px;         /* NEU: damit TC22 es kleiner macht */
-    height: 92vh;
 
+.page {
+    width: 390px;              /* perfekte Basisbreite für ALLE Geräte */
     background: white;
     border-radius: 28px;
     padding: 18px;
@@ -36,98 +36,132 @@ html, body {
 
     box-shadow: 0 10px 40px rgba(0,0,0,0.25);
     border: 1px solid #c9c9c9;
-
-    transform: scale(1);
-    transform-origin: top center;
 }
 
 /* ==============================
-   SKALIERUNG NACH GERÄT
+   HEADER
+============================== */
+.header {
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.header h1 {
+    font-size: 22px;
+    margin: 6px 0;
+    font-weight: 900;
+    color: #003a73;
+}
+
+/* ==============================
+   INPUT FELDER
+============================== */
+.field-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 6px;
+}
+
+.field-group label {
+    font-size: 14px;
+}
+
+.field-group input {
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid #888;
+}
+
+/* ==============================
+   KUNDEN GRID
 ============================== */
 
-/* === TC21 (5") === */
-@media screen and (max-width: 380px) {
-    .page {
-        width: 88vw;
-        max-width: 440px;
-        transform: scale(0.90);
-    }
+.grid-label {
+    margin-top: 10px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: bold;
 }
-
-/* === TC22 (6") → WICHTIG !!! === */
-@media screen and (min-width: 381px) and (max-width: 430px) {
-    .page {
-        width: 82vw !important;     /* NEU: schmaler machen */
-        max-width: 430px !important; /* NEU: verhindert Überbreite */
-        transform: scale(0.82);      /* NEU: minimal kleiner */
-    }
-}
-
-/* ======= REST WIE BEI DIR ======= */
-
-.header { text-align:center; margin-bottom:8px; }
-.header h1 { font-size:22px; margin:6px 0; font-weight:900; color:#003a73; }
-
-.field-group { display:flex; flex-direction:column; margin-bottom:6px; }
-.field-group label { font-size:14px; }
-.field-group input {
-    font-size:18px; padding:10px;
-    border-radius:12px; border:1px solid #888;
-}
-
-.grid-label { margin-top:10px; margin-bottom:6px; font-size:14px; font-weight:bold; }
 
 .kunden-grid {
     padding: 10px 8px;
-    display:grid; grid-template-columns:repeat(3,1fr);
-    gap:12px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
 }
 
 .kunde-btn {
-    height:60px;
-    font-size:14px;
-    border-radius:14px;
-    border:none;
-    background:white;
-    box-shadow:0 1px 4px rgba(0,0,0,0.2);
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    height: 60px;
+    font-size: 14px;
+    border-radius: 14px;
+    border: none;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .kunde-btn.active {
-    background:#007bff;
-    color:white;
+    background: #007bff;
+    color: white;
 }
 
+/* ==============================
+   EILT BUTTON
+============================== */
 #eiltBtn {
-    width:100%;
-    padding:14px; font-size:20px;
-    border-radius:14px; border:none;
-    background:#666; color:white;
-    margin-top:10px; font-weight:bold;
+    width: 100%;
+    padding: 14px;
+    font-size: 20px;
+    border-radius: 14px;
+    border: none;
+    background: #666;
+    color: white;
+    margin-top: 10px;
+    font-weight: bold;
 }
-#eiltBtn.on { background:#c80000; }
 
+#eiltBtn.on {
+    background: #c80000;
+}
+
+/* ==============================
+   UNTERE BUTTONS
+============================== */
 .bottom-row {
-    display:flex;
-    justify-content:space-between;
-    gap:12px;
-    margin-top:12px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 12px;
 }
 
 .back-btn, .primary-btn {
-    flex:1; padding:14px;
-    border-radius:14px; font-size:20px;
-    border:none; font-weight:bold;
-    color:white;
+    flex: 1;
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 20px;
+    border: none;
+    font-weight: bold;
+    color: white;
 }
 
-.back-btn { background:#444; }
-.primary-btn { background:#00963d; }
+.back-btn {
+    background: #444;
+}
 
+.primary-btn {
+    background: #00963d;
+}
+
+/* ==============================
+   FOKUS
+============================== */
 button:focus {
-    outline:4px solid #1a73e8;
-    outline-offset:0;
-    box-shadow:none;
+    outline: 4px solid #1a73e8;
+    outline-offset: 0;
+    box-shadow: none;
+    transform: none;
 }
