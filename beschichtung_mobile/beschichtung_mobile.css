@@ -25,27 +25,22 @@ html, body {
    PAGE CONTAINER (wie Index)
 ============================== */
 .page {
-    width: 92%;
-    max-width: 550px;
+    width: 94vw;            /* statt fester Pixelbreite */
+    height: 92vh;           /* statt 95vh (wegen Android Bar) */
 
-    height: 95vh;
+    max-width: none;        /* GANZ WICHTIG → deaktiviert feste Größe */
 
     background: white;
     border-radius: 28px;
     padding: 18px;
+
     display: flex;
     flex-direction: column;
     overflow: hidden;
 
     box-shadow: 0 10px 40px rgba(0,0,0,0.25);
     border: 1px solid #c9c9c9;
-
-    /* Standard → iPhone */
-    transform: scale(1);
-    transform-origin: top center;
 }
-
-
 /* ==============================
    SKALIERUNG NACH GERÄT
 ============================== */
