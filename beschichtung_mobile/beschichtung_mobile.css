@@ -1,149 +1,74 @@
-/* ===============================
-   GLOBAL (wie Index)
-================================*/
-* { box-sizing: border-box; }
-
+/* Global */
 html, body {
     margin: 0;
     padding: 0;
-    height: 100vh;
-    width: 100vw;
-
-    background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
+    height: 100%;
+    background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
     font-family: Arial, sans-serif;
-
     overflow: hidden;
 
     display: flex;
     justify-content: center;
     align-items: center;
-}
 
-/* Wrapper erlaubt Scaling */
-#wrapper {
-    width: 100vw;
-    height: 100vh;
-
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-
-    overflow: hidden;
-}
-
-/* ===============================
-   PAGE CONTAINER
-================================*/
-.page {
-    width: 92vw;
-    height: auto;
-    max-height: 92vh;
-
-    background: white;
-    padding: 20px;
-    border-radius: 28px;
-
-    display: flex;
-    flex-direction: column;
-
-    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
-    border: 1px solid #c9c9c9;
-}
-
-/* ===============================
-   AUTOMATISCHE SKALIERUNG
-================================*/
-
-/* iPhone Default → kein Scale */
-#wrapper {
-    transform: scale(1);
+    transform: scale(var(--scale, 1));
     transform-origin: top center;
 }
 
-/* === TC21 (5 Zoll → 360px Breite) === */
-@media screen and (max-device-width: 380px) {
-    #wrapper {
-        transform: scale(0.88);
-        transform-origin: top center;
-    }
-}
+/* Hauptcontainer */
+.page {
+    width: 92vw;
+    height: 86vh;        /* WICHTIG – weniger Höhe */
+    background: white;
+    border-radius: 28px;
+    padding: 18px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    border: 1px solid #c9c9c9;
 
-/* === TC22 (6 Zoll → 412px Breite) === */
-@media screen and (min-device-width: 381px) and (max-device-width: 430px) {
-    #wrapper {
-        transform: scale(0.78);
-        transform-origin: top center;
-    }
-}
-
-/* ===============================
-   HEADER
-================================*/
-.header {
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.header h1 {
-    font-size: 22px;
-    font-weight: 900;
-    color: #003a73;
-    margin: 0 0 12px;
-}
-
-/* ===============================
-   INPUT-FELDER
-================================*/
-.field-group {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;  /* verteilt Inhalt top → bottom */
+    overflow: hidden;                /* verhindert Überlauf */
+}
+
+/* Header */
+.header h1 {
+    text-align: center;
+    font-size: 22px;
+    color: #003a73;
+    font-weight: 900;
+    margin-top: 5px;
     margin-bottom: 10px;
 }
 
-.field-group label {
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 4px;
+/* Eingabefelder */
+.field-group {
+    margin: 4px 0;
 }
 
 .field-group input {
-    font-size: 18px;
+    width: 100%;
     padding: 10px;
-    border-radius: 14px;
-    border: 1px solid #999;
+    font-size: 18px;
+    border-radius: 12px;
+    border: 1px solid #888;
 }
 
-/* ===============================
-   GRID
-================================*/
-.grid-label {
-    margin-top: 6px;
-    margin-bottom: 8px;
-    font-size: 15px;
-    font-weight: bold;
-    text-align: center;
-}
-
+/* Kundenraster */
 .kunden-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    padding: 8px 10px;
+    gap: 10px;
+    padding: 6px;
 }
 
 .kunde-btn {
-    height: 60px;
-    border-radius: 16px;
+    height: 56px;
+    border-radius: 14px;
     background: white;
     border: none;
-    font-size: 15px;
-    font-weight: 600;
-
-    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    font-size: 14px;
 }
 
 .kunde-btn.active {
@@ -151,53 +76,47 @@ html, body {
     color: white;
 }
 
-/* ===============================
-   EILT BUTTON
-================================*/
+/* EILT Button */
 #eiltBtn {
-    margin-top: 14px;
-    padding: 14px;
     width: 100%;
-
+    padding: 14px;
+    font-size: 20px;
+    border-radius: 14px;
+    border: none;
     background: #666;
     color: white;
-
-    border-radius: 18px;
-    font-size: 20px;
-    font-weight: bold;
-    border: none;
 }
 
 #eiltBtn.on {
     background: #c80000;
 }
 
-/* ===============================
-   UNTEN: ZURÜCK + DRUCKEN
-================================*/
+/* Bottom Buttons */
 .bottom-row {
     display: flex;
+    width: 100%;
     gap: 12px;
-    margin-top: 16px;
 }
 
-.back-btn,
-.primary-btn {
+.bottom-row button {
     flex: 1;
-    padding: 16px;
-
-    border-radius: 16px;
-    border: none;
+    padding: 14px;
     font-size: 20px;
-    font-weight: bold;
+    border-radius: 14px;
+    border: none;
     color: white;
+    font-weight: bold;
 }
 
 .back-btn { background: #444; }
 .primary-btn { background: #00963d; }
 
-/* Fokus */
-button:focus {
-    outline: 4px solid #1a73e8;
-    outline-offset: 0;
+/* On-screen keyboard */
+.kb {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #dcdcdc;
+    padding: 6px;
 }
