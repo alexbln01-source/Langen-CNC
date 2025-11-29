@@ -1,107 +1,95 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>Etikett Beschichtung</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="beschichtung_mobile.css">
+<meta charset="UTF-8">
+<title>Etikett Beschichtung</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+<link rel="stylesheet" href="beschichtung_mobile.css">
+
+<style>
+    /* Hintergrund wie INDEX */
+    body {
+        margin:0;
+        padding:0;
+        height:100%;
+        background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
+        font-family:"Segoe UI", Arial, sans-serif;
+
+        display:flex;
+        justify-content:center;
+        align-items:flex-start;
+        overflow:hidden;
+    }
+
+    /* Hauptkarte wie INDEX! */
+    .card {
+        width:90%;
+        max-width:900px;
+        background:linear-gradient(180deg,#ffffff 0%,#eef1f4 100%);
+        border-radius:30px;
+        box-shadow:0 10px 40px rgba(0,0,0,0.25);
+        padding:30px 20px 40px;
+        margin-top:20px;
+        border:1px solid #bfc5cc;
+
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        overflow:hidden;
+    }
+</style>
+
 </head>
+
 <body>
 
-<div class="page">
+<div class="card">
 
-  <header class="header">
-    <h1>Etikett Beschichtung</h1>
-  </header>
+    <h1 style="font-size:28px; color:#003a73; margin-bottom:20px;">Etikett Beschichtung</h1>
 
-  <div class="field-group">
-    <label>Beistellnummer</label>
-    <input id="beistellInput" type="text" readonly>
-  </div>
+    <div class="field-group">
+        <label>Beistellnummer</label>
+        <input id="beistellInput" type="text" readonly>
+    </div>
 
-  <div class="field-group">
-    <label>Kundenname (optional)</label>
-    <input id="kundeInput" type="text" readonly>
-  </div>
+    <div class="field-group">
+        <label>Kundenname (optional)</label>
+        <input id="kundeInput" type="text" readonly>
+    </div>
 
-  <div class="grid-label">Kunde wählen:</div>
+    <div class="grid-label">Kunde wählen:</div>
 
-  <div class="kunden-grid">
+    <div class="kunden-grid">
 
-    <button class="kunde-btn" data-type="LP">L&P</button>
-    <button class="kunde-btn" data-type="SCHUETTE">Schütte</button>
-    <button class="kunde-btn" data-type="KLEY">Kleymann</button>
+        <button class="kunde-btn" data-type="LP">L&P</button>
+        <button class="kunde-btn" data-type="SCHUETTE">Schütte</button>
+        <button class="kunde-btn" data-type="KLEY">Kleymann</button>
 
-    <button class="kunde-btn" data-type="COMTEZN8">Comte – ZN8</button>
-    <button class="kunde-btn" data-type="COMTEZNI8">Comte – ZNi8</button>
+        <button class="kunde-btn" data-type="COMTEZN8">Comte – ZN8</button>
+        <button class="kunde-btn" data-type="COMTEZNI8">Comte – ZNi8</button>
 
-    <button class="kunde-btn" data-type="CHEMISCH">Comte – Chemisch</button>
-    <button class="kunde-btn" data-type="DICK">Comte – Dick</button>
-    <button class="kunde-btn" data-type="BLAU">Comte – Blau ZN8</button>
+        <button class="kunde-btn" data-type="CHEMISCH">Comte – Chemisch</button>
+        <button class="kunde-btn" data-type="DICK">Comte – Dick</button>
+        <button class="kunde-btn" data-type="BLAU">Comte – Blau ZN8</button>
 
-    <button class="kunde-btn" data-type="PENTZ">Pentz & Gerdes – ZN8</button>
-    <button class="kunde-btn" data-type="RCS">RCS – Schweißen</button>
-    <button class="kunde-btn" data-type="COATINC">Coatinc 24 – Verzinken</button>
+        <button class="kunde-btn" data-type="PENTZ">Pentz & Gerdes – ZN8</button>
+        <button class="kunde-btn" data-type="RCS">RCS – Schweißen</button>
+        <button class="kunde-btn" data-type="COATINC">Coatinc 24 – Verzinken</button>
+    </div>
 
-  </div>
+    <button id="eiltBtn">EILT SEHR: AUS</button>
 
-  <button id="eiltBtn">EILT SEHR: AUS</button>
+    <div class="bottom-row">
+        <button id="backBtn" class="back-btn">◀ Zurück</button>
+        <button id="druckenBtn" class="primary-btn">Drucken</button>
+    </div>
 
-  <div class="bottom-row">
-    <button id="backBtn" class="back-btn">◀ Zurück</button>
-    <button id="druckenBtn" class="primary-btn">Drucken</button>
-  </div>
 </div>
 
-
-<!-- ==========================
-     NUMERISCHE TASTATUR
-============================= -->
-<div id="numKeyboard" class="kb" style="display:none;">
-  <div class="kb-row">
-    <button class="kb-key">1</button><button class="kb-key">2</button><button class="kb-key">3</button>
-  </div>
-  <div class="kb-row">
-    <button class="kb-key">4</button><button class="kb-key">5</button><button class="kb-key">6</button>
-  </div>
-  <div class="kb-row">
-    <button class="kb-key">7</button><button class="kb-key">8</button><button class="kb-key">9</button>
-  </div>
-  <div class="kb-row">
-    <button class="kb-key">0</button><button class="kb-key" id="numDel">⌫</button><button class="kb-key" id="numOk">OK</button>
-  </div>
-</div>
-
-<!-- ==========================
-     QWERTZ TASTATUR
-============================= -->
-<div id="alphaKeyboard" class="kb" style="display:none;">
-  <div class="kb-row">
-    <button class="kb-key">Q</button><button class="kb-key">W</button><button class="kb-key">E</button>
-    <button class="kb-key">R</button><button class="kb-key">T</button><button class="kb-key">Z</button>
-  </div>
-  <div class="kb-row">
-    <button class="kb-key">U</button><button class="kb-key">I</button><button class="kb-key">O</button>
-    <button class="kb-key">P</button><button class="kb-key">A</button>
-  </div>
-  <div class="kb-row">
-    <button class="kb-key">S</button><button class="kb-key">D</button><button class="kb-key">F</button>
-    <button class="kb-key">G</button><button class="kb-key">H</button>
-  </div>
-  <div class="kb-row">
-    <button class="kb-key">J</button><button class="kb-key">K</button><button class="kb-key">L</button>
-    <button class="kb-key">Y</button><button class="kb-key">X</button>
-  </div>
-  <div class="kb-row">
-    <button class="kb-key">C</button><button class="kb-key">V</button><button class="kb-key">B</button>
-    <button class="kb-key">N</button><button class="kb-key">M</button>
-  </div>
-
-  <div class="kb-row">
-    <button class="kb-key" id="alphaDel">⌫</button>
-    <button class="kb-key" id="alphaOk">OK</button>
-  </div>
-</div>
+<!-- Tastatur-Layer -->
+<div id="numKeyboard" class="kb" style="display:none;"></div>
+<div id="alphaKeyboard" class="kb" style="display:none;"></div>
 
 <script src="beschichtung_mobile.js"></script>
 </body>
