@@ -1,158 +1,222 @@
-/* ===============================================
-   Global Layout / Hintergrund
-=============================================== */
+/* ==============================
+   GLOBAL
+============================== */
+
+* {
+    box-sizing: border-box;
+}
 
 html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: Arial, sans-serif;
-  background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
-  overflow: hidden;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
+    font-family: Arial, sans-serif;
+
+    /* damit nichts scrollt */
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* ZENTRALER GERÄTE-CONTAINER – automatische Skalierung! */
+/* ==============================
+   PAGE CONTAINER (wie Index)
+============================== */
 .page {
-  width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-  background: white;
-  padding: 18px;
-  border-radius: 28px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.25);
-  transform-origin: top center;
+    width: 92%;
+    max-width: 550px;
+
+    height: 95vh;
+
+    background: white;
+    border-radius: 28px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    border: 1px solid #c9c9c9;
+
+    /* Standard → iPhone */
+    transform: scale(1);
+    transform-origin: top center;
 }
 
-/* ===============================================
-   Automatische Skalierungsregeln
-=============================================== */
 
-/* ░░ iPhone 12/13/14/15 (6.1") – Normalgröße ░░ */
-@media (min-width: 380px) and (max-width: 420px) {
-  .page { transform: scale(1.00); }
+/* ==============================
+   SKALIERUNG NACH GERÄT
+============================== */
+
+/* === Zebra TC21 (5 Zoll → 360px Breite) === */
+@media screen and (max-width: 380px) {
+    .page {
+        transform: scale(0.90);
+        transform-origin: top center;
+    }
 }
 
-/* ░░ TC22 (6") – etwas kleiner machen ░░ */
-@media (min-width: 410px) and (max-width: 460px) {
-  .page { transform: scale(0.88); }
+/* === Zebra TC22 (6 Zoll → 412px Breite) === */
+@media screen and (min-width: 381px) and (max-width: 430px) {
+    .page {
+        transform: scale(0.78);
+        transform-origin: top center;
+    }
 }
 
-/* ░░ TC21 (5") – merkbar kleiner ░░ */
-@media (max-width: 400px) {
-  .page { transform: scale(0.80); }
+/* ==============================
+   HEADER
+============================== */
+.header {
+    text-align: center;
+    margin-bottom: 8px;
 }
-
-/* Falls Navigation-Bar viel Platz frisst (Android) */
-@media (max-height: 720px) {
-  .page { transform: scale(0.75); }
-}
-
-/* ===============================================
-   Header
-=============================================== */
 
 .header h1 {
-  text-align: center;
-  font-size: 26px;
-  font-weight: 900;
-  color: #003a73;
-  margin-top: 0;
-  margin-bottom: 16px;
+    font-size: 22px;
+    margin: 6px 0;
+    font-weight: 900;
+    color: #003a73;
 }
 
-/* ===============================================
-   Eingabefelder
-=============================================== */
-
+/* ==============================
+   EINGABEFELDER
+============================== */
 .field-group {
-  margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 6px;
 }
 
 .field-group label {
-  font-size: 16px;
-  font-weight: bold;
+    font-size: 14px;
 }
 
 .field-group input {
-  font-size: 18px;
-  padding: 10px;
-  border-radius: 12px;
-  border: 1px solid #b8b8b8;
-  width: 100%;
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid #888;
 }
 
-/* ===============================================
-   Kunden-Buttons (3-Spalten-Raster)
-=============================================== */
+/* ==============================
+   KUNDEN GRID
+============================== */
+
+.grid-label {
+    margin-top: 10px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: bold;
+}
 
 .kunden-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-top: 10px;
-  margin-bottom: 16px;
+    padding: 10px 8px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
 }
 
 .kunde-btn {
-  background: white;
-  border-radius: 14px;
-  border: none;
-  font-size: 14px;
-  padding: 12px 6px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-  font-weight: bold;
+    height: 60px;
+    font-size: 14px;
+    border-radius: 14px;
+    border: none;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .kunde-btn.active {
-  background: #007bff;
-  color: white;
+    background: #007bff;
+    color: white;
 }
 
-/* ===============================================
-   EILT-Button
-=============================================== */
-
+/* ==============================
+   EILT BUTTON
+============================== */
 #eiltBtn {
-  width: 100%;
-  padding: 14px;
-  font-size: 18px;
-  border-radius: 14px;
-  border: none;
-  margin-top: 10px;
-  background: #777;
-  color: white;
-  font-weight: bold;
+    width: 100%;
+    padding: 14px;
+    font-size: 20px;
+    border-radius: 14px;
+    border: none;
+    background: #666;
+    color: white;
+    margin-top: 10px;
+    font-weight: bold;
 }
 
 #eiltBtn.on {
-  background: #cc0000;
+    background: #c80000;
 }
 
-/* ===============================================
-   Unten: Zurück + Drucken
-=============================================== */
-
+/* ==============================
+   UNTEN – ZURÜCK + DRUCKEN
+============================== */
 .bottom-row {
-  display: flex;
-  gap: 10px;
-  margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 12px;
 }
 
-.back-btn,
-.primary-btn {
-  flex: 1;
-  padding: 16px;
-  font-size: 20px;
-  border-radius: 14px;
-  border: none;
-  font-weight: bold;
-  color: white;
+.back-btn, .primary-btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 20px;
+    border: none;
+    font-weight: bold;
+    color: white;
 }
 
 .back-btn {
-  background: #444;
+    background: #444;
 }
 
 .primary-btn {
-  background: #00963d;
+    background: #00963d;
+}
+
+/* ==============================
+   ON-SCREEN KEYBOARD
+============================== */
+.kb {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #dcdcdc;
+    padding: 6px;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
+}
+
+.kb-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.kb-key {
+    flex: 1;
+    padding: 12px 0;
+    font-size: 20px;
+    background: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+/* FOKUS OHNE VERZERRUNG */
+button:focus {
+    outline: 4px solid #1a73e8;
+    outline-offset: 0;
+    box-shadow: none;
+    transform: none;
 }
