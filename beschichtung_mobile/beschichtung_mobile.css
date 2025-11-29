@@ -1,69 +1,203 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="UTF-8">
-  <title>Etikett Beschichtung</title>
+/* ===============================
+   GLOBAL (wie Index)
+================================*/
+* { box-sizing: border-box; }
 
-  <!-- Viewport wichtig für Skalierung -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
 
-  <link rel="stylesheet" href="beschichtung_mobile.css">
-</head>
+    background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
+    font-family: Arial, sans-serif;
 
-<body>
+    overflow: hidden;
 
-<div id="wrapper">
-  <div class="page">
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    <header class="header">
-      <h1>Etikett Beschichtung</h1>
-    </header>
+/* Wrapper erlaubt Scaling */
+#wrapper {
+    width: 100vw;
+    height: 100vh;
 
-    <div class="field-group">
-      <label>Beistellnummer</label>
-      <input id="beistellInput" type="text" readonly>
-    </div>
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 
-    <div class="field-group">
-      <label>Kundenname (optional)</label>
-      <input id="kundeInput" type="text" readonly>
-    </div>
+    overflow: hidden;
+}
 
-    <div class="grid-label">Kunde wählen:</div>
+/* ===============================
+   PAGE CONTAINER
+================================*/
+.page {
+    width: 92vw;
+    height: auto;
+    max-height: 92vh;
 
-    <div class="kunden-grid">
+    background: white;
+    padding: 20px;
+    border-radius: 28px;
 
-      <button class="kunde-btn" data-type="LP">L&P</button>
-      <button class="kunde-btn" data-type="SCHUETTE">Schütte</button>
-      <button class="kunde-btn" data-type="KLEY">Kleymann</button>
+    display: flex;
+    flex-direction: column;
 
-      <button class="kunde-btn" data-type="COMTEZN8">Comte – ZN8</button>
-      <button class="kunde-btn" data-type="COMTEZNI8">Comte – ZNi8</button>
-      <button class="kunde-btn" data-type="CHEMISCH">Comte – Chemisch</button>
+    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    border: 1px solid #c9c9c9;
+}
 
-      <button class="kunde-btn" data-type="DICK">Comte – Dick</button>
-      <button class="kunde-btn" data-type="BLAU">Comte – Blau ZN8</button>
-      <button class="kunde-btn" data-type="PENTZ">Pentz & Gerdes – ZN8</button>
+/* ===============================
+   AUTOMATISCHE SKALIERUNG
+================================*/
 
-      <button class="kunde-btn" data-type="RCS">RCS – Schweißen</button>
-      <button class="kunde-btn" data-type="COATINC">Coatinc 24 – Verzinken</button>
+/* iPhone Default → kein Scale */
+#wrapper {
+    transform: scale(1);
+    transform-origin: top center;
+}
 
-    </div>
+/* === TC21 (5 Zoll → 360px Breite) === */
+@media screen and (max-device-width: 380px) {
+    #wrapper {
+        transform: scale(0.88);
+        transform-origin: top center;
+    }
+}
 
-    <button id="eiltBtn">EILT SEHR: AUS</button>
+/* === TC22 (6 Zoll → 412px Breite) === */
+@media screen and (min-device-width: 381px) and (max-device-width: 430px) {
+    #wrapper {
+        transform: scale(0.78);
+        transform-origin: top center;
+    }
+}
 
-    <div class="bottom-row">
-      <button id="backBtn" class="back-btn">◀ Zurück</button>
-      <button id="druckenBtn" class="primary-btn">Drucken</button>
-    </div>
+/* ===============================
+   HEADER
+================================*/
+.header {
+    text-align: center;
+    margin-bottom: 10px;
+}
 
-  </div>
-</div>
+.header h1 {
+    font-size: 22px;
+    font-weight: 900;
+    color: #003a73;
+    margin: 0 0 12px;
+}
 
-<!-- Tastaturen -->
-<div id="numKeyboard" class="kb" style="display:none;"></div>
-<div id="alphaKeyboard" class="kb" style="display:none;"></div>
+/* ===============================
+   INPUT-FELDER
+================================*/
+.field-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
 
-<script src="beschichtung_mobile.js"></script>
-</body>
-</html>
+.field-group label {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.field-group input {
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 14px;
+    border: 1px solid #999;
+}
+
+/* ===============================
+   GRID
+================================*/
+.grid-label {
+    margin-top: 6px;
+    margin-bottom: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.kunden-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 8px 10px;
+}
+
+.kunde-btn {
+    height: 60px;
+    border-radius: 16px;
+    background: white;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.kunde-btn.active {
+    background: #007bff;
+    color: white;
+}
+
+/* ===============================
+   EILT BUTTON
+================================*/
+#eiltBtn {
+    margin-top: 14px;
+    padding: 14px;
+    width: 100%;
+
+    background: #666;
+    color: white;
+
+    border-radius: 18px;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+}
+
+#eiltBtn.on {
+    background: #c80000;
+}
+
+/* ===============================
+   UNTEN: ZURÜCK + DRUCKEN
+================================*/
+.bottom-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.back-btn,
+.primary-btn {
+    flex: 1;
+    padding: 16px;
+
+    border-radius: 16px;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+}
+
+.back-btn { background: #444; }
+.primary-btn { background: #00963d; }
+
+/* Fokus */
+button:focus {
+    outline: 4px solid #1a73e8;
+    outline-offset: 0;
+}
