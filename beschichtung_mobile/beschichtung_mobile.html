@@ -1,82 +1,120 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>Etikett Beschichtung</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="beschichtung_mobile.css">
-</head>
-<body>
+<meta charset="UTF-8">
+<title>Etikett Beschichtung</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<div class="page" id="page">
+<link rel="stylesheet" href="beschichtung_mobile.css">
 
-  <header class="header">
-    <h1>Etikett Beschichtung</h1>
-  </header>
+<style>
+    /* Wrapper zentriert alles */
+    body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
+        font-family: Arial, sans-serif;
 
-  <div class="field-group">
-    <label>Beistellnummer</label>
-    <input id="beistellInput" type="text" readonly>
-  </div>
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-  <div class="field-group">
-    <label>Kundenname (optional)</label>
-    <input id="kundeInput" type="text" readonly>
-  </div>
+        height: 100vh;
+        overflow: hidden;
+    }
 
-  <div class="grid-label">Kunde wählen:</div>
+    /* Kartendesign wie Index */
+    .page {
+        width: 420px;
+        background: white;
+        border-radius: 30px;
+        padding: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+        border: 1px solid #c9c9c9;
 
-  <div class="kunden-grid">
+        /* AUTOMATISCHE SKALIERUNG */
+        transform-origin: top center;
+        transition: transform 0.2s ease;
+    }
+</style>
 
-    <button class="kunde-btn" data-type="LP">L&P</button>
-    <button class="kunde-btn" data-type="SCHUETTE">Schütte</button>
-    <button class="kunde-btn" data-type="KLEY">Kleymann</button>
-
-    <button class="kunde-btn" data-type="COMTEZN8">Comte – ZN8</button>
-    <button class="kunde-btn" data-type="COMTEZNI8">Comte – ZNi8</button>
-    <button class="kunde-btn" data-type="CHEMISCH">Comte – Chemisch</button>
-
-    <button class="kunde-btn" data-type="DICK">Comte – Dick</button>
-    <button class="kunde-btn" data-type="BLAU">Comte – Blau ZN8</button>
-
-    <button class="kunde-btn" data-type="PENTZ">Pentz & Gerdes – ZN8</button>
-    <button class="kunde-btn" data-type="RCS">RCS – Schweißen</button>
-    <button class="kunde-btn" data-type="COATINC">Coatinc 24 – Verzinken</button>
-
-  </div>
-
-  <button id="eiltBtn">EILT SEHR: AUS</button>
-
-  <div class="bottom-row">
-    <button id="backBtn" class="back-btn">◀ Zurück</button>
-    <button id="druckenBtn" class="primary-btn">Drucken</button>
-  </div>
-</div>
-
-<script src="beschichtung_mobile.js"></script>
-
-<!-- ⭐⭐⭐ AUTOMATISCHE SKALIERUNG FÜR ALLE GERÄTE ⭐⭐⭐ -->
 <script>
+/* ========================================
+   AUTOMATISCHE SKALIERUNG TC21 / TC22 / iPhone
+======================================== */
+
 function autoScale() {
-    const page = document.getElementById("page");
-    const h = window.innerHeight;
-    const w = window.innerWidth;
+    const screenH = window.innerHeight;
+    const screenW = window.innerWidth;
 
-    // Verhältnis Page zu Bildschirm
-    const scaleW = w / page.offsetWidth;
-    const scaleH = h / page.offsetHeight;
+    const baseW = 420;     // Grundbreite der Karte
+    const baseH = 760;     // Grundhöhe iPhone
 
-    // Wir nehmen den kleineren Wert
-    const finalScale = Math.min(scaleW, scaleH) * 1,15;  // 3% Luft lassen
+    const scaleW = screenW / baseW;
+    const scaleH = screenH / baseH;
 
-    page.style.transform = `scale(${finalScale})`;
-    page.style.transformOrigin = "top center";
+    // kleineren Wert nutzen → passt immer
+    let scale = Math.min(scaleW, scaleH);
+
+    // Begrenzung (damit iPhone nicht zu klein wird)
+    if (scale > 1) scale = 1;
+
+    document.querySelector(".page").style.transform =
+        "scale(" + scale.toFixed(2) + ")";
 }
 
-// Start + live anpassen
 window.onload = autoScale;
 window.onresize = autoScale;
 </script>
+
+</head>
+
+<body>
+
+<div class="page">
+
+    <header class="header">
+        <h1>Etikett Beschichtung</h1>
+    </header>
+
+    <div class="field-group">
+        <label>Beistellnummer</label>
+        <input id="beistellInput" type="text" readonly>
+    </div>
+
+    <div class="field-group">
+        <label>Kundenname (optional)</label>
+        <input id="kundeInput" type="text" readonly>
+    </div>
+
+    <div class="grid-label">Kunde wählen:</div>
+
+    <div class="kunden-grid">
+        <button class="kunde-btn" data-type="LP">L&P</button>
+        <button class="kunde-btn" data-type="SCHUETTE">Schütte</button>
+        <button class="kunde-btn" data-type="KLEY">Kleymann</button>
+
+        <button class="kunde-btn" data-type="COMTEZN8">Comte – ZN8</button>
+        <button class="kunde-btn" data-type="COMTEZNI8">Comte – ZNi8</button>
+        <button class="kunde-btn" data-type="CHEMISCH">Comte – Chemisch</button>
+
+        <button class="kunde-btn" data-type="DICK">Comte – Dick</button>
+        <button class="kunde-btn" data-type="BLAU">Comte – Blau ZN8</button>
+        <button class="kunde-btn" data-type="PENTZ">Pentz & Gerdes – ZN8</button>
+
+        <button class="kunde-btn" data-type="RCS">RCS – Schweißen</button>
+        <button class="kunde-btn" data-type="COATINC">Coatinc 24 – Verzinken</button>
+    </div>
+
+    <button id="eiltBtn">EILT SEHR: AUS</button>
+
+    <div class="bottom-row">
+        <button id="backBtn" class="back-btn">◀ Zurück</button>
+        <button id="druckenBtn" class="primary-btn">Drucken</button>
+    </div>
+</div>
+
+<script src="beschichtung_mobile.js"></script>
 
 </body>
 </html>
