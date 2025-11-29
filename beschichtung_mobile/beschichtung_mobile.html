@@ -65,5 +65,27 @@
 <div id="alphaKeyboard" class="kb" style="display:none;"></div>
 
 <script src="beschichtung_mobile.js"></script>
+
+<script>
+function autoScale() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+
+    let scale = 1;
+
+    // iPhone (keine Skalierung nötig)
+    if (w >= 390 && w <= 430) scale = 1.00;
+
+    // TC21 (5 Zoll) – kleiner machen
+    if (w >= 360 && w < 390) scale = 0.86;
+
+    // TC22 (6 Zoll) – DEUTLICH kleiner machen
+    if (w >= 400 && w < 450) scale = 0.74;
+
+    document.documentElement.style.setProperty("--scale", scale);
+}
+window.onload = autoScale;
+window.onresize = autoScale;
+</script>
 </body>
 </html>
