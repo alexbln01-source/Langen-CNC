@@ -1,79 +1,74 @@
-/* ===== GLOBAL ===== */
+/* ============ GLOBAL ============ */
 * { box-sizing: border-box; }
+
 html, body {
     margin: 0;
     padding: 0;
     height: 100%;
     background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
-    font-family: "Segoe UI", Arial, sans-serif;
+    font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* ===== CARD ===== */
+/* ============ CARD / CONTAINER (wie Index) ============ */
 .page {
     width: 92%;
-    max-width: 520px;
-    background: linear-gradient(180deg,#ffffff 0%,#eef1f4 100%);
-    padding: 20px 18px 25px;
-    border-radius: 30px;
+    max-width: 850px;
+
+    /* WICHTIG: Höhe passt sich dynamisch an (für TC21/TC22/iPhone) */
+    height: calc(100vh - 40px);
+
+    background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
+    border-radius: 28px;
+
+    padding: 20px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.25);
-    border: 1px solid #bfc5cc;
+
+    overflow-y: auto;    /* falls echt nötig – aber sehr selten */
 }
 
-/* ===== HEADER ===== */
+/* ============ HEADER ============ */
 .header h1 {
+    font-size: 26px;
     text-align: center;
-    font-size: 24px;
-    margin: 0 0 15px;
+    margin: 10px 0 18px;
     color: #003a73;
     font-weight: 900;
 }
 
-/* ===== INPUTS ===== */
+/* ============ FELDER ============ */
 .field-group {
-    margin-bottom: 10px;
-}
-
-.field-group label {
-    font-size: 14px;
-    color: #003a73;
+    margin-bottom: 14px;
 }
 
 .field-group input {
-    font-size: 18px;
-    padding: 10px;
+    width: 100%;
+    padding: 12px;
     border-radius: 14px;
     border: 1px solid #bbb;
-    background: #ffffff;
+    font-size: 20px;
 }
 
-/* ===== GRID ===== */
-.grid-label {
-    margin: 10px 0 6px;
-    font-size: 15px;
-    font-weight: bold;
-    text-align: center;
-    color: #003a73;
-}
-
+/* ============ KUNDEN GRID ============ */
 .kunden-grid {
+    margin-top: 10px;
     display: grid;
+
+    /* Auf allen Geräten perfekt */
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+
+    gap: 14px;
 }
 
-/* ===== BUTTONS ===== */
 .kunde-btn {
-    padding: 12px 4px;
-    border-radius: 14px;
-    background: white;
+    padding: 12px 6px;
+    border-radius: 16px;
+    font-size: 16px;
+    background: #ffffff;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.18);
     border: none;
-    font-size: 14px;
-    font-weight: 600;
-    text-align: center;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.18);
 }
 
 .kunde-btn.active {
@@ -81,68 +76,46 @@ html, body {
     color: white;
 }
 
-/* ===== EILT ===== */
+/* ============ EILT BUTTON ============ */
 #eiltBtn {
     width: 100%;
-    padding: 12px;
-    font-size: 18px;
-    border-radius: 14px;
-    margin-top: 12px;
+    margin-top: 16px;
+    padding: 15px;
+    border-radius: 16px;
     border: none;
-    background: #888;
+    background: #777;
     color: white;
+    font-size: 20px;
 }
-#eiltBtn.on { background: #c80000; }
 
-/* ===== UNTEN BUTTONS ===== */
+#eiltBtn.on {
+    background: #c80000;
+}
+
+/* ============ UNTERE BUTTONS ============ */
 .bottom-row {
+    margin-top: 20px;
     display: flex;
     gap: 12px;
-    margin-top: 15px;
 }
 
-.back-btn,
-.primary-btn {
+.back-btn, .primary-btn {
     flex: 1;
-    padding: 14px;
-    border-radius: 14px;
-    font-size: 18px;
+    padding: 16px;
+    font-size: 20px;
+    border-radius: 16px;
     font-weight: bold;
     border: none;
     color: white;
 }
 
-.back-btn { background:#444; }
-.primary-btn { background:#00963d; }
+.back-btn { background: #222; }
+.primary-btn { background: #008f39; }
 
-/* ===== FOKUSRING ===== */
+/* ============ FOKUS OHNE VERGRÖSSERUNG ============ */
 button:focus {
-    outline: 3px solid #1a73e8;
-}
-
-/* ===== TASTATUREN ===== */
-.kb {
-    position: fixed;
-    bottom: 0; left: 0;
-    width: 100%;
-    background: #dcdcdc;
-    padding: 6px;
-    box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
-}
-
-.kb-row {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 6px;
-}
-
-.kb-key {
-    flex: 1;
-    padding: 10px 0;
-    font-size: 20px;
-    background: #ffffff;
-    border-radius: 10px;
-    border: none;
-    font-weight: bold;
+    outline: 4px solid #1a73e8;
+    outline-offset: 0;
+    box-shadow: none;
+    transform: none;
 }
