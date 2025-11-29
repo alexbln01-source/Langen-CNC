@@ -1,193 +1,196 @@
-/* ===========================================
-   GLOBAL – Hintergrund wie INDEX
-=========================================== */
+/* ============================================================
+   GLOBAL / HINTERGRUND – gleich wie INDEX
+============================================================ */
 html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: "Segoe UI", Arial, sans-serif;
-
+  margin:0;
+  padding:0;
+  height:100%;
+  font-family:"Segoe UI", Arial, sans-serif;
   background: radial-gradient(circle at top,
-    #f2f5f9 0%,
-    #d8dee6 40%,
-    #c3cad4 100%);
+              #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
-/* ===========================================
-   PAGE CONTAINER – abgerundete Karte wie INDEX
-=========================================== */
+/* ============================================================
+   PAGE CONTAINER – wie INDEX #main (runde Außenkanten!)
+============================================================ */
 .page {
   width: 92%;
   max-width: 900px;
+  height: 96vh;
 
-  margin: auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
-
-  background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
+  background: linear-gradient(180deg,#ffffff 0%,#eef1f4 100%);
   border-radius: 28px;
-
-  padding: 20px;
-  box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.25);
   border: 1px solid #bfc5cc;
 
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  padding: 26px 22px;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
 }
 
-/* ===========================================
+/* ============================================================
    HEADER
-=========================================== */
-.header h1 {
-  text-align: center;
-  font-size: 26px;
-  font-weight: 900;
-  margin: 0;
-  color: #003a73;
+============================================================ */
+.header {
+  text-align:center;
+  margin-bottom:10px;
 }
 
-/* ===========================================
+.header h1 {
+  font-size:28px;
+  color:#003a73;
+  margin:0;
+  font-weight:800;
+  text-transform:uppercase;
+}
+
+/* ============================================================
    FELDER
-=========================================== */
+============================================================ */
+.field-group {
+  display:flex;
+  flex-direction:column;
+  margin-bottom:12px;
+}
+
 .field-group label {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 5px;
+  font-size:16px;
+  color:#003a73;
+  font-weight:bold;
+  margin-bottom:4px;
 }
 
 .field-group input {
-  font-size: 20px;
-  padding: 12px;
-  border-radius: 14px;
-  border: 2px solid #bfc5cc;
-  background: white;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+  padding:12px;
+  font-size:20px;
+  border-radius:12px;
+  border:1px solid #8ea0b8;
+  background:white;
+  box-shadow:0 2px 6px rgba(0,0,0,0.15);
 }
 
-/* ===========================================
-   GRID LABEL
-=========================================== */
+/* ============================================================
+   KUNDEN GRID – gleiche Kanten wie INDEX Buttons
+============================================================ */
 .grid-label {
-  font-size: 17px;
-  font-weight: bold;
-  margin-top: 10px;
-  margin-bottom: 6px;
-  text-align: center;
+  font-size:16px;
+  font-weight:bold;
+  color:#003a73;
+  margin:6px 0 6px;
 }
 
-/* ===========================================
-   KUNDEN GRID – Zentriert & sauber
-=========================================== */
 .kunden-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  padding: 10px 5px;
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:14px;
+  margin-bottom:16px;
 }
 
-/* ===========================================
-   KUNDEN BUTTONS – Rund, Farbe wie Index
-=========================================== */
 .kunde-btn {
-  padding: 14px 8px;
-  font-size: 15px;
-  border-radius: 18px;
+  height:75px;
+  border:none;
+  border-radius:16px;
+  background:white;
 
-  background: white;
-  border: none;
+  font-size:16px;
+  font-weight:bold;
 
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  font-weight: bold;
+  box-shadow:0 3px 12px rgba(0,0,0,0.25);
 }
 
 .kunde-btn.active {
-  background: #007bff;
-  color: white;
+  background:#007bff;
+  color:white;
 }
 
-/* Fokus-Rand wie Index */
-button:focus {
-  outline: 4px solid #1a73e8;
-  outline-offset: 0;
-}
-
-/* ===========================================
+/* ============================================================
    EILT BUTTON
-=========================================== */
+============================================================ */
 #eiltBtn {
-  width: 100%;
-  padding: 14px;
-  font-size: 20px;
-  border-radius: 18px;
-  border: none;
+  width:100%;
+  padding:16px;
+  font-size:22px;
 
-  background: #7a7a7a;
-  color: white;
-  font-weight: bold;
+  border-radius:16px;
+  border:none;
+  font-weight:bold;
+  color:white;
 
-  box-shadow: 0 5px 16px rgba(0,0,0,0.25);
+  background:#888;
+  margin-top:6px;
+  box-shadow:0 3px 12px rgba(0,0,0,0.25);
 }
 
 #eiltBtn.on {
-  background: #c80000;
+  background:#c80000;
 }
 
-/* ===========================================
-   UNTEN – Zurück + Drucken
-=========================================== */
+/* ============================================================
+   UNTEN: Zurück + Drucken – wie Index Buttons
+============================================================ */
 .bottom-row {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
+  display:flex;
+  gap:12px;
+  margin-top:auto;   /* nach unten schieben */
+  padding-top:10px;
 }
 
 .back-btn,
 .primary-btn {
-  flex: 1;
-  padding: 16px;
-  border-radius: 18px;
-  border: none;
-  color: white;
-  font-size: 20px;
-  font-weight: bold;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  flex:1;
+  padding:16px;
+  font-size:22px;
+  border-radius:16px;
+  font-weight:bold;
+  border:none;
+  color:white;
+
+  box-shadow:0 4px 14px rgba(0,0,0,0.25);
 }
 
 .back-btn {
-  background: linear-gradient(180deg,#7a7a7a 0%,#4d4d4d 100%);
+  background:#444;
 }
 
 .primary-btn {
-  background: linear-gradient(180deg,#28a745 0%,#1d7f31 100%);
+  background:#00963d;
 }
 
-/* ===========================================
-   POPUP TASTATUREN – kleiner + abgerundet
-=========================================== */
+/* ============================================================
+   POPUP-TASTATUREN – sauber & kleiner
+============================================================ */
 .kb {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: #e1e1e1;
-  padding: 6px;
-  border-radius: 20px 20px 0 0;
-  box-shadow: 0 -4px 10px rgba(0,0,0,0.25);
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  background:#eef1f4;
+  padding:10px;
+  box-shadow:0 -4px 16px rgba(0,0,0,0.3);
 }
 
 .kb-row {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 6px;
+  display:flex;
+  gap:10px;
+  margin-bottom:10px;
 }
 
 .kb-key {
-  flex: 1;
-  padding: 12px;
-  font-size: 20px;
-  background: #ffffff;
-  border-radius: 14px;
-  border: 2px solid #bfc5cc;
-  font-weight: bold;
+  flex:1;
+  padding:12px 0;
+  font-size:18px;
+  font-weight:bold;
+  border:none;
+  border-radius:10px;
+  background:white;
+  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+}
+
+button:focus {
+  outline:4px solid #1a73e8;
+  outline-offset:0;
 }
