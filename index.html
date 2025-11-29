@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8" />
 
-<!-- WICHTIG FÜR MOBILE -->
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <title>Warenanhänger</title>
 
-<!-- ====== ICONS FÜR ANDROID / PWA ====== -->
+<!-- Icons -->
 <link rel="icon" href="icon192.png" sizes="192x192" type="image/png">
 <link rel="icon" href="icon512.png" sizes="512x512" type="image/png">
 <link rel="apple-touch-icon" href="icon192.png">
@@ -16,127 +16,112 @@
 <!-- Manifest -->
 <link rel="manifest" href="manifest.json">
 
-<!-- Browser Theme -->
 <meta name="theme-color" content="#003a73">
 
 <style>
-html,body {
-  margin:0; padding:0; height:100%;
-  background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
-  font-family:"Segoe UI", Arial, sans-serif;
-  display:flex; justify-content:center; align-items:center;
-}
+    html, body {
+        margin:0;
+        padding:0;
+        height:100%;
+        background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
+        font-family:"Segoe UI", Arial, sans-serif;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
 
-#main {
-  width:90%; max-width:900px; text-align:center;
-  background:linear-gradient(180deg,#ffffff 0%,#eef1f4 100%);
-  border-radius:30px;
-  box-shadow:0 10px 40px rgba(0,0,0,0.25);
-  padding:50px 20px 60px;
-  border:1px solid #bfc5cc;
-}
+    /* ZENTRALER KASTEN */
+    #main {
+        width:95%;
+        max-width:520px;       /* ⭐ Begrenzung für 5-Zoll Geräte */
+        text-align:center;
+        background:linear-gradient(180deg,#ffffff 0%,#eef1f4 100%);
+        border-radius:28px;
+        box-shadow:0 10px 40px rgba(0,0,0,0.25);
+        padding:40px 20px 50px;
+        border:1px solid #bfc5cc;
+    }
 
-/* ⭐ Langen Logo */
-#logo {
-  width: 260px;          /* Größe */
-  max-width: 70%;
-  margin-bottom: 25px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
+    /* Logo */
+    #logo {
+        width: 230px;
+        max-width: 90%;
+        margin: 0 auto 20px;
+        display:block;
+    }
 
-h1 {
-  font-size:32px;
-  color:#003a73;
-  margin:10px 0 30px;
-  text-transform:uppercase;
-  font-weight:900;
-}
+    h1 {
+        font-size:28px;
+        color:#003a73;
+        text-align:center;
+        margin:20px 0 35px;
+        text-transform:uppercase;
+        font-weight:900;
+    }
 
-button {
-  width:280px;
-  height:90px;
-  border:none;
-  border-radius:18px;
-  margin:15px;
-  font-size:22px;
-  font-weight:bold;
-  color:#fff;
-  cursor:pointer;
-  box-shadow:0 6px 18px rgba(0,0,0,0.25);
-  transition:all 0.2s ease;
-}
+    /* BUTTONS */
+    button {
+        width:100%;
+        max-width: 380px;        /* ⭐ Perfekt für Zebra */
+        height:70px;
+        border:none;
+        border-radius:18px;
+        margin:12px auto;
+        font-size:20px;
+        font-weight:bold;
+        color:white;
+        cursor:pointer;
+        box-shadow:0 6px 18px rgba(0,0,0,0.25);
+        transition: all .2s;
+        display:block;
+    }
 
-/* Farben */
-#btnBeschichtung { background:linear-gradient(180deg,#007bff 0%,#0056b3 100%); }
-#btnBeschichtung:hover { background:linear-gradient(180deg,#2196f3 0%,#0066d6 100%); }
+    #btnBeschichtung { background:linear-gradient(180deg,#007bff,#0056b3); }
+    #btnKanten       { background:linear-gradient(180deg,#ff9800,#e67e00); }
+    #btnPaus         { background:linear-gradient(180deg,#28a745,#1d7f31); }
+    #btnSchweissen   { background:linear-gradient(180deg,#9c27b0,#6a0080); }
 
-#btnKanten { background:linear-gradient(180deg,#ff9800 0%,#e67e00 100%); }
-#btnKanten:hover { background:linear-gradient(180deg,#ffb84d 0%,#d96b00 100%); }
-
-#btnPaus { background:linear-gradient(180deg,#28a745 0%,#1d7f31 100%); }
-#btnPaus:hover { background:linear-gradient(180deg,#2fc34a 0%,#1a6d29 100%); }
-
-#btnSchweissen { background:linear-gradient(180deg,#9c27b0 0%,#6a0080 100%); }
-#btnSchweissen:hover { background:linear-gradient(180deg,#b94ed3 0%,#7a0093 100%); }
-
-footer {
-  margin-top:40px;
-  font-size:13px;
-  color:#666;
-}
-
-@media (max-width: 600px) {
-  #logo {
-    width: 200px;    /* kleiner auf Handy */
-  }
-  button {
-    width: 90%;
-    height: 70px;
-    font-size: 18px;
-    margin: 10px auto;
-  }
-}
+    footer {
+        margin-top:35px;
+        font-size:13px;
+        color:#666;
+    }
 </style>
 
-<script>
-function isMobileDevice() {
-  return /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
-}
-
-function openBeschichtung() {
-  window.location.href = "start.html?bereich=beschichtung";
-}
-
-function openKanten() {
-  window.location.href = "start.html?bereich=kanten";
-}
-
-function openPaus() {
-  window.location.href = "start.html?bereich=paus";
-}
-
-function openSchweissen() {
-  window.location.href = "start.html?bereich=schweissen";
-}
-</script>
 </head>
 
 <body>
-  <div id="main">
+<div id="main">
 
-    <!-- ⭐ Langen CNC Logo oben -->
-    <img id="logo" src="langen.png" alt="Langen CNC Logo">
+    <img id="logo" src="langen.png" alt="Logo">
 
     <h1>Warenanhänger</h1>
 
-    <button id="btnBeschichtung" onclick="openBeschichtung()">Beschichtung (A5)</button>
-    <button id="btnKanten" onclick="openKanten()">Kanten (A6)</button>
-    <button id="btnPaus" onclick="window.location.href='Paus-Lieferung.html'">PAUS Lieferung (A6)</button>
-    <button id="btnSchweissen" onclick="window.location.href='Schweissen.html'">Schweißen</button>
+    <!-- ⭐ DIREKT mobile-Version öffnen, PC wird ignoriert -->
+    <button id="btnBeschichtung"
+            onclick="location.href='beschichtung_mobile/beschichtung_mobile.html'">
+        Beschichtung (A5)
+    </button>
 
-    <footer>Langen CNC Metalltechnik GmbH & Co. KG</footer>
-  </div>
+    <button id="btnKanten"
+            onclick="location.href='kanten_mobile/kanten_mobile.html'">
+        Kanten (A6)
+    </button>
+
+    <button id="btnPaus"
+            onclick="location.href='paus_mobile/paus_mobile.html'">
+        PAUS Lieferung (A6)
+    </button>
+
+    <button id="btnSchweissen"
+            onclick="location.href='schweissen_mobile/schweissen_mobile.html'">
+        Schweißen
+    </button>
+
+    <footer>
+        Langen CNC Metalltechnik GmbH &amp; Co. KG
+    </footer>
+
+</div>
 </body>
 </html>
