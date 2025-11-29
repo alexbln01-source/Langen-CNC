@@ -1,72 +1,104 @@
-* { box-sizing: border-box; }
-
+/* ===========================================
+   GLOBAL – Hintergrund wie INDEX
+=========================================== */
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background: #f0f0f0;
-  font-family: Arial, sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
+
+  background: radial-gradient(circle at top,
+    #f2f5f9 0%,
+    #d8dee6 40%,
+    #c3cad4 100%);
 }
 
+/* ===========================================
+   PAGE CONTAINER – abgerundete Karte wie INDEX
+=========================================== */
 .page {
-  height: 100vh;
+  width: 92%;
+  max-width: 900px;
+
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
+  border-radius: 28px;
+
+  padding: 20px;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+  border: 1px solid #bfc5cc;
+
   display: flex;
   flex-direction: column;
-  padding: 8px;
-}
-
-.header {
-  text-align: center;
-  margin-bottom: 4px;
-}
-
-.header h1 {
-  font-size: 20px;
-  margin: 6px 0;
-  font-weight: 700;
-}
-
-.field-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 4px;
-}
-
-.field-group label {
-  font-size: 14px;
-}
-
-.field-group input {
-  font-size: 18px;
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid #888;
-}
-
-.grid-label {
-  margin-top: 6px;
-  margin-bottom: 4px;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.kunden-grid {
-  padding: 10px 20px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 }
 
-.kunde-btn {
-  height: 62px;
-  font-size: 15px;
-  border-radius: 10px;
-  border: none;
+/* ===========================================
+   HEADER
+=========================================== */
+.header h1 {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 900;
+  margin: 0;
+  color: #003a73;
+}
+
+/* ===========================================
+   FELDER
+=========================================== */
+.field-group label {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.field-group input {
+  font-size: 20px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 2px solid #bfc5cc;
   background: white;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* ===========================================
+   GRID LABEL
+=========================================== */
+.grid-label {
+  font-size: 17px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+/* ===========================================
+   KUNDEN GRID – Zentriert & sauber
+=========================================== */
+.kunden-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  padding: 10px 5px;
+}
+
+/* ===========================================
+   KUNDEN BUTTONS – Rund, Farbe wie Index
+=========================================== */
+.kunde-btn {
+  padding: 14px 8px;
+  font-size: 15px;
+  border-radius: 18px;
+
+  background: white;
+  border: none;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  font-weight: bold;
 }
 
 .kunde-btn.active {
@@ -74,86 +106,88 @@ html, body {
   color: white;
 }
 
+/* Fokus-Rand wie Index */
+button:focus {
+  outline: 4px solid #1a73e8;
+  outline-offset: 0;
+}
+
+/* ===========================================
+   EILT BUTTON
+=========================================== */
 #eiltBtn {
   width: 100%;
-  padding: 12px;
-  font-size: 18px;
-  border-radius: 10px;
+  padding: 14px;
+  font-size: 20px;
+  border-radius: 18px;
   border: none;
-  background: #888;
+
+  background: #7a7a7a;
   color: white;
-  margin-top: 10px;
+  font-weight: bold;
+
+  box-shadow: 0 5px 16px rgba(0,0,0,0.25);
 }
 
 #eiltBtn.on {
   background: #c80000;
 }
 
+/* ===========================================
+   UNTEN – Zurück + Drucken
+=========================================== */
 .bottom-row {
   display: flex;
-  justify-content: space-between;
   gap: 10px;
   margin-top: 10px;
 }
 
-.back-btn {
+.back-btn,
+.primary-btn {
   flex: 1;
-  padding: 14px;
-  font-size: 18px;
-  border-radius: 10px;
+  padding: 16px;
+  border-radius: 18px;
   border: none;
-  background: #444;
   color: white;
+  font-size: 20px;
   font-weight: bold;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+.back-btn {
+  background: linear-gradient(180deg,#7a7a7a 0%,#4d4d4d 100%);
 }
 
 .primary-btn {
-  flex: 1;
-  padding: 14px;
-  font-size: 20px;
-  border-radius: 10px;
-  border: none;
-  background: #00963d;
-  color: white;
-  font-weight: bold;
+  background: linear-gradient(180deg,#28a745 0%,#1d7f31 100%);
 }
 
-/* ======================================================
-   POPUP TASTATUR (OPTION A — MITTELGROSS / 30% KLEINER)
-====================================================== */
-
+/* ===========================================
+   POPUP TASTATUREN – kleiner + abgerundet
+=========================================== */
 .kb {
   position: fixed;
   bottom: 0;
-  left: 0;
   width: 100%;
-  background: #dcdcdc;
-  padding: 6px; /* kleiner */
-  box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
+  background: #e1e1e1;
+  padding: 6px;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.25);
 }
 
 .kb-row {
   display: flex;
   justify-content: center;
-  gap: 8px; /* kleiner */
-  margin-bottom: 6px; /* kleiner */
+  gap: 8px;
+  margin-bottom: 6px;
 }
 
 .kb-key {
   flex: 1;
-  padding: 10px 0; /* kleiner */
-  font-size: 20px; /* kleiner */
+  padding: 12px;
+  font-size: 20px;
   background: #ffffff;
-  border: none;
-  border-radius: 8px; /* etwas kleiner */
+  border-radius: 14px;
+  border: 2px solid #bfc5cc;
   font-weight: bold;
-}
-/* ======================================================
-   FOKUS OHNE VERGRÖSSERUNG FÜR ALLE BUTTONS
-====================================================== */
-button:focus {
-    outline: 3px solid #007bff;   /* blauer Rand */
-    outline-offset: 0;            /* KEINE Verschiebung */
-    box-shadow: none;             /* Schatten aus */
-    transform: none;              /* keine Vergrößerung */
 }
