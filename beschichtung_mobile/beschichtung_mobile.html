@@ -1,82 +1,56 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>Etikett Beschichtung</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <link rel="stylesheet" href="beschichtung_mobile.css">
+<meta charset="UTF-8">
+<title>Etikett Beschichtung</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="beschichtung_mobile.css">
 </head>
+
 <body>
 
-<!-- AUTOMATISCH ZENTRIERT & SKALIERT -->
-<div id="wrapper">
 <div class="page">
 
-  <header class="header">
-    <h1>Etikett Beschichtung</h1>
-  </header>
+    <h1 class="title">Etikett Beschichtung</h1>
 
-  <!-- Eingabefelder OHNE Labels – mit Placeholder -->
-  <div class="field-group">
-    <input id="beistellInput" type="text" placeholder="Beistellnummer…" readonly>
-  </div>
+    <input id="beistellInput" type="text" placeholder="Beistellnummer" readonly>
+    <input id="kundeInput" type="text" placeholder="Kundenname (optional)" readonly>
 
-  <div class="field-group">
-    <input id="kundeInput" type="text" placeholder="Kundenname (optional)…" readonly>
-  </div>
+    <div class="grid-label">Kunde wählen:</div>
 
-  <div class="grid-label">Kunde wählen:</div>
+    <div class="kunden-grid">
 
-  <div class="kunden-grid">
+        <button class="kunde-btn" data-type="LP">L&P</button>
+        <button class="kunde-btn" data-type="SCHUETTE">Schütte</button>
+        <button class="kunde-btn" data-type="KLEY">Kleymann</button>
 
-    <button class="kunde-btn" data-type="LP">L&P</button>
-    <button class="kunde-btn" data-type="SCHUETTE">Schütte</button>
-    <button class="kunde-btn" data-type="KLEY">Kleymann</button>
+        <button class="kunde-btn" data-type="COMTEZN8">Comte – ZN8</button>
+        <button class="kunde-btn" data-type="COMTEZNI8">Comte – ZNi8</button>
 
-    <button class="kunde-btn" data-type="COMTEZN8">Comte – ZN8</button>
-    <button class="kunde-btn" data-type="COMTEZNI8">Comte – ZNi8</button>
+        <button class="kunde-btn" data-type="CHEMISCH">Comte – Chemisch</button>
+        <button class="kunde-btn" data-type="DICK">Comte – Dick</button>
+        <button class="kunde-btn" data-type="BLAU">Comte – Blau ZN8</button>
 
-    <button class="kunde-btn" data-type="CHEMISCH">Comte – Chemisch</button>
-    <button class="kunde-btn" data-type="DICK">Comte – Dick</button>
-    <button class="kunde-btn" data-type="BLAU">Comte – Blau ZN8</button>
+        <button class="kunde-btn" data-type="PENTZ">Pentz & Gerdes – ZN8</button>
+        <button class="kunde-btn" data-type="RCS">RCS – Schweißen</button>
+        <button class="kunde-btn" data-type="COATINC">Coatinc 24 – Verzinken</button>
 
-    <button class="kunde-btn" data-type="PENTZ">Pentz & Gerdes – ZN8</button>
-    <button class="kunde-btn" data-type="RCS">RCS – Schweißen</button>
-    <button class="kunde-btn" data-type="COATINC">Coatinc 24 – Verzinken</button>
+    </div>
 
-  </div>
+    <button id="eiltBtn">EILT SEHR: AUS</button>
 
-  <button id="eiltBtn">EILT SEHR: AUS</button>
+    <div class="bottom-row">
+        <button id="backBtn" class="back-btn">◀ Zurück</button>
+        <button id="druckenBtn" class="primary-btn">Drucken</button>
+    </div>
 
-  <div class="bottom-row">
-    <button id="backBtn" class="back-btn">◀ Zurück</button>
-    <button id="druckenBtn" class="primary-btn">Drucken</button>
-  </div>
-
-</div>
 </div>
 
 <!-- Tastaturen -->
+<div id="numKeyboard" class="kb" style="display:none;"></div>
+<div id="alphaKeyboard" class="kb" style="display:none;"></div>
+
 <script src="beschichtung_mobile.js"></script>
-
-<!-- automatische Skalierung -->
-<script>
-function autoScale() {
-    const wrapper = document.getElementById("wrapper");
-    let w = window.innerWidth;
-    let h = window.innerHeight;
-
-    const scale = Math.min(w / 430, h / 930);  // Referenzgröße
-
-    wrapper.style.transform = `scale(${scale})`;
-    wrapper.style.width = "430px";
-    wrapper.style.height = "930px";
-    wrapper.style.transformOrigin = "top center";
-}
-window.onload = autoScale;
-window.onresize = autoScale;
-</script>
 
 </body>
 </html>
