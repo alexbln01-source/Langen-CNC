@@ -179,7 +179,7 @@ button:focus {
 }
 
 /* TC22 – 6 Zoll → normal, aber etwas mehr Platz unten */
-@media (min-width: 481px) and (max-width: 600px) {
+@media (min-width: 481px) and (max-width: 500px) {
   .page {
     padding-bottom: 120px;
   }
