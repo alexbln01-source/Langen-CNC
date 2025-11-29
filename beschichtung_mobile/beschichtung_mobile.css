@@ -183,7 +183,7 @@ html, body {
 /* TC21 (5 Zoll) → kleiner skalieren */
 @media screen and (device-width: 360px) and (device-height: 640px) {
   .page {
-    transform: scale(0.88);
+    transform: scale(0.70);
     transform-origin: top center;
   }
 }
@@ -191,7 +191,7 @@ html, body {
 /* TC22 (6 Zoll) → leicht skalieren */
 @media screen and (device-width: 412px) and (device-height: 915px) {
   .page {
-    transform: scale(0.90);
+    transform: scale(0.70);
     transform-origin: top center;
   }
 }
