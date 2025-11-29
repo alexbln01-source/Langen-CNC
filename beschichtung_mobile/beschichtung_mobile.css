@@ -167,27 +167,43 @@ button:focus {
   transform: none !important;
 }
 
-/* =======================================
-   SPEZIALANPASSUNGEN FÜR ZEBRA GERÄTE
-======================================= */
+/* ============================================
+   AUTOMATISCHE SKALIERUNG FÜR VERSCHIEDENE GERÄTE
+============================================ */
 
-/* TC21 – 5 Zoll → alles enger */
-@media (max-width: 480px) {
-  .page {
-    zoom: 0.94;
-  }
+/* Standard: iPhone (passt meistens gut) */
+.page {
+    transform: scale(1);
+    transform-origin: top center;
 }
 
-/* TC22 – 6 Zoll → normal, aber etwas mehr Platz unten */
-@media (min-width: 300px) and (max-width: 300px) {
-  .page {
-    padding-bottom: 120px;
-  }
+/* ============================================
+   AUTOMATISCHE SKALIERUNG FÜR VERSCHIEDENE GERÄTE
+============================================ */
+
+/* Standard: iPhone (passt meistens gut) */
+.page {
+    transform: scale(1);
+    transform-origin: top center;
 }
 
-/* iPhone – perfekte Darstellung */
-@supports (-webkit-touch-callout: none) {
-  .page {
-    padding-bottom: 70px;
-  }
+/* Zebra TC22 → etwas kleiner skalieren */
+@media screen and (max-device-width: 440px) and (max-device-height: 900px) {
+    .page {
+        transform: scale(0.85);
+    }
+}
+
+/* Zebra TC21 → noch etwas kleiner */
+@media screen and (max-device-width: 400px) and (max-device-height: 860px) {
+    .page {
+        transform: scale(0.78);
+    }
+}
+
+/* Sehr kleine Androids oder Geräte mit großer Navbar */
+@media screen and (max-device-width: 380px) {
+    .page {
+        transform: scale(0.72);
+    }
 }
