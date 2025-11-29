@@ -1,107 +1,94 @@
-/* ==============================
-   GLOBAL
-============================== */
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
+    background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
     font-family: Arial, sans-serif;
-
     overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
-/* ==============================
-   PAGE FRAME (wie Index)
-============================== */
+/* ==========================
+   CARD / PAGE STYLE
+========================== */
 .page {
-    width: 94vw;
-    height: 92vh;
+    width: 400px;
+    height: 780px;
 
     background: white;
     border-radius: 28px;
-    padding: 18px;
+    padding: 20px;
 
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
     overflow: hidden;
 
     box-shadow: 0 10px 40px rgba(0,0,0,0.25);
     border: 1px solid #c9c9c9;
-
-    transform-origin: top center;
 }
 
-/* ==============================
+/* ==========================
    HEADER
-============================== */
+========================== */
 .header {
     text-align: center;
+    margin-bottom: 10px;
 }
 
 .header h1 {
-    font-size: 22px;
-    margin: 6px 0 10px;
+    font-size: 24px;
+    margin: 0;
     font-weight: 900;
     color: #003a73;
 }
 
-/* ==============================
+/* ==========================
    INPUTS
-============================== */
+========================== */
 .field-group {
     display: flex;
     flex-direction: column;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 
 .field-group label {
-    font-size: 15px;
+    font-size: 14px;
+    margin-bottom: 4px;
 }
 
 .field-group input {
     font-size: 18px;
-    padding: 12px;
-    border-radius: 12px;
+    padding: 10px;
+    border-radius: 14px;
     border: 1px solid #888;
 }
 
-/* ==============================
-   GRID
-============================== */
+
+/* ==========================
+   KUNDEN-GRID
+========================== */
 .grid-label {
-    margin-top: 10px;
-    margin-bottom: 6px;
-    font-size: 15px;
+    margin: 10px 0 6px;
+    font-size: 14px;
     font-weight: bold;
 }
 
 .kunden-grid {
-    padding: 10px 8px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
 }
 
 .kunde-btn {
-    height: 60px;
-    font-size: 14px;
-    border-radius: 14px;
+    height: 64px;
+    background: #ffffff;
+    border-radius: 16px;
     border: none;
-    background: white;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    font-size: 15px;
+    font-weight: 600;
 }
 
 .kunde-btn.active {
@@ -109,73 +96,41 @@ html, body {
     color: white;
 }
 
-/* ==============================
-   EILT
-============================== */
+/* ==========================
+   EILT BUTTON
+========================== */
 #eiltBtn {
     width: 100%;
-    padding: 14px;
-    font-size: 20px;
-    border-radius: 14px;
-    background: #666;
+    padding: 16px;
+    margin-top: 16px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 16px;
     border: none;
-    margin-top: 10px;
+    background: #666;
     color: white;
 }
 
-#eiltBtn.on {
-    background: #c80000;
-}
+#eiltBtn.on { background: #c80000; }
 
-/* ==============================
-   BOTTOM ROW
-============================== */
+/* ==========================
+   UNTEN – BUTTONS
+========================== */
 .bottom-row {
     display: flex;
     gap: 12px;
-    margin-top: 12px;
+    margin-top: auto;
 }
 
 .back-btn, .primary-btn {
     flex: 1;
     padding: 14px;
-    border-radius: 14px;
-    font-size: 20px;
+    border-radius: 16px;
     border: none;
-    color: white;
+    font-size: 20px;
     font-weight: bold;
+    color: white;
 }
 
 .back-btn { background: #444; }
 .primary-btn { background: #00963d; }
-
-/* ==============================
-   KEYBOARD
-============================== */
-.kb {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: #dcdcdc;
-    padding: 6px;
-    box-shadow: 0 -4px 10px rgba(0,0,0,0.4);
-}
-
-.kb-row {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 6px;
-}
-
-.kb-key {
-    flex: 1;
-    padding: 12px 0;
-    font-size: 20px;
-    background: #fff;
-    border: none;
-    border-radius: 10px;
-}
-
-button:focus {
-    outline: 4px solid #1a73e8;
-}
