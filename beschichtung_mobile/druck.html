@@ -11,13 +11,13 @@
         padding: 0;
         background: #dcdcdc;
         font-family: Arial, sans-serif;
-        height: 100vh;
         display: flex;
         flex-direction: column;
+        height: 100vh;
         overflow: hidden;
     }
 
-    /* --- Vorschaucontainer --- */
+    /* ======= VORSCHAU (PIXELBASIERT, NICHT mm!) ======= */
     .preview-wrapper {
         flex: 1;
         display: flex;
@@ -26,83 +26,91 @@
         overflow: hidden;
     }
 
-    /* --- A5 Querformat 210 × 148 mm --- */
-    .preview-area {
-        width: 210mm;
-        height: 148mm;
+    /* A5 Querformat Verhältnis: 148/210 = 0.704 */
+    .preview-box {
+        width: 820px;
+        height: 578px; /* 820 * 0.704 */
         background: white;
-        box-shadow: 0 0 14px rgba(0,0,0,0.3);
         position: relative;
-        transform-origin: center;
+        box-shadow: 0 0 15px rgba(0,0,0,0.25);
+        transform-origin: center center;
     }
 
-    /* --- Skalierung für Handy --- */
+    /* Handy verkleinern */
     @media (max-width: 900px) {
-        .preview-area {
-            transform: scale(0.35);
+        .preview-box {
+            transform: scale(0.36);
         }
     }
 
-    /* --- Skalierung für PC --- */
     @media (min-width: 901px) {
-        .preview-area {
-            transform: scale(0.45);
+        .preview-box {
+            transform: scale(0.46);
         }
     }
 
-    .etikett {
-        width: 210mm;
-        height: 148mm;
-        padding: 10mm;
+    .etikett-preview {
+        width: 100%;
+        height: 100%;
+        padding: 50px;
         box-sizing: border-box;
         text-align: center;
-        font-size: 60pt;
         font-weight: bold;
-        background: white;
+        font-size: 60pt;
         position: relative;
     }
 
     .logo {
         position: absolute;
+        right: 40px;
+        bottom: 40px;
+        width: 160px;
+    }
+
+    /* ======= DRUCKBEREICH — ECHTES A5 ======= */
+    #printArea {
+        display: none;
+        width: 210mm;
+        height: 148mm;
+        box-sizing: border-box;
+        padding: 10mm;
+        text-align: center;
+        font-size: 60pt;
+        font-weight: bold;
+        position: relative;
+    }
+
+    #printArea .logo {
         right: 10mm;
         bottom: 10mm;
         width: 42mm;
     }
 
-    /* --- Buttons --- */
+    /* ======= BUTTONS ======= */
     .bottom-bar {
         display: flex;
         padding: 10px;
         gap: 10px;
         background: white;
-        box-shadow: 0 -3px 6px rgba(0,0,0,0.2);
+        box-shadow: 0 -3px 6px rgba(0,0,0,0.3);
     }
 
     .btn {
         flex: 1;
-        padding: 16px 12px;
+        padding: 16px;
         font-size: 22px;
         border-radius: 12px;
-        font-weight: bold;
-        border: none;
         color: white;
+        border: none;
+        font-weight: bold;
     }
 
-    .btn:focus { outline: 5px solid #1a73e8; }
+    .back-btn  { background:#9e9e9e; }
+    .print-btn { background:#2e7d32; }
 
-    .back-btn  { background: #9e9e9e; }
-    .print-btn { background: #2e7d32; }
-
-    /* --- DRUCKEN --- */
     @media print {
-
-        body * {
-            visibility: hidden !important;
-        }
-
-        #printArea, #printArea * {
-            visibility: visible !important;
-        }
+        body * { visibility: hidden !important; }
+        #printArea, #printArea * { visibility: visible !important; }
 
         #printArea {
             position: fixed;
@@ -120,14 +128,13 @@
 <body>
 
 <div class="preview-wrapper">
-    <div class="preview-area">
-        <div id="previewContent" class="etikett"></div>
+    <div class="preview-box">
+        <div id="previewContent" class="etikett-preview"></div>
         <img class="logo" src="langen.png">
     </div>
 </div>
 
-<!-- Druckbereich (nur 1 Seite!) -->
-<div id="printArea" class="etikett" style="display:none;">
+<div id="printArea">
     <div id="printContent"></div>
     <img class="logo" src="langen.png">
 </div>
@@ -141,16 +148,18 @@
 window.onload = () => {
 
     const qs = new URLSearchParams(location.search);
-    const data = qs.has("data") ? JSON.parse(decodeURIComponent(qs.get("data"))) : {};
+    const data = qs.has("data")
+        ? JSON.parse(decodeURIComponent(qs.get("data")))
+        : {};
 
     const beistell = data.beistell || "";
     const type     = data.selectedType || "";
     const kunde    = data.kundename || "";
 
-    let html = `<div style="margin-bottom:10mm;">${beistell}</div>`;
+    let html = `<div style="margin-bottom:30px;">${beistell}</div>`;
 
     const row = (t, sub="") =>
-        `<div style="margin-bottom:6mm;">${t}</div>` +
+        `<div style="margin-bottom:25px;">${t}</div>` +
         (sub ? `<div style="font-size:32pt">${sub}</div>` : "");
 
     switch(type) {
@@ -175,13 +184,15 @@ window.onload = () => {
         case "COATINC": html += row("Coatinc 24","„Verzinken“"); break;
     }
 
-    if (kunde) html += `<div style="font-size:32pt;">(${kunde})</div>`;
+    if (kunde)
+        html += `<div style="font-size:32pt;">(${kunde})</div>`;
 
     document.getElementById("previewContent").innerHTML = html;
     document.getElementById("printContent").innerHTML   = html;
 
     document.getElementById("printBtn").onclick = () => window.print();
-    document.getElementById("backBtn").onclick  = () => window.location.href = "index.html";
+    document.getElementById("backBtn").onclick  = () =>
+        window.location.href = "index.html";
 
     setTimeout(() => document.getElementById("printBtn").focus(), 150);
 };
