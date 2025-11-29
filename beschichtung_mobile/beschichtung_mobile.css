@@ -2,104 +2,106 @@
    GLOBAL
 ============================== */
 
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    background: #ffffff;
+    background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
     font-family: Arial, sans-serif;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
 
+/* Wrapper für automatische Skalierung */
+#wrapper {
+    width: 430px;
+    height: 930px;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-
-    overflow: hidden;
 }
 
 /* ==============================
-   PAGE (zentriert, kein Scrollen)
+   PAGE DESIGN (wie Index)
 ============================== */
 
 .page {
-    width: 92vw;
-    max-width: 500px;
-
-    background: #ffffff;
-    padding: 16px;
-    border-radius: 26px;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.20);
-    border: 1px solid #dcdcdc;
+    width: 92%;
+    height: 95%;
+    background: white;
+    border-radius: 28px;
+    padding: 18px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    border: 1px solid #c9c9c9;
 
     display: flex;
     flex-direction: column;
-    gap: 8px;
 }
 
 /* ==============================
    HEADER
 ============================== */
-
-.header h1 {
+.header {
     text-align: center;
-    margin: 8px 0 14px;
+    margin-bottom: 12px;
+}
+.header h1 {
     font-size: 22px;
     font-weight: 900;
     color: #003a73;
+    margin: 4px 0;
 }
 
 /* ==============================
-   EINGABEFELDER + PLACEHOLDER
+   INPUTFELDER MIT PLACEHOLDER
 ============================== */
 
 .field-group {
-    display: flex;
-    flex-direction: column;
-}
-
-.field-group label {
-    font-size: 14px;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
 }
 
 .field-group input {
+    width: 100%;
     font-size: 18px;
-    padding: 10px;
-    border-radius: 12px;
+    padding: 12px;
+    border-radius: 14px;
     border: 1px solid #888;
+    background: #f8f8f8;
 }
 
-/* Placeholder = Geisterschrift */
+/* Placeholder */
 .field-group input::placeholder {
-    color: #999;
+    color: #666;
+    opacity: 0.7;
 }
 
 /* ==============================
-   GRID
+   KUNDEN GRID
 ============================== */
-
 .grid-label {
-    margin-top: 8px;
+    margin-top: 10px;
+    margin-bottom: 6px;
     font-size: 14px;
     font-weight: bold;
 }
 
 .kunden-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(3,1fr);
+    gap: 12px;
 }
 
 .kunde-btn {
-    border: none;
-    height: 58px;
-    border-radius: 12px;
-    background: white;
+    height: 60px;
+    border-radius: 14px;
     font-size: 14px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    font-weight: bold;
+    background: white;
+    border: none;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
 }
 
 .kunde-btn.active {
@@ -108,18 +110,18 @@ html, body {
 }
 
 /* ==============================
-   EILT
+   EILT BUTTON
 ============================== */
 
 #eiltBtn {
     width: 100%;
     padding: 14px;
-    border-radius: 12px;
-    font-size: 18px;
+    font-size: 20px;
+    border-radius: 14px;
     border: none;
-    font-weight: bold;
     background: #666;
     color: white;
+    margin-top: 12px;
 }
 
 #eiltBtn.on {
@@ -127,23 +129,23 @@ html, body {
 }
 
 /* ==============================
-   UNTEN
+   UNTEN – ZURÜCK + DRUCKEN
 ============================== */
-
 .bottom-row {
     display: flex;
-    gap: 10px;
+    gap: 12px;
+    margin-top: auto;
 }
 
 .back-btn,
 .primary-btn {
     flex: 1;
     padding: 14px;
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 20px;
+    border-radius: 14px;
     border: none;
-    border-radius: 12px;
     color: white;
+    font-weight: bold;
 }
 
 .back-btn {
@@ -154,11 +156,8 @@ html, body {
     background: #00963d;
 }
 
-/* ==============================
-   FOKUS
-============================== */
-
+/* FOKUS */
 button:focus {
-    outline: 3px solid #1a73e8;
+    outline: 4px solid #1a73e8;
     outline-offset: 0;
 }
