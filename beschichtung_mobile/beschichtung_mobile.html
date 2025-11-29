@@ -67,7 +67,7 @@ function autoScale() {
     const scaleH = h / page.offsetHeight;
 
     // Wir nehmen den kleineren Wert
-    const finalScale = Math.min(scaleW, scaleH) * 0.97;  // 3% Luft lassen
+    const finalScale = Math.min(scaleW, scaleH) * 1,15;  // 3% Luft lassen
 
     page.style.transform = `scale(${finalScale})`;
     page.style.transformOrigin = "top center";
