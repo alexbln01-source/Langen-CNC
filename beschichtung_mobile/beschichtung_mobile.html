@@ -3,89 +3,80 @@
 <head>
   <meta charset="UTF-8">
   <title>Etikett Beschichtung</title>
-
-  <!-- Viewport wichtig für Skalierung -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="beschichtung_mobile.css">
 </head>
-
 <body>
 
-<div id="wrapper">
-  <div class="page">
+<div class="page" id="page">
 
-    <header class="header">
-      <h1>Etikett Beschichtung</h1>
-    </header>
+  <header class="header">
+    <h1>Etikett Beschichtung</h1>
+  </header>
 
-    <div class="field-group">
-      <label>Beistellnummer</label>
-      <input id="beistellInput" type="text" readonly>
-    </div>
+  <div class="field-group">
+    <label>Beistellnummer</label>
+    <input id="beistellInput" type="text" readonly>
+  </div>
 
-    <div class="field-group">
-      <label>Kundenname (optional)</label>
-      <input id="kundeInput" type="text" readonly>
-    </div>
+  <div class="field-group">
+    <label>Kundenname (optional)</label>
+    <input id="kundeInput" type="text" readonly>
+  </div>
 
-    <div class="grid-label">Kunde wählen:</div>
+  <div class="grid-label">Kunde wählen:</div>
 
-    <div class="kunden-grid">
+  <div class="kunden-grid">
 
-      <button class="kunde-btn" data-type="LP">L&P</button>
-      <button class="kunde-btn" data-type="SCHUETTE">Schütte</button>
-      <button class="kunde-btn" data-type="KLEY">Kleymann</button>
+    <button class="kunde-btn" data-type="LP">L&P</button>
+    <button class="kunde-btn" data-type="SCHUETTE">Schütte</button>
+    <button class="kunde-btn" data-type="KLEY">Kleymann</button>
 
-      <button class="kunde-btn" data-type="COMTEZN8">Comte – ZN8</button>
-      <button class="kunde-btn" data-type="COMTEZNI8">Comte – ZNi8</button>
-      <button class="kunde-btn" data-type="CHEMISCH">Comte – Chemisch</button>
+    <button class="kunde-btn" data-type="COMTEZN8">Comte – ZN8</button>
+    <button class="kunde-btn" data-type="COMTEZNI8">Comte – ZNi8</button>
+    <button class="kunde-btn" data-type="CHEMISCH">Comte – Chemisch</button>
 
-      <button class="kunde-btn" data-type="DICK">Comte – Dick</button>
-      <button class="kunde-btn" data-type="BLAU">Comte – Blau ZN8</button>
-      <button class="kunde-btn" data-type="PENTZ">Pentz & Gerdes – ZN8</button>
+    <button class="kunde-btn" data-type="DICK">Comte – Dick</button>
+    <button class="kunde-btn" data-type="BLAU">Comte – Blau ZN8</button>
 
-      <button class="kunde-btn" data-type="RCS">RCS – Schweißen</button>
-      <button class="kunde-btn" data-type="COATINC">Coatinc 24 – Verzinken</button>
+    <button class="kunde-btn" data-type="PENTZ">Pentz & Gerdes – ZN8</button>
+    <button class="kunde-btn" data-type="RCS">RCS – Schweißen</button>
+    <button class="kunde-btn" data-type="COATINC">Coatinc 24 – Verzinken</button>
 
-    </div>
+  </div>
 
-    <button id="eiltBtn">EILT SEHR: AUS</button>
+  <button id="eiltBtn">EILT SEHR: AUS</button>
 
-    <div class="bottom-row">
-      <button id="backBtn" class="back-btn">◀ Zurück</button>
-      <button id="druckenBtn" class="primary-btn">Drucken</button>
-    </div>
-
+  <div class="bottom-row">
+    <button id="backBtn" class="back-btn">◀ Zurück</button>
+    <button id="druckenBtn" class="primary-btn">Drucken</button>
   </div>
 </div>
 
-<!-- Tastaturen -->
-<div id="numKeyboard" class="kb" style="display:none;"></div>
-<div id="alphaKeyboard" class="kb" style="display:none;"></div>
-
 <script src="beschichtung_mobile.js"></script>
 
+<!-- ⭐⭐⭐ AUTOMATISCHE SKALIERUNG FÜR ALLE GERÄTE ⭐⭐⭐ -->
 <script>
 function autoScale() {
-    const w = window.innerWidth;
+    const page = document.getElementById("page");
     const h = window.innerHeight;
+    const w = window.innerWidth;
 
-    let scale = 1;
+    // Verhältnis Page zu Bildschirm
+    const scaleW = w / page.offsetWidth;
+    const scaleH = h / page.offsetHeight;
 
-    // iPhone (keine Skalierung nötig)
-    if (w >= 390 && w <= 430) scale = 1.00;
+    // Wir nehmen den kleineren Wert
+    const finalScale = Math.min(scaleW, scaleH) * 0.97;  // 3% Luft lassen
 
-    // TC21 (5 Zoll) – kleiner machen
-    if (w >= 360 && w < 390) scale = 0.86;
-
-    // TC22 (6 Zoll) – DEUTLICH kleiner machen
-    if (w >= 400 && w < 450) scale = 0.74;
-
-    document.documentElement.style.setProperty("--scale", scale);
+    page.style.transform = `scale(${finalScale})`;
+    page.style.transformOrigin = "top center";
 }
+
+// Start + live anpassen
 window.onload = autoScale;
 window.onresize = autoScale;
 </script>
+
 </body>
 </html>
