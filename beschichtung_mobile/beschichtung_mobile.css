@@ -1,136 +1,69 @@
-* { box-sizing: border-box; }
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Etikett Beschichtung</title>
 
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
-    font-family: Arial, sans-serif;
-    overflow: hidden;
-}
+  <!-- Viewport wichtig für Skalierung -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-/* ==========================
-   CARD / PAGE STYLE
-========================== */
-.page {
-    width: 400px;
-    height: 780px;
+  <link rel="stylesheet" href="beschichtung_mobile.css">
+</head>
 
-    background: white;
-    border-radius: 28px;
-    padding: 20px;
+<body>
 
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    overflow: hidden;
+<div id="wrapper">
+  <div class="page">
 
-    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
-    border: 1px solid #c9c9c9;
-}
+    <header class="header">
+      <h1>Etikett Beschichtung</h1>
+    </header>
 
-/* ==========================
-   HEADER
-========================== */
-.header {
-    text-align: center;
-    margin-bottom: 10px;
-}
+    <div class="field-group">
+      <label>Beistellnummer</label>
+      <input id="beistellInput" type="text" readonly>
+    </div>
 
-.header h1 {
-    font-size: 24px;
-    margin: 0;
-    font-weight: 900;
-    color: #003a73;
-}
+    <div class="field-group">
+      <label>Kundenname (optional)</label>
+      <input id="kundeInput" type="text" readonly>
+    </div>
 
-/* ==========================
-   INPUTS
-========================== */
-.field-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 8px;
-}
+    <div class="grid-label">Kunde wählen:</div>
 
-.field-group label {
-    font-size: 14px;
-    margin-bottom: 4px;
-}
+    <div class="kunden-grid">
 
-.field-group input {
-    font-size: 18px;
-    padding: 10px;
-    border-radius: 14px;
-    border: 1px solid #888;
-}
+      <button class="kunde-btn" data-type="LP">L&P</button>
+      <button class="kunde-btn" data-type="SCHUETTE">Schütte</button>
+      <button class="kunde-btn" data-type="KLEY">Kleymann</button>
 
+      <button class="kunde-btn" data-type="COMTEZN8">Comte – ZN8</button>
+      <button class="kunde-btn" data-type="COMTEZNI8">Comte – ZNi8</button>
+      <button class="kunde-btn" data-type="CHEMISCH">Comte – Chemisch</button>
 
-/* ==========================
-   KUNDEN-GRID
-========================== */
-.grid-label {
-    margin: 10px 0 6px;
-    font-size: 14px;
-    font-weight: bold;
-}
+      <button class="kunde-btn" data-type="DICK">Comte – Dick</button>
+      <button class="kunde-btn" data-type="BLAU">Comte – Blau ZN8</button>
+      <button class="kunde-btn" data-type="PENTZ">Pentz & Gerdes – ZN8</button>
 
-.kunden-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-}
+      <button class="kunde-btn" data-type="RCS">RCS – Schweißen</button>
+      <button class="kunde-btn" data-type="COATINC">Coatinc 24 – Verzinken</button>
 
-.kunde-btn {
-    height: 64px;
-    background: #ffffff;
-    border-radius: 16px;
-    border: none;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-    font-size: 15px;
-    font-weight: 600;
-}
+    </div>
 
-.kunde-btn.active {
-    background: #007bff;
-    color: white;
-}
+    <button id="eiltBtn">EILT SEHR: AUS</button>
 
-/* ==========================
-   EILT BUTTON
-========================== */
-#eiltBtn {
-    width: 100%;
-    padding: 16px;
-    margin-top: 16px;
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 16px;
-    border: none;
-    background: #666;
-    color: white;
-}
+    <div class="bottom-row">
+      <button id="backBtn" class="back-btn">◀ Zurück</button>
+      <button id="druckenBtn" class="primary-btn">Drucken</button>
+    </div>
 
-#eiltBtn.on { background: #c80000; }
+  </div>
+</div>
 
-/* ==========================
-   UNTEN – BUTTONS
-========================== */
-.bottom-row {
-    display: flex;
-    gap: 12px;
-    margin-top: auto;
-}
+<!-- Tastaturen -->
+<div id="numKeyboard" class="kb" style="display:none;"></div>
+<div id="alphaKeyboard" class="kb" style="display:none;"></div>
 
-.back-btn, .primary-btn {
-    flex: 1;
-    padding: 14px;
-    border-radius: 16px;
-    border: none;
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-}
-
-.back-btn { background: #444; }
-.primary-btn { background: #00963d; }
+<script src="beschichtung_mobile.js"></script>
+</body>
+</html>
