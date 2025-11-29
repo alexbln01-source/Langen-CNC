@@ -1,119 +1,97 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>Etikett Beschichtung</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etikett Beschichtung</title>
 
-  <!-- Wichtig fürs korrekte Scaling auf iPhone + Zebra -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="beschichtung_mobile.css">
 
-  <link rel="stylesheet" href="beschichtung_mobile.css">
-  
-  <style>
-    /* Wird per JS überschrieben — hier nur Basis */
-    .page {
-        transform-origin: top center;
-    }
-  </style>
+<style>
+/* SKALIERUNG CONTAINER */
+#scale-wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow: hidden;
+}
+</style>
+
+<script>
+/* ==========================
+   AUTOMATISCHE SKALIERUNG
+========================== */
+function autoScale() {
+    const page = document.querySelector(".page");
+    const wrap = document.getElementById("scale-wrapper");
+
+    const screenW = window.innerWidth;
+    const screenH = window.innerHeight;
+
+    const designW = 400;   // virtuelle Breite des Layouts
+    const designH = 780;   // virtuelle Höhe des Layouts
+
+    const scale = Math.min(screenW / designW, screenH / designH);
+
+    page.style.transform = `scale(${scale})`;
+    page.style.transformOrigin = "top center";
+}
+
+window.addEventListener("load", autoScale);
+window.addEventListener("resize", autoScale);
+</script>
 </head>
 
 <body>
 
-<div class="page" id="page">
+<div id="scale-wrapper">
+    <div class="page">
 
-  <header class="header">
-    <h1>Etikett Beschichtung</h1>
-  </header>
+        <header class="header">
+            <h1>Etikett Beschichtung</h1>
+        </header>
 
-  <div class="field-group">
-    <label>Beistellnummer</label>
-    <input id="beistellInput" type="text" readonly>
-  </div>
+        <div class="field-group">
+            <label>Beistellnummer</label>
+            <input id="beistellInput" type="text" readonly>
+        </div>
 
-  <div class="field-group">
-    <label>Kundenname (optional)</label>
-    <input id="kundeInput" type="text" readonly>
-  </div>
+        <div class="field-group">
+            <label>Kundenname (optional)</label>
+            <input id="kundeInput" type="text" readonly>
+        </div>
 
-  <div class="grid-label">Kunde wählen:</div>
+        <div class="grid-label">Kunde wählen:</div>
 
-  <div class="kunden-grid">
+        <div class="kunden-grid">
+            <button class="kunde-btn" data-type="LP">L&P</button>
+            <button class="kunde-btn" data-type="SCHUETTE">Schütte</button>
+            <button class="kunde-btn" data-type="KLEY">Kleymann</button>
 
-    <button class="kunde-btn" data-type="LP">L&P</button>
-    <button class="kunde-btn" data-type="SCHUETTE">Schütte</button>
-    <button class="kunde-btn" data-type="KLEY">Kleymann</button>
+            <button class="kunde-btn" data-type="COMTEZN8">Comte – ZN8</button>
+            <button class="kunde-btn" data-type="COMTEZNI8">Comte – ZNi8</button>
+            <button class="kunde-btn" data-type="CHEMISCH">Comte – Chemisch</button>
 
-    <button class="kunde-btn" data-type="COMTEZN8">Comte – ZN8</button>
-    <button class="kunde-btn" data-type="COMTEZNI8">Comte – ZNi8</button>
+            <button class="kunde-btn" data-type="DICK">Comte – Dick</button>
+            <button class="kunde-btn" data-type="BLAU">Comte – Blau ZN8</button>
+            <button class="kunde-btn" data-type="PENTZ">Pentz & Gerdes – ZN8</button>
 
-    <button class="kunde-btn" data-type="CHEMISCH">Comte – Chemisch</button>
-    <button class="kunde-btn" data-type="DICK">Comte – Dick</button>
-    <button class="kunde-btn" data-type="BLAU">Comte – Blau ZN8</button>
+            <button class="kunde-btn" data-type="RCS">RCS – Schweißen</button>
+            <button class="kunde-btn" data-type="COATINC">Coatinc 24 – Verzinken</button>
+        </div>
 
-    <button class="kunde-btn" data-type="PENTZ">Pentz & Gerdes – ZN8</button>
-    <button class="kunde-btn" data-type="RCS">RCS – Schweißen</button>
-    <button class="kunde-btn" data-type="COATINC">Coatinc 24 – Verzinken</button>
+        <button id="eiltBtn">EILT SEHR: AUS</button>
 
-  </div>
+        <div class="bottom-row">
+            <button id="backBtn" class="back-btn">◀ Zurück</button>
+            <button id="druckenBtn" class="primary-btn">Drucken</button>
+        </div>
 
-  <button id="eiltBtn">EILT SEHR: AUS</button>
-
-  <div class="bottom-row">
-    <button id="backBtn" class="back-btn">◀ Zurück</button>
-    <button id="druckenBtn" class="primary-btn">Drucken</button>
-  </div>
+    </div>
 </div>
 
-<!-- Tastaturen -->
-<div id="numKeyboard" class="kb" style="display:none;"></div>
-<div id="alphaKeyboard" class="kb" style="display:none;"></div>
-
 <script src="beschichtung_mobile.js"></script>
-
-<!-- ======================================
-     AUTO SCALING SCRIPT
-======================================= -->
-<script>
-(function() {
-
-    const page = document.getElementById("page");
-
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-
-    let scale = 1;
-
-    // -------------------------
-    // iPhone (keine Skalierung)
-    // -------------------------
-    if (/iPhone/i.test(navigator.userAgent)) {
-        scale = 1;
-    }
-
-    // -------------------------
-    // Zebra TC21 – 5 Zoll (360px breit)
-    // -------------------------
-    else if (w <= 380) {
-        scale = 0.88;
-    }
-
-    // -------------------------
-    // Zebra TC22 – 6 Zoll (412px breit)
-    // -------------------------
-    else if (w > 380 && w <= 430) {
-        scale = 0.74;   // **Extra kleiner**
-    }
-
-    // -------------------------
-    // Standard Android
-    // -------------------------
-    else {
-        scale = 0.95;
-    }
-
-    page.style.transform = "scale(" + scale + ")";
-})();
-</script>
-
 </body>
 </html>
