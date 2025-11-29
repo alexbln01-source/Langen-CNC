@@ -1,96 +1,164 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<title>Etikett Beschichtung</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="beschichtung_mobile.css">
+/* ==============================
+   GLOBAL
+============================== */
 
-<style>
-/* automatische Skalierung */
-:root {
-    --scale: 1;
+* {
+    box-sizing: border-box;
 }
 
-body {
-    transform: scale(var(--scale));
-    transform-origin: top center;
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #ffffff;
+    font-family: Arial, sans-serif;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    overflow: hidden;
 }
-</style>
 
-<script>
-/* ============================================
-   AUTOMATISCHE SKALIERUNG (TC21/TC22/iPhone)
-============================================ */
-window.onload = () => {
+/* ==============================
+   PAGE (zentriert, kein Scrollen)
+============================== */
 
-    const w = window.innerWidth;
-    const h = window.innerHeight;
+.page {
+    width: 92vw;
+    max-width: 500px;
 
-    let scale = 1;
+    background: #ffffff;
+    padding: 16px;
+    border-radius: 26px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.20);
+    border: 1px solid #dcdcdc;
 
-    // kleine Geräte (TC21 ~360px)
-    if (w <= 380) scale = 0.90;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
 
-    // TC22 (412px – 430px)
-    if (w > 380 && w <= 430) scale = 0.82;
+/* ==============================
+   HEADER
+============================== */
 
-    // Große iPhones → normal
-    if (w > 430) scale = 1;
+.header h1 {
+    text-align: center;
+    margin: 8px 0 14px;
+    font-size: 22px;
+    font-weight: 900;
+    color: #003a73;
+}
 
-    document.documentElement.style.setProperty("--scale", scale);
-};
-</script>
-</head>
+/* ==============================
+   EINGABEFELDER + PLACEHOLDER
+============================== */
 
-<body>
+.field-group {
+    display: flex;
+    flex-direction: column;
+}
 
-<div class="page">
+.field-group label {
+    font-size: 14px;
+    margin-bottom: 4px;
+}
 
-    <header class="header">
-        <h1>Etikett Beschichtung</h1>
-    </header>
+.field-group input {
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid #888;
+}
 
-    <div class="field-group">
-        <label>Beistellnummer</label>
-        <input id="beistellInput" type="text" placeholder="Beistellnummer eingeben">
-    </div>
+/* Placeholder = Geisterschrift */
+.field-group input::placeholder {
+    color: #999;
+}
 
-    <div class="field-group">
-        <label>Kundenname (optional)</label>
-        <input id="kundeInput" type="text" placeholder="Kundenname eingeben">
-    </div>
+/* ==============================
+   GRID
+============================== */
 
-    <div class="grid-label">Kunde wählen:</div>
+.grid-label {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: bold;
+}
 
-    <div class="kunden-grid">
+.kunden-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
 
-        <button class="kunde-btn" data-type="LP">L&P</button>
-        <button class="kunde-btn" data-type="SCHUETTE">Schütte</button>
-        <button class="kunde-btn" data-type="KLEY">Kleymann</button>
+.kunde-btn {
+    border: none;
+    height: 58px;
+    border-radius: 12px;
+    background: white;
+    font-size: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+}
 
-        <button class="kunde-btn" data-type="COMTEZN8">Comte – ZN8</button>
-        <button class="kunde-btn" data-type="COMTEZNI8">Comte – ZNi8</button>
+.kunde-btn.active {
+    background: #007bff;
+    color: white;
+}
 
-        <button class="kunde-btn" data-type="CHEMISCH">Comte – Chemisch</button>
-        <button class="kunde-btn" data-type="DICK">Comte – Dick</button>
-        <button class="kunde-btn" data-type="BLAU">Comte – Blau ZN8</button>
+/* ==============================
+   EILT
+============================== */
 
-        <button class="kunde-btn" data-type="PENTZ">Pentz & Gerdes – ZN8</button>
-        <button class="kunde-btn" data-type="RCS">RCS – Schweißen</button>
-        <button class="kunde-btn" data-type="COATINC">Coatinc 24 – Verzinken</button>
+#eiltBtn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 18px;
+    border: none;
+    font-weight: bold;
+    background: #666;
+    color: white;
+}
 
-    </div>
+#eiltBtn.on {
+    background: #c80000;
+}
 
-    <button id="eiltBtn">EILT SEHR: AUS</button>
+/* ==============================
+   UNTEN
+============================== */
 
-    <div class="bottom-row">
-        <button id="backBtn" class="back-btn">◀ Zurück</button>
-        <button id="druckenBtn" class="primary-btn">Drucken</button>
-    </div>
+.bottom-row {
+    display: flex;
+    gap: 10px;
+}
 
-</div>
+.back-btn,
+.primary-btn {
+    flex: 1;
+    padding: 14px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    color: white;
+}
 
-<script src="beschichtung_mobile.js"></script>
-</body>
-</html>
+.back-btn {
+    background: #444;
+}
+
+.primary-btn {
+    background: #00963d;
+}
+
+/* ==============================
+   FOKUS
+============================== */
+
+button:focus {
+    outline: 3px solid #1a73e8;
+    outline-offset: 0;
+}
