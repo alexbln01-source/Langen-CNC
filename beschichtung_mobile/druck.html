@@ -2,308 +2,173 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Druck</title>
+<title>Etikett Drucken</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
 <style>
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background: #dcdcdc;
-    font-family: Arial, sans-serif;
-    overflow: hidden;
-}
-
-/* ======================================================
-   BUTTON-LEISTE UNTEN FEST AM RAND
-====================================================== */
-#topBar {
-    height: 70px;
-    padding: 8px 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #ffffff;
-    box-shadow: 0 -3px 6px rgba(0,0,0,0.20);
-
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-}
-
-.btn {
-    flex: 1;
-    margin: 0 6px;
-    height: 50px;
-    font-size: 20px;
-    border: none;
-    border-radius: 10px;
-    color: #fff;
-    font-weight: bold;
-}
-#cancelBtn { background: #c62828; }
-#printBtn  { background: #1565c0; }
-
-/* ======================================================
-   VORSCHAU-AREA – nach oben verschoben
-====================================================== */
-#previewWrapper {
-    height: calc(100% - 70px);   /* Platz für die Buttons unten */
-    margin-bottom: 70px;         /* NICHT überdecken */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#previewArea {
-    width: 210mm;
-    height: 148mm;
-    background: #ffffff;
-    padding: 8mm;
-    box-sizing: border-box;
-
-    transform: scale(0.45);
-    transform-origin: center center;
-
-    box-shadow: 0 0 15px rgba(0,0,0,0.35);
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
-
-/* ======================================================
-   DRUCKBEREICH (eigentliches A5-Etikett)
-====================================================== */
-#printArea {
-    display: none;
-}
-
-.etikett {
-    width: 210mm;
-    height: 148mm;
-    background: #ffffff;
-    padding: 8mm;
-    box-sizing: border-box;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
-
-/* ======================================================
-   ZENTRIERTER TEXTBLOCK
-====================================================== */
-.textblock {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;   /* vertikal */
-    align-items: center;       /* horizontal */
-    width: 100%;
-    height: 100%;
-}
-
-/* ======================================================
-   LOGO (fix)
-====================================================== */
-.logo-wrapper {
-    position: absolute;
-    right: 10mm;
-    bottom: 8mm;
-}
-.logo-wrapper img {
-    width: 42mm;
-    height: auto;
-}
-
-/* ======================================================
-   DRUCK-MODUS
-====================================================== */
-@media print {
-    #topBar,
-    #previewWrapper {
-        display: none !important;
+    body {
+        margin:0;
+        padding:0;
+        background:#dcdcdc;
+        font-family:Arial, sans-serif;
+        height:100vh;
+        display:flex;
+        flex-direction:column;
+        overflow:hidden;
     }
 
-    #printArea {
-        display: flex !important;
+    /* --- A5 FORMAT --- */
+    .preview-wrapper {
+        flex:1;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        overflow:hidden;
     }
 
-    @page {
-        size: A5 landscape;
-        margin: 0;
+    .preview-area {
+        width:210mm;
+        height:148mm;
+        background:white;
+        position:relative;
+        box-shadow:0 0 14px rgba(0,0,0,0.25);
+        transform-origin:center center;
     }
 
-    html, body {
-        margin: 0 !important;
-        padding: 0 !important;
-        background: #ffffff !important;
-        overflow: hidden !important;
+    /* AUTOMATISCHE SKALIERUNG HANDY */
+    @media (max-width:900px) {
+        .preview-area {
+            transform:scale(0.38);   /* perfekt für Handy */
+        }
     }
-}
+
+    /* PC */
+    @media (min-width:901px) {
+        .preview-area {
+            transform:scale(0.45);
+        }
+    }
+
+    .etikett {
+        width:210mm;
+        height:148mm;
+        background:white;
+        padding:10mm;
+        box-sizing:border-box;
+        text-align:center;
+        font-size:60pt;
+        font-weight:bold;
+    }
+
+    .logo {
+        position:absolute;
+        right:10mm;
+        bottom:10mm;
+        width:42mm;
+    }
+
+    /* BUTTON-BAR */
+    .bottom-bar {
+        display:flex;
+        gap:10px;
+        padding:10px;
+        background:white;
+        box-shadow:0 -3px 6px rgba(0,0,0,0.25);
+    }
+    .btn {
+        flex:1;
+        padding:16px 12px;
+        font-size:22px;
+        border-radius:12px;
+        font-weight:bold;
+        color:white;
+        border:none;
+    }
+    .btn:focus { outline:5px solid #1a73e8; }
+
+    .back-btn  { background:#9e9e9e; }
+    .print-btn { background:#2e7d32; }
+
+    @media print {
+        body, html { margin:0; padding:0; }
+        .bottom-bar, .preview-wrapper { display:none !important; }
+        #printArea { display:flex !important; }
+        @page { size:A5 landscape; margin:0; }
+    }
 </style>
 </head>
 
 <body>
 
-<!-- =====================================================
-     BUTTON-LEISTE UNTEN
-====================================================== -->
-<div id="topBar">
-    <button id="cancelBtn" class="btn">Zurück</button>
-    <button id="printBtn"  class="btn">Drucken</button>
-</div>
-
-<!-- =====================================================
-     VORSCHAU
-====================================================== -->
-<div id="previewWrapper">
-    <div id="previewArea" class="etikett">
-        <div id="previewContent" class="textblock"></div>
-
-        <div class="logo-wrapper">
-            <img src="langen.png">
-        </div>
+<div class="preview-wrapper">
+    <div class="preview-area">
+        <div id="previewContent" class="etikett"></div>
+        <img class="logo" src="langen.png">
     </div>
 </div>
 
-<!-- =====================================================
-     DRUCK
-====================================================== -->
-<div id="printArea" class="etikett">
-    <div id="printContent" class="textblock"></div>
+<div id="printArea" class="etikett" style="display:none;">
+    <div id="printContent"></div>
+    <img class="logo" src="langen.png">
+</div>
 
-    <div class="logo-wrapper">
-        <img src="langen.png">
-    </div>
+<div class="bottom-bar">
+    <button class="btn back-btn" id="backBtn">◀ Zurück</button>
+    <button class="btn print-btn" id="printBtn">Drucken</button>
 </div>
 
 <script>
-/* =====================================================
-   1:1 AUS DEINER PC-VERSION (beschichtung.js)
-====================================================== */
+window.onload = () => {
 
-function buildLabel(beistell, type, kunde) {
+    const url = new URLSearchParams(location.search);
+    let data = {};
+
+    if (url.has("data")) {
+        data = JSON.parse(decodeURIComponent(url.get("data")));
+    }
+
+    /* Werte */
+    const beistell = data.beistell || "";
+    const type = data.selectedType || "";
+    const kunde = data.kundename || "";
 
     let html = "";
 
-    // === ZEILE 1 ===
-    html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">${beistell}</div>`;
+    html += `<div style="margin-bottom:10mm;">${beistell}</div>`;
 
-    // === ZEILE 2 + 3 ===
+    const row = (t, sub="") =>
+        `<div style="margin-bottom:6mm;">${t}</div>${sub ? `<div style="font-size:32pt">${sub}</div>` : ""}`;
+
     switch(type) {
-
-        case "LP":
-            html += `<div style="font-size:60pt; font-weight:bold;">L&P</div>`;
-            break;
-
-        case "LPEILT":
-            html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">L&P</div>`;
-            html += `<div style="font-size:60pt; font-weight:bold;">„EILT SEHR“</div>`;
-            break;
-
-        case "SCHUETTE":
-            html += `<div style="font-size:60pt; font-weight:bold;">Schütte</div>`;
-            break;
-
-        case "SCHUETTEEILT":
-            html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Schütte</div>`;
-            html += `<div style="font-size:60pt; font-weight:bold;">„EILT SEHR“</div>`;
-            break;
-
-        case "KLEY":
-            html += `<div style="font-size:60pt; font-weight:bold;">Kleymann</div>`;
-            break;
-
-        case "KLEYEILT":
-            html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Kleymann</div>`;
-            html += `<div style="font-size:60pt; font-weight:bold;">„EILT SEHR“</div>`;
-            break;
-
-        case "COMTEZN8":
-            html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Comte</div>`;
-            html += `<div style="font-size:32pt; font-weight:bold;">„Zn8“</div>`;
-            break;
-
-        case "CHEMISCH":
-            html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Comte</div>`;
-            html += `<div style="font-size:32pt; font-weight:bold;">„Chemisch Vernickeln“</div>`;
-            break;
-
-        case "DICK":
-            html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Comte</div>`;
-            html += `<div style="font-size:32pt; font-weight:bold;">„Dickschichtpassivierung“</div>`;
-            break;
-
-        case "BLAU":
-            html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Comte</div>`;
-            html += `<div style="font-size:32pt; font-weight:bold;">„Blau ZN8“</div>`;
-            break;
-
-        case "PENTZ":
-            html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Pentz & Gerdes</div>`;
-            html += `<div style="font-size:32pt; font-weight:bold;">„ZN8“</div>`;
-            break;
-
-        case "RCS":
-            html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">RCS</div>`;
-            html += `<div style="font-size:32pt; font-weight:bold;">„Schweißen“</div>`;
-            break;
-
-        case "COATINC":
-            html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">Coatinc 24</div>`;
-            html += `<div style="font-size:32pt; font-weight:bold;">„Verzinken“</div>`;
-            break;
-
-        default:
-            html += `<div style="font-size:60pt; font-weight:bold;">&nbsp;</div>`;
-            break;
+        case "LP":               html += row("L&P"); break;
+        case "LPEILT":           html += row("L&P", "„EILT SEHR“"); break;
+        case "SCHUETTE":         html += row("Schütte"); break;
+        case "SCHUETTEEILT":     html += row("Schütte", "„EILT SEHR“"); break;
+        case "KLEY":             html += row("Kleymann"); break;
+        case "KLEYEILT":         html += row("Kleymann", "„EILT SEHR“"); break;
+        case "COMTEZN8":         html += row("Comte", "„Zn8“"); break;
+        case "COMTEZNI8":        html += row("Comte", "„ZNi8“"); break;
+        case "CHEMISCH":         html += row("Comte", "„Chemisch Vernickeln“"); break;
+        case "DICK":             html += row("Comte", "„Dickschichtpassivierung“"); break;
+        case "BLAU":             html += row("Comte", "„Blau ZN8“"); break;
+        case "PENTZ":            html += row("Pentz & Gerdes", "„ZN8“"); break;
+        case "RCS":              html += row("RCS", "„Schweißen“"); break;
+        case "COATINC":          html += row("Coatinc 24", "„Verzinken“"); break;
     }
 
-    // === ZEILE 4 ===
-    if (kunde) {
-        html += `<div style="font-size:32pt; margin-top:6mm;">(${kunde})</div>`;
-    }
-
-    return html;
-}
-
-/* =====================================================
-   DATEN LADEN & EINSETZEN
-====================================================== */
-
-window.onload = () => {
-
-    const params = new URLSearchParams(location.search);
-
-    let data = {};
-    if (params.has("data")) {
-        data = JSON.parse(decodeURIComponent(params.get("data")));
-    }
-
-    const beistell = data.beistell || "";
-    const type     = data.selectedType || "";
-    const kunde    = data.kundename || "";
-
-    const html = buildLabel(beistell, type, kunde);
+    if (kunde)
+        html += `<div style="font-size:32pt;">(${kunde})</div>`;
 
     document.getElementById("previewContent").innerHTML = html;
-    document.getElementById("printContent").innerHTML   = html;
+    document.getElementById("printContent").innerHTML = html;
 
-    // Zurück
-    document.getElementById("cancelBtn").onclick = () => {
-        window.location.href = "beschichtung_mobile.html";
-    };
+    const backBtn  = document.getElementById("backBtn");
+    const printBtn = document.getElementById("printBtn");
 
-    // Drucken
-    document.getElementById("printBtn").onclick = () => {
-        window.print();
-    };
+    setTimeout(() => printBtn.focus(), 200);
+
+    printBtn.onclick = () => window.print();
+    backBtn.onclick  = () => window.location.href = "index.html";
 };
 </script>
 
