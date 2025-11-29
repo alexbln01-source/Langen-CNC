@@ -3,115 +3,149 @@
 <head>
 <meta charset="utf-8" />
 
-<!-- WICHTIG FÜR MOBILE -->
+<!-- Wichtig für Mobile -->
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <title>Warenanhänger</title>
 
-<!-- App Icons -->
-<link rel="icon" href="icon192.png" sizes="192x192" type="image/png">
-<link rel="apple-touch-icon" href="icon192.png">
-
-<meta name="theme-color" content="#003a73">
-
 <style>
-    html, body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
-        font-family: "Segoe UI", Arial, sans-serif;
+/* ======================
+   GRUNDLAYOUT
+====================== */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
+  font-family: "Segoe UI", Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+/* ======================
+   ZENTRIERTER CONTAINER
+====================== */
+#main {
+  width: 92%;
+  max-width: 800px;          /* viel größer – wie du wolltest */
+  text-align: center;
+  background: white;
+  border-radius: 38px;       /* weicher & größer */
+  padding: 40px 20px 50px;
+  box-shadow: 0 10px 45px rgba(0,0,0,0.28);
+  border: 1px solid #bfc5cc;
+}
 
-    /* ---------- ZENTRALER BLOCK ---------- */
-    #main {
-        width: 92vw;
-        max-width: 700px;          /* deutlich größer als vorher */
-        padding: 50px 30px;
-        background: white;
-        border-radius: 40px;
-        box-shadow: 0 10px 50px rgba(0,0,0,0.35);
-        text-align: center;
+/* ======================
+   LOGO
+====================== */
+#logo {
+  width: 80%;
+  max-width: 480px;
+  display: block;
+  margin: 0 auto 25px auto;
+}
 
-        border: 1px solid #bfc5cc;
-    }
+/* ======================
+   TITEL
+====================== */
+h1 {
+  font-size: 40px;
+  color: #003a73;
+  margin: 20px 0 40px;
+  font-weight: 900;
+}
 
-    /* ---------- LOGO ---------- */
-    #logo {
-        width: 320px;               /* größer */
-        max-width: 80%;
-        display: block;
-        margin: 0 auto 30px;
-    }
+/* ======================
+   BUTTONS
+====================== */
+button {
+  width: 85%;
+  max-width: 520px;       /* große Buttons */
+  height: 100px;
+  border: none;
+  border-radius: 30px;
+  margin: 18px auto;
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
 
-    h1 {
-        font-size: 38px;            /* größer */
-        margin: 10px 0 40px;
-        color: #003a73;
-        font-weight: 900;
-    }
+/* Farben */
+#btnBeschichtung { background: linear-gradient(180deg,#007bff 0%,#0056b3 100%); }
+#btnKanten        { background: linear-gradient(180deg,#ff9800 0%,#e67e00 100%); }
+#btnPaus          { background: linear-gradient(180deg,#28a745 0%,#1d7f31 100%); }
+#btnSchweissen    { background: linear-gradient(180deg,#9c27b0 0%,#6a0080 100%); }
 
-    /* ---------- BUTTONS ---------- */
-    button {
-        width: 100%;
-        max-width: 420px;          /* breiter */
-        height: 95px;               /* höher */
-        margin: 18px auto;
-        border: none;
-        border-radius: 22px;
-        font-size: 26px;            /* größer */
-        font-weight: bold;
-        color: #fff;
-        cursor: pointer;
+/* ======================
+   FOOTER
+====================== */
+footer {
+  margin-top: 35px;
+  font-size: 18px;
+  color: #666;
+}
 
-        display:block;
+/* ======================
+   SKALIERUNG NACH GERÄT
+====================== */
 
-        box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-        transition: transform 0.15s ease;
-    }
+/* ==== Zebra TC21 (5 Zoll, 360px Breite) ==== */
+@media screen and (max-width: 380px) {
+  #main {
+    transform: scale(1.18);
+    transform-origin: top center;
+  }
+}
 
-    button:active {
-        transform: scale(0.97);
-    }
+/* ==== Zebra TC22 (6 Zoll, 412px Breite) ==== */
+@media screen and (min-width: 381px) and (max-width: 430px) {
+  #main {
+    transform: scale(1.08);
+    transform-origin: top center;
+  }
+}
 
-    #btnBeschichtung { background: linear-gradient(180deg,#007bff 0%,#0056b3 100%); }
-    #btnKanten        { background: linear-gradient(180deg,#ff9800 0%,#e67e00 100%); }
-    #btnPaus          { background: linear-gradient(180deg,#28a745 0%,#1d7f31 100%); }
-    #btnSchweissen    { background: linear-gradient(180deg,#9c27b0 0%,#6a0080 100%); }
-
-    footer {
-        margin-top: 35px;
-        font-size: 16px;        /* größer */
-        color: #555;
-    }
-
+/* ==== iPhones → perfekte Darstellung ==== */
+@media screen and (min-width: 431px) and (max-width: 480px) {
+  #main {
+    transform: scale(1.00);
+  }
+}
 </style>
 
 <script>
-function openBeschichtung(){ window.location.href="start.html?bereich=beschichtung"; }
-function openKanten(){       window.location.href="start.html?bereich=kanten"; }
-function openPaus(){         window.location.href="Paus-Lieferung.html"; }
-function openSchweissen(){   window.location.href="Schweissen.html"; }
+function openBeschichtung() {
+  window.location.href = "start.html?bereich=beschichtung";
+}
+function openKanten() {
+  window.location.href = "start.html?bereich=kanten";
+}
+function openPaus() {
+  window.location.href = "Paus-Lieferung.html";
+}
+function openSchweissen() {
+  window.location.href = "Schweissen.html";
+}
 </script>
-
 </head>
 
 <body>
 
 <div id="main">
 
-    <img id="logo" src="langen.png" alt="Langen CNC Logo">
+    <img id="logo" src="langen.png" alt="Logo">
 
     <h1>Warenanhänger</h1>
 
     <button id="btnBeschichtung" onclick="openBeschichtung()">Beschichtung (A5)</button>
-    <button id="btnKanten" onclick="openKanten()">Kanten (A6)</button>
-    <button id="btnPaus" onclick="openPaus()">PAUS Lieferung (A6)</button>
-    <button id="btnSchweissen" onclick="openSchweissen()">Schweißen</button>
+    <button id="btnKanten"        onclick="openKanten()">Kanten (A6)</button>
+    <button id="btnPaus"          onclick="openPaus()">PAUS Lieferung (A6)</button>
+    <button id="btnSchweissen"    onclick="openSchweissen()">Schweißen</button>
 
     <footer>Langen CNC Metalltechnik GmbH & Co. KG</footer>
 </div>
