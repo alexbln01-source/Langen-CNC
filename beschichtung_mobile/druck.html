@@ -11,108 +11,103 @@
         padding: 0;
         background: #dcdcdc;
         font-family: Arial, sans-serif;
+        height: 100vh;
         display: flex;
         flex-direction: column;
-        height: 100vh;
         overflow: hidden;
     }
 
-    /* ======= VORSCHAU (PIXELBASIERT, NICHT mm!) ======= */
+    /* ============================
+       VORSCHAU (NUR ANZEIGE)
+       NICHT DRUCKEN!
+    ============================ */
     .preview-wrapper {
         flex: 1;
         display: flex;
         justify-content: center;
         align-items: center;
-        overflow: hidden;
     }
 
-    /* A5 Querformat Verhältnis: 148/210 = 0.704 */
-    .preview-box {
-        width: 820px;
-        height: 578px; /* 820 * 0.704 */
+    .preview-area {
+        width: 210mm;
+        height: 148mm;
         background: white;
+        box-shadow: 0 0 14px rgba(0,0,0,0.3);
         position: relative;
-        box-shadow: 0 0 15px rgba(0,0,0,0.25);
-        transform-origin: center center;
+        transform-origin: top left;
     }
 
-    /* Handy verkleinern */
+    /* Handy skalieren */
     @media (max-width: 900px) {
-        .preview-box {
-            transform: scale(0.36);
+        .preview-area {
+            transform: scale(0.33);
         }
     }
 
+    /* PC */
     @media (min-width: 901px) {
-        .preview-box {
-            transform: scale(0.46);
+        .preview-area {
+            transform: scale(0.48);
         }
     }
 
-    .etikett-preview {
-        width: 100%;
-        height: 100%;
-        padding: 50px;
+    .etikett {
+        width: 210mm;
+        height: 148mm;
+        padding: 10mm;
         box-sizing: border-box;
         text-align: center;
-        font-weight: bold;
         font-size: 60pt;
+        font-weight: bold;
         position: relative;
     }
 
     .logo {
         position: absolute;
-        right: 40px;
-        bottom: 40px;
-        width: 160px;
-    }
-
-    /* ======= DRUCKBEREICH — ECHTES A5 ======= */
-    #printArea {
-        display: none;
-        width: 210mm;
-        height: 148mm;
-        box-sizing: border-box;
-        padding: 10mm;
-        text-align: center;
-        font-size: 60pt;
-        font-weight: bold;
-        position: relative;
-    }
-
-    #printArea .logo {
         right: 10mm;
         bottom: 10mm;
         width: 42mm;
     }
 
-    /* ======= BUTTONS ======= */
+    /* =============================
+       BUTTON BAR
+    ============================= */
     .bottom-bar {
         display: flex;
-        padding: 10px;
         gap: 10px;
+        padding: 10px;
         background: white;
-        box-shadow: 0 -3px 6px rgba(0,0,0,0.3);
+        box-shadow: 0 -3px 6px rgba(0,0,0,0.25);
     }
 
     .btn {
         flex: 1;
-        padding: 16px;
+        padding: 16px 12px;
         font-size: 22px;
         border-radius: 12px;
-        color: white;
         border: none;
         font-weight: bold;
+        color: white;
     }
 
-    .back-btn  { background:#9e9e9e; }
-    .print-btn { background:#2e7d32; }
+    .back-btn  { background: #9e9e9e; }
+    .print-btn { background: #2e7d32; }
+    .btn:focus { outline: 5px solid #1a73e8; }
 
+    /* =============================
+       DRUCKEN (PERFEKT!)
+    ============================= */
     @media print {
-        body * { visibility: hidden !important; }
-        #printArea, #printArea * { visibility: visible !important; }
 
+        /* Vorschau ausblenden */
+        .preview-wrapper,
+        .bottom-bar {
+            display: none !important;
+        }
+
+        /* NUR printArea drucken */
         #printArea {
+            display: block !important;
             position: fixed;
             inset: 0;
         }
@@ -127,18 +122,21 @@
 
 <body>
 
+<!-- VORSCHAU -->
 <div class="preview-wrapper">
-    <div class="preview-box">
-        <div id="previewContent" class="etikett-preview"></div>
+    <div class="preview-area">
+        <div id="previewContent" class="etikett"></div>
         <img class="logo" src="langen.png">
     </div>
 </div>
 
-<div id="printArea">
+<!-- DRUCK -->
+<div id="printArea" class="etikett" style="display:none;">
     <div id="printContent"></div>
     <img class="logo" src="langen.png">
 </div>
 
+<!-- BUTTONS -->
 <div class="bottom-bar">
     <button class="btn back-btn" id="backBtn">◀ Zurück</button>
     <button class="btn print-btn" id="printBtn">Drucken</button>
@@ -148,53 +146,45 @@
 window.onload = () => {
 
     const qs = new URLSearchParams(location.search);
-    const data = qs.has("data")
-        ? JSON.parse(decodeURIComponent(qs.get("data")))
-        : {};
+    const data = qs.has("data") ? JSON.parse(decodeURIComponent(qs.get("data"))) : {};
 
     const beistell = data.beistell || "";
     const type     = data.selectedType || "";
     const kunde    = data.kundename || "";
 
-    let html = `<div style="margin-bottom:30px;">${beistell}</div>`;
-
     const row = (t, sub="") =>
-        `<div style="margin-bottom:25px;">${t}</div>` +
-        (sub ? `<div style="font-size:32pt">${sub}</div>` : "");
+        `<div style="margin-bottom:8mm;">${t}</div>` +
+        (sub ? `<div style="font-size:32pt;margin-bottom:5mm;">${sub}</div>` : "");
 
-    switch(type) {
-        case "LP": html += row("L&P"); break;
-        case "LPEILT": html += row("L&P","„EILT SEHR“"); break;
+    let html = `<div style="margin-bottom:10mm;">${beistell}</div>`;
 
-        case "SCHUETTE": html += row("Schütte"); break;
-        case "SCHUETTEEILT": html += row("Schütte","„EILT SEHR“"); break;
+    const map = {
+        LP: ["L&P"],
+        LPEILT: ["L&P", "„EILT SEHR“"],
+        SCHUETTE: ["Schütte"],
+        SCHUETTEEILT: ["Schütte","„EILT SEHR“"],
+        KLEY: ["Kleymann"],
+        KLEYEILT: ["Kleymann","„EILT SEHR“"],
+        COMTEZN8: ["Comte","„Zn8“"],
+        COMTEZNI8: ["Comte","„ZNi8“"],
+        CHEMISCH: ["Comte","„Chemisch Vernickeln“"],
+        DICK: ["Comte","„Dickschichtpassivierung“"],
+        BLAU: ["Comte","„Blau ZN8“"],
+        PENTZ: ["Pentz & Gerdes","„ZN8“"],
+        RCS: ["RCS","„Schweißen“"],
+        COATINC: ["Coatinc 24","„Verzinken“"]
+    };
 
-        case "KLEY": html += row("Kleymann"); break;
-        case "KLEYEILT": html += row("Kleymann","„EILT SEHR“"); break;
-
-        case "COMTEZN8": html += row("Comte","„Zn8“"); break;
-        case "COMTEZNI8": html += row("Comte","„ZNi8“"); break;
-
-        case "CHEMISCH": html += row("Comte","„Chemisch Vernickeln“"); break;
-        case "DICK": html += row("Comte","„Dickschichtpassivierung“"); break;
-        case "BLAU": html += row("Comte","„Blau ZN8“"); break;
-
-        case "PENTZ": html += row("Pentz & Gerdes","„ZN8“"); break;
-        case "RCS": html += row("RCS","„Schweißen“"); break;
-        case "COATINC": html += row("Coatinc 24","„Verzinken“"); break;
-    }
-
-    if (kunde)
-        html += `<div style="font-size:32pt;">(${kunde})</div>`;
+    if (map[type]) html += row(map[type][0], map[type][1] || "");
+    if (kunde) html += `<div style="font-size:32pt;">(${kunde})</div>`;
 
     document.getElementById("previewContent").innerHTML = html;
     document.getElementById("printContent").innerHTML   = html;
 
     document.getElementById("printBtn").onclick = () => window.print();
-    document.getElementById("backBtn").onclick  = () =>
-        window.location.href = "index.html";
+    document.getElementById("backBtn").onclick  = () => window.location.href = "index.html";
 
-    setTimeout(() => document.getElementById("printBtn").focus(), 150);
+    setTimeout(() => document.getElementById("printBtn").focus(), 250);
 };
 </script>
 
