@@ -1,226 +1,238 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Etikett Vorschau</title>
+<title>Druck</title>
 
 <style>
-
-body {
-  margin: 0;
-  padding: 0;
-  background: #dcdcdc;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  font-family: Arial, sans-serif;
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #dcdcdc;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
 }
 
-/* ================================
-   ✔ A5 Layout (148 × 210 mm)
-=================================*/
-.preview-wrapper {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
-.preview-area {
-  width: 210mm;
-  height: 148mm;
-  background: white;
-  padding: 8mm;
-  box-sizing: border-box;
-  position: relative;
-
-  /* AUTOMATISCHE SKALIERUNG FÜR HANDY */
-  transform-origin: top center;
-}
-
-.textblock {
-  text-align: center;
-  width: 100%;
-}
-
-.logo-wrapper {
-  position: absolute;
-  right: 10mm;
-  bottom: 10mm;
-}
-
-.logo-wrapper img {
-  width: 42mm;
-  height: auto;
-}
-
-/* ================================
-   Buttons
-=================================*/
-.bottom-bar {
-  display: flex;
-  gap: 10px;
-  padding: 10px;
-  background: #ffffff;
-  box-shadow: 0 -3px 6px rgba(0,0,0,0.25);
+/* ====== OBERLEISTE ====== */
+#topBar {
+    height: 70px;
+    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    box-shadow: 0 0 6px rgba(0,0,0,0.2);
 }
 
 .btn {
-  flex: 1;
-  padding: 16px 10px;
-  font-size: 20px;
-  font-weight: bold;
-  border-radius: 10px;
-  color: white;
-  border: none;
+    flex: 1;
+    margin: 0 6px;
+    height: 50px;
+    font-size: 20px;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-weight: bold;
 }
 
-.btn:focus {
-  outline: 5px solid #1a73e8;
+#cancelBtn { background: #c62828; }
+#printBtn  { background: #1565c0; }
+
+/* ====== VORSCHAU ====== */
+#previewWrapper {
+    height: calc(100% - 70px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #dcdcdc;
 }
 
-.back-btn  { background: #9e9e9e; }
-.print-btn { background: #2e7d32; }
+#previewArea {
+    width: 210mm;
+    height: 148mm;
+    background: #ffffff;
+    box-sizing: border-box;
+    padding: 8mm;
+    transform: scale(0.45);
+    transform-origin: center center;
+    box-shadow: 0 0 15px rgba(0,0,0,0.35);
+    position: relative;
 
-/* ================================
-   Druckmodus → Nur Etikett
-=================================*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   /* exakt wie Word */
+    align-items: center;
+}
+
+/* ====== DRUCKBEREICH ====== */
+#printArea {
+    display: none;
+}
+
+.etikett {
+    width: 210mm;
+    height: 148mm;
+    background: #ffffff;
+    box-sizing: border-box;
+    padding: 8mm;
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+}
+
+/* ====== TEXT – 1:1 wie Word ====== */
+.big-number {
+    font-size: 36pt;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.company-big {
+    font-size: 48pt;
+    font-weight: bold;
+    margin-bottom: 18px;
+}
+
+.subtitle {
+    font-size: 36pt;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.customer-small {
+    font-size: 28pt;
+    margin-top: 4px;
+}
+
+/* ====== LOGO ====== */
+.logo-wrapper {
+    position: absolute;
+    right: 10mm;
+    bottom: 8mm;
+}
+
+.logo-wrapper img {
+    width: 42mm;
+    height: auto;
+    object-fit: contain;
+}
+
+/* ====== PRINT ====== */
 @media print {
-  .bottom-bar, .preview-wrapper {
-    display: none !important;
-  }
 
-  #printArea {
-    display: flex !important;
-  }
+    #topBar,
+    #previewWrapper {
+        display: none !important;
+    }
 
-  @page {
-    size: A5 landscape;
-    margin: 0;
-  }
+    #printArea {
+        display: flex !important;
+    }
 
-  body {
-    background: white !important;
-  }
+    @page {
+        size: A5 landscape;
+        margin: 0;
+    }
+
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        overflow: hidden !important;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<div class="preview-wrapper">
-  <div id="scaledBox" class="preview-area">
-    <div id="previewContent" class="textblock"></div>
+<!-- OBERLEISTE -->
+<div id="topBar">
+    <button id="cancelBtn" class="btn">Abbrechen</button>
+    <button id="printBtn"  class="btn">Drucken</button>
+</div>
+
+<!-- VORSCHAU -->
+<div id="previewWrapper">
+    <div id="previewArea" class="etikett">
+        <div id="p_line1" class="big-number"></div>
+        <div id="p_line2" class="company-big"></div>
+        <div id="p_line3" class="subtitle"></div>
+        <div id="p_line4" class="customer-small"></div>
+
+        <div class="logo-wrapper">
+            <img src="langen.png">
+        </div>
+    </div>
+</div>
+
+<!-- DRUCKSEITE -->
+<div id="printArea" class="etikett">
+    <div id="d_line1" class="big-number"></div>
+    <div id="d_line2" class="company-big"></div>
+    <div id="d_line3" class="subtitle"></div>
+    <div id="d_line4" class="customer-small"></div>
 
     <div class="logo-wrapper">
-      <img src="langen.png">
+        <img src="langen.png">
     </div>
-  </div>
-</div>
-
-<!-- DRUCKVERSION -->
-<div id="printArea" class="preview-area" style="display:none;">
-  <div id="printContent" class="textblock"></div>
-
-  <div class="logo-wrapper">
-    <img src="langen.png">
-  </div>
-</div>
-
-<div class="bottom-bar">
-  <button class="btn back-btn" id="btnBack">◀ Zurück</button>
-  <button class="btn print-btn" id="btnPrint">Drucken</button>
 </div>
 
 <script>
-/* =====================================
-   ETIKETT DATEN LADEN
-=====================================*/
 window.onload = () => {
+    /* Daten aus URL */
+    let data = {};
+    try {
+        const p = new URLSearchParams(location.search);
+        if (p.has("data")) {
+            data = JSON.parse(decodeURIComponent(p.get("data")));
+        }
+    } catch(e){}
 
-  const params = new URLSearchParams(location.search);
-  let data = {};
+    /* Mapping wie Word */
+    const map = {
+        "LP": ["L&P"],
+        "LPEILT": ["L&P", "„EILT SEHR“"],
+        "SCHUETTE": ["Schütte"],
+        "SCHUETTEEILT": ["Schütte", "„EILT SEHR“"],
+        "KLEY": ["Kleymann"],
+        "KLEYEILT": ["Kleymann", "„EILT SEHR“"],
+        "COMTEZN8": ["Comte", "„Zn8“"],
+        "CHEMISCH": ["Comte", "„Chemisch Vernickeln“"],
+        "DICK": ["Comte", "„Dickschichtpassivierung“"],
+        "BLAU": ["Comte", "„Blau Zn8“"],
+        "PENTZ": ["Pentz & Gerdes", "„Zn8“"],
+        "RCS": ["RCS", "„Schweißen“"],
+        "COATINC": ["Coatinc 24", "„Verzinken“"]
+    };
 
-  if (params.get("data")) {
-    data = JSON.parse(decodeURIComponent(params.get("data")));
-  }
+    const [line2, line3] = map[data.selectedType] || ["", ""];
 
-  const beistell = data.beistell || "";
-  const type     = data.selectedType || "";
-  const kunde    = data.kundename || "";
+    const finalLines = [
+        data.beistell || "",
+        line2,
+        line3,
+        data.kundename ? "(" + data.kundename + ")" : ""
+    ];
 
-  let html = "";
+    /* Vorschau + Druck */
+    const idsP = ["p_line1","p_line2","p_line3","p_line4"];
+    const idsD = ["d_line1","d_line2","d_line3","d_line4"];
 
-  /* ===============================
-     TEXT GENERIEREN
-  =============================== */
-  html += `<div style="font-size:60pt; font-weight:bold; margin-bottom:6mm;">${beistell}</div>`;
+    for (let i = 0; i < 4; i++) {
+        document.getElementById(idsP[i]).textContent = finalLines[i];
+        document.getElementById(idsD[i]).textContent = finalLines[i];
+    }
 
-  const rows = {
-    "LP":              ["L&P"],
-    "LPEILT":          ["L&P", "„EILT SEHR“"],
-    "SCHUETTE":        ["Schütte"],
-    "SCHUETTEEILT":    ["Schütte","„EILT SEHR“"],
-    "KLEY":            ["Kleymann"],
-    "KLEYEILT":        ["Kleymann","„EILT SEHR“"],
-    "COMTEZN8":        ["Comte","„Zn8“"],
-    "COMTEZNI8":       ["Comte","„ZNi8“"],
-    "CHEMISCH":        ["Comte","„Chemisch Vernickeln“"],
-    "DICK":            ["Comte","„Dickschichtpassivierung“"],
-    "BLAU":            ["Comte","„Blau ZN8“"],
-    "PENTZ":           ["Pentz & Gerdes","„ZN8“"],
-    "RCS":             ["RCS","„Schweißen“"],
-    "COATINC":         ["Coatinc 24","„Verzinken“"]
-  };
-
-  if (rows[type]) {
-    rows[type].forEach((line) => {
-      html += `<div style="font-size:48pt; font-weight:bold; margin-bottom:4mm;">${line}</div>`;
-    });
-  }
-
-  if (kunde) {
-    html += `<div style="font-size:32pt; margin-top:6mm;">(${kunde})</div>`;
-  }
-
-  // Vorschau und Druck setzen
-  document.getElementById("previewContent").innerHTML = html;
-  document.getElementById("printContent").innerHTML   = html;
-
-  /* =====================================
-     AUTOMATISCHE SKALIERUNG FÜR HANDY
-  ======================================*/
-  function scalePreview() {
-    const box = document.getElementById("scaledBox");
-    const w = box.offsetWidth;
-    const h = box.offsetHeight;
-
-    const sw = window.innerWidth / w;
-    const sh = (window.innerHeight * 0.80) / h; // 80% der Höhe benutzen
-
-    const scale = Math.min(sw, sh);
-
-    box.style.transform = `scale(${scale})`;
-  }
-
-  scalePreview();
-  window.onresize = scalePreview;
-
-  /* =====================================
-     Buttons
-  ======================================*/
-  document.getElementById("btnPrint").onclick = () => window.print();
-
-  document.getElementById("btnBack").onclick = () => {
-    window.location.href = "index.html";
-  };
-
-  // Sofort Fokus auf Drucken
-  setTimeout(() => document.getElementById("btnPrint").focus(), 300);
+    /* Buttons */
+    document.getElementById("cancelBtn").onclick = () => history.back();
+    document.getElementById("printBtn").onclick  = () => window.print();
 };
-
 </script>
 
 </body>
