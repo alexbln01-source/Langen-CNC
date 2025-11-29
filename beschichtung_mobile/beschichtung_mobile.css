@@ -1,7 +1,6 @@
 /* ==============================
    GLOBAL
 ============================== */
-
 * {
     box-sizing: border-box;
 }
@@ -10,23 +9,21 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    background: linear-gradient(180deg,#ffffff,#eef1f4);
+    background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
     font-family: Arial, sans-serif;
 
     overflow: hidden;
-
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 /* ==============================
-   PAGE (fixe Größe + Auto-Scale)
+   PAGE FRAME (wie Index)
 ============================== */
-
 .page {
-    width: 500px;       /* feste interne Breite */
-    height: 860px;      /* feste interne Höhe */
+    width: 94vw;
+    height: 92vh;
 
     background: white;
     border-radius: 28px;
@@ -43,46 +40,21 @@ html, body {
 }
 
 /* ==============================
-   AUTOMATISCHE SKALIERUNG
-============================== */
-
-/* iPhone 12/13/14/15 (390px Breite) */
-@media (max-width: 400px) {
-    .page { transform: scale(0.82); }
-}
-
-/* TC21 – 5 Zoll (360px Breite) */
-@media (max-width: 380px) {
-    .page { transform: scale(0.75); }
-}
-
-/* TC22 – 6 Zoll (412px Breite) */
-@media (min-width: 381px) and (max-width: 430px) {
-    .page { transform: scale(0.86); }
-}
-
-/* extra große Androids */
-@media (min-width: 431px) {
-    .page { transform: scale(0.95); }
-}
-
-/* ==============================
    HEADER
 ============================== */
 .header {
     text-align: center;
-    margin-bottom: 8px;
 }
 
 .header h1 {
     font-size: 22px;
+    margin: 6px 0 10px;
     font-weight: 900;
     color: #003a73;
-    margin: 6px 0;
 }
 
 /* ==============================
-   EINGABEFELDER
+   INPUTS
 ============================== */
 .field-group {
     display: flex;
@@ -90,9 +62,13 @@ html, body {
     margin-bottom: 6px;
 }
 
+.field-group label {
+    font-size: 15px;
+}
+
 .field-group input {
     font-size: 18px;
-    padding: 10px;
+    padding: 12px;
     border-radius: 12px;
     border: 1px solid #888;
 }
@@ -100,11 +76,17 @@ html, body {
 /* ==============================
    GRID
 ============================== */
+.grid-label {
+    margin-top: 10px;
+    margin-bottom: 6px;
+    font-size: 15px;
+    font-weight: bold;
+}
 
 .kunden-grid {
     padding: 10px 8px;
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 12px;
 }
 
@@ -112,9 +94,14 @@ html, body {
     height: 60px;
     font-size: 14px;
     border-radius: 14px;
-    background: white;
     border: none;
+    background: white;
     box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .kunde-btn.active {
@@ -131,16 +118,17 @@ html, body {
     font-size: 20px;
     border-radius: 14px;
     background: #666;
-    color: white;
-    font-weight: bold;
+    border: none;
     margin-top: 10px;
+    color: white;
 }
+
 #eiltBtn.on {
     background: #c80000;
 }
 
 /* ==============================
-   UNTEN BUTTONS
+   BOTTOM ROW
 ============================== */
 .bottom-row {
     display: flex;
@@ -151,17 +139,43 @@ html, body {
 .back-btn, .primary-btn {
     flex: 1;
     padding: 14px;
-    font-size: 20px;
     border-radius: 14px;
-    color: white;
+    font-size: 20px;
     border: none;
+    color: white;
     font-weight: bold;
 }
 
 .back-btn { background: #444; }
 .primary-btn { background: #00963d; }
 
-/* Fokus */
+/* ==============================
+   KEYBOARD
+============================== */
+.kb {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #dcdcdc;
+    padding: 6px;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.4);
+}
+
+.kb-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.kb-key {
+    flex: 1;
+    padding: 12px 0;
+    font-size: 20px;
+    background: #fff;
+    border: none;
+    border-radius: 10px;
+}
+
 button:focus {
     outline: 4px solid #1a73e8;
 }
