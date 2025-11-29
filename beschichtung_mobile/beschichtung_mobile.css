@@ -1,196 +1,158 @@
-/* ============================================================
-   GLOBAL / HINTERGRUND – gleich wie INDEX
-============================================================ */
+/* ===== GLOBAL ===== */
 html, body {
-  margin:0;
-  padding:0;
-  height:100%;
-  font-family:"Segoe UI", Arial, sans-serif;
-  background: radial-gradient(circle at top,
-              #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
-  display:flex;
-  justify-content:center;
-  align-items:center;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
+    font-family: "Segoe UI", Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* ============================================================
-   PAGE CONTAINER – wie INDEX #main (runde Außenkanten!)
-============================================================ */
+/* ===== HAUPTCONTAINER ===== */
 .page {
-  width: 92%;
-  max-width: 900px;
-  height: 96vh;
-
-  background: linear-gradient(180deg,#ffffff 0%,#eef1f4 100%);
-  border-radius: 28px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.25);
-  border: 1px solid #bfc5cc;
-
-  padding: 26px 22px;
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
+    width: 92%;
+    max-width: 900px;
+    background: linear-gradient(180deg,#ffffff 0%,#eef1f4 100%);
+    border-radius: 28px;
+    padding: 26px 20px 30px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+    border: 1px solid #bfc5cc;
 }
 
-/* ============================================================
-   HEADER
-============================================================ */
-.header {
-  text-align:center;
-  margin-bottom:10px;
-}
-
+/* ===== HEADLINE ===== */
 .header h1 {
-  font-size:28px;
-  color:#003a73;
-  margin:0;
-  font-weight:800;
-  text-transform:uppercase;
+    text-align: center;
+    font-size: 28px;
+    color: #003a73;
+    margin: 10px 0 20px;
+    font-weight: 900;
 }
 
-/* ============================================================
-   FELDER
-============================================================ */
+/* ===== FELDER ===== */
 .field-group {
-  display:flex;
-  flex-direction:column;
-  margin-bottom:12px;
+    margin-bottom: 16px;
 }
 
 .field-group label {
-  font-size:16px;
-  color:#003a73;
-  font-weight:bold;
-  margin-bottom:4px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #003a73;
 }
 
 .field-group input {
-  padding:12px;
-  font-size:20px;
-  border-radius:12px;
-  border:1px solid #8ea0b8;
-  background:white;
-  box-shadow:0 2px 6px rgba(0,0,0,0.15);
+    width: 100%;
+    font-size: 20px;
+    padding: 14px;
+    border-radius: 14px;
+    border: 1px solid #a0a0a0;
+    background: #f8f8f8;
 }
 
-/* ============================================================
-   KUNDEN GRID – gleiche Kanten wie INDEX Buttons
-============================================================ */
+/* ===== KUNDENGRID ===== */
 .grid-label {
-  font-size:16px;
-  font-weight:bold;
-  color:#003a73;
-  margin:6px 0 6px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #003a73;
+    margin-bottom: 10px;
 }
 
 .kunden-grid {
-  display:grid;
-  grid-template-columns:repeat(3, 1fr);
-  gap:14px;
-  margin-bottom:16px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 14px;
 }
 
 .kunde-btn {
-  height:75px;
-  border:none;
-  border-radius:16px;
-  background:white;
-
-  font-size:16px;
-  font-weight:bold;
-
-  box-shadow:0 3px 12px rgba(0,0,0,0.25);
+    height: 72px;
+    font-size: 16px;
+    padding: 6px;
+    border-radius: 16px;
+    border: none;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    font-weight: bold;
 }
 
 .kunde-btn.active {
-  background:#007bff;
-  color:white;
+    background: #007bff;
+    color: white;
 }
 
-/* ============================================================
-   EILT BUTTON
-============================================================ */
+/* ===== EILT BUTTON ===== */
 #eiltBtn {
-  width:100%;
-  padding:16px;
-  font-size:22px;
-
-  border-radius:16px;
-  border:none;
-  font-weight:bold;
-  color:white;
-
-  background:#888;
-  margin-top:6px;
-  box-shadow:0 3px 12px rgba(0,0,0,0.25);
+    width: 100%;
+    padding: 16px;
+    font-size: 20px;
+    border-radius: 16px;
+    border: none;
+    background: #888;
+    color: white;
+    font-weight: bold;
+    margin-top: 8px;
 }
 
 #eiltBtn.on {
-  background:#c80000;
+    background: #c80000;
 }
 
-/* ============================================================
-   UNTEN: Zurück + Drucken – wie Index Buttons
-============================================================ */
+/* ===== UNTEN BUTTONS ===== */
 .bottom-row {
-  display:flex;
-  gap:12px;
-  margin-top:auto;   /* nach unten schieben */
-  padding-top:10px;
+    margin-top: 18px;
+    display: flex;
+    gap: 14px;
 }
 
 .back-btn,
 .primary-btn {
-  flex:1;
-  padding:16px;
-  font-size:22px;
-  border-radius:16px;
-  font-weight:bold;
-  border:none;
-  color:white;
-
-  box-shadow:0 4px 14px rgba(0,0,0,0.25);
+    flex: 1;
+    font-size: 22px;
+    padding: 16px;
+    border-radius: 16px;
+    border: none;
+    color: white;
+    font-weight: bold;
 }
 
-.back-btn {
-  background:#444;
-}
+.back-btn { background: #444; }
+.primary-btn { background: #00963d; }
 
-.primary-btn {
-  background:#00963d;
-}
-
-/* ============================================================
-   POPUP-TASTATUREN – sauber & kleiner
-============================================================ */
+/* ===== TASTATUR ===== */
 .kb {
-  position:fixed;
-  bottom:0;
-  left:0;
-  width:100%;
-  background:#eef1f4;
-  padding:10px;
-  box-shadow:0 -4px 16px rgba(0,0,0,0.3);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #dcdcdc;
+    padding: 8px;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
 }
 
 .kb-row {
-  display:flex;
-  gap:10px;
-  margin-bottom:10px;
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
 }
 
 .kb-key {
-  flex:1;
-  padding:12px 0;
-  font-size:18px;
-  font-weight:bold;
-  border:none;
-  border-radius:10px;
-  background:white;
-  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+    flex: 1;
+    padding: 12px 0;
+    font-size: 20px;
+    background: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
 }
 
 button:focus {
-  outline:4px solid #1a73e8;
-  outline-offset:0;
+    outline: 4px solid #1a73e8;
+}
+
+/* ===== AUTOMATISCHE SKALIERUNG → TC21, TC22, iPhone ===== */
+@media (max-width: 600px) {
+    .page {
+        transform: scale(0.95);
+    }
 }
