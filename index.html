@@ -1,150 +1,159 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8" />
+<meta charset="utf-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<!-- Wichtig für Mobile + Zebra -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <title>Warenanhänger</title>
 
-<link rel="icon" href="icon192.png" sizes="192x192" type="image/png">
-<link rel="apple-touch-icon" href="icon192.png">
-<link rel="manifest" href="manifest.json">
-
-<meta name="theme-color" content="#003a73">
-
 <style>
 html, body {
-  margin:0;
-  padding:0;
-  height:100%;
+  margin: 0;
+  padding: 0;
+  height: 100%;
   background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
-  font-family:"Segoe UI", Arial, sans-serif;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  font-family: "Segoe UI", Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* --- Hauptcontainer --- */
+/* Hauptcontainer */
 #main {
-  width:90%;
-  max-width:900px;
-  text-align:center;
-  background:linear-gradient(180deg,#ffffff 0%,#eef1f4 100%);
-  border-radius:30px;
-  box-shadow:0 10px 40px rgba(0,0,0,0.25);
-  padding:40px 20px 50px;
-  border:1px solid #bfc5cc;
+  width: 90%;
+  max-width: 900px;
+  text-align: center;
+
+  background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
+  border-radius: 30px;
+  padding: 40px 25px 50px;
+
+  box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+  border: 1px solid #bfc5cc;
 }
 
-/* --- Logo --- */
+/* Logo */
 #logo {
-  width:240px;
-  max-width:70%;
-  margin-bottom:20px;
+  width: 240px;
+  max-width: 80%;
+  margin-bottom: 20px;
 }
 
-/* --- Titel --- */
+/* Überschrift */
 h1 {
-  font-size:30px;
-  color:#003a73;
-  margin:10px 0 25px;
-  font-weight:900;
+  font-size: 32px;
+  color: #003a73;
+  font-weight: 900;
+  margin: 5px 0 30px;
 }
 
-/* --- Buttons --- */
+/* Buttons */
 button {
-  width:280px;
-  height:80px;
-  border:none;
-  border-radius:16px;
-  margin:12px auto;
-  font-size:22px;
-  font-weight:bold;
-  color:#fff;
-  display:block;
-  cursor:pointer;
-  box-shadow:0 6px 18px rgba(0,0,0,0.25);
-  transition:all 0.2s;
+  width: 85%;
+  max-width: 420px;
+
+  height: 80px;
+  border: none;
+  border-radius: 18px;
+
+  margin: 12px auto;
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+
+  cursor: pointer;
+  display: block;
+
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
 }
 
 /* Farben */
-#btnBeschichtung { background:linear-gradient(180deg,#007bff 0%,#0056b3 100%); }
-#btnKanten       { background:linear-gradient(180deg,#ff9800 0%,#e67e00 100%); }
-#btnPaus         { background:linear-gradient(180deg,#28a745 0%,#1d7f31 100%); }
-#btnSchweissen   { background:linear-gradient(180deg,#9c27b0 0%,#6a0080 100%); }
+#btnBeschichtung { background: linear-gradient(180deg,#007bff,#0056b3); }
+#btnKanten       { background: linear-gradient(180deg,#ff9800,#e67e00); }
+#btnPaus         { background: linear-gradient(180deg,#28a745,#1d7f31); }
+#btnSchweissen   { background: linear-gradient(180deg,#9c27b0,#6a0080); }
 
-/* === MOBILE SCANNER / KLEINE HANDYS (≤ 600px) === */
-@media (max-width: 600px) {
+/* --------------------------
+   ⭐ ZEBRA FIX (TC21 / TC22)
+--------------------------- */
+@media (device-width: 360px) and (device-height: 640px),
+       (device-width: 411px) and (device-height: 731px) {
 
   #main {
-    width:95%;
-    padding:25px 10px 35px;
-    border-radius:22px;
-  }
-
-  #logo {
-    width:160px;
-    margin-bottom:15px;
-  }
-
-  h1 {
-    font-size:24px;
-    margin-bottom:20px;
+    transform: scale(0.85);
+    transform-origin: top center;
   }
 
   button {
-    width:92%;
-    height:65px;
-    font-size:18px;
-    border-radius:14px;
-    margin:8px auto;
+    height: 72px;
+    font-size: 20px;
   }
 
-  footer {
-    font-size:11px;
-    margin-top:25px;
+  #logo {
+    width: 200px;
+  }
+
+  h1 {
+    font-size: 28px;
   }
 }
 
-footer {
-  margin-top:35px;
-  font-size:13px;
-  color:#666;
+/* Kleinere Smartphones */
+@media (max-width: 600px) {
+  #main {
+    width: 95%;
+    border-radius: 22px;
+  }
+
+  button {
+    width: 90%;
+    height: 70px;
+    font-size: 20px;
+  }
+
+  #logo {
+    width: 200px;
+  }
 }
 </style>
 
 <script>
-function openBeschichtung() {
-  window.location.href = "start.html?bereich=beschichtung";
-}
-function openKanten() {
-  window.location.href = "start.html?bereich=kanten";
-}
-function openPaus() {
-  window.location.href = "Paus-Lieferung.html";
-}
-function openSchweissen() {
-  window.location.href = "Schweissen.html";
+function openBereich(bereich) {
+  window.location.href = "start.html?bereich=" + bereich;
 }
 </script>
 
 </head>
 
 <body>
-  <div id="main">
+<div id="main">
 
-    <img id="logo" src="langen.png" alt="Langen CNC Logo">
+  <img id="logo" src="langen.png" alt="Langen Logo">
 
-    <h1>WARENANHÄNGER</h1>
+  <h1>WARENANHÄNGER</h1>
 
-    <button id="btnBeschichtung" onclick="openBeschichtung()">Beschichtung (A5)</button>
-    <button id="btnKanten" onclick="openKanten()">Kanten (A6)</button>
-    <button id="btnPaus" onclick="openPaus()">PAUS Lieferung (A6)</button>
-    <button id="btnSchweissen" onclick="openSchweissen()">Schweißen</button>
+  <button id="btnBeschichtung" onclick="openBereich('beschichtung')">
+    Beschichtung (A5)
+  </button>
 
-    <footer>Langen CNC Metalltechnik GmbH & Co. KG</footer>
-  </div>
+  <button id="btnKanten" onclick="openBereich('kanten')">
+    Kanten (A6)
+  </button>
+
+  <button id="btnPaus" onclick="openBereich('paus')">
+    PAUS Lieferung (A6)
+  </button>
+
+  <button id="btnSchweissen" onclick="openBereich('schweissen')">
+    Schweißen
+  </button>
+
+  <footer style="margin-top:30px;color:#666;font-size:14px;">
+    Langen CNC Metalltechnik GmbH & Co. KG
+  </footer>
+
+</div>
 </body>
 </html>
