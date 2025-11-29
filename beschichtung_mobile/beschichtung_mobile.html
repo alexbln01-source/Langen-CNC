@@ -1,81 +1,17 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<title>Etikett Beschichtung</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<link rel="stylesheet" href="beschichtung_mobile.css">
-
-<style>
-    /* Wrapper zentriert alles */
-    body {
-        margin: 0;
-        padding: 0;
-        background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
-        font-family: Arial, sans-serif;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        height: 100vh;
-        overflow: hidden;
-    }
-
-    /* Kartendesign wie Index */
-    .page {
-        width: 420px;
-        background: white;
-        border-radius: 30px;
-        padding: 20px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.25);
-        border: 1px solid #c9c9c9;
-
-        /* AUTOMATISCHE SKALIERUNG */
-        transform-origin: top center;
-        transition: transform 0.2s ease;
-    }
-</style>
-
-<script>
-/* ========================================
-   AUTOMATISCHE SKALIERUNG TC21 / TC22 / iPhone
-======================================== */
-
-function autoScale() {
-    const screenH = window.innerHeight;
-    const screenW = window.innerWidth;
-
-    const baseW = 420;     // Grundbreite der Karte
-    const baseH = 760;     // Grundhöhe iPhone
-
-    const scaleW = screenW / baseW;
-    const scaleH = screenH / baseH;
-
-    // kleineren Wert nutzen → passt immer
-    let scale = Math.min(scaleW, scaleH);
-
-    // Begrenzung (damit iPhone nicht zu klein wird)
-    if (scale > 1) scale = 1;
-
-    document.querySelector(".page").style.transform =
-        "scale(" + scale.toFixed(2) + ")";
-}
-
-window.onload = autoScale;
-window.onresize = autoScale;
-</script>
-
+  <meta charset="UTF-8">
+  <title>Etikett Beschichtung</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="beschichtung_mobile.css">
 </head>
 
 <body>
 
-<div class="page">
+<div class="wrapper">
 
-    <header class="header">
-        <h1>Etikett Beschichtung</h1>
-    </header>
+    <h1 class="title">Etikett Beschichtung</h1>
 
     <div class="field-group">
         <label>Beistellnummer</label>
@@ -112,9 +48,13 @@ window.onresize = autoScale;
         <button id="backBtn" class="back-btn">◀ Zurück</button>
         <button id="druckenBtn" class="primary-btn">Drucken</button>
     </div>
+
 </div>
 
-<script src="beschichtung_mobile.js"></script>
+<!-- Tastaturen -->
+<div id="numKeyboard" class="kb" style="display:none;"></div>
+<div id="alphaKeyboard" class="kb" style="display:none;"></div>
 
+<script src="beschichtung_mobile.js"></script>
 </body>
 </html>
