@@ -234,10 +234,13 @@ let html = `
     }
 
     /* =====================================
-       Optionaler Zusatzname (in Klammern)
-    ===================================== */
-    if (kunde)
-        html += `<div class="print-name">(${kunde})</div>`;
+   Optionaler Zusatzname (nur bei erlaubten Kunden)
+===================================== */
+const noNameTypes = ["LP","LPEILT","SCHUETTE","SCHUETTEEILT","KLEY","KLEYEILT"];
+
+if (kunde && !noNameTypes.includes(type)) {
+    html += `<div class="print-name">(${kunde})</div>`;
+}
 
     /* Vorschau + Druck setzen */
     previewContent.innerHTML = html;
@@ -253,4 +256,4 @@ let html = `
 
 </body>
 </html>
-   wo
+   
