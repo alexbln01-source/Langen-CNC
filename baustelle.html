@@ -1,123 +1,199 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<title>Baustelle</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<title>Warenanhänger</title>
 
 <style>
-    body {
-        margin: 0;
-        background: #eef1f4;
-        font-family: Arial, sans-serif;
+/* ============================================================
+   GLOBAL
+============================================================ */
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+@media (min-width: 601px) {
+    html, body {
+        overflow: hidden;
+    }
+}
+
+/* ============================================================
+   MOBILE
+============================================================ */
+@media (max-width: 600px) {
+    html, body {
+        height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        overflow: hidden;
     }
 
-    .card {
-        background: white;
-        width: 92%;
-        max-width: 420px;
-        padding: 30px 25px;
-        border-radius: 20px;
-        text-align: center;
-        box-shadow: 0 4px 18px rgba(0,0,0,0.15);
-    }
-
-    .logo {
-        width: 180px;
-        margin-bottom: 25px;
-    }
-
-    /* Warnpunkt Animation */
-    .blink {
-        animation: blinkAnim 0.9s infinite steps(1);
-    }
-    @keyframes blinkAnim {
-        0% { opacity: 1; }
-        50% { opacity: .2; }
-        100% { opacity: 1; }
-    }
-
-    .bagger {
-        margin: 10px auto 20px auto;
-    }
-
-    h1 {
-        font-size: 32px;
-        color: #c80000;
-        margin: 0;
-        font-weight: 900;
-    }
-
-    .sub {
-        font-size: 20px;
-        margin: 10px 0 20px 0;
-        color: #444;
-        animation: fade 1.2s infinite;
-    }
-    @keyframes fade {
-        0% { opacity: 0.4; }
-        50% { opacity: 1; }
-        100% { opacity: 0.4; }
+    #main {
+        width: 100%;
+        max-width: 380px;
+        transform: scale(0.95);
     }
 
     button {
-        width: 100%;
-        padding: 15px;
-        background: #444;
-        color: white;
-        font-size: 20px;
-        font-weight: bold;
-        border: none;
-        border-radius: 14px;
-        margin-top: 10px;
+        width: 260px;
+        height: 85px;
+        font-size: 24px;
     }
-</style>
-</head>
+}
 
+/* ============================================================
+   DESKTOP
+============================================================ */
+@media (min-width: 601px) {
+    #main {
+        margin: 60px auto;
+        width: 100%;
+        max-width: 650px;
+        padding: 20px 40px;
+    }
+
+    button {
+        width: 450px;
+        height: 60px;
+        font-size: 20px;
+    }
+
+    h1 {
+        font-size: 40px;
+    }
+}
+
+/* ============================================================
+   SVG BAUSTELLE
+============================================================ */
+#baustelleSVG {
+    width: 80%;
+    max-width: 330px;
+    display: block;
+    margin: 0 auto 20px auto;
+}
+
+/* ============================================================
+   TITEL & BUTTONS
+============================================================ */
+h1 {
+    margin: 0 0 30px 0;
+    font-size: 32px;
+    font-weight: 900;
+    color: #003a73;
+    text-align: center;
+}
+
+button {
+    margin: 18px auto;
+    display: block;
+
+    border: none;
+    border-radius: 18px;
+
+    font-weight: bold;
+    color: white;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#btnBeschichtung { background: linear-gradient(#007bff,#0056b3); }
+#btnKanten       { background: linear-gradient(#ff9800,#e67e00); }
+#btnPaus         { background: linear-gradient(#28a745,#1d7f31); }
+#btnSchweissen   { background: linear-gradient(#9c27b0,#6a0080); }
+
+/* ============================================================
+   FOOTER
+============================================================ */
+footer {
+    margin-top: 40px;
+    font-size: 16px;
+    text-align: center;
+    color: #444;
+}
+</style>
+
+<script>
+function openBeschichtung() { window.location.href = "start.html?bereich=beschichtung"; }
+function openKanten()       { window.location.href = "baustelle.html"; }
+function openPaus()         { window.location.href = "baustelle.html"; }
+function openSchweissen()   { window.location.href = "baustelle.html"; }
+</script>
+
+</head>
 <body>
 
-<div class="card">
+<div id="main">
 
-    <!-- Logo -->
-    <img src="langen.png" class="logo">
+    <!-- SVG direkt eingebaut -->
+    <svg id="baustelleSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260">
+        <ellipse cx="210" cy="220" rx="150" ry="18" fill="#cccccc" opacity="0.4"/>
+        <rect x="70" y="90" width="260" height="18" fill="#ffd54f"/>
+        <g transform="translate(70,90)">
+            <polygon points="0,18 30,0 60,0 30,18" fill="#333"/>
+            <polygon points="60,18 90,0 120,0 90,18" fill="#333"/>
+            <polygon points="120,18 150,0 180,0 150,18" fill="#333"/>
+            <polygon points="180,18 210,0 240,0 210,18" fill="#333"/>
+            <polygon points="240,18 270,0 300,0 270,18" fill="#333"/>
+        </g>
+        <rect x="90" y="130" width="220" height="16" fill="#ffd54f"/>
+        <g transform="translate(90,130)">
+            <polygon points="0,16 26,0 52,0 26,16" fill="#333"/>
+            <polygon points="52,16 78,0 104,0 78,16" fill="#333"/>
+            <polygon points="104,16 130,0 156,0 130,16" fill="#333"/>
+            <polygon points="156,16 182,0 208,0 182,16" fill="#333"/>
+            <polygon points="208,16 234,0 260,0 234,16" fill="#333"/>
+        </g>
+        <rect x="80" y="90" width="24" height="120" fill="#c9c9c9"/>
+        <rect x="296" y="90" width="24" height="120" fill="#c9c9c9"/>
+        <g transform="translate(60,70)">
+            <path d="M0,54 C10,20 40,0 75,0 C105,0 130,15 140,38 L140,54 Z" fill="#ffb74d"/>
+            <rect x="60" y="12" width="14" height="26" fill="#ffb74d"/>
+        </g>
+        <rect x="203" y="60" width="10" height="135" fill="#d1d5db"/>
+        <g transform="translate(200,35)">
+            <polygon points="0,40 12,12 40,0 68,12 80,40 68,68 40,80 12,68"
+                     fill="#f4511e" stroke="#ffffff" stroke-width="4"/>
+            <text x="40" y="47" text-anchor="middle"
+                  font-family="Arial" font-size="20" font-weight="bold" fill="#ffffff">STOP</text>
+        </g>
+        <g transform="translate(160,130)">
+            <polygon points="0,60 20,0 40,60" fill="#ffb74d"/>
+            <rect x="5" y="28" width="30" height="6" fill="#eceff1"/>
+            <rect x="8" y="40" width="24" height="6" fill="#eceff1"/>
+            <rect x="0" y="60" width="40" height="8" fill="#f57c00"/>
+        </g>
+        <g transform="translate(230,135)">
+            <polygon points="0,56 18,0 36,56" fill="#ffb74d"/>
+            <rect x="4" y="26" width="28" height="6" fill="#eceff1"/>
+            <rect x="6" y="38" width="24" height="6" fill="#eceff1"/>
+            <rect x="0" y="56" width="36" height="8" fill="#f57c00"/>
+        </g>
+        <g transform="translate(280,140)">
+            <polygon points="0,52 16,0 32,52" fill="#ffb74d"/>
+            <rect x="4" y="24" width="24" height="5" fill="#eceff1"/>
+            <rect x="6" y="35" width="20" height="5" fill="#eceff1"/>
+            <rect x="0" y="52" width="32" height="7" fill="#f57c00"/>
+        </g>
+    </svg>
 
-    <!-- Edler Bagger (offline SVG, ohne Müll) -->
-    <div class="bagger">
-        <svg width="160" viewBox="0 0 900 600">
+    <h1>Warenanhänger</h1>
 
-            <!-- Baggerarm -->
-            <path d="M580 240 L710 120 L750 160 L620 270 Z"
-                  fill="#0084ff" stroke="#003a73" stroke-width="12"/>
+    <button id="btnBeschichtung" onclick="openBeschichtung()">Beschichtung (A5)</button>
+    <button id="btnKanten" onclick="openKanten()">Kanten (A6)</button>
+    <button id="btnPaus" onclick="openPaus()">PAUS Lieferung (A6)</button>
+    <button id="btnSchweissen" onclick="openSchweissen()">Schweißen</button>
 
-            <!-- Schaufel -->
-            <path d="M730 140 Q810 200 760 270 L680 240 Z"
-                  fill="#333" stroke="#000" stroke-width="8"/>
-
-            <!-- Oberwagen -->
-            <rect x="350" y="230" width="260" height="150"
-                  rx="25" fill="#003a73" stroke="#111" stroke-width="10"/>
-
-            <!-- Fenster -->
-            <rect x="380" y="260" width="150" height="80"
-                  rx="14" fill="#e6eef7" stroke="#003a73" stroke-width="8"/>
-
-            <!-- Ketten -->
-            <ellipse cx="370" cy="440" rx="70" ry="40"
-                     fill="#333" stroke="#000" stroke-width="10"/>
-            <ellipse cx="540" cy="440" rx="70" ry="40"
-                     fill="#333" stroke="#000" stroke-width="10"/>
-        </svg>
-    </div>
-
-    <h1>⛔ Baustelle</h1>
-
-    <div class="sub">⚙️ In Arbeit …</div>
-
-    <button onclick="history.back()">◀ Zurück</button>
+    <footer>Langen CNC Metalltechnik GmbH & Co. KG</footer>
 
 </div>
 
