@@ -237,7 +237,7 @@ let html = `
 
     /* Buttons */
     printBtn.onclick = () => window.print();
-    backBtn.onclick  = () => window.location.href = "index.html";
+  backBtn.onclick = () => history.back();
 
     setTimeout(() => printBtn.focus(), 150);
 };
