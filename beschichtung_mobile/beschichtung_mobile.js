@@ -61,21 +61,31 @@ document.querySelectorAll("#numKeyboard .kbm-key").forEach(key => {
     });
 });
 
-// Buchstabentasten
+// Buchstabentasten (QWERTZ, inkl. SPACE / DELETE / OK)
 document.querySelectorAll("#alphaKeyboard .kbm-key").forEach(key => {
     key.addEventListener("click", () => {
         if (!activeInput) return;
 
+        // Löschen
         if (key.id === "alphaDel") {
             activeInput.value = activeInput.value.slice(0, -1);
             return;
         }
+
+        // Space
+        if (key.id === "alphaSpace") {
+            activeInput.value += " ";
+            return;
+        }
+
+        // OK / Keyboard schließen
         if (key.id === "alphaOk") {
             alphaKb.style.display = "none";
             activeInput.blur();
             return;
         }
 
+        // Normale Buchstaben (A–Z)
         activeInput.value += key.textContent;
     });
 });
