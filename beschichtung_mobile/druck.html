@@ -92,14 +92,11 @@
         margin-bottom: 8mm;
     }
 
-   /* =====================================
-   Optionaler Zusatzname (nur bei erlaubten Kunden)
-===================================== */
-const noNameTypes = ["LP","LPEILT","SCHUETTE","SCHUETTEEILT","KLEY","KLEYEILT"];
-
-if (kunde && !noNameTypes.includes(type)) {
-    html += `<div class="print-name">(${kunde})</div>`;
-}
+    /* Optionaler Kundenname in Klammern */
+    .print-name {
+        font-size: 32pt;
+        margin-top: 4mm;
+    }
 
     /* BUTTONS UNTEN – optimiert für Desktop + mobile */
 .bottom-bar {
@@ -237,13 +234,10 @@ let html = `
     }
 
     /* =====================================
-   Optionaler Zusatzname (nur bei erlaubten Kunden)
-===================================== */
-const noNameTypes = ["LP","LPEILT","SCHUETTE","SCHUETTEEILT","KLEY","KLEYEILT"];
-
-if (kunde && !noNameTypes.includes(type)) {
-    html += `<div class="print-name">(${kunde})</div>`;
-}
+       Optionaler Zusatzname (in Klammern)
+    ===================================== */
+    if (kunde)
+        html += `<div class="print-name">(${kunde})</div>`;
 
     /* Vorschau + Druck setzen */
     previewContent.innerHTML = html;
@@ -259,19 +253,4 @@ if (kunde && !noNameTypes.includes(type)) {
 
 </body>
 </html>
-
-
-    /* Vorschau + Druck setzen */
-    previewContent.innerHTML = html;
-    printContent.innerHTML   = html;
-
-    /* Buttons */
-    printBtn.onclick = () => window.print();
-  backBtn.onclick = () => history.back();
-
-    setTimeout(() => printBtn.focus(), 150);
-};
-</script>
-
-</body>
-</html>
+   wo
