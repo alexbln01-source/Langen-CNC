@@ -43,7 +43,7 @@ if (isMobile) {
     });
 
     // Nummerntasten
-    document.querySelectorAll("#numKeyboard .kb-key").forEach(key => {
+    document.querySelectorAll("#numKeyboard .kbm-key")
         key.addEventListener("click", () => {
             if (!activeInput) return;
 
@@ -62,7 +62,7 @@ if (isMobile) {
     });
 
     // Buchstabentasten
-    document.querySelectorAll("#alphaKeyboard .kb-key").forEach(key => {
+    document.querySelectorAll("#alphaKeyboard .kbm-key")
         key.addEventListener("click", () => {
             if (!activeInput) return;
 
