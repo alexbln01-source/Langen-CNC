@@ -188,3 +188,27 @@ button:focus {
         transform-origin: top center;
     }
 }
+/* =============================
+     Blinkender Cursor (Fake-Caret)
+   ============================= */
+.input-blink {
+    position: relative;
+}
+
+.input-blink::after {
+    content: "";
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    width: 2px;
+    height: 60%;
+    background: #000;
+    transform: translateY(-50%);
+    animation: blinkCursor 0.8s steps(1) infinite;
+}
+
+@keyframes blinkCursor {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
