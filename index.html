@@ -36,26 +36,41 @@ html, body {
 }
 
 /* ============================================================
-   DER WEISSE KASTEN – jetzt 5% kleiner & perfekt zentriert
+   ZENTRIERTER "KARTEN"-CONTAINER
 ============================================================ */
+#main {
+    background: white;
+    width: 90vw;
+    max-width: 900px;
+
+    padding: 50px 20px 60px;
+
+    border-radius: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    border: 1px solid #bfc5cc;
+
+    /* Standardgröße (für iPhone) */
+    transform: scale(0.95);
+    transform-origin: center center;
+}
 
 /* ============================================================
    AUTOMATISCHE GERÄTE-SKALIERUNG
 ============================================================ */
 
-/* ⭐ iPhone (normal) → Standard */
-@media screen and (min-width: 390px) and (max-width: 400px) {
+/* ⭐ iPhone 13/14/15 Breite 390px */
+@media screen and (min-width: 385px) and (max-width: 405px) {
     #main { transform: scale(1.00); }
 }
 
-/* ⭐ Zebra TC21 – 5 Zoll, 360px Breite → etwas kleiner */
+/* ⭐ Zebra TC21 – 5" Display – Breite ca. 360px */
 @media screen and (max-width: 380px) {
-    #main { transform: scale(0.88); }
+    #main { transform: scale(0.85); }
 }
 
-/* ⭐ Zebra TC22 – 6 Zoll, 412px Breite → etwas größer als TC21 */
-@media screen and (min-width: 381px) and (max-width: 430px) {
-    #main { transform: scale(0.93); }
+/* ⭐ Zebra TC22 – 6" – Breite 412px */
+@media screen and (min-width: 401px) and (max-width: 430px) {
+    #main { transform: scale(0.92); }
 }
 
 /* ============================================================
@@ -98,7 +113,7 @@ button {
     cursor: pointer;
     display: block;
 
-    
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
     transition: all 0.2s ease;
 }
 
