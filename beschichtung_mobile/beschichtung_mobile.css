@@ -212,3 +212,10 @@ button:focus {
     50% { opacity: 0; }
     100% { opacity: 1; }
 }
+/* =============================
+     Mobile Fokusrahmen (sichtbarer Focus auf Handy/Scanner)
+   ============================= */
+.mobile-focus {
+    outline: 4px solid #1a73e8 !important;
+    border-radius: 14px;
+}
