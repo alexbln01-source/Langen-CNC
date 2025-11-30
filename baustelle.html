@@ -9,57 +9,103 @@
     html, body {
         margin: 0;
         padding: 0;
-        height: 100vh;
         background: #f4f4f4;
         font-family: Arial, sans-serif;
+        height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
     }
 
     .box {
-        width: 90%;
-        max-width: 450px;
+        width: 92%;
+        max-width: 480px;
         background: white;
         padding: 35px 25px;
         border-radius: 22px;
         text-align: center;
         box-shadow: 0 6px 20px rgba(0,0,0,0.20);
         position: relative;
+        overflow: hidden;
     }
 
+    /* Logo */
     .logo {
-        width: 160px;
-        margin-bottom: 20px;
+        width: 180px;
+        margin-bottom: 16px;
     }
 
-    .bagger {
-        width: 220px;
-        margin: 0 auto 20px auto;
+    /* Animierte Elemente */
+    .blink {
+        animation: blinkAnim 0.7s infinite steps(1);
+    }
+    @keyframes blinkAnim {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
     }
 
-    h1 {
-        margin: 0;
-        font-size: 40px;
-        font-weight: 900;
-        color: #d60000;
+    .wipp {
+        animation: wippAnim 2s ease-in-out infinite;
+        transform-origin: center;
+    }
+    @keyframes wippAnim {
+        0% { transform: rotate(0deg); }
+        50% { transform: rotate(2deg); }
+        100% { transform: rotate(0deg); }
     }
 
-    p {
-        font-size: 22px;
-        color: #333;
-        margin-bottom: 25px;
+    .arbeiten {
+        animation: arbeitAnim 1.2s infinite;
+    }
+    @keyframes arbeitAnim {
+        0% { opacity: 0.3; }
+        50% { opacity: 1; }
+        100% { opacity: 0.3; }
     }
 
+    /* Button */
     button {
         width: 100%;
+        padding: 15px;
+        margin-top: 20px;
         background: #444;
-        border: none;
-        border-radius: 14px;
         color: white;
         font-size: 22px;
         font-weight: bold;
-        padding: 15px;
+        border: none;
+        border-radius: 14px;
+    }
+
+    /* Hintergrund-Baustellenband */
+    .band {
+        position: absolute;
+        top: -40px;
+        left: -120px;
+        width: 900px;
+        height: 200px;
+        background: repeating-linear-gradient(
+            -20deg,
+            #ffcc00 0 40px,
+            #000 40px 80px
+        );
+        opacity: 0.15;
+        transform: rotate(-5deg);
+    }
+
+    .band2 {
+        position: absolute;
+        bottom: -40px;
+        right: -120px;
+        width: 900px;
+        height: 200px;
+        background: repeating-linear-gradient(
+            -20deg,
+            #ffcc00 0 40px,
+            #000 40px 80px
+        );
+        opacity: 0.15;
+        transform: rotate(-5deg);
     }
 </style>
 </head>
@@ -68,19 +114,58 @@
 
 <div class="box">
 
-    <!-- Langen CNC Logo -->
+    <!-- Baustellenband -->
+    <div class="band"></div>
+    <div class="band2"></div>
+
+    <!-- Logo -->
     <img src="langen.png" alt="Langen CNC Logo" class="logo">
 
-    <!-- Bagger als offline SVG -->
-    <div class="bagger">
-        <svg viewBox="0 0 640 512">
-            <path fill="#ffcc00" d="M512 192h-64l-64-128H256l-64 128H64L0 320v64h64a64 64 0 1 0 128 0h192a64 64 0 1 0 128 0h64v-64l-64-128zM192 384H96a32 32 0 1 1 0-64h96a32 32 0 1 1 0 64zm320 0h-96a32 32 0 1 1 0-64h96a32 32 0 1 1 0 64z"/>
-            <path fill="#333" d="M256 64h128v64H256z"/>
+    <!-- Bagger SVG -->
+    <div class="bagger wipp">
+        <svg width="300" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+
+            <!-- Warnblinker -->
+            <circle cx="620" cy="210" r="30" fill="#ffcc00" class="blink" stroke="#333" stroke-width="8"/>
+
+            <!-- Baggerarm -->
+            <path d="M580 240 L710 120 L750 160 L620 270 Z"
+                  fill="#0084ff" stroke="#003a73" stroke-width="14"/>
+
+            <!-- Schaufel -->
+            <path d="M730 140 Q810 200 760 270 L680 240 Z"
+                  fill="#222" stroke="#000" stroke-width="10"/>
+
+            <!-- Oberwagen -->
+            <rect x="350" y="230" width="260" height="150"
+                  rx="25" fill="#003a73" stroke="#111" stroke-width="12"/>
+
+            <!-- Fenster -->
+            <rect x="380" y="260" width="150" height="80"
+                  rx="14" fill="#e6eef7" stroke="#003a73" stroke-width="10"/>
+
+            <!-- Bodenplatte -->
+            <rect x="300" y="360" width="360" height="55"
+                  rx="15" fill="#222"/>
+
+            <!-- Ketten links -->
+            <ellipse cx="370" cy="440" rx="80" ry="50"
+                     fill="#333" stroke="#000" stroke-width="12"/>
+            <circle cx="370" cy="440" r="28" fill="#777"/>
+
+            <!-- Ketten rechts -->
+            <ellipse cx="540" cy="440" rx="80" ry="50"
+                     fill="#333" stroke="#000" stroke-width="12"/>
+            <circle cx="540" cy="440" r="28" fill="#777"/>
+
         </svg>
     </div>
 
-    <h1>⛔ Baustelle</h1>
-    <p>Dieser Bereich ist noch nicht fertig.</p>
+    <h1 style="font-size:42px; margin:10px 0; color:#d60000; font-weight:900;">⛔ Baustelle</h1>
+
+    <p class="arbeiten" style="font-size:24px; margin-bottom:10px; color:#222;">
+        ⚙️ In Arbeit …
+    </p>
 
     <button onclick="history.back()">◀ Zurück</button>
 
