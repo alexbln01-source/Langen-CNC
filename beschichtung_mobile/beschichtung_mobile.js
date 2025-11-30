@@ -51,11 +51,21 @@ document.querySelectorAll("#numKeyboard .kbm-key").forEach(key => {
             activeInput.value = activeInput.value.slice(0, -1);
             return;
         }
-        if (key.id === "numOk") {
-            numKb.style.display = "none";
-            activeInput.blur();
-            return;
-        }
+       if (key.id === "numOk") {
+    numKb.style.display = "none";
+    activeInput.blur();
+
+    // Blinkcursor aktivieren für Kundenname
+    kundenname.classList.add("input-blink");
+
+    // Kundenname ist jetzt aktives Eingabefeld
+    activeInput = kundenname;
+
+    // Alphabet-Tastatur öffnen
+    alphaKb.style.display = "block";
+
+    return;
+}
 
         activeInput.value += key.textContent;
     });
