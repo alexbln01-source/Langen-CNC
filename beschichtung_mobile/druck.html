@@ -64,7 +64,10 @@
         bottom: 10mm;
         width: 42mm;
     }
-
+.print-spacer {
+    height: 8mm;
+    width: 100%;
+}
     /* ======================================
        EINZELNE SCHRIFTGRÖSSEN – FREI EINSTELLBAR
        ====================================== */
@@ -185,7 +188,10 @@ window.onload = () => {
     /* =====================================
        BEISTELLNUMMER (oben)
     ===================================== */
-    let html = `<div class="print-beistell">${beistell}</div>`;
+let html = `
+    <div class="print-spacer"></div>
+    <div class="print-beistell">${beistell}</div>
+`;
 
     /* =====================================
        FUNKTION: Kundentyp + Subtext
