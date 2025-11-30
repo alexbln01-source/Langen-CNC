@@ -1,23 +1,22 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8" />
+<meta charset="utf-8">
 
-<!-- MOBILE OPTIMIERT -->
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<!-- MOBILE -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <title>Warenanhänger</title>
 
 <!-- PWA ICONS -->
 <link rel="icon" href="icon192.png" sizes="192x192">
-<link rel="icon" href="icon512.png" sizes="512x512">
 <link rel="apple-touch-icon" href="icon192.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#003a73">
 
 <style>
 /* ============================================================
-   GLOBAL
+   GLOBAL – Bildschirm wie App
 ============================================================ */
 html, body {
     margin: 0;
@@ -26,100 +25,98 @@ html, body {
 
     background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
 
-    font-family: "Segoe UI", Arial, sans-serif;
-
     display: flex;
     justify-content: center;
     align-items: center;
 
+    font-family: "Segoe UI", Arial, sans-serif;
+
     overflow: hidden;
-    text-align: center;        /* <<< WICHTIG: ALLES ZENTRIERT */
 }
 
 /* ============================================================
-   AUTOMATISCHE GERÄTE-SKALIERUNG
+   ALLES IN EINEM PERFEKT ZENTRIERTEM CONTAINER
 ============================================================ */
+#main {
+    text-align: center;
+    transform-origin: center top;
+}
 
-/* iPhone */
+/* ===============================
+   AUTOMATISCHE SKALIERUNG
+=============================== */
+
+/* iPhone Standard */
 @media screen and (min-width: 390px) and (max-width: 400px) {
     #main { transform: scale(1.00); }
 }
 
 /* Zebra TC21 – 5 Zoll */
 @media screen and (max-width: 380px) {
-    #main { transform: scale(0.88); }
+    #main { transform: scale(0.90); }
 }
 
 /* Zebra TC22 – 6 Zoll */
 @media screen and (min-width: 381px) and (max-width: 430px) {
-    #main { transform: scale(0.93); }
-}
-
-/* ============================================================
-   LAYOUT CONTAINER (weißes Feld)
-============================================================ */
-#main {
-    padding: 40px 20px;
+    #main { transform: scale(0.95); }
 }
 
 /* ============================================================
    LOGO
 ============================================================ */
 #logo {
-    width: 260px;
-    max-width: 75%;
-    margin: 0 auto 25px;
+    width: 70%;
+    max-width: 260px;
+    margin-bottom: 20px;
     display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* ============================================================
-   TEXT
+   HAUPTTITEL
 ============================================================ */
 h1 {
     font-size: 32px;
     font-weight: 900;
+    margin: 0 0 25px 0;
     color: #003a73;
-    text-transform: uppercase;
-    margin: 0 0 28px 0;
-    text-align: center;        /* <<< WICHTIG */
 }
 
 /* ============================================================
-   BUTTONS
+   BUTTON STYLE
 ============================================================ */
 button {
-    width: 280px;
+    width: 290px;
     height: 90px;
+    margin: 15px auto;
+    display: block;
+
     border: none;
     border-radius: 18px;
 
-    margin: 15px auto;
-    font-size: 22px;
-    font-weight: bold;
+    font-size: 24px;
     color: white;
+    font-weight: bold;
 
     cursor: pointer;
-    display: block;
 
-    transition: all 0.2s ease;
+    transition: 0.2s;
 }
 
-/* Farben */
-#btnBeschichtung { background: linear-gradient(180deg,#007bff,#0056b3); }
-#btnBeschichtung:hover { background: linear-gradient(180deg,#2196f3,#0066d6); }
-
-#btnKanten { background: linear-gradient(180deg,#ff9800,#e67e00); }
-#btnPaus   { background: linear-gradient(180deg,#28a745,#1d7f31); }
-#btnSchweissen { background: linear-gradient(180deg,#9c27b0,#6a0080); }
+#btnBeschichtung { background: linear-gradient(#007bff,#0056b3); }
+#btnKanten       { background: linear-gradient(#ff9800,#e67e00); }
+#btnPaus         { background: linear-gradient(#28a745,#1d7f31); }
+#btnSchweissen   { background: linear-gradient(#9c27b0,#6a0080); }
 
 /* ============================================================
    FOOTER
 ============================================================ */
 footer {
-    margin-top: 40px;
-    font-size: 13px;
-    color: #666;
-    text-align: center;        /* <<< WICHTIG */
+    margin-top: 35px;
+    font-size: 14px;
+    color: #444;
+    text-align: center;
 }
 </style>
 
@@ -137,8 +134,8 @@ function openSchweissen() {
     window.location.href = "Schweissen.html";
 }
 </script>
-</head>
 
+</head>
 <body>
 
 <div id="main">
