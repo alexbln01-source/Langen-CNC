@@ -233,11 +233,265 @@ let html = `
         case "COATINC": html += row("Coatinc 24","„Verzinken“"); break;
     }
 
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Druck</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        background: #dcdcdc;
+        font-family: Arial, sans-serif;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    /* ===== VORSCHAU IMMER QUERFORMAT ===== */
+    .preview-wrapper {
+        width: 100%;
+        height: calc(100% - 150px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .preview-area {
+        width: 210mm;
+        height: 148mm;
+        background: white;
+        box-shadow: 0 0 15px rgba(0,0,0,0.25);
+        position: relative;
+        transform-origin: center;
+    }
+
+    /* HANDY SKALIERUNG */
+    @media (max-width: 900px) {
+        .preview-area {
+            transform: scale(0.36);
+        }
+    }
+
+    /* PC SKALIERUNG */
+    @media (min-width: 901px) {
+        .preview-area {
+            transform: scale(0.45);
+        }
+    }
+
+    /* ETIKETT INHALT BEREICH */
+    .etikett {
+        width: 210mm;
+        height: 148mm;
+        padding: 10mm;
+        box-sizing: border-box;
+        text-align: center;
+        position: relative;
+    }
+
+    .logo {
+        position: absolute;
+        right: 10mm;
+        bottom: 10mm;
+        width: 42mm;
+    }
+.print-spacer {
+    height: 16mm;
+    width: 100%;
+}
+    /* ======================================
+       EINZELNE SCHRIFTGRÖSSEN – FREI EINSTELLBAR
+       ====================================== */
+
+    /* Beistellnummer */
+    .print-beistell {
+        font-size: 70pt;
+        font-weight: bold;
+        margin-bottom: 12mm;
+    }
+
+    /* Haupt-Kundentyp (Schütte, L&P...) */
+    .print-kunde {
+        font-size: 60pt;
+        font-weight: bold;
+        margin-bottom: 8mm;
+    }
+
+    /* Untertext („EILT SEHR“, „ZN8“… ) */
+    .print-sub {
+        font-size: 36pt;
+        margin-bottom: 8mm;
+    }
+
+    /* Optionaler Kundenname in Klammern */
+    .print-name {
+        font-size: 32pt;
+        margin-top: 4mm;
+    }
+
+    /* BUTTONS UNTEN – optimiert für Desktop + mobile */
+.bottom-bar {
+    margin-top: 30px;     /* Abstand zur Vorschau (anpassen nach Wunsch) */
+    height: 60px;         /* kompakter als mobile */
+    display: flex;
+    gap: 16px;
+    padding: 0 20px;
+    background: none;
+}
+
+.btn {
+    flex: 1;
+    border: none;
+    border-radius: 14px;   /* wie mobile */
+    font-size: 18px;       /* kleiner, damit Desktop nicht so wuchtig wirkt */
+    font-weight: bold;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-btn {
+    background: #444;
+}
+
+.print-btn {
+    background: #00963d;
+}
+
+    .btn:focus {
+        outline: 4px solid #1a73e8;
+    }
+
+    /* ===== DRUCK ===== */
+    @media print {
+
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 210mm !important;
+            height: 148mm !important;
+            overflow: visible !important;
+        }
+
+        .preview-wrapper,
+        .bottom-bar {
+            display: none !important;
+        }
+
+        #printArea {
+            display: block !important;
+            width: 210mm !important;
+            height: 148mm !important;
+            position: static !important;
+        }
+
+        @page {
+            size: A5 landscape;
+            margin: 0;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="preview-wrapper">
+    <div class="preview-area">
+        <div id="previewContent" class="etikett"></div>
+        <img src="langen.png" class="logo">
+    </div>
+</div>
+
+<!-- ECHTER DRUCKBEREICH -->
+<div id="printArea" class="etikett" style="display:none;">
+    <div id="printContent"></div>
+    <img src="langen.png" class="logo">
+</div>
+
+<div class="bottom-bar">
+    <button class="btn back-btn" id="backBtn">◀ Zurück</button>
+    <button class="btn print-btn" id="printBtn">Drucken</button>
+</div>
+
+<script>
+window.onload = () => {
+
+    const qs = new URLSearchParams(location.search);
+    const data = qs.has("data") ? JSON.parse(decodeURIComponent(qs.get("data"))) : {};
+
+    const beistell = data.beistell || "";
+    const type     = data.selectedType || "";
+    const kunde    = data.kundename || "";
+
     /* =====================================
-       Optionaler Zusatzname (in Klammern)
+       BEISTELLNUMMER (oben)
     ===================================== */
-    if (kunde)
-        html += `<div class="print-name">(${kunde})</div>`;
+let html = `
+    <div class="print-spacer"></div>
+    <div class="print-beistell">${beistell}</div>
+`;
+
+    /* =====================================
+       FUNKTION: Kundentyp + Subtext
+    ===================================== */
+    const row = (t, sub="") =>
+        `<div class="print-kunde">${t}</div>` +
+        (sub ? `<div class="print-sub">${sub}</div>` : "");
+
+    /* =====================================
+       Kunden-Auswahl
+    ===================================== */
+    switch(type) {
+        case "LP": html += row("L&P"); break;
+        case "LPEILT": html += row("L&P","„EILT SEHR“"); break;
+
+        case "SCHUETTE": html += row("Schütte"); break;
+        case "SCHUETTEEILT": html += row("Schütte","„EILT SEHR“"); break;
+
+        case "KLEY": html += row("Kleymann"); break;
+        case "KLEYEILT": html += row("Kleymann","„EILT SEHR“"); break;
+
+        case "COMTEZN8": html += row("Comte","„Zn8“"); break;
+        case "COMTEZNI8": html += row("Comte","„ZnI8“"); break;
+
+        case "CHEMISCH": html += row("Comte","„Chemisch Vernickeln“"); break;
+        case "DICK": html += row("Comte","„Dickschichtpassivierung“"); break;
+        case "BLAU": html += row("Comte","„Blau“"); break;
+
+        case "PENTZ": html += row("Pentz & Gerdes","„ZN8“"); break;
+        case "RCS": html += row("RCS","„Schweißen“"); break;
+        case "COATINC": html += row("Coatinc 24","„Verzinken“"); break;
+    }
+
+    /* =====================================
+   Optionaler Zusatzname (nur bei erlaubten Kunden)
+===================================== */
+const noNameTypes = ["LP","LPEILT","SCHUETTE","SCHUETTEEILT","KLEY","KLEYEILT"];
+
+if (kunde && !noNameTypes.includes(type)) {
+    html += `<div class="print-name">(${kunde})</div>`;
+}
+
+    /* Vorschau + Druck setzen */
+    previewContent.innerHTML = html;
+    printContent.innerHTML   = html;
+
+    /* Buttons */
+    printBtn.onclick = () => window.print();
+  backBtn.onclick = () => history.back();
+
+    setTimeout(() => printBtn.focus(), 150);
+};
+</script>
+
+</body>
+</html>
+
 
     /* Vorschau + Druck setzen */
     previewContent.innerHTML = html;
