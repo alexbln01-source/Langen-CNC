@@ -28,10 +28,14 @@
         position: relative;
     }
 
-    /* Logo oben */
     .logo {
         width: 160px;
         margin-bottom: 20px;
+    }
+
+    .bagger {
+        width: 220px;
+        margin: 0 auto 20px auto;
     }
 
     h1 {
@@ -45,15 +49,6 @@
         font-size: 22px;
         color: #333;
         margin-bottom: 25px;
-    }
-
-    /* Bagger-Bild */
-    .bagger {
-        width: 100%;
-        max-width: 320px;
-        border-radius: 12px;
-        margin-bottom: 25px;
-        box-shadow: 0 3px 10px rgba(0,0,0,0.15);
     }
 
     button {
@@ -73,14 +68,19 @@
 
 <div class="box">
 
-    <!-- Dein Firmenlogo -->
+    <!-- Langen CNC Logo -->
     <img src="langen.png" alt="Langen CNC Logo" class="logo">
 
-    <!-- Baustellenbild -->
-    <img class="bagger" src="https://cdn.pixabay.com/photo/2016/10/05/22/30/excavators-1712717_1280.jpg">
+    <!-- Bagger als offline SVG -->
+    <div class="bagger">
+        <svg viewBox="0 0 640 512">
+            <path fill="#ffcc00" d="M512 192h-64l-64-128H256l-64 128H64L0 320v64h64a64 64 0 1 0 128 0h192a64 64 0 1 0 128 0h64v-64l-64-128zM192 384H96a32 32 0 1 1 0-64h96a32 32 0 1 1 0 64zm320 0h-96a32 32 0 1 1 0-64h96a32 32 0 1 1 0 64z"/>
+            <path fill="#333" d="M256 64h128v64H256z"/>
+        </svg>
+    </div>
 
     <h1>⛔ Baustelle</h1>
-    <p>Dieser Bereich ist gerade in Arbeit.</p>
+    <p>Dieser Bereich ist noch nicht fertig.</p>
 
     <button onclick="history.back()">◀ Zurück</button>
 
