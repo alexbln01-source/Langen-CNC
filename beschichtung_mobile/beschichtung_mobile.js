@@ -42,43 +42,43 @@ if (isMobile) {
         alphaKb.style.display = "block";
     });
 
-    // Nummerntasten
-    document.querySelectorAll("#numKeyboard .kbm-key")
-        key.addEventListener("click", () => {
-            if (!activeInput) return;
+  // Nummerntasten
+document.querySelectorAll("#numKeyboard .kbm-key").forEach(key => {
+    key.addEventListener("click", () => {
+        if (!activeInput) return;
 
-            if (key.id === "numDel") {
-                activeInput.value = activeInput.value.slice(0, -1);
-                return;
-            }
-            if (key.id === "numOk") {
-                numKb.style.display = "none";
-                activeInput.blur();
-                return;
-            }
+        if (key.id === "numDel") {
+            activeInput.value = activeInput.value.slice(0, -1);
+            return;
+        }
+        if (key.id === "numOk") {
+            numKb.style.display = "none";
+            activeInput.blur();
+            return;
+        }
 
-            activeInput.value += key.textContent;
-        });
+        activeInput.value += key.textContent;
     });
+});
 
-    // Buchstabentasten
-    document.querySelectorAll("#alphaKeyboard .kbm-key")
-        key.addEventListener("click", () => {
-            if (!activeInput) return;
+// Buchstabentasten
+document.querySelectorAll("#alphaKeyboard .kbm-key").forEach(key => {
+    key.addEventListener("click", () => {
+        if (!activeInput) return;
 
-            if (key.id === "alphaDel") {
-                activeInput.value = activeInput.value.slice(0, -1);
-                return;
-            }
-            if (key.id === "alphaOk") {
-                alphaKb.style.display = "none";
-                activeInput.blur();
-                return;
-            }
+        if (key.id === "alphaDel") {
+            activeInput.value = activeInput.value.slice(0, -1);
+            return;
+        }
+        if (key.id === "alphaOk") {
+            alphaKb.style.display = "none";
+            activeInput.blur();
+            return;
+        }
 
-            activeInput.value += key.textContent;
-        });
+        activeInput.value += key.textContent;
     });
+});
 
 } else {
 
