@@ -48,7 +48,7 @@
         }
     }
 
-    /* ETIKETT INHALT BEREICH */
+    /* ETIKETT */
     .etikett {
         width: 210mm;
         height: 148mm;
@@ -64,13 +64,69 @@
         bottom: 10mm;
         width: 42mm;
     }
-.print-spacer {
-    height: 16mm;
-    width: 100%;
-}
-       /* ======================================
-       EINZELNE SCHRIFTGRÖSSEN – FREI EINSTELLBAR
-       ====================================== */
+
+    .print-spacer {
+        height: 16mm;
+        width: 100%;
+    }
+
+    /* ================================
+       INDIVIDUELLE KUNDENTYP-STYLES
+    ================================ */
+
+    /* L&P */
+    .kunde-lp { font-size: 70pt; margin-bottom: 8mm; }
+    .sub-lp { font-size: 70pt; margin-bottom: 8mm; }
+
+    /* L&P EILT */
+    .kunde-lp-eilt { font-size: 70pt; margin-bottom: 8mm; }
+    .sub-lp-eilt { font-size: 60pt; margin-bottom: 6mm; }
+
+    /* Schütte */
+    .kunde-schuette { font-size: 70pt; margin-bottom: 8mm; }
+
+    /* Schütte EILT */
+    .kunde-schuette-eilt { font-size: 70pt; margin-bottom: 8mm; }
+    .sub-schuette-eilt { font-size: 60pt; margin-bottom: 6mm; }
+
+    /* Kleymann */
+    .kunde-kley { font-size: 70pt; margin-bottom: 8mm; }
+
+    /* Kleymann EILT */
+    .kunde-kley-eilt { font-size: 70pt; margin-bottom: 8mm; }
+    .sub-kley-eilt { font-size: 60pt; margin-bottom: 6mm; }
+
+    /* Comte ZN8 */
+    .kunde-comte-zn8 { font-size: 70pt; margin-bottom: 6mm; }
+    .sub-comte-zn8 { font-size: 60pt; margin-bottom: 6mm; }
+
+    /* Comte ZNI8 */
+    .kunde-comte-zni8 { font-size: 70pt; margin-bottom: 6mm; }
+    .sub-comte-zni8 { font-size: 60pt; margin-bottom: 6mm; }
+
+    /* Chemisch */
+    .kunde-chemisch { font-size: 65pt; margin-bottom: 6mm; }
+    .sub-chemisch { font-size: 58pt; margin-bottom: 6mm; }
+
+    /* Dick */
+    .kunde-dick { font-size: 65pt; margin-bottom: 6mm; }
+    .sub-dick { font-size: 58pt; margin-bottom: 6mm; }
+
+    /* Blau */
+    .kunde-blau { font-size: 65pt; margin-bottom: 6mm; }
+    .sub-blau { font-size: 58pt; margin-bottom: 6mm; }
+
+    /* Pentz */
+    .kunde-pentz { font-size: 70pt; margin-bottom: 8mm; }
+    .sub-pentz { font-size: 60pt; margin-bottom: 6mm; }
+
+    /* RCS */
+    .kunde-rcs { font-size: 66pt; margin-bottom: 8mm; }
+    .sub-rcs { font-size: 58pt; margin-bottom: 6mm; }
+
+    /* Coatinc */
+    .kunde-coatinc { font-size: 70pt; margin-bottom: 8mm; }
+    .sub-coatinc { font-size: 58pt; margin-bottom: 6mm; }
 
     /* Beistellnummer */
     .print-beistell {
@@ -79,63 +135,38 @@
         margin-bottom: 12mm;
     }
 
-    /* Haupt-Kundentyp (Schütte, L&P...) */
-    .print-kunde {
-        font-size: 70pt;
-        font-weight: bold;
-        margin-bottom: 8mm;
-    }
-
-    /* Untertext („EILT SEHR“, „ZN8“… ) */
-    .print-sub {
-        font-size: 70pt;
-        margin-bottom: 8mm;
-    }
-
-    /* Optionaler Kundenname in Klammern */
+    /* Optionaler Kundenname */
     .print-name {
         font-size: 32pt;
         margin-top: 4mm;
     }
 
-
-    /* BUTTONS UNTEN – optimiert für Desktop + mobile */
-.bottom-bar {
-    margin-top: 30px;     /* Abstand zur Vorschau (anpassen nach Wunsch) */
-    height: 60px;         /* kompakter als mobile */
-    display: flex;
-    gap: 16px;
-    padding: 0 20px;
-    background: none;
-}
-
-.btn {
-    flex: 1;
-    border: none;
-    border-radius: 14px;   /* wie mobile */
-    font-size: 18px;       /* kleiner, damit Desktop nicht so wuchtig wirkt */
-    font-weight: bold;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.back-btn {
-    background: #444;
-}
-
-.print-btn {
-    background: #00963d;
-}
-
-    .btn:focus {
-        outline: 4px solid #1a73e8;
+    /* BUTTONS */
+    .bottom-bar {
+        margin-top: 30px;
+        height: 60px;
+        display: flex;
+        gap: 16px;
+        padding: 0 20px;
+        background: none;
     }
 
-    /* ===== DRUCK ===== */
-    @media print {
+    .btn {
+        flex: 1;
+        border: none;
+        border-radius: 14px;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
+    .back-btn { background: #444; }
+    .print-btn { background: #00963d; }
+
+    @media print {
         html, body {
             margin: 0 !important;
             padding: 0 !important;
@@ -144,8 +175,7 @@
             overflow: visible !important;
         }
 
-        .preview-wrapper,
-        .bottom-bar {
+        .preview-wrapper, .bottom-bar {
             display: none !important;
         }
 
@@ -153,7 +183,6 @@
             display: block !important;
             width: 210mm !important;
             height: 148mm !important;
-            position: static !important;
         }
 
         @page {
@@ -173,7 +202,6 @@
     </div>
 </div>
 
-<!-- ECHTER DRUCKBEREICH -->
 <div id="printArea" class="etikett" style="display:none;">
     <div id="printContent"></div>
     <img src="langen.png" class="logo">
@@ -194,67 +222,96 @@ window.onload = () => {
     const type     = data.selectedType || "";
     const kunde    = data.kundename || "";
 
-    /* =====================================
-       BEISTELLNUMMER (oben)
-    ===================================== */
-let html = `
-    <div class="print-spacer"></div>
-    <div class="print-beistell">${beistell}</div>
-`;
+    let html = `
+        <div class="print-spacer"></div>
+        <div class="print-beistell">${beistell}</div>
+    `;
 
-    /* =====================================
-       FUNKTION: Kundentyp + Subtext
-    ===================================== */
-    const row = (t, sub="") =>
-        `<div class="print-kunde">${t}</div>` +
-        (sub ? `<div class="print-sub">${sub}</div>` : "");
-
-    /* =====================================
-       Kunden-Auswahl
-    ===================================== */
+    /* INDIVIDUELLER KUNDENBLOCK */
     switch(type) {
-        case "LP": html += row("L&P"); break;
-        case "LPEILT": html += row("L&P","„EILT SEHR“"); break;
 
-        case "SCHUETTE": html += row("Schütte"); break;
-        case "SCHUETTEEILT": html += row("Schütte","„EILT SEHR“"); break;
+        case "LP":
+            html += `<div class="kunde-lp">L&P</div>`;
+            break;
 
-        case "KLEY": html += row("Kleymann"); break;
-        case "KLEYEILT": html += row("Kleymann","„EILT SEHR“"); break;
+        case "LPEILT":
+            html += `<div class="kunde-lp-eilt">L&P</div>`;
+            html += `<div class="sub-lp-eilt">„EILT SEHR“</div>`;
+            break;
 
-        case "COMTEZN8": html += row("Comte","„Zn8“"); break;
-        case "COMTEZNI8": html += row("Comte","„ZnI8“"); break;
+        case "SCHUETTE":
+            html += `<div class="kunde-schuette">Schütte</div>`;
+            break;
 
-        case "CHEMISCH": html += row("Comte","„Chemisch Vernickeln“"); break;
-        case "DICK": html += row("Comte","„Dickschichtpassivierung“"); break;
-        case "BLAU": html += row("Comte","„Blau“"); break;
+        case "SCHUETTEEILT":
+            html += `<div class="kunde-schuette-eilt">Schütte</div>`;
+            html += `<div class="sub-schuette-eilt">„EILT SEHR“</div>`;
+            break;
 
-        case "PENTZ": html += row("Pentz & Gerdes","„ZN8“"); break;
-        case "RCS": html += row("RCS","„Schweißen“"); break;
-        case "COATINC": html += row("Coatinc 24","„Verzinken“"); break;
+        case "KLEY":
+            html += `<div class="kunde-kley">Kleymann</div>`;
+            break;
+
+        case "KLEYEILT":
+            html += `<div class="kunde-kley-eilt">Kleymann</div>`;
+            html += `<div class="sub-kley-eilt">„EILT SEHR“</div>`;
+            break;
+
+        case "COMTEZN8":
+            html += `<div class="kunde-comte-zn8">Comte</div>`;
+            html += `<div class="sub-comte-zn8">„Zn8“</div>`;
+            break;
+
+        case "COMTEZNI8":
+            html += `<div class="kunde-comte-zni8">Comte</div>`;
+            html += `<div class="sub-comte-zni8">„ZnI8“</div>`;
+            break;
+
+        case "CHEMISCH":
+            html += `<div class="kunde-chemisch">Comte</div>`;
+            html += `<div class="sub-chemisch">„Chemisch Vernickeln“</div>`;
+            break;
+
+        case "DICK":
+            html += `<div class="kunde-dick">Comte</div>`;
+            html += `<div class="sub-dick">„Dickschichtpassivierung“</div>`;
+            break;
+
+        case "BLAU":
+            html += `<div class="kunde-blau">Comte</div>`;
+            html += `<div class="sub-blau">„Blau“</div>`;
+            break;
+
+        case "PENTZ":
+            html += `<div class="kunde-pentz">Pentz & Gerdes</div>`;
+            html += `<div class="sub-pentz">„ZN8“</div>`;
+            break;
+
+        case "RCS":
+            html += `<div class="kunde-rcs">RCS</div>`;
+            html += `<div class="sub-rcs">„Schweißen“</div>`;
+            break;
+
+        case "COATINC":
+            html += `<div class="kunde-coatinc">Coatinc 24</div>`;
+            html += `<div class="sub-coatinc">„Verzinken“</div>`;
+            break;
     }
 
-    /* =====================================
-   Optionaler Zusatzname (nur bei erlaubten Kunden)
-===================================== */
-const noNameTypes = ["LP","LPEILT","SCHUETTE","SCHUETTEEILT","KLEY","KLEYEILT"];
+    /* Kundenname nur drucken wenn erlaubt */
+    const noNameTypes = ["LP","LPEILT","SCHUETTE","SCHUETTEEILT","KLEY","KLEYEILT"];
 
-if (kunde && !noNameTypes.includes(type)) {
-    html += `<div class="print-name">(${kunde})</div>`;
-}
+    if (kunde && !noNameTypes.includes(type)) {
+        html += `<div class="print-name">(${kunde})</div>`;
+    }
 
-    /* Vorschau + Druck setzen */
     previewContent.innerHTML = html;
     printContent.innerHTML   = html;
 
-    /* Buttons */
     printBtn.onclick = () => window.print();
-  backBtn.onclick = () => history.back();
-
-    setTimeout(() => printBtn.focus(), 150);
+    backBtn.onclick = () => history.back();
 };
 </script>
 
 </body>
 </html>
-   
