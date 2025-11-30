@@ -48,15 +48,13 @@
         }
     }
 
-    /* ETIKETT INHALT */
+    /* ETIKETT INHALT BEREICH */
     .etikett {
         width: 210mm;
         height: 148mm;
         padding: 10mm;
         box-sizing: border-box;
         text-align: center;
-        font-size: 60pt;
-        font-weight: bold;
         position: relative;
     }
 
@@ -67,7 +65,37 @@
         width: 42mm;
     }
 
-    /* BUTTONS */
+    /* ======================================
+       EINZELNE SCHRIFTGRÖSSEN – FREI EINSTELLBAR
+       ====================================== */
+
+    /* Beistellnummer */
+    .print-beistell {
+        font-size: 70pt;
+        font-weight: bold;
+        margin-bottom: 12mm;
+    }
+
+    /* Haupt-Kundentyp (Schütte, L&P...) */
+    .print-kunde {
+        font-size: 60pt;
+        font-weight: bold;
+        margin-bottom: 8mm;
+    }
+
+    /* Untertext („EILT SEHR“, „ZN8“… ) */
+    .print-sub {
+        font-size: 36pt;
+        margin-bottom: 8mm;
+    }
+
+    /* Optionaler Kundenname in Klammern */
+    .print-name {
+        font-size: 32pt;
+        margin-top: 4mm;
+    }
+
+    /* BUTTONS UNTEN */
     .bottom-bar {
         height: 80px;
         display: flex;
@@ -133,7 +161,7 @@
     </div>
 </div>
 
-<!-- ECHTER DRUCKBEREICH (GENAU 1 SEITE!) -->
+<!-- ECHTER DRUCKBEREICH -->
 <div id="printArea" class="etikett" style="display:none;">
     <div id="printContent"></div>
     <img src="langen.png" class="logo">
@@ -154,12 +182,21 @@ window.onload = () => {
     const type     = data.selectedType || "";
     const kunde    = data.kundename || "";
 
-    let html = `<div style="margin-bottom:10mm;">${beistell}</div>`;
+    /* =====================================
+       BEISTELLNUMMER (oben)
+    ===================================== */
+    let html = `<div class="print-beistell">${beistell}</div>`;
 
+    /* =====================================
+       FUNKTION: Kundentyp + Subtext
+    ===================================== */
     const row = (t, sub="") =>
-        `<div style="margin-bottom:6mm;">${t}</div>` +
-        (sub ? `<div style="font-size:32pt">${sub}</div>` : "");
+        `<div class="print-kunde">${t}</div>` +
+        (sub ? `<div class="print-sub">${sub}</div>` : "");
 
+    /* =====================================
+       Kunden-Auswahl
+    ===================================== */
     switch(type) {
         case "LP": html += row("L&P"); break;
         case "LPEILT": html += row("L&P","„EILT SEHR“"); break;
@@ -182,12 +219,17 @@ window.onload = () => {
         case "COATINC": html += row("Coatinc 24","„Verzinken“"); break;
     }
 
+    /* =====================================
+       Optionaler Zusatzname (in Klammern)
+    ===================================== */
     if (kunde)
-        html += `<div style="font-size:32pt;">(${kunde})</div>`;
+        html += `<div class="print-name">(${kunde})</div>`;
 
+    /* Vorschau + Druck setzen */
     previewContent.innerHTML = html;
     printContent.innerHTML   = html;
 
+    /* Buttons */
     printBtn.onclick = () => window.print();
     backBtn.onclick  = () => window.location.href = "index.html";
 
