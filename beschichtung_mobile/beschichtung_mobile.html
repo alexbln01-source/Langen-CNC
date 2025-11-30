@@ -8,47 +8,56 @@
 <link rel="stylesheet" href="beschichtung_mobile.css">
 
 <style>
-/* Tastatur-Styles (falls nicht extern) */
-.kb {
+/* ===========================
+   MINI-KEYBOARD – CLEAN & MODERN
+=========================== */
+.kb-mini {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #e9eef3;
-    padding: 10px 0;
-    box-shadow: 0 -4px 12px rgba(0,0,0,0.3);
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,0.93);
+    backdrop-filter: blur(10px);
+    padding: 10px 14px;
+    border-radius: 16px;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.22);
     z-index: 9999;
+    width: 92%;
+    max-width: 420px;
 }
 
-.kb-row {
+.kbm-row {
     display: flex;
     justify-content: center;
-    margin: 6px 0;
+    margin: 5px 0;
 }
 
-.kb-key {
+.kbm-key {
     flex: 1;
-    margin: 3px;
-    padding: 14px 0;
-    font-size: 22px;
-    font-weight: bold;
-    border-radius: 10px;
+    margin: 4px;
+    padding: 11px 0;
+    font-size: 17px;
+    font-weight: 600;
+    border-radius: 12px;
     border: none;
-    background: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    color: #003a73;
+    background: #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+    transition: transform 0.07s ease, background 0.1s;
 }
 
-.kb-key:active {
-    background: #d0d7df;
+.kbm-key:active {
+    transform: scale(0.92);
+    background: #dfe7f1;
 }
 
-.ok-btn {
-    background: #2b7cff;
-    color: white;
-    font-size: 24px;
+.kbm-del {
+    color: #b00020 !important;
 }
-.ok-btn:active {
-    background: #1b5fcc;
+
+.kbm-ok {
+    background: #007bff !important;
+    color: white !important;
 }
 </style>
 
@@ -93,7 +102,10 @@
 </div>
 
 
-<!-- Mini Numeric Keyboard -->
+
+<!-- ===========================================
+     MINI NUMERIC KEYBOARD
+=========================================== -->
 <div id="numKeyboard" class="kb-mini" style="display:none;">
     <div class="kbm-row">
         <button class="kbm-key">1</button>
@@ -112,59 +124,53 @@
     </div>
     <div class="kbm-row">
         <button class="kbm-key">0</button>
-        <button class="kbm-key kbm-del">⌫</button>
-        <button class="kbm-key kbm-ok">OK</button>
+        <button class="kbm-key kbm-del" id="numDel">⌫</button>
+        <button class="kbm-key kbm-ok" id="numOk">OK</button>
     </div>
 </div>
 
-<!-- Mini Alpha Keyboard -->
+
+<!-- ===========================================
+     MINI ALPHA KEYBOARD
+=========================================== -->
 <div id="alphaKeyboard" class="kb-mini" style="display:none;">
 
     <div class="kbm-row">
-        <button class="kbm-key">A</button>
-        <button class="kbm-key">B</button>
-        <button class="kbm-key">C</button>
-        <button class="kbm-key">D</button>
+        <button class="kbm-key">A</button><button class="kbm-key">B</button>
+        <button class="kbm-key">C</button><button class="kbm-key">D</button>
         <button class="kbm-key">E</button>
     </div>
 
     <div class="kbm-row">
-        <button class="kbm-key">F</button>
-        <button class="kbm-key">G</button>
-        <button class="kbm-key">H</button>
-        <button class="kbm-key">I</button>
+        <button class="kbm-key">F</button><button class="kbm-key">G</button>
+        <button class="kbm-key">H</button><button class="kbm-key">I</button>
         <button class="kbm-key">J</button>
     </div>
 
     <div class="kbm-row">
-        <button class="kbm-key">K</button>
-        <button class="kbm-key">L</button>
-        <button class="kbm-key">M</button>
-        <button class="kbm-key">N</button>
+        <button class="kbm-key">K</button><button class="kbm-key">L</button>
+        <button class="kbm-key">M</button><button class="kbm-key">N</button>
         <button class="kbm-key">O</button>
     </div>
 
     <div class="kbm-row">
-        <button class="kbm-key">P</button>
-        <button class="kbm-key">Q</button>
-        <button class="kbm-key">R</button>
-        <button class="kbm-key">S</button>
+        <button class="kbm-key">P</button><button class="kbm-key">Q</button>
+        <button class="kbm-key">R</button><button class="kbm-key">S</button>
         <button class="kbm-key">T</button>
     </div>
 
     <div class="kbm-row">
-        <button class="kbm-key">U</button>
-        <button class="kbm-key">V</button>
-        <button class="kbm-key">W</button>
-        <button class="kbm-key">X</button>
+        <button class="kbm-key">U</button><button class="kbm-key">V</button>
+        <button class="kbm-key">W</button><button class="kbm-key">X</button>
         <button class="kbm-key">Y</button>
     </div>
 
     <div class="kbm-row">
         <button class="kbm-key">Z</button>
-        <button class="kbm-key kbm-del">⌫</button>
-        <button class="kbm-key kbm-ok">OK</button>
+        <button class="kbm-key kbm-del" id="alphaDel">⌫</button>
+        <button class="kbm-key kbm-ok" id="alphaOk">OK</button>
     </div>
+
 </div>
 
 
