@@ -3,104 +3,107 @@
 <head>
 <meta charset="utf-8">
 
-<!-- MOBILE -->
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <title>Warenanhänger</title>
 
-<!-- PWA ICONS -->
-<link rel="icon" href="icon192.png" sizes="192x192">
-<link rel="apple-touch-icon" href="icon192.png">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#003a73">
-
 <style>
 /* ============================================================
-   GLOBAL – Bildschirm wie App
+   GLOBAL
 ============================================================ */
 html, body {
     margin: 0;
     padding: 0;
-    height: 100vh;
-
+    min-height: 100vh; /* Hintergrund IMMER vollständig */
     background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     font-family: "Segoe UI", Arial, sans-serif;
+}
+/* DESKTOP: kein Scrollen */
+@media (min-width: 601px) {
+    html, body {
+        overflow: hidden; /* <-- Scrollen aus */
+    }
+}
+/* ============================================================
+   MOBILE – APP-STYLE (nur bis 600 px)
+============================================================ */
+@media (max-width: 600px) {
+    html, body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
 
-    overflow: hidden;
+    #main {
+        width: 100%;
+        max-width: 380px;
+        transform: scale(0.95);
+    }
+
+    button {
+        width: 260px;
+    }
 }
 
 /* ============================================================
-   ALLES IN EINEM PERFEKT ZENTRIERTEM CONTAINER
+   DESKTOP – normale Website (ab 601 px)
 ============================================================ */
-#main {
-    text-align: center;
-    transform-origin: center top;
-}
+@media (min-width: 601px) {
+    #main {
+        margin: 60px auto;
+        width: 100%;
+        max-width: 650px; /* <-- breite Desktop-Version */
+        padding: 20px 40px;
+    }
 
-/* ===============================
-   AUTOMATISCHE SKALIERUNG
-=============================== */
+    button {
+        width: 450px;   /* <-- breitere Buttons */
+        height: 100px;
+        font-size: 28px;
+    }
 
-/* iPhone Standard */
-@media screen and (min-width: 390px) and (max-width: 400px) {
-    #main { transform: scale(1.00); }
-}
-
-/* Zebra TC21 – 5 Zoll */
-@media screen and (max-width: 380px) {
-    #main { transform: scale(0.90); }
-}
-
-/* Zebra TC22 – 6 Zoll */
-@media screen and (min-width: 381px) and (max-width: 430px) {
-    #main { transform: scale(0.95); }
+    h1 {
+        font-size: 40px;
+    }
 }
 
 /* ============================================================
    LOGO
 ============================================================ */
 #logo {
-    width: 70%;
-    max-width: 290px;
-    margin-bottom: 20px;
+    width: 80%;
+    max-width: 320px;
+    margin: 0 auto 25px auto;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 /* ============================================================
-   HAUPTTITEL
+   TITEL
 ============================================================ */
 h1 {
+    margin: 0 0 30px 0;
     font-size: 32px;
     font-weight: 900;
-    margin: 0 0 25px 0;
     color: #003a73;
+    text-align: center;
 }
 
 /* ============================================================
    BUTTON STYLE
 ============================================================ */
 button {
-    width: 290px;
-    height: 90px;
-    margin: 15px auto;
+    margin: 18px auto;
     display: block;
 
     border: none;
     border-radius: 18px;
 
-    font-size: 24px;
-    color: white;
     font-weight: bold;
+    color: white;
 
     cursor: pointer;
-
     transition: 0.2s;
 }
 
@@ -113,26 +116,18 @@ button {
    FOOTER
 ============================================================ */
 footer {
-    margin-top: 35px;
-    font-size: 14px;
-    color: #444;
+    margin-top: 40px;
+    font-size: 16px;
     text-align: center;
+    color: #444;
 }
 </style>
 
 <script>
-function openBeschichtung() {
-    window.location.href = "start.html?bereich=beschichtung";
-}
-function openKanten() {
-    window.location.href = "start.html?bereich=kanten";
-}
-function openPaus() {
-    window.location.href = "Paus-Lieferung.html";
-}
-function openSchweissen() {
-    window.location.href = "Schweissen.html";
-}
+function openBeschichtung() { window.location.href = "start.html?bereich=beschichtung"; }
+function openKanten()       { window.location.href = "start.html?bereich=kanten"; }
+function openPaus()         { window.location.href = "Paus-Lieferung.html"; }
+function openSchweissen()   { window.location.href = "Schweissen.html"; }
 </script>
 
 </head>
