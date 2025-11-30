@@ -13,180 +13,157 @@
 <link rel="icon" href="icon512.png" sizes="512x512" type="image/png">
 <link rel="apple-touch-icon" href="icon192.png">
 
-<!-- Manifest für PWA -->
+<!-- Manifest -->
 <link rel="manifest" href="manifest.json">
 
+<!-- Browser Theme -->
 <meta name="theme-color" content="#003a73">
 
 <style>
-/* =====================================
-   GLOBAL
-===================================== */
-html,body {
-  margin:0; padding:0;
-  height:100%;
+/* ===============================
+   GLOBAL – KOMPLETT ZENTRIERT
+================================ */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
   background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
-  font-family:"Segoe UI", Arial, sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
 
-  display:flex; 
-  justify-content:center; 
-  align-items:center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* =====================================
-   HAUPTBOX (wie vorher)
-===================================== */
+/* ===============================
+   ZENTRIERTER WHITE-CARD WRAPPER
+================================ */
 #main {
-  width:90%;
-  max-width:900px;
+  width: 92vw;
+  max-width: 900px;
+  background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
+  border-radius: 30px;
+  padding: 50px 20px 60px;
 
-  text-align:center;
-  background:linear-gradient(180deg,#ffffff 0%,#eef1f4 100%);
-  border-radius:30px;
+  /* ZENTRIERUNG – VERTIKAL + HORIZONTAL */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-  padding:50px 20px 60px;
-  border:1px solid #bfc5cc;
-
-  box-shadow:0 10px 40px rgba(0,0,0,0.25);
-
-  /* ↓↓↓ AUTOMATISCHE SKALIERUNG ↓↓↓ */
-  transform-origin: top center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+  border: 1px solid #bfc5cc;
 }
 
-/* =====================================
-   AUTO-SKALIERUNG (TC21 / TC22 / iPhone)
-===================================== */
-
-/* TC21 – kleines 5" Display */
-@media (max-width:380px) {
-  #main {
-    transform: scale(0.88);
-  }
-}
-
-/* TC22 – 6" Display */
-@media (min-width:381px) and (max-width:430px) {
-  #main {
-    transform: scale(1.00);
-  }
-}
-
-/* iPhone 12–15 – perfekt */
-@media (min-width:431px) and (max-width:520px) {
-  #main {
-    transform: scale(1.07);
-  }
-}
-
-/* iPhone Max Modelle */
-@media (min-width:521px) and (max-width:620px) {
-  #main {
-    transform: scale(1.15);
-  }
-}
-
-
-/* =====================================
-   LOGO
-===================================== */
+/* Logo */
 #logo {
   width: 260px;
   max-width: 70%;
   margin-bottom: 25px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
 }
 
-/* =====================================
-   TEXT / BUTTONS
-===================================== */
 h1 {
-  font-size:32px;
-  color:#003a73;
-  margin:10px 0 30px;
-  text-transform:uppercase;
-  font-weight:900;
+  font-size: 32px;
+  color: #003a73;
+  margin: 10px 0 30px;
+  text-transform: uppercase;
+  font-weight: 900;
 }
 
+/* Buttons */
 button {
-  width:280px;
-  height:90px;
-  border:none;
-  border-radius:18px;
-  margin:15px;
-  font-size:22px;
-  font-weight:bold;
-  color:#fff;
-
-  cursor:pointer;
-  box-shadow:0 6px 18px rgba(0,0,0,0.25);
-  transition:all 0.2s ease;
+  width: 280px;
+  height: 90px;
+  border: none;
+  border-radius: 18px;
+  margin: 15px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
 }
 
-#btnBeschichtung { background:linear-gradient(180deg,#007bff 0%,#0056b3 100%); }
-#btnBeschichtung:hover { background:linear-gradient(180deg,#2196f3 0%,#0066d6 100%); }
+/* Farben */
+#btnBeschichtung {
+  background: linear-gradient(180deg,#007bff 0%,#0056b3 100%);
+}
 
-#btnKanten { background:linear-gradient(180deg,#ff9800 0%,#e67e00 100%); }
-#btnKanten:hover { background:linear-gradient(180deg,#ffb84d 0%,#d96b00 100%); }
+#btnKanten {
+  background: linear-gradient(180deg,#ff9800 0%,#e67e00 100%);
+}
 
-#btnPaus { background:linear-gradient(180deg,#28a745 0%,#1d7f31 100%); }
-#btnPaus:hover { background:linear-gradient(180deg,#2fc34a 0%,#1a6d29 100%); }
+#btnPaus {
+  background: linear-gradient(180deg,#28a745 0%,#1d7f31 100%);
+}
 
-#btnSchweissen { background:linear-gradient(180deg,#9c27b0 0%,#6a0080 100%); }
-#btnSchweissen:hover { background:linear-gradient(180deg,#b94ed3 0%,#7a0093 100%); }
+#btnSchweissen {
+  background: linear-gradient(180deg,#9c27b0 0%,#6a0080 100%);
+}
 
 footer {
-  margin-top:40px;
-  font-size:13px;
-  color:#666;
+  margin-top: 40px;
+  font-size: 13px;
+  color: #666;
 }
 
-/* MOBILE BUTTONS */
-@media (max-width:600px) {
-  button {
-    width: 85%;
-    height: 70px;
-    font-size: 19px;
-    margin: 12px auto;
+/* ===============================
+   SKALIERUNG FÜR TC21 / TC22
+================================ */
+
+/* TC21 – 360px Breite */
+@media (max-width: 380px) {
+  #main {
+    transform: scale(0.92);
   }
-  #logo { width:200px; }
 }
+
+/* TC22 – 412px Breite */
+@media (min-width: 381px) and (max-width: 430px) {
+  #main {
+    transform: scale(0.85);
+  }
+}
+
+/* iPhone 13/14/15 – feine UI */
+@media (min-width: 431px) and (max-width: 500px) {
+  #main {
+    transform: scale(0.95);
+  }
+}
+
 </style>
 
 <script>
 function openBeschichtung() {
   window.location.href = "start.html?bereich=beschichtung";
 }
-
 function openKanten() {
   window.location.href = "start.html?bereich=kanten";
 }
-
 function openPaus() {
   window.location.href = "Paus-Lieferung.html";
 }
-
 function openSchweissen() {
   window.location.href = "Schweissen.html";
 }
 </script>
+
 </head>
-
-
 <body>
-  <div id="main">
 
-    <img id="logo" src="langen.png" alt="Langen CNC Logo">
+<div id="main">
 
-    <h1>Warenanhänger</h1>
+  <img id="logo" src="langen.png" alt="Langen CNC Logo">
+  <h1>Warenanhänger</h1>
 
-    <button id="btnBeschichtung" onclick="openBeschichtung()">Beschichtung (A5)</button>
-    <button id="btnKanten"       onclick="openKanten()">Kanten (A6)</button>
-    <button id="btnPaus"         onclick="openPaus()">PAUS Lieferung (A6)</button>
-    <button id="btnSchweissen"   onclick="openSchweissen()">Schweißen</button>
+  <button id="btnBeschichtung" onclick="openBeschichtung()">Beschichtung (A5)</button>
+  <button id="btnKanten" onclick="openKanten()">Kanten (A6)</button>
+  <button id="btnPaus" onclick="openPaus()">PAUS Lieferung (A6)</button>
+  <button id="btnSchweissen" onclick="openSchweissen()">Schweißen</button>
 
-    <footer>Langen CNC Metalltechnik GmbH & Co. KG</footer>
-  </div>
+  <footer>Langen CNC Metalltechnik GmbH & Co. KG</footer>
+</div>
+
 </body>
 </html>
