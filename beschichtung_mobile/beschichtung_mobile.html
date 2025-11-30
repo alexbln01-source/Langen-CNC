@@ -4,9 +4,55 @@
 <meta charset="UTF-8">
 <title>Etikett Beschichtung</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="beschichtung_mobile.css">
-</head>
 
+<link rel="stylesheet" href="beschichtung_mobile.css">
+
+<style>
+/* Tastatur-Styles (falls nicht extern) */
+.kb {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #e9eef3;
+    padding: 10px 0;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.3);
+    z-index: 9999;
+}
+
+.kb-row {
+    display: flex;
+    justify-content: center;
+    margin: 6px 0;
+}
+
+.kb-key {
+    flex: 1;
+    margin: 3px;
+    padding: 14px 0;
+    font-size: 22px;
+    font-weight: bold;
+    border-radius: 10px;
+    border: none;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+}
+
+.kb-key:active {
+    background: #d0d7df;
+}
+
+.ok-btn {
+    background: #2b7cff;
+    color: white;
+    font-size: 24px;
+}
+.ok-btn:active {
+    background: #1b5fcc;
+}
+</style>
+
+</head>
 <body>
 
 <div class="page">
@@ -46,9 +92,99 @@
 
 </div>
 
-<!-- Tastaturen -->
-<div id="numKeyboard" class="kb" style="display:none;"></div>
-<div id="alphaKeyboard" class="kb" style="display:none;"></div>
+
+
+<!-- ===========================================
+     NUMERISCHE TASTATUR
+=========================================== -->
+<div id="numKeyboard" class="kb" style="display:none;">
+
+    <div class="kb-row">
+        <button class="kb-key">1</button>
+        <button class="kb-key">2</button>
+        <button class="kb-key">3</button>
+    </div>
+
+    <div class="kb-row">
+        <button class="kb-key">4</button>
+        <button class="kb-key">5</button>
+        <button class="kb-key">6</button>
+    </div>
+
+    <div class="kb-row">
+        <button class="kb-key">7</button>
+        <button class="kb-key">8</button>
+        <button class="kb-key">9</button>
+    </div>
+
+    <div class="kb-row">
+        <button class="kb-key" style="visibility:hidden;"></button>
+        <button class="kb-key">0</button>
+        <button class="kb-key" id="numDel">←</button>
+    </div>
+
+    <div class="kb-row">
+        <button class="kb-key ok-btn" id="numOk">OK</button>
+    </div>
+
+</div>
+
+
+
+<!-- ===========================================
+     ALPHA-TASTATUR
+=========================================== -->
+<div id="alphaKeyboard" class="kb" style="display:none;">
+
+    <div class="kb-row">
+        <button class="kb-key">A</button>
+        <button class="kb-key">B</button>
+        <button class="kb-key">C</button>
+        <button class="kb-key">D</button>
+        <button class="kb-key">E</button>
+    </div>
+
+    <div class="kb-row">
+        <button class="kb-key">F</button>
+        <button class="kb-key">G</button>
+        <button class="kb-key">H</button>
+        <button class="kb-key">I</button>
+        <button class="kb-key">J</button>
+    </div>
+
+    <div class="kb-row">
+        <button class="kb-key">K</button>
+        <button class="kb-key">L</button>
+        <button class="kb-key">M</button>
+        <button class="kb-key">N</button>
+        <button class="kb-key">O</button>
+    </div>
+
+    <div class="kb-row">
+        <button class="kb-key">P</button>
+        <button class="kb-key">Q</button>
+        <button class="kb-key">R</button>
+        <button class="kb-key">S</button>
+        <button class="kb-key">T</button>
+    </div>
+
+    <div class="kb-row">
+        <button class="kb-key">U</button>
+        <button class="kb-key">V</button>
+        <button class="kb-key">W</button>
+        <button class="kb-key">X</button>
+        <button class="kb-key">Y</button>
+    </div>
+
+    <div class="kb-row">
+        <button class="kb-key">Z</button>
+        <button class="kb-key" id="alphaDel">←</button>
+        <button class="kb-key" id="alphaOk">OK</button>
+        <button class="kb-key" style="flex:2;"> </button>
+    </div>
+
+</div>
+
 
 <script src="beschichtung_mobile.js"></script>
 
