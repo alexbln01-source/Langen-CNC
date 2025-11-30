@@ -33,44 +33,33 @@ html, body {
     align-items: center;
 
     overflow: hidden;
-}
-
-/* ============================================================
-   ZENTRIERTER "KARTEN"-CONTAINER
-============================================================ */
-#main {
-    background: white;
-    width: 90vw;
-    max-width: 900px;
-
-    padding: 50px 20px 60px;
-
-    border-radius: 30px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
-    border: 1px solid #bfc5cc;
-
-    /* Standardgröße (für iPhone) */
-    transform: scale(0.95);
-    transform-origin: center center;
+    text-align: center;        /* <<< WICHTIG: ALLES ZENTRIERT */
 }
 
 /* ============================================================
    AUTOMATISCHE GERÄTE-SKALIERUNG
 ============================================================ */
 
-/* ⭐ iPhone 13/14/15 Breite 390px */
-@media screen and (min-width: 385px) and (max-width: 405px) {
+/* iPhone */
+@media screen and (min-width: 390px) and (max-width: 400px) {
     #main { transform: scale(1.00); }
 }
 
-/* ⭐ Zebra TC21 – 5" Display – Breite ca. 360px */
+/* Zebra TC21 – 5 Zoll */
 @media screen and (max-width: 380px) {
-    #main { transform: scale(0.85); }
+    #main { transform: scale(0.88); }
 }
 
-/* ⭐ Zebra TC22 – 6" – Breite 412px */
-@media screen and (min-width: 401px) and (max-width: 430px) {
-    #main { transform: scale(0.92); }
+/* Zebra TC22 – 6 Zoll */
+@media screen and (min-width: 381px) and (max-width: 430px) {
+    #main { transform: scale(0.93); }
+}
+
+/* ============================================================
+   LAYOUT CONTAINER (weißes Feld)
+============================================================ */
+#main {
+    padding: 40px 20px;
 }
 
 /* ============================================================
@@ -91,7 +80,8 @@ h1 {
     font-weight: 900;
     color: #003a73;
     text-transform: uppercase;
-    margin-bottom: 28px;
+    margin: 0 0 28px 0;
+    text-align: center;        /* <<< WICHTIG */
 }
 
 /* ============================================================
@@ -100,12 +90,10 @@ h1 {
 button {
     width: 280px;
     height: 90px;
-
     border: none;
     border-radius: 18px;
 
     margin: 15px auto;
-
     font-size: 22px;
     font-weight: bold;
     color: white;
@@ -113,7 +101,6 @@ button {
     cursor: pointer;
     display: block;
 
-    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
     transition: all 0.2s ease;
 }
 
@@ -125,10 +112,14 @@ button {
 #btnPaus   { background: linear-gradient(180deg,#28a745,#1d7f31); }
 #btnSchweissen { background: linear-gradient(180deg,#9c27b0,#6a0080); }
 
+/* ============================================================
+   FOOTER
+============================================================ */
 footer {
     margin-top: 40px;
     font-size: 13px;
     color: #666;
+    text-align: center;        /* <<< WICHTIG */
 }
 </style>
 
