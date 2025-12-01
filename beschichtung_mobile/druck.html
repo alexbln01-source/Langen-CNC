@@ -69,82 +69,67 @@
         height: 16mm;
         width: 100%;
     }
-/* ALLES AUF DEM ETIKETT FETT */
-.etikett * {
-    font-weight: bold !important;
-}
+
+    /* ALLES AUF DEM ETIKETT FETT */
+    .etikett * {
+        font-weight: bold !important;
+    }
+
     /* ================================
        INDIVIDUELLE KUNDENTYP-STYLES
     ================================ */
 
-    /* L&P */
     .kunde-lp { font-size: 70pt; margin-bottom: 8mm; }
     .sub-lp { font-size: 70pt; margin-bottom: 8mm; }
 
-    /* L&P EILT */
     .kunde-lp-eilt { font-size: 70pt; margin-bottom: 8mm; }
     .sub-lp-eilt { font-size: 60pt; margin-bottom: 6mm; }
 
-    /* Schütte */
     .kunde-schuette { font-size: 70pt; margin-bottom: 8mm; }
 
-    /* Schütte EILT */
     .kunde-schuette-eilt { font-size: 70pt; margin-bottom: 8mm; }
     .sub-schuette-eilt { font-size: 60pt; margin-bottom: 6mm; }
 
-    /* Kleymann */
     .kunde-kley { font-size: 70pt; margin-bottom: 8mm; }
 
-    /* Kleymann EILT */
     .kunde-kley-eilt { font-size: 70pt; margin-bottom: 8mm; }
     .sub-kley-eilt { font-size: 60pt; margin-bottom: 6mm; }
 
-    /* Comte ZN8 */
     .kunde-comte-zn8 { font-size: 70pt; margin-bottom: 6mm; }
     .sub-comte-zn8 { font-size: 32pt; margin-bottom: 6mm; }
 
-    /* Comte ZNI8 */
     .kunde-comte-zni8 { font-size: 70pt; margin-bottom: 6mm; }
     .sub-comte-zni8 { font-size: 32pt; margin-bottom: 6mm; }
 
-    /* Chemisch */
     .kunde-chemisch { font-size: 70pt; margin-bottom: 6mm; }
     .sub-chemisch { font-size: 32pt; margin-bottom: 6mm; }
 
-    /* Dick */
     .kunde-dick { font-size: 70pt; margin-bottom: 6mm; }
     .sub-dick { font-size: 32pt; margin-bottom: 6mm; }
 
-    /* Blau */
     .kunde-blau { font-size: 70pt; margin-bottom: 6mm; }
     .sub-blau { font-size: 32pt; margin-bottom: 6mm; }
 
-    /* Pentz */
     .kunde-pentz { font-size: 70pt; margin-bottom: 8mm; }
     .sub-pentz { font-size: 32pt; margin-bottom: 6mm; }
 
-    /* RCS */
     .kunde-rcs { font-size: 70pt; margin-bottom: 8mm; }
     .sub-rcs { font-size: 32pt; margin-bottom: 6mm; }
 
-    /* Coatinc */
     .kunde-coatinc { font-size: 70pt; margin-bottom: 8mm; }
     .sub-coatinc { font-size: 32pt; margin-bottom: 6mm; }
 
-    /* Beistellnummer */
     .print-beistell {
         font-size: 60pt;
         font-weight: bold;
         margin-bottom: 12mm;
     }
 
-    /* Optionaler Kundenname */
     .print-name {
         font-size: 32pt;
         margin-top: 4mm;
     }
 
-    /* BUTTONS */
     .bottom-bar {
         margin-top: 30px;
         height: 60px;
@@ -301,7 +286,6 @@ window.onload = () => {
             break;
     }
 
-    /* Kundenname nur drucken wenn erlaubt */
     const noNameTypes = ["LP","LPEILT","SCHUETTE","SCHUETTEEILT","KLEY","KLEYEILT"];
 
     if (kunde && !noNameTypes.includes(type)) {
@@ -311,8 +295,25 @@ window.onload = () => {
     previewContent.innerHTML = html;
     printContent.innerHTML   = html;
 
-    printBtn.onclick = () => window.print();
-    backBtn.onclick = () => history.back();
+    /* 🔶 Drucken */
+    printBtn.onclick = () => {
+        window.print();
+
+        // Fallback für Browser, die onafterprint verzögert feuern
+        setTimeout(() => {
+            window.location.replace("index.html");
+        }, 500);
+    };
+
+    /* 🔶 Automatisch zurück NACH dem Drucken */
+    window.onafterprint = () => {
+        window.location.replace("index.html");
+    };
+
+    /* Manueller Zurück-Button */
+    backBtn.onclick = () => {
+        window.location.replace("index.html");
+    };
 };
 </script>
 
