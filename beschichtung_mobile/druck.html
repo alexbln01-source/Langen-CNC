@@ -75,10 +75,6 @@
         font-weight: bold !important;
     }
 
-    /* ================================
-       INDIVIDUELLE KUNDENTYP-STYLES
-    ================================ */
-
     .kunde-lp { font-size: 70pt; margin-bottom: 8mm; }
     .sub-lp { font-size: 70pt; margin-bottom: 8mm; }
 
@@ -86,12 +82,10 @@
     .sub-lp-eilt { font-size: 60pt; margin-bottom: 6mm; }
 
     .kunde-schuette { font-size: 70pt; margin-bottom: 8mm; }
-
     .kunde-schuette-eilt { font-size: 70pt; margin-bottom: 8mm; }
     .sub-schuette-eilt { font-size: 60pt; margin-bottom: 6mm; }
 
     .kunde-kley { font-size: 70pt; margin-bottom: 8mm; }
-
     .kunde-kley-eilt { font-size: 70pt; margin-bottom: 8mm; }
     .sub-kley-eilt { font-size: 60pt; margin-bottom: 6mm; }
 
@@ -121,7 +115,6 @@
 
     .print-beistell {
         font-size: 60pt;
-        font-weight: bold;
         margin-bottom: 12mm;
     }
 
@@ -163,7 +156,8 @@
             overflow: visible !important;
         }
 
-        .preview-wrapper, .bottom-bar {
+        .preview-wrapper,
+        .bottom-bar {
             display: none !important;
         }
 
@@ -215,79 +209,24 @@ window.onload = () => {
         <div class="print-beistell">${beistell}</div>
     `;
 
-    /* INDIVIDUELLER KUNDENBLOCK */
     switch(type) {
-
-        case "LP":
-            html += `<div class="kunde-lp">L&P</div>`;
-            break;
-
-        case "LPEILT":
-            html += `<div class="kunde-lp-eilt">L&P</div>`;
-            html += `<div class="sub-lp-eilt">„EILT SEHR“</div>`;
-            break;
-
-        case "SCHUETTE":
-            html += `<div class="kunde-schuette">Schütte</div>`;
-            break;
-
-        case "SCHUETTEEILT":
-            html += `<div class="kunde-schuette-eilt">Schütte</div>`;
-            html += `<div class="sub-schuette-eilt">„EILT SEHR“</div>`;
-            break;
-
-        case "KLEY":
-            html += `<div class="kunde-kley">Kleymann</div>`;
-            break;
-
-        case "KLEYEILT":
-            html += `<div class="kunde-kley-eilt">Kleymann</div>`;
-            html += `<div class="sub-kley-eilt">„EILT SEHR“</div>`;
-            break;
-
-        case "COMTEZN8":
-            html += `<div class="kunde-comte-zn8">Comte</div>`;
-            html += `<div class="sub-comte-zn8">„Zn8“</div>`;
-            break;
-
-        case "COMTEZNI8":
-            html += `<div class="kunde-comte-zni8">Comte</div>`;
-            html += `<div class="sub-comte-zni8">„ZnI8“</div>`;
-            break;
-
-        case "CHEMISCH":
-            html += `<div class="kunde-chemisch">Comte</div>`;
-            html += `<div class="sub-chemisch">„Chemisch Vernickeln“</div>`;
-            break;
-
-        case "DICK":
-            html += `<div class="kunde-dick">Comte</div>`;
-            html += `<div class="sub-dick">„Dickschichtpassivierung“</div>`;
-            break;
-
-        case "BLAU":
-            html += `<div class="kunde-blau">Comte</div>`;
-            html += `<div class="sub-blau">„Blau“</div>`;
-            break;
-
-        case "PENTZ":
-            html += `<div class="kunde-pentz">Pentz & Gerdes</div>`;
-            html += `<div class="sub-pentz">„ZN8“</div>`;
-            break;
-
-        case "RCS":
-            html += `<div class="kunde-rcs">RCS</div>`;
-            html += `<div class="sub-rcs">„Schweißen“</div>`;
-            break;
-
-        case "COATINC":
-            html += `<div class="kunde-coatinc">Coatinc 24</div>`;
-            html += `<div class="sub-coatinc">„Verzinken“</div>`;
-            break;
+        case "LP": html += `<div class="kunde-lp">L&P</div>`; break;
+        case "LPEILT": html += `<div class="kunde-lp-eilt">L&P</div><div class="sub-lp-eilt">„EILT SEHR“</div>`; break;
+        case "SCHUETTE": html += `<div class="kunde-schuette">Schütte</div>`; break;
+        case "SCHUETTEEILT": html += `<div class="kunde-schuette-eilt">Schütte</div><div class="sub-schuette-eilt">„EILT SEHR“</div>`; break;
+        case "KLEY": html += `<div class="kunde-kley">Kleymann</div>`; break;
+        case "KLEYEILT": html += `<div class="kunde-kley-eilt">Kleymann</div><div class="sub-kley-eilt">„EILT SEHR“</div>`; break;
+        case "COMTEZN8": html += `<div class="kunde-comte-zn8">Comte</div><div class="sub-comte-zn8">„Zn8“</div>`; break;
+        case "COMTEZNI8": html += `<div class="kunde-comte-zni8">Comte</div><div class="sub-comte-zni8">„ZnI8“</div>`; break;
+        case "CHEMISCH": html += `<div class="kunde-chemisch">Comte</div><div class="sub-chemisch">„Chemisch Vernickeln“</div>`; break;
+        case "DICK": html += `<div class="kunde-dick">Comte</div><div class="sub-dick">„Dickschichtpassivierung“</div>`; break;
+        case "BLAU": html += `<div class="kunde-blau">Comte</div><div class="sub-blau">„Blau“</div>`; break;
+        case "PENTZ": html += `<div class="kunde-pentz">Pentz & Gerdes</div><div class="sub-pentz">„ZN8“</div>`; break;
+        case "RCS": html += `<div class="kunde-rcs">RCS</div><div class="sub-rcs">„Schweißen“</div>`; break;
+        case "COATINC": html += `<div class="kunde-coatinc">Coatinc 24</div><div class="sub-coatinc">„Verzinken“</div>`; break;
     }
 
     const noNameTypes = ["LP","LPEILT","SCHUETTE","SCHUETTEEILT","KLEY","KLEYEILT"];
-
     if (kunde && !noNameTypes.includes(type)) {
         html += `<div class="print-name">(${kunde})</div>`;
     }
@@ -295,47 +234,27 @@ window.onload = () => {
     previewContent.innerHTML = html;
     printContent.innerHTML   = html;
 
-/* 🔶 Drucken */
-printBtn.onclick = () => {
-    window.print();
+    // 🔍 GitHub-Pages kompatibler Auto-Pfad:
+    const basePath = "/" + window.location.pathname.split("/")[1] + "/index.html";
 
-    // Fallback, falls onafterprint nicht ausgelöst wird
-    setTimeout(() => {
-        window.location.href = window.location.origin + "/index.html";
-    }, 500);
+    /* 🔶 Drucken */
+    printBtn.onclick = () => {
+        window.print();
+        setTimeout(() => {
+            window.location.href = basePath;
+        }, 500);
+    };
+
+    /* 🔶 Automatisch zurück NACH dem Drucken */
+    window.onafterprint = () => {
+        window.location.href = basePath;
+    };
+
+    /* 🔶 Manueller Zurück-Button → eine Ebene zurück */
+    backBtn.onclick = () => {
+        history.back();
+    };
 };
-
-/* 🔶 Automatisch zurück NACH dem Drucken */
-window.onafterprint = () => {
-    window.location.href = window.location.origin + "/index.html";
-};
-
-/* 🔶 Manueller Zurück-Button → eine Ebene zurück */
-backBtn.onclick = () => {
-    history.back();
-};
-/* 🔶 Drucken */
-printBtn.onclick = () => {
-    window.print();
-
-    // Fallback, falls onafterprint nicht ausgelöst wird
-    setTimeout(() => {
-        window.location.href = window.location.origin + "/index.html";
-    }, 500);
-};
-
-/* 🔶 Automatisch zurück NACH dem Drucken */
-window.onafterprint = () => {
-    window.location.href = window.location.origin + "/index.html";
-};
-
-/* 🔶 Manueller Zurück-Button → eine Ebene zurück */
-backBtn.onclick = () => {
-    history.back();
-};
-
-}; // ❗❗ DAS hier hat dir gefehlt!
-
 </script>
 
 </body>
