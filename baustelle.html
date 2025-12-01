@@ -10,24 +10,20 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-
-            /* 🔹 Das gleiche Grau wie deine normale Index */
-            background: #e2e2e2; /* leicht dunkleres Baustellen-Grau */
-
+            background: #e2e2e2;
             color: #222;
             text-align: center;
-            padding-top: 50px;
+            padding-top: 40px;
         }
 
         .logo {
             width: 220px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .baustelle-img {
             width: 350px;
-            margin-top: 10px;
-            margin-bottom: 20px;
+            margin: 10px 0 20px 0;
         }
 
         h1 {
@@ -44,19 +40,37 @@
         @keyframes blink {
             to { visibility: hidden; }
         }
+
+        /* Zurück-Button */
+        .back-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background: #333;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 18px;
+        }
+        .back-btn:hover {
+            background: #555;
+        }
     </style>
 </head>
 
 <body>
 
     <!-- Logo -->
-    <img src="logo.png" alt="Logo" class="logo">
+    <img src="langen.png" alt="Logo" class="logo">
 
     <!-- Baustellenbild -->
     <img src="baustelle.png" alt="Baustelle" class="baustelle-img">
 
     <h1>⚠️ Achtung: Baustelle</h1>
     <p class="blink">🔧 Bitte etwas Geduld.</p>
+
+    <!-- Zurück führt direkt zur Startseite -->
+    <a href="index.html" class="back-btn">← Zurück</a>
 
 </body>
 </html>
