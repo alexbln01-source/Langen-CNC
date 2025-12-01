@@ -1,63 +1,61 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>KANTEN (Mobile)</title>
-<link rel="stylesheet" href="kanten_mobile.css">
-<script defer src="kanten_mobile.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Etikett Kanten</title>
+
+    <link rel="stylesheet" href="kanten_mobile.css">
+    <script defer src="kanten_mobile.js"></script>
 </head>
-
 <body>
-  <div id="card">
 
-    <h1>KANTEN</h1>
+<div class="page">
 
-    <div id="kundenArea">
-      <button class="kundeBtn" data-kunde="Bergmann M-H">Bergmann M-H</button>
-      <button class="kundeBtn" data-kunde="Bücker">Bücker</button>
-      <button class="kundeBtn" data-kunde="Grimme">Grimme</button>
-      <button class="kundeBtn" data-kunde="Janzen">Janzen</button>
-      <button class="kundeBtn" data-kunde="Krone Spelle">Krone Spelle</button>
-      <button class="kundeBtn" data-kunde="L.Bergmann">L.Bergmann</button>
-      <button class="kundeBtn" data-kunde="PAUS">PAUS</button>
-      <button class="kundeBtn" data-kunde="TOS">TOS</button>
-      <button class="kundeBtn" id="sonstigeBtn" data-kunde="SONSTIGE">Sonstige Kunden</button>
+    <h1 class="title">Etikett Kanten</h1>
+
+    <div class="grid-label">Kunde wählen:</div>
+
+    <div class="kunden-grid">
+
+        <button class="kunde-btn" data-kunde="Bergmann M-H">Bergmann M-H</button>
+        <button class="kunde-btn" data-kunde="Bücker">Bücker</button>
+        <button class="kunde-btn" data-kunde="Grimme">Grimme</button>
+        <button class="kunde-btn" data-kunde="Janzen">Janzen</button>
+        <button class="kunde-btn" data-kunde="Krone Spelle">Krone Spelle</button>
+        <button class="kunde-btn" data-kunde="L.Bergmann">L.Bergmann</button>
+        <button class="kunde-btn" data-kunde="PAUS">PAUS</button>
+        <button class="kunde-btn" data-kunde="TOS">TOS</button>
+        <button class="kunde-btn" id="sonstigeBtn" data-kunde="SONSTIGE">
+            Sonstige Kunden
+        </button>
+
     </div>
 
-    <div id="actionButtons">
-      <button id="btnBack">⬅ Zurück</button>
-      <button id="btnDrucken">🖨 Drucken</button>
+    <div class="bottom-row">
+        <button id="backBtn"    class="back-btn">◀ Zurück</button>
+        <button id="druckenBtn" class="primary-btn">Drucken</button>
     </div>
 
-  </div>
+</div>
 
-  <!-- Tastatur Popup -->
-  <div id="keyboardPopup">
+<!-- Popup-Tastatur NUR für "Sonstige Kunden" -->
+<div id="keyboardPopup">
     <div id="keyboardBox">
-      <h2>Kundenname eingeben</h2>
-      <input type="text" id="keyboardInput">
-      <div id="keyboardGrid"></div>
+        <h2>Kundenname eingeben</h2>
 
-      <div id="kbActions">
-        <button id="kbDel">Löschen</button>
-        <button id="kbOk">OK</button>
-        <button id="kbClose">Abbrechen</button>
-      </div>
+        <input type="text" id="keyboardInput" autocomplete="off">
+
+        <div id="keyboardGrid"></div>
+
+        <div id="kbActions">
+            <button id="kbDel">Löschen</button>
+            <button id="kbOk">OK</button>
+            <button id="kbClose">Abbrechen</button>
+        </div>
     </div>
-  </div>
-
-  <!-- Druck Popup -->
-  <div id="printPopup" style="display:none;">
-    <div id="printBox">
-      <div id="printPreview"></div>
-
-      <div id="printButtons">
-        <button id="doPrint">🖨 Drucken</button>
-        <button id="cancelPrint">✖ Abbrechen</button>
-      </div>
-    </div>
-  </div>
+</div>
 
 </body>
 </html>

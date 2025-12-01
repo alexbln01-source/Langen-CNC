@@ -1,132 +1,110 @@
 let selectedCustomer = "";
 let customCustomer   = "";
 
-// Kundenbutton Auswahl
-document.querySelectorAll(".kundeBtn").forEach(btn => {
-  btn.addEventListener("click", () => {
+// Alle Kundenbuttons
+const kundenButtons = document.querySelectorAll(".kunde-btn");
+const backBtn       = document.getElementById("backBtn");
+const druckenBtn    = document.getElementById("druckenBtn");
 
-    document.querySelectorAll(".kundeBtn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
+// Tastatur-Elemente
+const kbPopup = document.getElementById("keyboardPopup");
+const kbInput = document.getElementById("keyboardInput");
+const kbGrid  = document.getElementById("keyboardGrid");
+const kbDel   = document.getElementById("kbDel");
+const kbOk    = document.getElementById("kbOk");
+const kbClose = document.getElementById("kbClose");
 
-    if (btn.dataset.kunde === "SONSTIGE") {
-      openKeyboard();
-    } else {
-      selectedCustomer = btn.dataset.kunde;
-      customCustomer = "";
-    }
-  });
+/* =============================
+   Kundenwahl
+============================= */
+kundenButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+
+        kundenButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        if (btn.dataset.kunde === "SONSTIGE") {
+            openKeyboard();
+        } else {
+            selectedCustomer = btn.dataset.kunde;
+            customCustomer   = "";
+        }
+    });
 });
 
-// Tastatur
-const kbPopup  = document.getElementById("keyboardPopup");
-const kbInput  = document.getElementById("keyboardInput");
-const kbGrid   = document.getElementById("keyboardGrid");
-
-function openKeyboard(){
-  kbInput.value = customCustomer;
-  kbPopup.style.display = "flex";
-  buildKeyboard();
+/* =============================
+   Tastatur für "Sonstige Kunden"
+============================= */
+function openKeyboard() {
+    kbInput.value = customCustomer;
+    kbPopup.style.display = "flex";
+    kbInput.focus();
+    buildKeyboard();
 }
 
-function buildKeyboard(){
-  kbGrid.innerHTML = "";
-  const chars = "QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM".split("");
-
-  chars.forEach(ch =>{
-    const b=document.createElement("button");
-    b.textContent=ch;
-    b.onclick=()=>kbInput.value+=ch;
-    kbGrid.appendChild(b);
-  });
+function closeKeyboard() {
+    kbPopup.style.display = "none";
 }
 
-document.getElementById("kbDel").onclick = ()=>kbInput.value = kbInput.value.slice(0,-1);
-document.getElementById("kbClose").onclick = ()=>kbPopup.style.display="none";
+function buildKeyboard() {
+    kbGrid.innerHTML = "";
+    const chars = "QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM".split("");
 
-document.getElementById("kbOk").onclick = ()=>{
-  customCustomer = kbInput.value.trim();
-  selectedCustomer = customCustomer;
-  kbPopup.style.display="none";
+    chars.forEach(ch => {
+        const b = document.createElement("button");
+        b.textContent = ch;
+        b.type = "button";
+        b.onclick = () => {
+            kbInput.value += ch;
+        };
+        kbGrid.appendChild(b);
+    });
+}
+
+kbDel.onclick = () => {
+    kbInput.value = kbInput.value.slice(0, -1);
 };
 
-// Zurück
-document.getElementById("btnBack").onclick = ()=>{
-  history.back();
+kbOk.onclick = () => {
+    customCustomer = kbInput.value.trim();
+    if (!customCustomer) {
+        alert("Bitte Kundennamen eingeben!");
+        return;
+    }
+    selectedCustomer = customCustomer;
+    closeKeyboard();
 };
 
-// Drucken – A6 quer + zentriert + iPhone kompatibel
-document.getElementById("btnDrucken").onclick = ()=>{
+kbClose.onclick = () => {
+    closeKeyboard();
+};
 
-  if (!selectedCustomer) {
-    alert("Bitte Kunde auswählen!");
-    return;
-  }
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && kbPopup.style.display === "flex") {
+        closeKeyboard();
+    }
+});
 
-  const w = window.open("", "_blank", "width=1200,height=900");
+/* =============================
+   Navigation
+============================= */
+backBtn.onclick = () => {
+    history.back();
+};
 
-  w.document.write(`
-    <html>
-    <head>
-      <meta charset="utf-8" />
-      <title>Druck</title>
-      <style>
+/* =============================
+   Drucken → druck_kanten.html (A6 quer)
+============================= */
+druckenBtn.onclick = () => {
 
-        @page{
-          size: A6 landscape;
-          margin: 0;
-        }
+    if (!selectedCustomer) {
+        alert("Bitte Kunde auswählen!");
+        return;
+    }
 
-        html, body{
-          margin:0;
-          padding:0;
-          width:148mm;
-          height:105mm;
-        }
+    const data = encodeURIComponent(JSON.stringify({
+        kunde: selectedCustomer
+    }));
 
-     #printArea{
-  width:148mm;
-  height:111mm;          /* erhöht */
-  position:absolute;
-  top:-3mm;              /* leicht hochgeschoben */
-  left:0;
-  text-align:center;
-  font-family:Arial, sans-serif;
-  font-weight:900;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-}
-
-        .big{ font-size:46pt; }
-        .mid{ font-size:32pt; margin-top:4mm; }
-        .line{ font-size:26pt; margin-top:3mm; }
-
-      </style>
-    </head>
-
-    <body>
-      <div id="printArea">
-        <div class="big">${selectedCustomer}</div>
-        <div class="mid">Kanten</div>
-        <div class="line">K-Termin: ________</div>
-        <div class="line">Palettennummer: ________</div>
-      </div>
-
-      <script>
-        setTimeout(()=>{
-          window.print();
-          setTimeout(()=>{
-            window.close();
-            window.location.href = "kanten_mobile.html";
-          }, 300);
-        }, 200);
-      <\/script>
-
-    </body>
-    </html>
-  `);
-
-  w.document.close();
-  w.focus();
+    window.location.href = "druck_kanten.html?data=" + data;
 };

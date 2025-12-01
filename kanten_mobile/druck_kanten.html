@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Kanten – Druck</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #dcdcdc;
+    font-family: Arial, sans-serif;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Vorschau */
+.preview-wrapper {
+    width: 100%;
+    height: calc(100% - 150px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.preview-area {
+    width: 148mm;
+    height: 105mm;
+    background: white;
+    box-shadow: 0 0 15px rgba(0,0,0,0.25);
+    transform-origin: center;
+}
+
+@media (max-width: 900px) {
+    .preview-area { transform: scale(0.60); }
+}
+@media (min-width: 901px) {
+    .preview-area { transform: scale(0.75); }
+}
+
+/* Etikett */
+.etikett {
+    width: 148mm;
+    height: 105mm;
+    padding: 8mm;
+    box-sizing: border-box;
+    text-align: center;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.cust { font-size: 48pt; margin-bottom: 6mm; }
+.mid  { font-size: 34pt; margin-bottom: 6mm; }
+.line { font-size: 28pt; margin-top: 2mm; }
+
+/* Buttons unten */
+.bottom-bar {
+    height: 60px;
+    display: flex;
+    gap: 16px;
+    padding: 0 20px;
+    margin-top: 20px;
+}
+
+.btn {
+    flex: 1;
+    border: none;
+    border-radius: 14px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+}
+
+.back-btn { background: #444; }
+.print-btn { background: #00963d; }
+
+/* Print */
+@media print {
+    .preview-wrapper, .bottom-bar { display:none !important; }
+
+    html, body {
+        width: 148mm !important;
+        height: 105mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    #printArea {
+        display: block !important;
+        width: 148mm !important;
+        height: 105mm !important;
+    }
+
+    @page { size: A6 landscape; margin: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="preview-wrapper">
+    <div class="preview-area">
+        <div id="previewContent" class="etikett"></div>
+    </div>
+</div>
+
+<div id="printArea" class="etikett" style="display:none;">
+    <div id="printContent"></div>
+</div>
+
+<div class="bottom-bar">
+    <button class="btn back-btn" id="backBtn">◀ Zurück</button>
+    <button class="btn print-btn" id="printBtn">Drucken</button>
+</div>
+
+<script>
+window.onload = () => {
+
+    const qs = new URLSearchParams(location.search);
+    const data = qs.has("data") ? JSON.parse(decodeURIComponent(qs.get("data"))) : {};
+    const kunde = data.kunde || "";
+
+    const html = `
+        <div class="cust">${kunde}</div>
+        <div class="mid">Kanten</div>
+        <div class="line">K-Termin: ________</div>
+        <div class="line">Palettennummer: ________</div>
+    `;
+
+    previewContent.innerHTML = html;
+    printContent.innerHTML   = html;
+
+    printBtn.onclick = () => {
+        window.print();
+        setTimeout(() => history.back(), 300);
+    };
+
+    backBtn.onclick = () => history.back();
+};
+</script>
+
+</body>
+</html>
