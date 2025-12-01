@@ -295,26 +295,26 @@ window.onload = () => {
     previewContent.innerHTML = html;
     printContent.innerHTML   = html;
 
-    /* 🔶 Drucken */
-    printBtn.onclick = () => {
-        window.print();
+   /* 🔶 Drucken */
+printBtn.onclick = () => {
+    window.print();
 
-        // Fallback für Browser, die onafterprint verzögert feuern
-        setTimeout(() => {
-            window.location.replace("index.html");
-        }, 500);
-    };
-
-    /* 🔶 Automatisch zurück NACH dem Drucken */
-    window.onafterprint = () => {
-        window.location.replace("index.html");
-    };
-
-    /* Manueller Zurück-Button */
-    backBtn.onclick = () => {
-        window.location.replace("index.html");
-    };
+    // Fallback für Browser, die onafterprint ignorieren
+    setTimeout(() => {
+        window.location.href = "/index.html"; 
+    }, 500);
 };
+
+/* 🔶 Automatisch zurück NACH dem Drucken */
+window.onafterprint = () => {
+    window.location.href = "/index.html"; 
+};
+
+/* 🔶 Manueller Zurück-Button → nur eine Ebene zurück */
+backBtn.onclick = () => {
+    history.back();
+};
+
 </script>
 
 </body>
