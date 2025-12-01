@@ -90,13 +90,13 @@ html, body {
 
     background: white;
     font-size: 14px;
-        font-weight: 900;
+        font-weight: 700;
     color: #003a73;
     box-shadow: 0 1px 4px rgba(0,0,0,0.25);
 }
 
 .kunde-btn.active {
-    background: ##007bff;
+    background: #007bff;
     color: white;
 }
 
