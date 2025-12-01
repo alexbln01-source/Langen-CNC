@@ -1,73 +1,35 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<title>Start</title>
+<meta charset="UTF-8">
+<title>Langen CNC – Auswahl</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="start.css">
+</head>
+
+<body>
 
 <script>
-  // Bereich aus URL lesen (?bereich=...)
-  const params  = new URLSearchParams(location.search);
-  const bereich = params.get("bereich");
+const params = new URLSearchParams(window.location.search);
+const bereich = params.get("bereich");
 
-  // Geräteerkennung
-  const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+/* Bereich prüfen */
+switch (bereich) {
 
-  function route() {
+    case "beschichtung":
+        window.location.href = "beschichtung_mobile.html";
+        break;
 
-    if (!bereich) {
-      alert("Kein Bereich angegeben!");
-      return;
-    }
+    case "kanten":
+        window.location.href = "kanten_mobile.html";
+        break;
 
-    /* ==========================================================
-       ⭐ BEREICH: BESCHICHTUNG
-       → PC-Version wird NICHT mehr verwendet
-       → Immer mobile Version laden
-    ========================================================== */
-    if (bereich === "beschichtung") {
-      window.location.href = "beschichtung_mobile/beschichtung_mobile.html";
-      return;
-    }
-
- /* ==========================================================
-       ⭐ BEREICH: KANTEN
-       → PC-Version wird NICHT mehr verwendet
-       → Immer mobile Version laden
-    ========================================================== */
-    if (bereich === "kanten") {
-      window.location.href = "beschichtung_mobile/kanten_mobile.html";
-      return;
-    }
-
-    /* ==========================================================
-       ⭐ SCHWEISSEN
-    ========================================================== */
-    if (bereich === "schweissen") {
-      window.location.href = isMobile
-        ? "schweissen_mobile/schweissen_mobile.html"
-        : "schweissen_pc/schweissen_pc.html";
-      return;
-    }
-
-    /* ==========================================================
-       ⭐ PAUS Lieferung
-    ========================================================== */
-    if (bereich === "paus") {
-      window.location.href = isMobile
-        ? "paus_mobile/paus_mobile.html"
-        : "paus_pc/paus_pc.html";
-      return;
-    }
-
-    alert("Unbekannter Bereich: " + bereich);
-  }
-
-  // Starten
-  route();
+    /* alles andere → zurück oder Baustelle */
+    default:
+        window.location.href = "index.html";
+        break;
+}
 </script>
 
-</head>
-<body>
-<p>Lade passende Version...</p>
 </body>
 </html>
