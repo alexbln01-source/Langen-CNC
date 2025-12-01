@@ -1,40 +1,106 @@
 let selectedCustomer = "";
 let customCustomer   = "";
 
-// Alle Kundenbuttons
-const kundenButtons = document.querySelectorAll(".kunde-btn");
-const backBtn       = document.getElementById("backBtn");
-const druckenBtn    = document.getElementById("druckenBtn");
+/* =====================================
+   KUNDEN-LAYOUTS (Zeilensystem)
+===================================== */
 
-// Tastatur-Elemente
-const kbPopup = document.getElementById("keyboardPopup");
-const kbInput = document.getElementById("keyboardInput");
-const kbGrid  = document.getElementById("keyboardGrid");
-const kbDel   = document.getElementById("kbDel");
-const kbOk    = document.getElementById("kbOk");
-const kbClose = document.getElementById("kbClose");
+const kundenLayouts = {
+
+    "Bergmann M-H": [
+        { text: "<kunde>", size: "48pt", marginTop: "4mm" },
+        { text: "Kanten", size: "34pt", marginTop: "3mm" },
+        { text: "K-Termin: ________", size: "28pt", marginTop: "6mm" },
+        { text: "Palettennummer: ________", size: "28pt", marginTop: "4mm" }
+    ],
+
+    "Bücker": [
+        { text: "<kunde>", size: "48pt", marginTop: "4mm" },
+        { text: "Kanten", size: "34pt", marginTop: "3mm" },
+        { text: "K-Termin: ________", size: "28pt", marginTop: "6mm" },
+        { text: "Palettennummer: ________", size: "28pt", marginTop: "4mm" }
+    ],
+
+    "Grimme": [
+        { text: "<kunde>", size: "48pt", marginTop: "4mm" },
+        { text: "Kanten", size: "34pt", marginTop: "3mm" },
+        { text: "K-Termin: ________", size: "28pt", marginTop: "6mm" },
+        { text: "Palettennummer: ________", size: "28pt", marginTop: "4mm" }
+    ],
+
+    "Janzen": [
+        { text: "<kunde>", size: "48pt", marginTop: "4mm" },
+        { text: "Kanten", size: "34pt", marginTop: "3mm" },
+        { text: "K-Termin: ________", size: "28pt", marginTop: "6mm" },
+        { text: "Palettennummer: ________", size: "28pt", marginTop: "4mm" }
+    ],
+
+    "Krone Spelle": [
+        { text: "<kunde>", size: "48pt", marginTop: "4mm" },
+        { text: "Kanten", size: "34pt", marginTop: "3mm" },
+        { text: "K-Termin: ________", size: "28pt", marginTop: "6mm" },
+        { text: "Palettennummer: ________", size: "28pt", marginTop: "4mm" }
+    ],
+
+    "L.Bergmann": [
+        { text: "<kunde>", size: "48pt", marginTop: "4mm" },
+        { text: "Kanten", size: "34pt", marginTop: "3mm" },
+        { text: "K-Termin: ________", size: "28pt", marginTop: "6mm" },
+        { text: "Palettennummer: ________", size: "28pt", marginTop: "4mm" }
+    ],
+
+    "PAUS": [
+        { text: "<kunde>", size: "48pt", marginTop: "4mm" },
+        { text: "Kanten", size: "34pt", marginTop: "3mm" },
+        { text: "K-Termin: ________", size: "28pt", marginTop: "6mm" },
+        { text: "Palettennummer: ________", size: "28pt", marginTop: "4mm" }
+    ],
+
+    "TOS": [
+        { text: "<kunde>", size: "48pt", marginTop: "4mm" },
+        { text: "Kanten", size: "34pt", marginTop: "3mm" },
+        { text: "K-Termin: ________", size: "28pt", marginTop: "6mm" },
+        { text: "Palettennummer: ________", size: "28pt", marginTop: "4mm" }
+    ],
+
+    "SONSTIGE": [
+        { text: "<kundeneingabe>", size: "48pt", marginTop: "4mm" },
+        { text: "Kanten", size: "34pt", marginTop: "3mm" },
+        { text: "K-Termin: ________", size: "28pt", marginTop: "6mm" },
+        { text: "Palettennummer: ________", size: "28pt", marginTop: "4mm" }
+    ]
+};
 
 /* =============================
-   Kundenwahl
+   Kunden-Auswahl
 ============================= */
+
+const kundenButtons = document.querySelectorAll(".kunde-btn");
+
 kundenButtons.forEach(btn => {
     btn.addEventListener("click", () => {
 
         kundenButtons.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
 
-        if (btn.dataset.kunde === "SONSTIGE") {
+        const kunde = btn.dataset.kunde;
+
+        if (kunde === "SONSTIGE") {
             openKeyboard();
         } else {
-            selectedCustomer = btn.dataset.kunde;
-            customCustomer   = "";
+            selectedCustomer = kunde;
         }
     });
 });
 
 /* =============================
-   Tastatur für "Sonstige Kunden"
+   Popup Tastatur (neu, schön)
 ============================= */
+
+const kbPopup = document.getElementById("keyboardPopup");
+const kbInput = document.getElementById("keyboardInput");
+const kbGrid  = document.getElementById("keyboardGrid");
+
 function openKeyboard() {
     kbInput.value = customCustomer;
     kbPopup.style.display = "flex";
@@ -47,64 +113,57 @@ function closeKeyboard() {
 }
 
 function buildKeyboard() {
+
     kbGrid.innerHTML = "";
-    const chars = "QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM".split("");
+
+    const chars = "Q W E R T Z U I O P Ü A S D F G H J K L Ö Ä Y X C V B N M".split(" ");
 
     chars.forEach(ch => {
-        const b = document.createElement("button");
-        b.textContent = ch;
-        b.type = "button";
-        b.onclick = () => {
-            kbInput.value += ch;
-        };
-        kbGrid.appendChild(b);
+        const key = document.createElement("button");
+        key.textContent = ch;
+        key.onclick = () => { kbInput.value += ch; };
+        kbGrid.appendChild(key);
     });
 }
 
-kbDel.onclick = () => {
+document.getElementById("kbDel").onclick = () => {
     kbInput.value = kbInput.value.slice(0, -1);
 };
 
-kbOk.onclick = () => {
-    customCustomer = kbInput.value.trim();
-    if (!customCustomer) {
-        alert("Bitte Kundennamen eingeben!");
-        return;
-    }
-    selectedCustomer = customCustomer;
+document.getElementById("kbOk").onclick = () => {
+    const val = kbInput.value.trim();
+    if (!val) return alert("Bitte Kundenname eingeben.");
+
+    customCustomer = val;
+    selectedCustomer = "SONSTIGE";
     closeKeyboard();
 };
 
-kbClose.onclick = () => {
-    closeKeyboard();
-};
-
-document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && kbPopup.style.display === "flex") {
-        closeKeyboard();
-    }
-});
+document.getElementById("kbClose").onclick = closeKeyboard;
 
 /* =============================
    Navigation
 ============================= */
-backBtn.onclick = () => {
-    history.back();
-};
+
+document.getElementById("backBtn").onclick = () => history.back();
 
 /* =============================
-   Drucken → druck_kanten.html (A6 quer)
+   DRUCK
 ============================= */
-druckenBtn.onclick = () => {
+
+document.getElementById("printBtn").onclick = () => {
 
     if (!selectedCustomer) {
         alert("Bitte Kunde auswählen!");
         return;
     }
 
-    const data = encodeURIComponent(JSON.stringify({
-        kunde: selectedCustomer
-    }));
+    const data = {
+        kunde: selectedCustomer,
+        custom: customCustomer,
+        layout: kundenLayouts[selectedCustomer]
+    };
 
-    window.location.href = "druck_kanten.html?data=" + data;
+    window.location.href =
+        "druck_kanten.html?data=" + encodeURIComponent(JSON.stringify(data));
 };

@@ -53,9 +53,9 @@ html, body {
     justify-content: center;
 }
 
-.cust { font-size: 48pt; margin-bottom: 6mm; }
-.mid  { font-size: 34pt; margin-bottom: 6mm; }
-.line { font-size: 28pt; margin-top: 2mm; }
+.z {
+    font-weight: inherit;
+}
 
 /* Buttons unten */
 .bottom-bar {
@@ -118,21 +118,49 @@ html, body {
 </div>
 
 <script>
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+}
+
 window.onload = () => {
 
-    const qs = new URLSearchParams(location.search);
-    const data = qs.has("data") ? JSON.parse(decodeURIComponent(qs.get("data"))) : {};
-    const kunde = data.kunde || "";
+    const qs   = new URLSearchParams(location.search);
+    const raw  = qs.get("data");
+    if (!raw) {
+        document.getElementById("previewContent").textContent = "Keine Daten";
+        return;
+    }
 
-    const html = `
-        <div class="cust">${kunde}</div>
-        <div class="mid">Kanten</div>
-        <div class="line">K-Termin: ________</div>
-        <div class="line">Palettennummer: ________</div>
-    `;
+    const data   = JSON.parse(raw);
+    const kunde  = data.kunde || "";
+    const custom = data.custom || "";
+    let layout   = data.layout || [];
 
-    previewContent.innerHTML = html;
-    printContent.innerHTML   = html;
+    // Platzhalter ersetzen
+    layout = layout.map(line => {
+        let text = line.text || "";
+        if (text === "<kunde>") text = kunde;
+        if (text === "<kundeneingabe>") text = custom || kunde;
+        return {
+            text: text,
+            size: line.size || "32pt",
+            marginTop: line.marginTop || "4mm"
+        };
+    });
+
+    let html = "";
+    layout.forEach(line => {
+        html += `<div class="z" style="
+            font-size:${line.size};
+            margin-top:${line.marginTop};
+        ">${escapeHtml(line.text)}</div>`;
+    });
+
+    document.getElementById("previewContent").innerHTML = html;
+    document.getElementById("printContent").innerHTML   = html;
 
     printBtn.onclick = () => {
         window.print();
