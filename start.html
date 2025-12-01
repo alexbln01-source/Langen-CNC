@@ -29,13 +29,13 @@
       return;
     }
 
-    /* ==========================================================
-       ⭐ KANTEN (bleibt PC/Mobile getrennt)
+ /* ==========================================================
+       ⭐ BEREICH: KANTEN
+       → PC-Version wird NICHT mehr verwendet
+       → Immer mobile Version laden
     ========================================================== */
     if (bereich === "kanten") {
-      window.location.href = isMobile
-        ? "kanten_mobile/kanten_mobile.html"
-        : "kanten_pc/kanten_pc.html";
+      window.location.href = "beschichtung_mobile/kanten_mobile.html";
       return;
     }
 
