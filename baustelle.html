@@ -2,64 +2,66 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Baustelle</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Baustelle</title>
 
 <style>
     body {
         margin: 0;
+        padding: 0;
+        background: #f1f1f1;
         font-family: Arial, sans-serif;
-        background: #eef1f4;
-        height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
+        height: 100vh;
     }
 
-    .card {
-        width: 92%;
-        max-width: 420px;
+    .box {
         background: white;
-        padding: 30px 20px;
-        border-radius: 20px;
+        width: 90%;
+        max-width: 420px;
+        padding: 25px;
+        border-radius: 22px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.25);
         text-align: center;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.2);
     }
 
     .logo {
-        width: 180px;
+        width: 160px;
         margin-bottom: 20px;
     }
 
-    .bild {
-        width: 230px;
-        margin: 15px auto 25px auto;
-        display: block;
+    .bau-img {
+        width: 100%;
+        max-width: 300px;
+        margin: 15px auto;
+        border-radius: 12px;
     }
 
     h1 {
         font-size: 32px;
+        color: #d40000;
+        margin-bottom: 8px;
         font-weight: 900;
-        margin: 0;
-        color: #d60000;
     }
 
     p {
         font-size: 20px;
-        margin: 10px 0 25px 0;
-        color: #444;
-        font-weight: 600;
+        color: #555;
+        margin-bottom: 25px;
     }
 
     button {
         width: 100%;
         padding: 15px;
+        font-size: 20px;
+        font-weight: bold;
         border: none;
         border-radius: 14px;
         background: #444;
         color: white;
-        font-size: 20px;
-        font-weight: bold;
+        cursor: pointer;
     }
 
     button:active {
@@ -70,19 +72,15 @@
 
 <body>
 
-<div class="card">
+<div class="box">
+    <img src="langen.png" class="logo" alt="Logo">
 
-    <!-- Dein Logo -->
-    <img src="langen.png" class="logo" alt="Langen Logo">
-
-    <!-- Platzhalter für dein Baustellen-Bild -->
-    <img src="baustelle.png" class="bild" alt="Baustelle">
+    <img src="Baustelle.png" class="bau-img" alt="Baustelle">
 
     <h1>Baustelle</h1>
-    <p>Dieser Bereich ist aktuell noch in Arbeit…</p>
+    <p>Hier wird gerade gearbeitet…</p>
 
     <button onclick="history.back()">◀ Zurück</button>
-
 </div>
 
 </body>
