@@ -5,65 +5,54 @@
 <title>Start</title>
 
 <script>
-  // Bereich aus URL lesen (?bereich=...)
-  const params  = new URLSearchParams(location.search);
-  const bereich = params.get("bereich");
+// Bereich aus URL lesen (?bereich=...)
+const params  = new URLSearchParams(location.search);
+const bereich = params.get("bereich");
 
-  // Geräteerkennung
-  const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
-
-  function route() {
+function route() {
 
     if (!bereich) {
-      alert("Kein Bereich angegeben!");
-      return;
+        alert("Kein Bereich angegeben!");
+        return;
     }
 
-    /* ==========================================================
-       ⭐ BEREICH: BESCHICHTUNG
-       → PC-Version wird NICHT mehr verwendet
-       → Immer mobile Version laden
-    ========================================================== */
+    /* ============================================
+       ⭐ BESCHICHTUNG → immer mobile Version
+    ============================================ */
     if (bereich === "beschichtung") {
-      window.location.href = "beschichtung_mobile/beschichtung_mobile.html";
-      return;
+        window.location.href = "beschichtung_mobile/beschichtung_mobile.html";
+        return;
     }
 
-    /* ==========================================================
-       ⭐ KANTEN (bleibt PC/Mobile getrennt)
-    ========================================================== */
+    /* ============================================
+       ⭐ KANTEN → nur noch mobile Version!
+       ❌ kein kanten_pc mehr
+    ============================================ */
     if (bereich === "kanten") {
-      window.location.href = isMobile
-        ? "kanten_mobile/kanten_mobile.html"
-        : "kanten_pc/kanten_pc.html";
-      return;
+        window.location.href = "kanten_mobile/kanten_mobile.html";
+        return;
     }
 
-    /* ==========================================================
-       ⭐ SCHWEISSEN
-    ========================================================== */
+    /* ============================================
+       ⭐ SCHWEISSEN → noch Baustelle
+    ============================================ */
     if (bereich === "schweissen") {
-      window.location.href = isMobile
-        ? "schweissen_mobile/schweissen_mobile.html"
-        : "schweissen_pc/schweissen_pc.html";
-      return;
+        window.location.href = "baustelle.html";
+        return;
     }
 
-    /* ==========================================================
-       ⭐ PAUS Lieferung
-    ========================================================== */
+    /* ============================================
+       ⭐ PAUS → noch Baustelle
+    ============================================ */
     if (bereich === "paus") {
-      window.location.href = isMobile
-        ? "paus_mobile/paus_mobile.html"
-        : "paus_pc/paus_pc.html";
-      return;
+        window.location.href = "baustelle.html";
+        return;
     }
 
     alert("Unbekannter Bereich: " + bereich);
-  }
+}
 
-  // Starten
-  route();
+route();
 </script>
 
 </head>
