@@ -9,78 +9,117 @@
     body {
         margin: 0;
         padding: 0;
-        background: #f1f1f1;
+        background: #f2f2f2;
         font-family: Arial, sans-serif;
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100vh;
+        flex-direction: column;
+        text-align: center;
     }
 
     .box {
         background: white;
-        width: 90%;
-        max-width: 420px;
-        padding: 25px;
+        padding: 35px 30px;
         border-radius: 22px;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-        text-align: center;
+        box-shadow: 0 0 25px rgba(0,0,0,0.25);
+        max-width: 500px;
+        width: 90%;
     }
 
+    /* LOGO – jetzt größer & elegant */
     .logo {
-        width: 160px;
-        margin-bottom: 20px;
+        width: 240px;             /* größere Premium-Optik */
+        margin: 0 auto 25px auto; /* schöner Abstand */
+        display: block;
     }
 
-    .bau-img {
-        width: 100%;
+    .image {
+        width: 75%;
         max-width: 300px;
-        margin: 15px auto;
-        border-radius: 12px;
-    }
-
-    h1 {
-        font-size: 32px;
-        color: #d40000;
-        margin-bottom: 8px;
-        font-weight: 900;
-    }
-
-    p {
-        font-size: 20px;
-        color: #555;
         margin-bottom: 25px;
     }
 
-    button {
-        width: 100%;
-        padding: 15px;
-        font-size: 20px;
+    /* Schreibmaschine */
+    .typewriter {
+        font-size: 26px;
         font-weight: bold;
-        border: none;
+        color: #d70000;
+        width: 26ch;
+        white-space: nowrap;
+        overflow: hidden;
+        border-right: 3px solid #d70000;
+        margin: 20px auto;
+        animation: typing 3s steps(26), blink .7s step-end infinite alternate;
+    }
+    @keyframes typing { from { width: 0; } }
+    @keyframes blink { 50% { border-color: transparent; } }
+
+    /* Wackeln */
+    .wobble {
+        font-size: 32px;
+        font-weight: 900;
+        color: #ff0000;
+        animation: wobble 1.4s ease-in-out infinite;
+        margin-top: 25px;
+    }
+    @keyframes wobble {
+        0%,100% { transform: rotate(0deg); }
+        25% { transform: rotate(3deg); }
+        50% { transform: rotate(-3deg); }
+        75% { transform: rotate(2deg); }
+    }
+
+    /* Blinklicht */
+    .blinklight {
+        font-size: 24px;
+        font-weight: bold;
+        color: #ff9900;
+        animation: blinklight 0.8s infinite;
+        margin-top: 20px;
+    }
+    @keyframes blinklight {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.2; }
+    }
+
+    /* Button */
+    .back-btn {
+        margin-top: 35px;
+        padding: 14px 26px;
         border-radius: 14px;
+        border: none;
+        font-size: 22px;
+        font-weight: bold;
         background: #444;
         color: white;
         cursor: pointer;
     }
-
-    button:active {
-        transform: scale(0.97);
-    }
+    .back-btn:active { transform: scale(0.97); }
 </style>
 </head>
 
 <body>
 
 <div class="box">
-    <img src="langen.png" class="logo" alt="Logo">
 
-    <img src="Baustelle.png" class="bau-img" alt="Baustelle">
+    <!-- DEIN LOGO (größer & schicker) -->
+    <img src="langen.png" class="logo" alt="Langen CNC Logo">
 
-    <h1>Baustelle</h1>
-    <p>Hier wird gerade gearbeitet…</p>
+    <!-- Baustellen-Bild -->
+    <img src="baustelle.png" class="image" alt="Baustelle">
 
-    <button onclick="history.back()">◀ Zurück</button>
+    <!-- Animation 1 -->
+    <div class="typewriter">⚠️ Baustelle – wir arbeiten daran …</div>
+
+    <!-- Animation 2 -->
+    <div class="wobble">🚧 Seite im Aufbau 🚧</div>
+
+    <!-- Animation 3 -->
+    <div class="blinklight">🔧 Bitte später wiederkommen</div>
+
+    <button class="back-btn" onclick="history.back()">◀ Zurück</button>
 </div>
 
 </body>
