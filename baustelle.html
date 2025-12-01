@@ -2,66 +2,68 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>Baustelle</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
     body {
         margin: 0;
-        padding: 0;
         font-family: Arial, sans-serif;
-        background: #f2f2f2;
+        background: #eef1f4;
+        height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
     }
 
     .card {
-        width: 90%;
+        width: 92%;
         max-width: 420px;
         background: white;
-        border-radius: 22px;
         padding: 30px 20px;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+        border-radius: 20px;
         text-align: center;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+
+    .logo {
+        width: 180px;
+        margin-bottom: 20px;
+    }
+
+    .bild {
+        width: 230px;
+        margin: 15px auto 25px auto;
+        display: block;
     }
 
     h1 {
-        font-size: 34px;
-        margin: 20px 0 5px 0;
-        color: #d40000;
+        font-size: 32px;
         font-weight: 900;
+        margin: 0;
+        color: #d60000;
     }
 
     p {
         font-size: 20px;
-        color: #555;
-        margin-bottom: 30px;
+        margin: 10px 0 25px 0;
+        color: #444;
         font-weight: 600;
     }
 
     button {
         width: 100%;
-        padding: 16px;
-        font-size: 22px;
+        padding: 15px;
         border: none;
         border-radius: 14px;
-        background: #333;
+        background: #444;
         color: white;
+        font-size: 20px;
         font-weight: bold;
-        cursor: pointer;
     }
 
     button:active {
         transform: scale(0.97);
-    }
-
-    svg {
-        width: 240px;
-        height: auto;
-        margin-bottom: 20px;
     }
 </style>
 </head>
@@ -70,43 +72,14 @@
 
 <div class="card">
 
-    <!-- 🔧 NEUES BAUSTELLEN-SVG MIT HELM (Inline, kein extra Bild nötig) -->
-    <svg viewBox="0 0 300 230">
-        <ellipse cx="150" cy="210" rx="120" ry="14" fill="#000" opacity="0.15"/>
+    <!-- Dein Logo -->
+    <img src="langen.png" class="logo" alt="Langen Logo">
 
-        <polygon points="150,20 260,75 260,150 150,205 40,150 40,75"
-                 fill="#ffcc00" stroke="#444" stroke-width="6" />
-
-        <text x="150" y="135"
-              font-family="Arial"
-              font-size="90"
-              font-weight="900"
-              text-anchor="middle"
-              fill="#333">!</text>
-
-        <g transform="translate(78,65)">
-            <path d="M0,45 C8,10 40,-5 78,-5 C110,-5 138,10 150,32 L150,45 Z"
-                  fill="#f4a300" stroke="#a86d00" stroke-width="4"/>
-            <rect x="62" y="5" width="12" height="28" fill="#f4a300"/>
-        </g>
-
-        <g transform="translate(70,140)">
-            <polygon points="0,60 25,0 50,60" fill="#ff7f00" stroke="#a64b00" stroke-width="3"/>
-            <rect x="7" y="25" width="36" height="8" fill="white"/>
-            <rect x="9" y="40" width="32" height="8" fill="white"/>
-            <rect y="60" width="50" height="10" fill="#cc6600"/>
-        </g>
-
-        <g transform="translate(180,140)">
-            <polygon points="0,60 25,0 50,60" fill="#ff7f00" stroke="#a64b00" stroke-width="3"/>
-            <rect x="7" y="25" width="36" height="8" fill="white"/>
-            <rect x="9" y="40" width="32" height="8" fill="white"/>
-            <rect y="60" width="50" height="10" fill="#cc6600"/>
-        </g>
-    </svg>
+    <!-- Platzhalter für dein Baustellen-Bild -->
+    <img src="baustelle.png" class="bild" alt="Baustelle">
 
     <h1>Baustelle</h1>
-    <p>Dieses Modul befindet sich noch in Arbeit…</p>
+    <p>Dieser Bereich ist aktuell noch in Arbeit…</p>
 
     <button onclick="history.back()">◀ Zurück</button>
 
