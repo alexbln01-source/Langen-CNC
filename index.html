@@ -7,16 +7,13 @@
 
 <title>Warenanhänger</title>
 
-<!-- 🔹 Nur die Web-App Icons, sonst nichts geändert -->
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" sizes="192x192" href="icon192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="icon512.png">
 <link rel="apple-touch-icon" href="icon192.png">
 
 <style>
-/* ============================================================
-   GLOBAL
-============================================================ */
+/* (dein vorhandenes CSS bleibt unverändert!) */
 html, body {
     margin: 0;
     padding: 0;
@@ -24,15 +21,8 @@ html, body {
     background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
     font-family: "Segoe UI", Arial, sans-serif;
 }
-/* DESKTOP: kein Scrollen */
-@media (min-width: 601px) {
-    html, body {
-        overflow: hidden;
-    }
-}
-/* ============================================================
-   MOBILE – APP-STYLE
-============================================================ */
+@media (min-width: 601px) { html, body { overflow: hidden; } }
+
 @media (max-width: 600px) {
     html, body {
         height: 100vh;
@@ -41,55 +31,17 @@ html, body {
         align-items: center;
         overflow: hidden;
     }
-
-    #main {
-        width: 100%;
-        max-width: 380px;
-        transform: scale(0.95);
-    }
-
-    button {
-        width: 260px;
-        height: 85px;
-        font-size: 24px;
-    }
+    #main { width: 100%; max-width: 380px; transform: scale(0.95); }
+    button { width: 260px; height: 85px; font-size: 24px; }
 }
-
-/* ============================================================
-   DESKTOP
-============================================================ */
 @media (min-width: 601px) {
-    #main {
-        margin: 60px auto;
-        width: 100%;
-        max-width: 650px;
-        padding: 20px 40px;
-    }
-
-    button {
-        width: 450px;
-        height: 60px;
-        font-size: 20px;
-    }
-
-    h1 {
-        font-size: 40px;
-    }
+    #main { margin: 60px auto; width: 100%; max-width: 650px; padding: 20px 40px; }
+    button { width: 450px; height: 60px; font-size: 20px; }
+    h1 { font-size: 40px; }
 }
 
-/* ============================================================
-   LOGO
-============================================================ */
-#logo {
-    width: 80%;
-    max-width: 320px;
-    margin: 0 auto 25px auto;
-    display: block;
-}
+#logo { width: 80%; max-width: 320px; margin: 0 auto 25px auto; display: block; }
 
-/* ============================================================
-   TITEL
-============================================================ */
 h1 {
     margin: 0 0 30px 0;
     font-size: 32px;
@@ -98,9 +50,6 @@ h1 {
     text-align: center;
 }
 
-/* ============================================================
-   BUTTONS
-============================================================ */
 button {
     margin: 18px auto;
     display: block;
@@ -117,9 +66,6 @@ button {
 #btnPaus         { background: linear-gradient(#28a745,#1d7f31); }
 #btnSchweissen   { background: linear-gradient(#9c27b0,#6a0080); }
 
-/* ============================================================
-   FOOTER
-============================================================ */
 footer {
     margin-top: 40px;
     font-size: 16px;
@@ -129,15 +75,23 @@ footer {
 </style>
 
 <script>
-/* Beschichtung bleibt aktiv */
-function openBeschichtung() { 
-    window.location.href = "start.html?bereich=beschichtung"; 
+/* ⭐ Beschichtung aktiv */
+function openBeschichtung() {
+    window.location.href = "start.html?bereich=beschichtung";
 }
 
-/* Alle anderen Bereiche → Baustelle */
-function openKanten()       { window.location.href = "baustelle.html"; }
-function openPaus()         { window.location.href = "baustelle.html"; }
-function openSchweissen()   { window.location.href = "baustelle.html"; }
+/* ⭐ Kanten jetzt aktiv – führt zu kanten_mobile */
+function openKanten() {
+    window.location.href = "start.html?bereich=kanten";
+}
+
+/* ⭐ Diese Bereiche bleiben Baustelle */
+function openPaus() {
+    window.location.href = "baustelle.html";
+}
+function openSchweissen() {
+    window.location.href = "baustelle.html";
+}
 </script>
 
 </head>
