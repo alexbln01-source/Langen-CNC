@@ -10,8 +10,8 @@ const kundenLayouts = {
     "Bergmann M-H": [
         { text: "<kunde>", size: "48pt", marginTop: "4mm" },
         { text: "Kanten", size: "34pt", marginTop: "3mm" },
-        { text: "K-Termin: ________", size: "28pt", marginTop: "6mm" },
-        { text: "Palettennummer: ________", size: "28pt", marginTop: "4mm" }
+        { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" },
+        { text: "Palettennummer: ________", size: "28pt", marginTop: "6mm" }
     ],
 
     "Bücker": [
