@@ -8,66 +8,64 @@ let customCustomer   = "";
 const kundenLayouts = {
 
     "Bergmann M-H": [
-        { text: "<kunde>", size: "48pt", marginTop: "4mm" },
-        { text: "Kanten", size: "34pt", marginTop: "3mm" },
+        { text: "<kunde>", size: "48pt", marginTop: "1mm" },
+        { text: "Kanten", size: "48pt", marginTop: "2mm" },
         { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" },
-        { text: "Palettennummer: ________", size: "28pt", marginTop: "6mm" }
+        { text: "Palettennummer: ________", size: "28pt", marginTop: "12mm" }
     ],
 
     "Bücker": [
-        { text: "<kunde>", size: "48pt", marginTop: "4mm" },
-        { text: "Kanten", size: "34pt", marginTop: "3mm" },
-        { text: "K-Termin: ________", size: "28pt", marginTop: "6mm" },
-        { text: "Palettennummer: ________", size: "28pt", marginTop: "4mm" }
+        { text: "<kunde>", size: "48pt", marginTop: "1mm" },
+        { text: "Kanten", size: "48pt", marginTop: "2mm" },
+        { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" },
+        { text: "Palettennummer: ________", size: "28pt", marginTop: "12mm" }
     ],
 
     "Grimme": [
-        { text: "<kunde>", size: "48pt", marginTop: "4mm" },
-        { text: "Kanten", size: "34pt", marginTop: "3mm" },
-        { text: "K-Termin: ________", size: "28pt", marginTop: "6mm" },
-        { text: "Palettennummer: ________", size: "28pt", marginTop: "4mm" }
+        { text: "<kunde>", size: "48pt", marginTop: "1mm" },
+        { text: "Kanten", size: "48pt", marginTop: "2mm" },
+        { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" },
+        { text: "Palettennummer: ________", size: "28pt", marginTop: "12mm" }
     ],
 
     "Janzen": [
-        { text: "<kunde>", size: "48pt", marginTop: "4mm" },
-        { text: "Kanten", size: "34pt", marginTop: "3mm" },
-        { text: "K-Termin: ________", size: "28pt", marginTop: "6mm" },
-        { text: "Palettennummer: ________", size: "28pt", marginTop: "4mm" }
+        { text: "<kunde>", size: "48pt", marginTop: "1mm" },
+        { text: "Kanten", size: "48pt", marginTop: "2mm" },
+        { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" },
+        { text: "Palettennummer: ________", size: "28pt", marginTop: "12mm" }
     ],
 
     "Krone Spelle": [
-        { text: "<kunde>", size: "48pt", marginTop: "4mm" },
-        { text: "Kanten", size: "34pt", marginTop: "3mm" },
-        { text: "K-Termin: ________", size: "28pt", marginTop: "6mm" },
-        { text: "Palettennummer: ________", size: "28pt", marginTop: "4mm" }
+        { text: "<kunde>", size: "48pt", marginTop: "1mm" },
+        { text: "Kanten", size: "48pt", marginTop: "2mm" },
+        { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" },
+        { text: "Palettennummer: ________", size: "28pt", marginTop: "12mm" }
     ],
 
     "L.Bergmann": [
-        { text: "<kunde>", size: "48pt", marginTop: "4mm" },
-        { text: "Kanten", size: "34pt", marginTop: "3mm" },
-        { text: "K-Termin: ________", size: "28pt", marginTop: "6mm" },
-        { text: "Palettennummer: ________", size: "28pt", marginTop: "4mm" }
+        { text: "<kunde>", size: "48pt", marginTop: "1mm" },
+        { text: "Kanten", size: "48pt", marginTop: "2mm" },
+        { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" },
+        { text: "Palettennummer: ________", size: "28pt", marginTop: "12mm" }
     ],
 
     "PAUS": [
-        { text: "<kunde>", size: "48pt", marginTop: "4mm" },
-        { text: "Kanten", size: "34pt", marginTop: "3mm" },
-        { text: "K-Termin: ________", size: "28pt", marginTop: "6mm" },
-        { text: "Palettennummer: ________", size: "28pt", marginTop: "4mm" }
+        { text: "<kunde>", size: "48pt", marginTop: "14mm" },
+        { text: "Kanten", size: "48pt", marginTop: "2mm" },
+        { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" }
+        
     ],
 
     "TOS": [
-        { text: "<kunde>", size: "48pt", marginTop: "4mm" },
-        { text: "Kanten", size: "34pt", marginTop: "3mm" },
-        { text: "K-Termin: ________", size: "28pt", marginTop: "6mm" },
-        { text: "Palettennummer: ________", size: "28pt", marginTop: "4mm" }
-    ],
+        { text: "<kunde>", size: "48pt", marginTop: "18mm" },
+        { text: "Kanten", size: "48pt", marginTop: "2mm" }
+],
 
     "SONSTIGE": [
-        { text: "<kundeneingabe>", size: "48pt", marginTop: "4mm" },
-        { text: "Kanten", size: "34pt", marginTop: "3mm" },
-        { text: "K-Termin: ________", size: "28pt", marginTop: "6mm" },
-        { text: "Palettennummer: ________", size: "28pt", marginTop: "4mm" }
+        { text: "<kundeneingabe>", size: "48pt", marginTop: "1mm" },
+        { text: "Kanten", size: "48pt", marginTop: "2mm" },
+        { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" },
+        { text: "Palettennummer: ________", size: "28pt", marginTop: "12mm" }
     ]
 };
 
