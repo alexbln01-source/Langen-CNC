@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>PAUS Druck</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 148mm;
+    height: 105mm;
+    background: white;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+.etikett {
+    width: 148mm;
+    height: 105mm;
+    padding: 8mm;
+    box-sizing: border-box;
+    text-align: center;
+    position: relative;
+}
+
+#vorgezogenText {
+    position: absolute;
+    bottom: 20mm;
+    width: 100%;
+    text-align: center;
+    font-size: 34pt;
+    font-weight: bold;
+    display: none;
+}
+
+#logo {
+    position: absolute;
+    right: 5mm;
+    bottom: 6mm;
+    width: 43mm;
+}
+
+@media print {
+    @page { size: A6 landscape; margin: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="etikett">
+    <div id="content"></div>
+    <div id="vorgezogenText">„Vorgezogen“</div>
+    <img id="logo" src="../Langen.png">
+</div>
+
+<script>
+const qs = new URLSearchParams(location.search);
+const data = JSON.parse(decodeURIComponent(qs.get("data")));
+
+const kom = data.kommission;
+const dat = data.lieferdatum;
+const farbe = data.farbe;
+const vorgezogen = data.vorgezogen;
+
+let isPast = false;
+
+if (dat) {
+    const parts = dat.split(".");
+    const now = new Date();
+    const d = new Date(now.getFullYear(), parts[1]-1, parts[0]);
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    if (d < today) isPast = true;
+}
+
+let dateHTML = isPast
+    ? `<div style="font-size:40pt;border:3px solid red;padding:6px;border-radius:6px;margin-top:4mm;">${dat}</div>`
+    : `<div style="font-size:40pt;margin-top:4mm;color:black;">${dat}</div>`;
+
+document.getElementById("content").innerHTML = `
+    <div style="font-size:24pt;font-weight:bold;">PAUS</div>
+    <div style="font-size:48pt;font-weight:bold;color:${farbe};margin-top:4mm;">${kom}</div>
+    ${dateHTML}
+`;
+
+if (vorgezogen) {
+    const vz = document.getElementById("vorgezogenText");
+    vz.style.display = "block";
+    vz.style.color = farbe;
+}
+
+window.onload = () => {
+    if (!(window.Android && typeof Android.printPaus === "function")) {
+        window.print();
+    }
+};
+
+window.onafterprint = () => {
+    if (!(window.Android && typeof Android.printPaus === "function")) {
+        history.back();
+    }
+};
+</script>
+
+</body>
+</html>

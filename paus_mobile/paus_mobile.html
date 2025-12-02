@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>PAUS Lieferung</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="paus_mobile.css">
+</head>
+
+<body>
+
+<div class="page">
+
+    <h1 class="title">PAUS Lieferung</h1>
+
+    <div class="color-buttons">
+        <button class="color-btn color-red active" data-color="red">Rot</button>
+        <button class="color-btn color-blue" data-color="blue">Blau</button>
+        <button class="color-btn color-black" data-color="black">Schwarz</button>
+    </div>
+
+    <div class="vorgezogen-row">
+        <input type="checkbox" id="chkVorgezogen">
+        <span>Auftrag vorgezogen</span>
+    </div>
+
+    <input id="kommission" type="text" placeholder="Kommissionsnummer" readonly>
+    <input id="lieferdatum" type="text" placeholder="Lieferdatum (TT.MM)" readonly>
+
+    <div class="bottom-row">
+        <button id="backBtn" class="back-btn">◀ Zurück</button>
+        <button id="druckenBtn" class="primary-btn">Weiter → Vorschau</button>
+    </div>
+
+</div>
+
+<div id="keyboardPopup" class="kb-popup">
+    <div class="kb-modal">
+        <h3 id="keyboardTitle">Eingeben</h3>
+        <input type="text" id="keyboardInput">
+        <div class="kb-grid" id="keyboardKeys"></div>
+
+        <div class="kb-actions">
+            <button id="keyboardDelete" class="kb-del">⌫</button>
+            <button id="keyboardOK" class="kb-ok">OK</button>
+            <button id="keyboardClose" class="kb-close">Schließen</button>
+        </div>
+    </div>
+</div>
+
+<script src="paus_mobile.js"></script>
+</body>
+</html>
