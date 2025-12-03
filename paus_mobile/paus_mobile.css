@@ -40,29 +40,48 @@ html, body {
 }
 
 /* =============================
-     Farbauswahl
+     Farbauswahl (kräftige Buttons)
    ============================= */
 .color-row {
     display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 12px;
+    margin-bottom: 14px;
+    width: 100%;
+    justify-content: center;
 }
 
 .color-btn {
-    padding: 10px 18px;
+    width: 100px;
+    padding: 12px 0;
     border-radius: 14px;
     border: none;
-    background: white;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    color: white;
+    font-size: 16px;
+    font-weight: 800;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    transition: transform 0.08s ease;
+    cursor: pointer;
+}
 
-    font-size: 14px;
-    font-weight: 700;
-    color: #003a73;
+.color-btn:active {
+    transform: scale(0.94);
+}
+
+.color-btn[data-color="red"] {
+    background: #d92828;
+}
+
+.color-btn[data-color="blue"] {
+    background: #0066cc;
+}
+
+.color-btn[data-color="black"] {
+    background: #222;
 }
 
 .color-btn.active {
-    background: #007bff;
-    color: white;
+    outline: 3px solid #003a73;
+    filter: brightness(1.15);
 }
 
 /* =============================
@@ -112,6 +131,7 @@ html, body {
     font-size: 20px;
     font-weight: bold;
     color: white;
+    cursor: pointer;
 }
 
 .back-btn {
