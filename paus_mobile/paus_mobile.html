@@ -5,10 +5,7 @@
 <title>PAUS Lieferung</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Mobile CSS -->
 <link rel="stylesheet" href="paus_mobile.css">
-
-<!-- Mobile Script -->
 <script src="paus_mobile.js" defer></script>
 </head>
 
@@ -16,54 +13,47 @@
 
 <div class="page">
 
-    <h1>PAUS Lieferung</h1>
+    <div class="title">PAUS Lieferung</div>
 
-    <!-- FARBAUSWAHL -->
+    <!-- Farbauswahl -->
     <div class="color-row">
         <button class="color-btn" data-color="red">Rot</button>
         <button class="color-btn" data-color="blue">Blau</button>
         <button class="color-btn" data-color="black">Schwarz</button>
     </div>
 
-    <!-- VORGEZOGEN -->
+    <!-- Vorgezogen -->
     <div class="vorgezogen-row">
         <input type="checkbox" id="chkVorgezogen">
         <label for="chkVorgezogen">Auftrag vorgezogen</label>
     </div>
 
-    <!-- KOMMISSION -->
-    <input type="text" id="kommission" placeholder="Kommissionsnummer" readonly>
+    <!-- Felder -->
+    <input class="input-field" id="kommission" placeholder="Kommissionsnummer" readonly>
+    <input class="input-field" id="lieferdatum" placeholder="Lieferdatum (TT.MM)" readonly>
 
-    <!-- LIEFERDATUM -->
-    <input type="text" id="lieferdatum" placeholder="Lieferdatum (TT.MM)" readonly>
-
-    <!-- NAVIGATION -->
-    <div class="nav-row">
-        <button class="nav-btn back" id="backBtn">◀ Zurück</button>
-        <button class="nav-btn next" id="nextBtn">Weiter → Vorschau</button>
+    <!-- Buttons -->
+    <div class="bottom-row">
+        <button class="back-btn" id="backBtn">◀ Zurück</button>
+        <button class="primary-btn" id="nextBtn">Drucken</button>
     </div>
+
 </div>
 
-<!-- -------------------------------------------------
-     ZEBRA STYLE POPUP KEYBOARD
---------------------------------------------------- -->
-<div class="kb-overlay" id="keyboardPopup">
-    <div class="kb-box">
+<!-- Tastatur -->
+<div id="keyboardPopup">
+    <div id="keyboardBox">
 
-        <!-- Dynamischer Titel -->
-        <div class="kb-title" id="keyboardTitle">Eingeben</div>
+        <h2 id="keyboardTitle">Eingeben</h2>
 
-        <!-- Eingabefeld -->
-        <input id="keyboardInput" type="text" readonly>
+        <input id="keyboardInput" readonly>
 
-        <!-- Zahlenfeld -->
-        <div class="kb-grid" id="keyboardKeys"></div>
+        <div id="keyboardKeys"></div>
 
-        <!-- Aktionen -->
-        <div class="kb-actions">
-            <button id="keyboardDelete" class="kb-cancel">⌫</button>
-            <button id="keyboardOK" class="kb-ok">OK</button>
-            <button id="keyboardClose" class="kb-close">Schließen</button>
+        <div id="kbActions">
+            <button id="keyboardDelete">⌫</button>
+            <button id="keyboardOK">OK</button>
+            <button id="keyboardClose">Schließen</button>
         </div>
 
     </div>
