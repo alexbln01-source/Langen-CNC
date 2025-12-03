@@ -1,9 +1,7 @@
 let activeInput = null;
 let currentColor = "red";
 
-/* -------------------------------
-   Farbauswahl
--------------------------------- */
+/* Farbknöpfe */
 document.querySelectorAll(".color-btn").forEach(btn => {
     btn.addEventListener("click", () => {
         document.querySelectorAll(".color-btn").forEach(b => b.classList.remove("active"));
@@ -12,9 +10,7 @@ document.querySelectorAll(".color-btn").forEach(btn => {
     });
 });
 
-/* -------------------------------
-   Popup Keyboard Grid erzeugen
--------------------------------- */
+/* Tastatur-Buttons erzeugen */
 const grid = document.getElementById("keyboardKeys");
 ["1","2","3","4","5","6","7","8","9","0"].forEach(c => {
     const b = document.createElement("button");
@@ -23,9 +19,7 @@ const grid = document.getElementById("keyboardKeys");
     grid.appendChild(b);
 });
 
-/* -------------------------------
-   Felder öffnen Tastatur
--------------------------------- */
+/* Felder öffnen Tastatur */
 kommission.onclick = () => openKeyboard("kommission");
 lieferdatum.onclick = () => openKeyboard("lieferdatum");
 
@@ -37,21 +31,14 @@ function openKeyboard(id) {
         id === "kommission" ? "Kommissionsnummer" : "Lieferdatum";
 }
 
-/* -------------------------------
-   Keyboard Buttons
--------------------------------- */
+/* Keyboard Aktionen */
 keyboardClose.onclick = () => keyboardPopup.style.display = "none";
+
 keyboardDelete.onclick = () =>
     keyboardInput.value = keyboardInput.value.slice(0, -1);
 
 keyboardOK.onclick = handleKeyboardOK;
-keyboardInput.addEventListener("keydown", e => {
-    if (e.key === "Enter") handleKeyboardOK();
-});
 
-/* -------------------------------
-   Eingaben übernehmen
--------------------------------- */
 function handleKeyboardOK() {
     if (!activeInput) return;
 
@@ -66,7 +53,7 @@ function handleKeyboardOK() {
 
     activeInput.value = val;
 
-    // Automatisches Weitergehen
+    // Automatisch zum Feld weiter
     if (activeInput.id === "kommission") {
         openKeyboard("lieferdatum");
         return;
@@ -75,11 +62,8 @@ function handleKeyboardOK() {
     keyboardPopup.style.display = "none";
 }
 
-/* -------------------------------
-   Drucken / Vorschau
--------------------------------- */
+/* Drucken */
 nextBtn.onclick = () => {
-
     if (!kommission.value.trim()) {
         alert("Bitte Kommissionsnummer eingeben!");
         return;
