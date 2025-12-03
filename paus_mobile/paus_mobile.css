@@ -9,7 +9,7 @@ html, body {
     font-family: Arial, sans-serif;
 }
 
-/* Hauptseite zentrieren */
+/* Zentrierter Inhalt */
 .page {
     max-width: 600px;
     margin: 20px auto;
@@ -30,10 +30,11 @@ h1 {
 }
 
 .color-btn {
-    padding: 6px 12px;
+    padding: 10px 18px;
     background: white;
     border: 1px solid black;
-    border-radius: 6px;
+    border-radius: 8px;
+    font-size: 18px;
 }
 
 .color-btn.active {
@@ -41,7 +42,7 @@ h1 {
     color: white;
 }
 
-/* Checkbox + Labels */
+/* Checkbox */
 .vorgezogen-row {
     margin-bottom: 15px;
     display: flex;
@@ -52,11 +53,11 @@ h1 {
 /* Eingabefelder */
 input[type="text"] {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     font-size: 20px;
-    margin-bottom: 15px;
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid #888;
+    margin-bottom: 15px;
 }
 
 /* Navigation */
@@ -67,11 +68,12 @@ input[type="text"] {
 }
 
 .nav-btn {
-    padding: 12px 20px;
+    padding: 14px 22px;
     font-size: 18px;
-    border-radius: 8px;
+    border-radius: 10px;
     border: none;
     color: white;
+    cursor: pointer;
 }
 
 .nav-btn.back {
@@ -93,13 +95,12 @@ input[type="text"] {
     display: none;
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(2px);
 }
 
 .kb-box {
     background: #f0f0f0;
     padding: 18px;
-    border-radius: 6px;
+    border-radius: 10px;
     width: 300px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.35);
     border: 2px solid #444;
@@ -108,37 +109,34 @@ input[type="text"] {
 .kb-title {
     font-size: 22px;
     font-weight: bold;
-    margin-bottom: 10px;
     text-align: center;
-    color: #222;
+    margin-bottom: 12px;
 }
 
 #keyboardInput {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     font-size: 22px;
     border: 2px solid #0078ff;
-    border-radius: 4px;
-    outline: none;
-    margin-bottom: 12px;
+    border-radius: 6px;
     text-align: center;
+    margin-bottom: 12px;
 }
 
 /* Zahlenfeld */
 .kb-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 6px;
-    margin-bottom: 12px;
+    gap: 8px;
+    margin-bottom: 14px;
 }
 
 .kb-grid button {
-    padding: 14px 0;
+    padding: 16px 0;
     font-size: 20px;
-    border-radius: 4px;
+    border-radius: 6px;
     background: #e3e3e3;
     border: 1px solid #777;
-    color: #000;
     font-weight: bold;
 }
 
@@ -146,18 +144,17 @@ input[type="text"] {
     background: #c8c8c8;
 }
 
-/* Buttons unten */
+/* Aktionen */
 .kb-actions {
     display: flex;
     gap: 10px;
-    margin-top: 8px;
 }
 
 .kb-actions button {
     flex: 1;
-    padding: 12px 0;
+    padding: 14px 0;
     font-size: 18px;
-    border-radius: 4px;
+    border-radius: 6px;
     border: none;
     font-weight: bold;
 }
