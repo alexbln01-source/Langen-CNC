@@ -4,7 +4,11 @@
 <meta charset="UTF-8">
 <title>PAUS Lieferung</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Mobile CSS -->
 <link rel="stylesheet" href="paus_mobile.css">
+
+<!-- Mobile Script -->
 <script src="paus_mobile.js" defer></script>
 </head>
 
@@ -14,51 +18,52 @@
 
     <h1>PAUS Lieferung</h1>
 
-    <!-- Farbauswahl -->
+    <!-- FARBAUSWAHL -->
     <div class="color-row">
         <button class="color-btn" data-color="red">Rot</button>
         <button class="color-btn" data-color="blue">Blau</button>
         <button class="color-btn" data-color="black">Schwarz</button>
     </div>
 
-    <!-- Vorgezogen -->
+    <!-- VORGEZOGEN -->
     <div class="vorgezogen-row">
-        <input type="checkbox" id="vorgezogenCheck">
-        <label for="vorgezogenCheck">Auftrag vorgezogen</label>
+        <input type="checkbox" id="chkVorgezogen">
+        <label for="chkVorgezogen">Auftrag vorgezogen</label>
     </div>
 
-    <!-- Kommissionsnummer -->
+    <!-- KOMMISSION -->
     <input type="text" id="kommission" placeholder="Kommissionsnummer" readonly>
 
-    <!-- Lieferdatum -->
+    <!-- LIEFERDATUM -->
     <input type="text" id="lieferdatum" placeholder="Lieferdatum (TT.MM)" readonly>
 
-    <!-- Navigation -->
+    <!-- NAVIGATION -->
     <div class="nav-row">
         <button class="nav-btn back" id="backBtn">◀ Zurück</button>
         <button class="nav-btn next" id="nextBtn">Weiter → Vorschau</button>
     </div>
 </div>
 
-<!-- ---------------------------------------------
+<!-- -------------------------------------------------
      ZEBRA STYLE POPUP KEYBOARD
------------------------------------------------ -->
+--------------------------------------------------- -->
 <div class="kb-overlay" id="keyboardPopup">
     <div class="kb-box">
 
+        <!-- Dynamischer Titel -->
         <div class="kb-title" id="keyboardTitle">Eingeben</div>
 
+        <!-- Eingabefeld -->
         <input id="keyboardInput" type="text" readonly>
 
-        <div class="kb-grid">
-            <button>1</button><button>2</button><button>3</button><button>4</button><button>5</button>
-            <button>6</button><button>7</button><button>8</button><button>9</button><button>0</button>
-        </div>
+        <!-- Zahlenfeld -->
+        <div class="kb-grid" id="keyboardKeys"></div>
 
+        <!-- Aktionen -->
         <div class="kb-actions">
-            <button class="kb-cancel">⌫</button>
-            <button class="kb-ok">OK</button>
-            <button class="kb-close">Schließen</button>
+            <button id="keyboardDelete" class="kb-cancel">⌫</button>
+            <button id="keyboardOK" class="kb-ok">OK</button>
+            <button id="keyboardClose" class="kb-close">Schließen</button>
         </div>
 
     </div>
