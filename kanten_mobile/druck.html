@@ -2,181 +2,155 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Druck</title>
+<title>PAUS Druck</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #dcdcdc;
+    font-family: Arial, sans-serif;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Vorschau-Bereich */
+.preview-wrapper {
+    width: 100%;
+    height: calc(100% - 150px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Vorschau-Fenster */
+.preview-area {
+    width: 148mm;
+    height: 105mm;
+    background: white;
+    box-shadow: 0 0 15px rgba(0,0,0,0.25);
+    position: relative;
+    transform-origin: center;
+}
+
+/* Skalierung wie Kanten */
+@media (max-width: 900px) { .preview-area { transform: scale(0.51); } }
+@media (min-width: 901px) and (max-width: 1300px) { .preview-area { transform: scale(0.64); } }
+@media (min-width: 1301px) { .preview-area { transform: scale(0.72); } }
+
+/* Etikett */
+.etikett {
+    width: 148mm;
+    height: 105mm;
+    padding: 8mm;
+    box-sizing: border-box;
+    text-align: center;
+    position: relative;
+}
+
+/* Logo */
+.logo {
+    position: absolute;
+    right: 5mm;
+    bottom: 6mm;
+    width: 43mm;
+}
+
+/* --- FLEXIBLES ZEILEN-SYSTEM --- */
+.line {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Titel */
+.line-title {
+    font-size: 26pt;
+    margin-top: 2mm;
+}
+
+/* Kommission */
+.line-kommission {
+    font-size: 48pt;
+    margin-top: 4mm;
+}
+
+/* Datum */
+.line-date {
+    font-size: 40pt;
+    margin-top: 4mm;
+
+    /* Rahmen nur so breit wie das Datum */
+    display: inline-block;
+    padding: 0 6px;
+}
+
+/* Datum in der Vergangenheit (2-Monats-Regel) → roter Rahmen */
+.date-past {
+    border: 3px solid red;
+    border-radius: 6px;
+    display: inline-block;
+    padding: 4px 10px;
+}
+
+/* Vorgezogen-Zeile */
+.line-vorgezogen {
+    font-size: 34pt;
+    margin-top: 10mm;
+}
+
+/* Buttons */
+.bottom-bar {
+    margin-top: 30px;
+    height: 60px;
+    display: flex;
+    gap: 16px;
+    padding: 0 20px;
+}
+
+.btn {
+    flex: 1;
+    border: none;
+    border-radius: 14px;
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+}
+
+.back-btn { background: #444; }
+.print-btn { background: #00963d; }
+
+/* Druckansicht */
+@media print {
     html, body {
-        margin: 0;
-        padding: 0;
-        background: #dcdcdc;
-        font-family: Arial, sans-serif;
-        height: 100%;
-        overflow: hidden;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 148mm !important;
+        height: 105mm !important;
+        overflow: visible !important;
+        background: white !important;
     }
 
-    /* ===== VORSCHAU IMMER QUERFORMAT ===== */
-    .preview-wrapper {
-        width: 100%;
-        height: calc(100% - 150px);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-    }
-
-    .preview-area {
-        width: 210mm;
-        height: 148mm;
-        background: white;
-        box-shadow: 0 0 15px rgba(0,0,0,0.25);
-        position: relative;
-        transform-origin: center;
-    }
-
-    /* HANDY SKALIERUNG */
-    @media (max-width: 900px) {
-        .preview-area {
-            transform: scale(0.36);
-        }
-    }
-
-    /* PC SKALIERUNG */
-    @media (min-width: 901px) {
-        .preview-area {
-            transform: scale(0.45);
-        }
-    }
-
-    /* ETIKETT */
-    .etikett {
-        width: 210mm;
-        height: 148mm;
-        padding: 10mm;
-        box-sizing: border-box;
-        text-align: center;
-        position: relative;
-    }
-
-    .logo {
-        position: absolute;
-        right: 10mm;
-        bottom: 10mm;
-        width: 42mm;
-    }
-
-    .print-spacer {
-        height: 16mm;
-        width: 100%;
-    }
-
-    /* ALLES AUF DEM ETIKETT FETT */
-    .etikett * {
-        font-weight: bold !important;
-    }
-
-    .kunde-lp { font-size: 70pt; margin-bottom: 8mm; }
-    .sub-lp { font-size: 70pt; margin-bottom: 8mm; }
-
-    .kunde-lp-eilt { font-size: 70pt; margin-bottom: 8mm; }
-    .sub-lp-eilt { font-size: 60pt; margin-bottom: 6mm; }
-
-    .kunde-schuette { font-size: 70pt; margin-bottom: 8mm; }
-    .kunde-schuette-eilt { font-size: 70pt; margin-bottom: 8mm; }
-    .sub-schuette-eilt { font-size: 60pt; margin-bottom: 6mm; }
-
-    .kunde-kley { font-size: 70pt; margin-bottom: 8mm; }
-    .kunde-kley-eilt { font-size: 70pt; margin-bottom: 8mm; }
-    .sub-kley-eilt { font-size: 60pt; margin-bottom: 6mm; }
-
-    .kunde-comte-zn8 { font-size: 70pt; margin-bottom: 6mm; }
-    .sub-comte-zn8 { font-size: 32pt; margin-bottom: 6mm; }
-
-    .kunde-comte-zni8 { font-size: 70pt; margin-bottom: 6mm; }
-    .sub-comte-zni8 { font-size: 32pt; margin-bottom: 6mm; }
-
-    .kunde-chemisch { font-size: 70pt; margin-bottom: 6mm; }
-    .sub-chemisch { font-size: 32pt; margin-bottom: 6mm; }
-
-    .kunde-dick { font-size: 70pt; margin-bottom: 6mm; }
-    .sub-dick { font-size: 32pt; margin-bottom: 6mm; }
-
-    .kunde-blau { font-size: 70pt; margin-bottom: 6mm; }
-    .sub-blau { font-size: 32pt; margin-bottom: 6mm; }
-
-    .kunde-pentz { font-size: 70pt; margin-bottom: 8mm; }
-    .sub-pentz { font-size: 32pt; margin-bottom: 6mm; }
-
-    .kunde-rcs { font-size: 70pt; margin-bottom: 8mm; }
-    .sub-rcs { font-size: 32pt; margin-bottom: 6mm; }
-
-    .kunde-coatinc { font-size: 70pt; margin-bottom: 8mm; }
-    .sub-coatinc { font-size: 32pt; margin-bottom: 6mm; }
-
-    .print-beistell {
-        font-size: 60pt;
-        margin-bottom: 12mm;
-    }
-
-    .print-name {
-        font-size: 32pt;
-        margin-top: 4mm;
-    }
-
+    .preview-wrapper,
     .bottom-bar {
-        margin-top: 30px;
-        height: 60px;
-        display: flex;
-        gap: 16px;
-        padding: 0 20px;
-        background: none;
+        display: none !important;
     }
 
-    .btn {
-        flex: 1;
-        border: none;
-        border-radius: 14px;
-        font-size: 18px;
-        font-weight: bold;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    #printArea {
+        display: block !important;
+        width: 148mm !important;
+        height: 105mm !important;
     }
 
-    .back-btn { background: #444; }
-    .print-btn { background: #00963d; }
-
-    @media print {
-        html, body {
-            margin: 0 !important;
-            padding: 0 !important;
-            width: 210mm !important;
-            height: 148mm !important;
-            overflow: visible !important;
-        }
-
-        .preview-wrapper,
-        .bottom-bar {
-            display: none !important;
-        }
-
-        #printArea {
-            display: block !important;
-            width: 210mm !important;
-            height: 148mm !important;
-        }
-
-        @page {
-            size: A5 landscape;
-            margin: 0;
-        }
-    }
+    @page { size: A6 landscape; margin: 0; }
+}
 </style>
 </head>
 
 <body>
 
+<!-- VORSCHAU -->
 <div class="preview-wrapper">
     <div class="preview-area">
         <div id="previewContent" class="etikett"></div>
@@ -184,11 +158,13 @@
     </div>
 </div>
 
+<!-- DRUCK -->
 <div id="printArea" class="etikett" style="display:none;">
     <div id="printContent"></div>
     <img src="langen.png" class="logo">
 </div>
 
+<!-- BUTTONS -->
 <div class="bottom-bar">
     <button class="btn back-btn" id="backBtn">◀ Zurück</button>
     <button class="btn print-btn" id="printBtn">Drucken</button>
@@ -198,67 +174,61 @@
 window.onload = () => {
 
     const qs = new URLSearchParams(location.search);
-    const data = qs.has("data") ? JSON.parse(decodeURIComponent(qs.get("data"))) : {};
+    const data = JSON.parse(decodeURIComponent(qs.get("data")));
 
-    const beistell = data.beistell || "";
-    const type     = data.selectedType || "";
-    const kunde    = data.kundename || "";
+    const kom = data.kommission;
+    const dat = data.lieferdatum;
+    const farbe = data.farbe;
+    const vorgezogen = data.vorgezogen;
 
+    /* --- Datum prüfen mit 2-Monats-Regel --- */
+    let isPast = false;
+    if (dat) {
+        const parts = dat.split(".");
+        const heute = new Date();
+
+        // Datum aus Etikett mit heutigem Jahr
+        const datumDate = new Date(heute.getFullYear(), parts[1] - 1, parts[0]);
+
+        // Nur Datum ohne Uhrzeit für "heute"
+        const heuteNurDatum = new Date(heute.getFullYear(), heute.getMonth(), heute.getDate());
+
+        // Monatsdifferenz berechnen
+        let diffMonate =
+            (heute.getFullYear() - datumDate.getFullYear()) * 12 +
+            (heute.getMonth() - datumDate.getMonth());
+
+        if (datumDate.getDate() > heute.getDate()) diffMonate--;
+
+        const pastDate = (datumDate < heuteNurDatum) && (diffMonate <= 2);
+
+        if (pastDate) isPast = true;
+    }
+
+    /* --- FLEXIBLE ZEILEN AUFBAUEN --- */
     let html = `
-        <div class="print-spacer"></div>
-        <div class="print-beistell">${beistell}</div>
+        <div class="line line-title">PAUS</div>
+        <div class="line line-kommission" style="color:${farbe};">${kom}</div>
     `;
 
-    switch(type) {
-        case "LP": html += `<div class="kunde-lp">L&P</div>`; break;
-        case "LPEILT": html += `<div class="kunde-lp-eilt">L&P</div><div class="sub-lp-eilt">„EILT SEHR“</div>`; break;
-        case "SCHUETTE": html += `<div class="kunde-schuette">Schütte</div>`; break;
-        case "SCHUETTEEILT": html += `<div class="kunde-schuette-eilt">Schütte</div><div class="sub-schuette-eilt">„EILT SEHR“</div>`; break;
-        case "KLEY": html += `<div class="kunde-kley">Kleymann</div>`; break;
-        case "KLEYEILT": html += `<div class="kunde-kley-eilt">Kleymann</div><div class="sub-kley-eilt">„EILT SEHR“</div>`; break;
-        case "COMTEZN8": html += `<div class="kunde-comte-zn8">Comte</div><div class="sub-comte-zn8">„Zn8“</div>`; break;
-        case "COMTEZNI8": html += `<div class="kunde-comte-zni8">Comte</div><div class="sub-comte-zni8">„ZnI8“</div>`; break;
-        case "CHEMISCH": html += `<div class="kunde-chemisch">Comte</div><div class="sub-chemisch">„Chemisch Vernickeln“</div>`; break;
-        case "DICK": html += `<div class="kunde-dick">Comte</div><div class="sub-dick">„Dickschichtpassivierung“</div>`; break;
-        case "BLAU": html += `<div class="kunde-blau">Comte</div><div class="sub-blau">„Blau“</div>`; break;
-        case "PENTZ": html += `<div class="kunde-pentz">Pentz & Gerdes</div><div class="sub-pentz">„ZN8“</div>`; break;
-        case "RCS": html += `<div class="kunde-rcs">RCS</div><div class="sub-rcs">„Schweißen“</div>`; break;
-        case "COATINC": html += `<div class="kunde-coatinc">Coatinc 24</div><div class="sub-coatinc">„Verzinken“</div>`; break;
-        case "KALEY":html += `<div class="kunde-lp">Kaley</div>`;break;
+    /* Datum-Zeile */
+    let dateClass = "line line-date";
+    if (isPast) dateClass += " date-past";
 
-case "KALEYEILT":
-    html += `<div class="kunde-lp-eilt">Kaley</div><div class="sub-lp-eilt">„EILT SEHR“</div>`;
-    break;
+    html += `<div class="${dateClass}">${dat}</div>`;
+
+    /* Vorgezogen-Zeile */
+    if (vorgezogen) {
+        html += `<div class="line line-vorgezogen" style="color:${farbe};">„Vorgezogen“</div>`;
     }
 
-    const noNameTypes = ["LP","LPEILT","SCHUETTE","SCHUETTEEILT","KLEY","KLEYEILT"];
-    if (kunde && !noNameTypes.includes(type)) {
-        html += `<div class="print-name">(${kunde})</div>`;
-    }
-
+    /* Vorschau & Druck füllen */
     previewContent.innerHTML = html;
     printContent.innerHTML   = html;
 
-    // 🔍 GitHub-Pages kompatibler Auto-Pfad:
-    const basePath = "/" + window.location.pathname.split("/")[1] + "/index.html";
-
-    /* 🔶 Drucken */
-    printBtn.onclick = () => {
-        window.print();
-        setTimeout(() => {
-            window.location.href = basePath;
-        }, 500);
-    };
-
-    /* 🔶 Automatisch zurück NACH dem Drucken */
-    window.onafterprint = () => {
-        window.location.href = basePath;
-    };
-
-    /* 🔶 Manueller Zurück-Button → eine Ebene zurück */
-    backBtn.onclick = () => {
-        history.back();
-    };
+    /* Buttons */
+    printBtn.onclick = () => window.print();
+    backBtn.onclick = () => history.back();
 };
 </script>
 
