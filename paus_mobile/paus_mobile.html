@@ -5,49 +5,64 @@
 <title>PAUS Lieferung</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="paus_mobile.css">
+<script src="paus_mobile.js" defer></script>
 </head>
 
 <body>
 
 <div class="page">
 
-    <h1 class="title">PAUS Lieferung</h1>
+    <h1>PAUS Lieferung</h1>
 
-    <div class="color-buttons">
-        <button class="color-btn color-red active" data-color="red">Rot</button>
-        <button class="color-btn color-blue" data-color="blue">Blau</button>
-        <button class="color-btn color-black" data-color="black">Schwarz</button>
+    <!-- Farbauswahl -->
+    <div class="color-row">
+        <button class="color-btn" data-color="red">Rot</button>
+        <button class="color-btn" data-color="blue">Blau</button>
+        <button class="color-btn" data-color="black">Schwarz</button>
     </div>
 
+    <!-- Vorgezogen -->
     <div class="vorgezogen-row">
-        <input type="checkbox" id="chkVorgezogen">
-        <span>Auftrag vorgezogen</span>
+        <input type="checkbox" id="vorgezogenCheck">
+        <label for="vorgezogenCheck">Auftrag vorgezogen</label>
     </div>
 
-    <input id="kommission" type="text" placeholder="Kommissionsnummer" readonly>
-    <input id="lieferdatum" type="text" placeholder="Lieferdatum (TT.MM)" readonly>
+    <!-- Kommissionsnummer -->
+    <input type="text" id="kommission" placeholder="Kommissionsnummer" readonly>
 
-    <div class="bottom-row">
-        <button id="backBtn" class="back-btn">◀ Zurück</button>
-        <button id="druckenBtn" class="primary-btn">Weiter → Vorschau</button>
+    <!-- Lieferdatum -->
+    <input type="text" id="lieferdatum" placeholder="Lieferdatum (TT.MM)" readonly>
+
+    <!-- Navigation -->
+    <div class="nav-row">
+        <button class="nav-btn back" id="backBtn">◀ Zurück</button>
+        <button class="nav-btn next" id="nextBtn">Weiter → Vorschau</button>
     </div>
-
 </div>
 
-<div id="keyboardPopup" class="kb-popup">
-    <div class="kb-modal">
-        <h3 id="keyboardTitle">Eingeben</h3>
-        <input type="text" id="keyboardInput">
-        <div class="kb-grid" id="keyboardKeys"></div>
+<!-- ---------------------------------------------
+     ZEBRA STYLE POPUP KEYBOARD
+----------------------------------------------- -->
+<div class="kb-overlay" id="keyboardPopup">
+    <div class="kb-box">
+
+        <div class="kb-title" id="keyboardTitle">Eingeben</div>
+
+        <input id="keyboardInput" type="text" readonly>
+
+        <div class="kb-grid">
+            <button>1</button><button>2</button><button>3</button><button>4</button><button>5</button>
+            <button>6</button><button>7</button><button>8</button><button>9</button><button>0</button>
+        </div>
 
         <div class="kb-actions">
-            <button id="keyboardDelete" class="kb-del">⌫</button>
-            <button id="keyboardOK" class="kb-ok">OK</button>
-            <button id="keyboardClose" class="kb-close">Schließen</button>
+            <button class="kb-cancel">⌫</button>
+            <button class="kb-ok">OK</button>
+            <button class="kb-close">Schließen</button>
         </div>
+
     </div>
 </div>
 
-<script src="paus_mobile.js"></script>
 </body>
 </html>
