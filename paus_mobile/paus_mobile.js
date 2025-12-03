@@ -1,6 +1,23 @@
 let activeInput = null;
 let currentColor = "red";
 
+/* ============================
+   PC soll normale Tastatur können
+   Handy/Zebra NICHT
+============================ */
+
+const isTouchDevice = ('ontouchstart' in window);
+
+// Wenn KEIN Touch-Gerät → readonly entfernen → PC kann tippen
+if (!isTouchDevice) {
+    document.getElementById("kommission").removeAttribute("readonly");
+    document.getElementById("lieferdatum").removeAttribute("readonly");
+
+    // UND: Popup-Tastatur soll ohne Touch NICHT starten
+    kommission.onclick = null;
+    lieferdatum.onclick = null;
+}
+
 /* Farbknöpfe */
 document.querySelectorAll(".color-btn").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -19,9 +36,11 @@ const grid = document.getElementById("keyboardKeys");
     grid.appendChild(b);
 });
 
-/* Felder öffnen Tastatur */
-kommission.onclick = () => openKeyboard("kommission");
-lieferdatum.onclick = () => openKeyboard("lieferdatum");
+/* Felder öffnen Tastatur – nur auf TOUCH */
+if (isTouchDevice) {
+    kommission.onclick = () => openKeyboard("kommission");
+    lieferdatum.onclick = () => openKeyboard("lieferdatum");
+}
 
 function openKeyboard(id) {
     activeInput = document.getElementById(id);
