@@ -1,149 +1,178 @@
-* { box-sizing: border-box; }
+/* -----------------------------
+   Mobile PAUS Eingabeseite
+------------------------------ */
 
 html, body {
     margin: 0;
     padding: 0;
-    height: 100%;
-    background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
+    background: #dcdcdc;
     font-family: Arial, sans-serif;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
+/* Hauptseite zentrieren */
 .page {
-    width: 94vw;
-    height: 92vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    max-width: 600px;
+    margin: 20px auto;
     padding: 10px;
 }
 
-.title {
-    font-size: 26px;
-    font-weight: 900;
-    color: #003a73;
-    margin-bottom: 18px;
+/* Titel */
+h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
 }
 
-input[type="text"] {
-    width: 90%;
-    padding: 14px;
-    margin-bottom: 12px;
-    font-size: 20px;
-    border-radius: 14px;
-    border: 1px solid #777;
-    text-align: center;
-    background: white;
-}
-input::placeholder { color: #999; }
-
-.color-buttons {
-    width: 90%;
+/* Farbauswahl */
+.color-row {
     display: flex;
-    gap: 12px;
-    margin-bottom: 12px;
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
 .color-btn {
-    flex: 1;
-    padding: 14px;
-    border-radius: 14px;
-    border: none;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
+    padding: 6px 12px;
+    background: white;
+    border: 1px solid black;
+    border-radius: 6px;
 }
-.color-btn.active { outline: 4px solid #1a73e8; }
 
-.color-red  { background:#d32f2f; }
-.color-blue { background:#1976d2; }
-.color-black{ background:#2b2b2b; }
+.color-btn.active {
+    background: #777;
+    color: white;
+}
 
+/* Checkbox + Labels */
 .vorgezogen-row {
-    width: 90%;
+    margin-bottom: 15px;
     display: flex;
     align-items: center;
-    margin: 10px 0;
-    font-size: 18px;
-    font-weight: bold;
-}
-.vorgezogen-row input {
-    transform: scale(1.4);
-    margin-right: 10px;
+    gap: 8px;
 }
 
-.bottom-row {
-    width: 90%;
-    display: flex;
-    gap: 12px;
-    margin-top: auto;
-    padding-bottom: 12px;
-}
-
-.back-btn,
-.primary-btn {
-    flex: 1;
-    padding: 14px;
-    border-radius: 14px;
-    border: none;
+/* Eingabefelder */
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
     font-size: 20px;
-    font-weight: bold;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #888;
+}
+
+/* Navigation */
+.nav-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.nav-btn {
+    padding: 12px 20px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: none;
     color: white;
 }
-.back-btn { background:#444; }
-.primary-btn { background:#00963d; }
 
-.kb-popup {
-    display: none;
+.nav-btn.back {
+    background: #444;
+}
+
+.nav-btn.next {
+    background: #00963d;
+}
+
+/* --------------------------------------------------
+   ZEBRA STYLE POPUP KEYBOARD
+-------------------------------------------------- */
+
+.kb-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.45);
+    background: rgba(0,0,0,0.55);
+    display: none;
     justify-content: center;
     align-items: center;
-    z-index: 999;
+    backdrop-filter: blur(2px);
 }
 
-.kb-modal {
-    width: 90%;
-    max-width: 420px;
-    padding: 20px;
-    background: #fff;
-    border-radius: 16px;
+.kb-box {
+    background: #f0f0f0;
+    padding: 18px;
+    border-radius: 6px;
+    width: 300px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+    border: 2px solid #444;
+}
+
+.kb-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
     text-align: center;
+    color: #222;
 }
 
 #keyboardInput {
-    width: 92%;
-    padding: 12px;
+    width: 100%;
+    padding: 10px;
+    font-size: 22px;
+    border: 2px solid #0078ff;
+    border-radius: 4px;
+    outline: none;
     margin-bottom: 12px;
-    font-size: 20px;
-    border-radius: 14px;
-    border: 1px solid #777;
+    text-align: center;
 }
 
+/* Zahlenfeld */
 .kb-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
+    gap: 6px;
+    margin-bottom: 12px;
 }
 
 .kb-grid button {
-    padding: 12px;
+    padding: 14px 0;
     font-size: 20px;
-    border-radius: 12px;
-    background: #f2f2f2;
-    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #e3e3e3;
+    border: 1px solid #777;
+    color: #000;
+    font-weight: bold;
 }
 
+.kb-grid button:active {
+    background: #c8c8c8;
+}
+
+/* Buttons unten */
 .kb-actions {
-    margin-top: 14px;
     display: flex;
     gap: 10px;
+    margin-top: 8px;
 }
 
-.kb-del { background:#d9534f;color:white;border:none;padding:10px 16px;border-radius:8px; }
-.kb-ok  { background:#28a745;color:white;border:none;padding:10px 20px;border-radius:8px; }
-.kb-close { background:#6c757d;color:white;border:none;padding:10px 16px;border-radius:8px; }
+.kb-actions button {
+    flex: 1;
+    padding: 12px 0;
+    font-size: 18px;
+    border-radius: 4px;
+    border: none;
+    font-weight: bold;
+}
+
+.kb-cancel {
+    background: #d43535;
+    color: white;
+}
+
+.kb-ok {
+    background: #1a8f3a;
+    color: white;
+}
+
+.kb-close {
+    background: #666;
+    color: white;
+}
