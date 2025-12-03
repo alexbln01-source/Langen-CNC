@@ -64,7 +64,6 @@ html, body {
     font-weight: bold;
 }
 
-/* Jede Zeile ist hier frei einstellbar: */
 /* Titel */
 .line-title {
     font-size: 26pt;
@@ -81,13 +80,22 @@ html, body {
 .line-date {
     font-size: 40pt;
     margin-top: 4mm;
+
+    /* WICHTIG: Rahmen nur so breit wie Datum */
+    display: inline-block;
+    padding: 0 6px;
 }
 
 /* Datum in der Vergangenheit → roter Rahmen */
 .date-past {
     border: 3px solid red;
-    padding: 4px;
     border-radius: 6px;
+
+    /* Der Rahmen soll nur Datum umschließen */
+    display: inline-block;
+
+    /* etwas Platz innen */
+    padding: 4px 10px;
 }
 
 /* Vorgezogen-Zeile */
@@ -104,6 +112,7 @@ html, body {
     gap: 16px;
     padding: 0 20px;
 }
+
 .btn {
     flex: 1;
     border: none;
@@ -112,6 +121,7 @@ html, body {
     font-weight: bold;
     color: white;
 }
+
 .back-btn { background: #444; }
 .print-btn { background: #00963d; }
 
@@ -125,15 +135,18 @@ html, body {
         overflow: visible !important;
         background: white !important;
     }
+
     .preview-wrapper,
     .bottom-bar {
         display: none !important;
     }
+
     #printArea {
         display: block !important;
         width: 148mm !important;
         height: 105mm !important;
     }
+
     @page { size: A6 landscape; margin: 0; }
 }
 </style>
