@@ -1,6 +1,9 @@
 let activeInput = null;
 let currentColor = "red";
 
+/* -------------------------------
+   Farbauswahl
+-------------------------------- */
 document.querySelectorAll(".color-btn").forEach(btn => {
     btn.addEventListener("click", () => {
         document.querySelectorAll(".color-btn").forEach(b => b.classList.remove("active"));
@@ -9,6 +12,9 @@ document.querySelectorAll(".color-btn").forEach(btn => {
     });
 });
 
+/* -------------------------------
+   Popup Keyboard Grid erzeugen
+-------------------------------- */
 const grid = document.getElementById("keyboardKeys");
 ["1","2","3","4","5","6","7","8","9","0"].forEach(c => {
     const b = document.createElement("button");
@@ -17,6 +23,9 @@ const grid = document.getElementById("keyboardKeys");
     grid.appendChild(b);
 });
 
+/* -------------------------------
+   Felder öffnen Tastatur
+-------------------------------- */
 kommission.onclick = () => openKeyboard("kommission");
 lieferdatum.onclick = () => openKeyboard("lieferdatum");
 
@@ -26,22 +35,29 @@ function openKeyboard(id) {
     keyboardPopup.style.display = "flex";
     keyboardTitle.textContent =
         id === "kommission" ? "Kommissionsnummer" : "Lieferdatum";
-    setTimeout(() => keyboardInput.focus(), 100);
 }
 
+/* -------------------------------
+   Keyboard Buttons
+-------------------------------- */
 keyboardClose.onclick = () => keyboardPopup.style.display = "none";
-keyboardDelete.onclick = () => keyboardInput.value = keyboardInput.value.slice(0,-1);
+keyboardDelete.onclick = () =>
+    keyboardInput.value = keyboardInput.value.slice(0, -1);
 
 keyboardOK.onclick = handleKeyboardOK;
 keyboardInput.addEventListener("keydown", e => {
     if (e.key === "Enter") handleKeyboardOK();
 });
 
+/* -------------------------------
+   Eingaben übernehmen
+-------------------------------- */
 function handleKeyboardOK() {
     if (!activeInput) return;
 
     let val = keyboardInput.value.trim();
 
+    // Datum formatieren
     if (activeInput.id === "lieferdatum") {
         val = val.replace(/\D/g, "");
         if (val.length === 3) val = "0" + val;
@@ -50,6 +66,7 @@ function handleKeyboardOK() {
 
     activeInput.value = val;
 
+    // Automatisches Weitergehen
     if (activeInput.id === "kommission") {
         openKeyboard("lieferdatum");
         return;
@@ -58,7 +75,10 @@ function handleKeyboardOK() {
     keyboardPopup.style.display = "none";
 }
 
-druckenBtn.onclick = () => {
+/* -------------------------------
+   Drucken / Vorschau
+-------------------------------- */
+nextBtn.onclick = () => {
 
     if (!kommission.value.trim()) {
         alert("Bitte Kommissionsnummer eingeben!");
@@ -73,11 +93,6 @@ druckenBtn.onclick = () => {
     };
 
     const json = JSON.stringify(data);
-
-    if (window.Android && typeof Android.printPaus === "function") {
-        Android.printPaus(json);
-        return;
-    }
 
     window.location.href =
         "paus_druck.html?data=" + encodeURIComponent(json);
