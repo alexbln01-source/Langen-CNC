@@ -54,7 +54,7 @@ html, body {
     position: absolute;
     right: 5mm;
     bottom: 6mm;
-    width: 42mm;
+    width: 43mm;
 }
 
 /* --- FLEXIBLES ZEILEN-SYSTEM --- */
@@ -76,25 +76,28 @@ html, body {
     margin-top: 4mm;
 }
 
-/* Datum */
+/* Datum – WICHTIG: nur so breit wie Inhalt */
 .line-date {
     font-size: 40pt;
     margin-top: 4mm;
 
-    /* WICHTIG: Rahmen nur so breit wie Datum */
-    display: inline-block;
+    width: auto !important;
+    display: inline-block !important;
+
+    margin-left: auto;
+    margin-right: auto;
+
     padding: 0 6px;
 }
 
-/* Datum in der Vergangenheit → roter Rahmen */
+/* Datum in der Vergangenheit → roter Rahmen (nur um Datum) */
 .date-past {
     border: 3px solid red;
     border-radius: 6px;
 
-    /* Der Rahmen soll nur Datum umschließen */
-    display: inline-block;
+    width: auto !important;
+    display: inline-block !important;
 
-    /* etwas Platz innen */
     padding: 4px 10px;
 }
 
@@ -185,14 +188,28 @@ window.onload = () => {
     const farbe = data.farbe;
     const vorgezogen = data.vorgezogen;
 
-    /* --- Datum prüfen --- */
+    /* --- Datum prüfen mit 2-Monats-Regel --- */
     let isPast = false;
+
     if (dat) {
         const parts = dat.split(".");
-        const now  = new Date();
-        const d    = new Date(now.getFullYear(), parts[1]-1, parts[0]);
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        if (d < today) isPast = true;
+        const heute = new Date();
+
+        // Datum drucken mit heutigem Jahr
+        const datumDate = new Date(heute.getFullYear(), parts[1] - 1, parts[0]);
+
+        const heuteClean = new Date(heute.getFullYear(), heute.getMonth(), heute.getDate());
+
+        // Monatsdifferenz
+        let diffMonate =
+            (heute.getFullYear() - datumDate.getFullYear()) * 12 +
+            (heute.getMonth() - datumDate.getMonth());
+
+        if (datumDate.getDate() > heute.getDate()) diffMonate--;
+
+        const pastDate = (datumDate < heuteClean) && (diffMonate <= 2);
+
+        if (pastDate) isPast = true;
     }
 
     /* --- FLEXIBLE ZEILEN AUFBAUEN --- */
