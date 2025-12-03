@@ -9,13 +9,37 @@
 html, body {
     margin: 0;
     padding: 0;
+    background: #dcdcdc;
+    font-family: Arial, sans-serif;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Vorschau-Bereich */
+.preview-wrapper {
+    width: 100%;
+    height: calc(100% - 150px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Vorschau-Fenster */
+.preview-area {
     width: 148mm;
     height: 105mm;
     background: white;
-    overflow: hidden;
-    font-family: Arial, sans-serif;
+    box-shadow: 0 0 15px rgba(0,0,0,0.25);
+    position: relative;
+    transform-origin: center;
 }
 
+/* Skalierung wie Kanten */
+@media (max-width: 900px) { .preview-area { transform: scale(0.51); } }
+@media (min-width: 901px) and (max-width: 1300px) { .preview-area { transform: scale(0.64); } }
+@media (min-width: 1301px) { .preview-area { transform: scale(0.72); } }
+
+/* Etikett */
 .etikett {
     width: 148mm;
     height: 105mm;
@@ -25,24 +49,91 @@ html, body {
     position: relative;
 }
 
-#vorgezogenText {
-    position: absolute;
-    bottom: 20mm;
-    width: 100%;
-    text-align: center;
-    font-size: 34pt;
-    font-weight: bold;
-    display: none;
-}
-
-#logo {
+/* Logo */
+.logo {
     position: absolute;
     right: 5mm;
     bottom: 6mm;
     width: 43mm;
 }
 
+/* --- FLEXIBLES ZEILEN-SYSTEM --- */
+.line {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Jede Zeile ist hier frei einstellbar: */
+/* Titel */
+.line-title {
+    font-size: 26pt;
+    margin-top: 2mm;
+}
+
+/* Kommission */
+.line-kommission {
+    font-size: 48pt;
+    margin-top: 4mm;
+}
+
+/* Datum */
+.line-date {
+    font-size: 40pt;
+    margin-top: 4mm;
+}
+
+/* Datum in der Vergangenheit → roter Rahmen */
+.date-past {
+    border: 3px solid red;
+    padding: 4px;
+    border-radius: 6px;
+}
+
+/* Vorgezogen-Zeile */
+.line-vorgezogen {
+    font-size: 34pt;
+    margin-top: 10mm;
+}
+
+/* Buttons */
+.bottom-bar {
+    margin-top: 30px;
+    height: 60px;
+    display: flex;
+    gap: 16px;
+    padding: 0 20px;
+}
+.btn {
+    flex: 1;
+    border: none;
+    border-radius: 14px;
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+}
+.back-btn { background: #444; }
+.print-btn { background: #00963d; }
+
+/* Druckansicht */
 @media print {
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 148mm !important;
+        height: 105mm !important;
+        overflow: visible !important;
+        background: white !important;
+    }
+    .preview-wrapper,
+    .bottom-bar {
+        display: none !important;
+    }
+    #printArea {
+        display: block !important;
+        width: 148mm !important;
+        height: 105mm !important;
+    }
     @page { size: A6 landscape; margin: 0; }
 }
 </style>
@@ -50,57 +141,71 @@ html, body {
 
 <body>
 
-<div class="etikett">
-    <div id="content"></div>
-    <div id="vorgezogenText">„Vorgezogen“</div>
-    <img id="logo" src="../Langen.png">
+<!-- VORSCHAU -->
+<div class="preview-wrapper">
+    <div class="preview-area">
+        <div id="previewContent" class="etikett"></div>
+        <img src="langen.png" class="logo">
+    </div>
+</div>
+
+<!-- DRUCK -->
+<div id="printArea" class="etikett" style="display:none;">
+    <div id="printContent"></div>
+    <img src="langen.png" class="logo">
+</div>
+
+<!-- BUTTONS -->
+<div class="bottom-bar">
+    <button class="btn back-btn" id="backBtn">◀ Zurück</button>
+    <button class="btn print-btn" id="printBtn">Drucken</button>
 </div>
 
 <script>
-const qs = new URLSearchParams(location.search);
-const data = JSON.parse(decodeURIComponent(qs.get("data")));
-
-const kom = data.kommission;
-const dat = data.lieferdatum;
-const farbe = data.farbe;
-const vorgezogen = data.vorgezogen;
-
-let isPast = false;
-
-if (dat) {
-    const parts = dat.split(".");
-    const now = new Date();
-    const d = new Date(now.getFullYear(), parts[1]-1, parts[0]);
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    if (d < today) isPast = true;
-}
-
-let dateHTML = isPast
-    ? `<div style="font-size:40pt;border:3px solid red;padding:6px;border-radius:6px;margin-top:4mm;">${dat}</div>`
-    : `<div style="font-size:40pt;margin-top:4mm;color:black;">${dat}</div>`;
-
-document.getElementById("content").innerHTML = `
-    <div style="font-size:24pt;font-weight:bold;">PAUS</div>
-    <div style="font-size:48pt;font-weight:bold;color:${farbe};margin-top:4mm;">${kom}</div>
-    ${dateHTML}
-`;
-
-if (vorgezogen) {
-    const vz = document.getElementById("vorgezogenText");
-    vz.style.display = "block";
-    vz.style.color = farbe;
-}
-
 window.onload = () => {
-    if (!(window.Android && typeof Android.printPaus === "function")) {
-        window.print();
-    }
-};
 
-window.onafterprint = () => {
-    if (!(window.Android && typeof Android.printPaus === "function")) {
-        history.back();
+    const qs = new URLSearchParams(location.search);
+    const data = JSON.parse(decodeURIComponent(qs.get("data")));
+
+    const kom = data.kommission;
+    const dat = data.lieferdatum;
+    const farbe = data.farbe;
+    const vorgezogen = data.vorgezogen;
+
+    /* --- Datum prüfen --- */
+    let isPast = false;
+    if (dat) {
+        const parts = dat.split(".");
+        const now  = new Date();
+        const d    = new Date(now.getFullYear(), parts[1]-1, parts[0]);
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        if (d < today) isPast = true;
     }
+
+    /* --- FLEXIBLE ZEILEN AUFBAUEN --- */
+    let html = `
+        <div class="line line-title">PAUS</div>
+        <div class="line line-kommission" style="color:${farbe};">${kom}</div>
+    `;
+
+    /* Datum-Zeile */
+    let dateClass = "line line-date";
+    if (isPast) dateClass += " date-past";
+
+    html += `<div class="${dateClass}">${dat}</div>`;
+
+    /* Vorgezogen-Zeile */
+    if (vorgezogen) {
+        html += `<div class="line line-vorgezogen" style="color:${farbe};">„Vorgezogen“</div>`;
+    }
+
+    /* Vorschau & Druck füllen */
+    previewContent.innerHTML = html;
+    printContent.innerHTML   = html;
+
+    /* Buttons */
+    printBtn.onclick = () => window.print();
+    backBtn.onclick = () => history.back();
 };
 </script>
 
