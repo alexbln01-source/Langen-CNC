@@ -1,195 +1,183 @@
-/* ===============================
-   Grundlayout
-=============================== */
+/* ===== ALLGEMEIN ===== */
 body {
     margin: 0;
+    padding: 0;
     font-family: Arial, sans-serif;
-    background: #f4f4f4;
+    background: #f0f0f0;
     text-align: center;
 }
 
-/* Titel */
-h1 {
-    margin-top: 30px;
-    font-size: 38px;
-    font-weight: 900;
-    color: #083b73;
+.title {
+    margin-top: 25px;
+    margin-bottom: 20px;
+    font-size: 34px;
+    font-weight: bold;
+    color: #003b73;
 }
 
-/* ===============================
-   Farbwahl
-=============================== */
-.color-select {
+/* ===== FARBBUTTONS ===== */
+.color-row {
     display: flex;
     justify-content: center;
-    gap: 18px;
-    margin-top: 25px;
-    margin-bottom: 10px;
+    gap: 16px;
+    margin-bottom: 20px;
 }
 
 .color-btn {
-    width: 150px;
-    height: 80px;
-    border-radius: 16px;
-    font-size: 28px;
-    font-weight: bold;
+    width: 28%;
+    padding: 18px 0;
+    font-size: 26px;
     color: white;
-    opacity: 0.6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.2s ease;
+    border: none;
+    border-radius: 18px;
+    background: #d0d0d0;
 }
+
+.color-btn[data-color="red"] { background: #c62828; }
+.color-btn[data-color="blue"] { background: #1565c0; }
+.color-btn[data-color="black"] { background: #333; }
 
 .color-btn.active {
-    opacity: 1;
-    border: 4px solid #1e68ff;
+    outline: 6px solid #4d7cff;
 }
 
-.btn-red { background: #c62828; }
-.btn-blue { background: #1e57d6; }
-.btn-black { background: #2e2e2e; }
-
-/* ===============================
-   Checkbox Auftrag vorgezogen
-=============================== */
-label {
+/* ===== VORGEZOGEN ===== */
+.vorgezogen-row {
+    margin-bottom: 15px;
+    font-size: 22px;
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: center;
-    font-size: 26px;
-    margin: 20px auto;
-    gap: 10px;
+    gap: 12px;
 }
 
-/* ===============================
-   Eingabefelder
-=============================== */
-.input-box {
-    width: 90%;
-    max-width: 450px;
-    margin: 12px auto;
+/* ===== EINGABEFELDER ===== */
+.input-area {
+    width: 85%;
+    margin: 0 auto;
 }
 
-input[type="text"] {
+.input-field {
     width: 100%;
-    height: 70px;
-    border-radius: 14px;
-    border: 2px solid #ccc;
-    font-size: 26px;
-    text-align: center;
-    padding: 0 10px;
-    box-sizing: border-box;
-}
-
-input::placeholder {
-    color: #bfbfbf;
-    text-align: center;
-}
-
-/* ===============================
-   Tastatur öffnen Button
-=============================== */
-.keyboard-open {
-    width: 90%;
-    max-width: 450px;
-    height: 70px;
-    margin: 22px auto;
-    background: #d9d9d9;
-    color: #0069d9;
+    padding: 18px;
+    margin: 10px 0;
     border-radius: 16px;
-    font-size: 26px;
-    border: none;
-    display: block;
+    font-size: 24px;
+    border: 2px solid #cccccc;
+    text-align: center;
 }
 
-/* ===============================
-   Untere Button-Leiste
-=============================== */
-.bottom-bar {
-    width: 100%;
-    margin-top: 30px;
-    padding-bottom: 30px;
+/* ===== MANUELLE TASTATUR ÖFFNEN ===== */
+.keyboard-open-row {
+    margin-top: 8px;
+    margin-bottom: 20px;
+}
+
+.keyboard-open-btn {
+    background: #d0d0d0;
+    padding: 16px 30px;
+    border-radius: 20px;
+    font-size: 24px;
+    border: none;
+}
+
+/* ===== BOTTOM BUTTONS ===== */
+.bottom-row {
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 22px;
     display: flex;
-    justify-content: center;
-    gap: 20px;
+    justify-content: space-between;
 }
 
-.nav-btn {
-    flex: 1;
-    max-width: 300px;
-    height: 75px;
-    font-size: 26px;
-    font-weight: bold;
-    color: white;
-    border-radius: 16px;
+.btn {
+    width: 48%;
+    padding: 20px 0;
+    font-size: 28px;
+    border-radius: 18px;
     border: none;
+    color: white;
+    font-weight: bold;
 }
 
-.btn-back {
-    background: #444;
-}
+.back-btn { background: #333; }
+.print-btn { background: #00963d; }
 
-.btn-forward {
-    background: #00963d;
-}
-
-/* ===============================
-   Popup Tastatur (wie Beschichtung)
-=============================== */
-#keyboardPopup {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #e5e5e5;
-    padding: 20px;
-    border-top: 3px solid #999;
+/* ===== POPUP TASTATUR ===== */
+.keyboard-popup {
     display: none;
-    z-index: 9999;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    justify-content: center;
+    align-items: center;
+    z-index: 900;
+}
+
+.keyboard-content {
+    width: 90%;
+    max-width: 420px;
+    background: white;
+    border-radius: 18px;
+    padding: 18px;
 }
 
 #keyboardInput {
     width: 90%;
-    height: 60px;
-    border-radius: 12px;
-    border: 1px solid #777;
-    font-size: 26px;
-    padding: 0 12px;
-    margin-bottom: 16px;
+    height: 50px;
+    font-size: 22px;
+    border: 1px solid #808080;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    text-align: center;
 }
 
-.keyboard-row {
+.keyboard-keys {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.keyboard-keys button {
+    background: #f5f5f5;
+    border: 1px solid #999;
+    border-radius: 10px;
+    padding: 14px 0;
+    font-size: 24px;
+}
+
+.keyboard-actions {
     display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 14px;
+    gap: 10px;
+    margin-top: 12px;
 }
 
-.key-btn {
-    width: 70px;
-    height: 70px;
-    font-size: 28px;
-    background: white;
-    border: 2px solid #999;
-    border-radius: 12px;
-}
-
-.key-btn.special {
-    width: 140px;
+.key-delete {
+    flex: 1;
     background: #d9534f;
-    border-color: #b52b27;
     color: white;
+    border: none;
+    padding: 14px;
+    font-size: 18px;
+    border-radius: 10px;
 }
 
-.key-btn.ok {
-    background: #2ecc71;
-    border-color: #27ae60;
+.key-ok {
+    flex: 1;
+    background: #28a745;
     color: white;
+    border: none;
+    padding: 14px;
+    font-size: 18px;
+    border-radius: 10px;
 }
 
-.key-btn.close {
-    background: #555;
-    border-color: #333;
+.key-close {
+    flex: 1;
+    background: #6c757d;
     color: white;
+    border: none;
+    padding: 14px;
+    font-size: 18px;
+    border-radius: 10px;
 }
