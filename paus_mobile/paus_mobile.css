@@ -3,13 +3,12 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background: #f0f0f0;
+    background: #ececec;
     text-align: center;
 }
 
 .title {
     margin-top: 25px;
-    margin-bottom: 20px;
     font-size: 34px;
     font-weight: bold;
     color: #003b73;
@@ -19,18 +18,20 @@ body {
 .color-row {
     display: flex;
     justify-content: center;
-    gap: 16px;
-    margin-bottom: 20px;
+    gap: 14px;
+    margin-top: 10px;
+    margin-bottom: 18px;
 }
 
 .color-btn {
-    width: 28%;
-    padding: 18px 0;
+    width: 27%;
+    padding: 16px 0;
     font-size: 26px;
+    font-weight: bold;
     color: white;
     border: none;
-    border-radius: 18px;
-    background: #d0d0d0;
+    border-radius: 16px;
+    transition: 0.15s;
 }
 
 .color-btn[data-color="red"] { background: #c62828; }
@@ -38,66 +39,69 @@ body {
 .color-btn[data-color="black"] { background: #333; }
 
 .color-btn.active {
-    outline: 6px solid #4d7cff;
+    outline: 4px solid #4d7cff;
 }
 
 /* ===== VORGEZOGEN ===== */
 .vorgezogen-row {
-    margin-bottom: 15px;
-    font-size: 22px;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 12px;
+    font-size: 22px;
+    gap: 10px;
+    margin-bottom: 18px;
 }
 
 /* ===== EINGABEFELDER ===== */
 .input-area {
-    width: 85%;
+    width: 88%;
     margin: 0 auto;
 }
 
 .input-field {
     width: 100%;
-    padding: 18px;
+    padding: 16px;
     margin: 10px 0;
-    border-radius: 16px;
+    border-radius: 14px;
+    border: 2px solid #cfcfcf;
+    background: #ffffff;
     font-size: 24px;
-    border: 2px solid #cccccc;
     text-align: center;
 }
 
-/* ===== MANUELLE TASTATUR ÖFFNEN ===== */
+/* ===== MANUELLE TASTATUR ===== */
 .keyboard-open-row {
     margin-top: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
 }
 
 .keyboard-open-btn {
-    background: #d0d0d0;
-    padding: 16px 30px;
-    border-radius: 20px;
+    width: 88%;
+    padding: 18px;
     font-size: 24px;
+    border-radius: 18px;
     border: none;
+    color: #0055cc;
+    background: #d9d9d9;
 }
 
-/* ===== BOTTOM BUTTONS ===== */
+/* ===== UNTERE BUTTONS ===== */
 .bottom-row {
     width: 90%;
     margin: 0 auto;
-    margin-top: 22px;
     display: flex;
     justify-content: space-between;
+    margin-top: 18px;
 }
 
 .btn {
-    width: 48%;
-    padding: 20px 0;
-    font-size: 28px;
-    border-radius: 18px;
+    width: 47%;
+    padding: 18px 0;
+    border-radius: 16px;
     border: none;
-    color: white;
+    font-size: 26px;
     font-weight: bold;
+    color: white;
 }
 
 .back-btn { background: #333; }
@@ -108,7 +112,7 @@ body {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.45);
+    background: rgba(0,0,0,0.4);
     justify-content: center;
     align-items: center;
     z-index: 900;
@@ -118,18 +122,18 @@ body {
     width: 90%;
     max-width: 420px;
     background: white;
-    border-radius: 18px;
-    padding: 18px;
+    border-radius: 16px;
+    padding: 20px;
 }
 
 #keyboardInput {
     width: 90%;
-    height: 50px;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid gray;
     font-size: 22px;
-    border: 1px solid #808080;
-    border-radius: 10px;
-    margin-bottom: 12px;
     text-align: center;
+    margin-bottom: 10px;
 }
 
 .keyboard-keys {
@@ -139,45 +143,42 @@ body {
 }
 
 .keyboard-keys button {
-    background: #f5f5f5;
-    border: 1px solid #999;
-    border-radius: 10px;
-    padding: 14px 0;
-    font-size: 24px;
+    padding: 16px 0;
+    font-size: 22px;
+    border-radius: 12px;
+    border: 1px solid #aaa;
+    background: #f2f2f2;
 }
 
 .keyboard-actions {
     display: flex;
     gap: 10px;
-    margin-top: 12px;
+    margin-top: 14px;
 }
 
 .key-delete {
     flex: 1;
-    background: #d9534f;
+    background: #c62828;
     color: white;
-    border: none;
     padding: 14px;
-    font-size: 18px;
-    border-radius: 10px;
+    border-radius: 12px;
+    border: none;
 }
 
 .key-ok {
     flex: 1;
-    background: #28a745;
+    background: #00963d;
     color: white;
-    border: none;
     padding: 14px;
-    font-size: 18px;
-    border-radius: 10px;
+    border-radius: 12px;
+    border: none;
 }
 
 .key-close {
     flex: 1;
-    background: #6c757d;
+    background: #555;
     color: white;
-    border: none;
     padding: 14px;
-    font-size: 18px;
-    border-radius: 10px;
+    border-radius: 12px;
+    border: none;
 }
