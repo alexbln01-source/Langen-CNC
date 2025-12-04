@@ -2,82 +2,70 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>PAUS Lieferung</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PAUS Lieferung</title>
+
 <link rel="stylesheet" href="paus_mobile.css">
 </head>
-
 <body>
 
-    <div class="container">
+<h1>PAUS Lieferung</h1>
 
-        <h1 class="title">PAUS Lieferung</h1>
+<!-- Farbwahl -->
+<div class="color-select">
+    <div class="color-btn btn-red active" data-color="red">Rot</div>
+    <div class="color-btn btn-blue" data-color="blue">Blau</div>
+    <div class="color-btn btn-black" data-color="black">Schwarz</div>
+</div>
 
-        <!-- Farbwahl -->
-        <div class="color-buttons">
-            <button class="color-btn active" data-color="red" id="rotBtn">Rot</button>
-            <button class="color-btn" data-color="blue" id="blauBtn">Blau</button>
-            <button class="color-btn" data-color="black" id="schwarzBtn">Schwarz</button>
-        </div>
+<!-- Auftrag vorgezogen -->
+<label>
+    <input type="checkbox" id="chkVorgezogen">
+    Auftrag vorgezogen
+</label>
 
-        <!-- Vorgezogen -->
-        <div class="checkbox-row">
-            <label><input type="checkbox" id="chkVorgezogen"> Auftrag vorgezogen</label>
-        </div>
+<!-- Eingaben -->
+<div class="input-box">
+    <input id="kommission" type="text" placeholder="Kommissionsnummer" maxlength="7">
+</div>
 
-        <!-- Eingabefelder -->
-        <input id="kommission"
-               class="input-field"
-               placeholder="Kommissionsnummer"
-               readonly
-               autocomplete="off"
-               autocorrect="off"
-               autocapitalize="off"
-               spellcheck="false"
-               inputmode="none">
+<div class="input-box">
+    <input id="lieferdatum" type="text" placeholder="TT.MM" maxlength="5">
+</div>
 
-        <input id="lieferdatum"
-               class="input-field"
-               placeholder="TT.MM"
-               readonly
-               autocomplete="off"
-               autocorrect="off"
-               autocapitalize="off"
-               spellcheck="false"
-               inputmode="none">
+<button class="keyboard-open" id="openKeyboardBtn">Tastatur öffnen</button>
 
-        <!-- Tastatur öffnen -->
-        <button id="openKeyboardBtn" class="open-keyboard-btn">Tastatur öffnen</button>
+<!-- Bottom Buttons -->
+<div class="bottom-bar">
+    <button class="nav-btn btn-back" id="backBtn">◀ Zurück</button>
+    <button class="nav-btn btn-forward" id="druckenBtn">Drucken</button>
+</div>
 
-        <!-- ORIGINAL PAUS POPUP -->
-        <div id="keyboardPopup" class="kb-popup">
-            <div class="kb-modal">
-                <h3 id="keyboardTitle">Eingabe</h3>
+<!-- Popup Tastatur -->
+<div id="keyboardPopup">
+    <input id="keyboardInput" type="text">
 
-                <input id="keyboardInput"
-                       autocomplete="off"
-                       autocorrect="off"
-                       autocapitalize="off"
-                       spellcheck="false"
-                       inputmode="none">
-
-                <div class="kb-grid" id="keyboardKeys"></div>
-
-                <div class="kb-actions">
-                    <button id="keyboardDelete" class="kb-del">⌫</button>
-                    <button id="keyboardOK" class="kb-ok">OK</button>
-                    <button id="keyboardClose" class="kb-close">Schließen</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Buttons unten – DESIGN IDENTISCH, TEXT ANGEPASST -->
-        <div class="bottom-buttons">
-            <button id="backBtn" class="back-btn">◀ Zurück</button>
-            <button id="druckenBtn" class="print-btn">Drucken</button>
-        </div>
-
+    <div class="keyboard-row">
+        <button class="key-btn">1</button>
+        <button class="key-btn">2</button>
+        <button class="key-btn">3</button>
+        <button class="key-btn">4</button>
+        <button class="key-btn">5</button>
     </div>
+    <div class="keyboard-row">
+        <button class="key-btn">6</button>
+        <button class="key-btn">7</button>
+        <button class="key-btn">8</button>
+        <button class="key-btn">9</button>
+        <button class="key-btn">0</button>
+    </div>
+
+    <div class="keyboard-row">
+        <button class="key-btn special" id="keyboardDelete">Löschen</button>
+        <button class="key-btn ok" id="keyboardOK">OK</button>
+        <button class="key-btn close" id="keyboardClose">Schließen</button>
+    </div>
+</div>
 
 <script src="paus_mobile.js"></script>
 </body>
