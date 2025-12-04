@@ -66,12 +66,12 @@ html, body {
 
 /* ⭐ Getrennter Offset ohne vorgezogen */
 .offset-normal {
-    transform: translateY(7mm);   /* ← ANPASSBAR */
+    transform: translateY(7mm);
 }
 
 /* ⭐ Getrennter Offset mit vorgezogen */
 .offset-vorgezogen {
-    transform: translateY(4mm);   /* ← ANPASSBAR */
+    transform: translateY(4mm);
 }
 
 /* Logo */
@@ -200,29 +200,42 @@ window.onload = () => {
     const farbe = data.farbe;
     const vorgezogen = data.vorgezogen;
 
-    /* ⭐ Datum validieren und korrekt interpretieren (TTMM → TT.MM.) */
+    /* ⭐ Datum interpretieren und prüfen */
     let isPast = false;
     let finalFormattedDate = dat;
 
-    if (dat && dat.length === 5 || dat.length === 4) {
-        const p = dat.includes(".") ? dat.split(".") : [dat.slice(0, 2), dat.slice(2)];
+    if (dat) {
+        let clean = dat.replace(/\s/g, "");
 
-        const tag = parseInt(p[0]);
-        const monat = parseInt(p[1]) - 1;
-
-        const now = new Date();
-        let jahr = now.getFullYear();
-
-        let dTarget = new Date(jahr, monat, tag);
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
-        if (dTarget < today) {
-            jahr++;
-            dTarget = new Date(jahr, monat, tag);
+        let dayStr, monthStr;
+        if (clean.includes(".")) {
+            const parts = clean.split(".");
+            dayStr = parts[0];
+            monthStr = parts[1];
+        } else {
+            dayStr = clean.slice(0, 2);
+            monthStr = clean.slice(2, 4);
         }
 
-        finalFormattedDate = `${String(tag).padStart(2, "0")}.${String(monat + 1).padStart(2, "0")}`;
-        isPast = dTarget < today;
+        const tag = parseInt(dayStr, 10);
+        const monat = parseInt(monthStr, 10) - 1;
+
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const dTarget = new Date(now.getFullYear(), monat, tag);
+
+        /* ⭐ MONATS-DIFFERENZ */
+        const monthDiff =
+            (today.getFullYear() - dTarget.getFullYear()) * 12 +
+            (today.getMonth() - dTarget.getMonth());
+
+        /* ⭐ ROT WENN < 2 Monate in der Vergangenheit */
+        if (dTarget < today && monthDiff < 2) {
+            isPast = true;
+        }
+
+        finalFormattedDate =
+            `${String(tag).padStart(2, "0")}.${String(monat + 1).padStart(2, "0")}`;
     }
 
     /* Inhalt erzeugen */
@@ -242,7 +255,7 @@ window.onload = () => {
     previewContent.innerHTML = html;
     printContent.innerHTML = html;
 
-    /* ⭐ Richtigen Offset anwenden */
+    /* Offset anwenden */
     if (vorgezogen) {
         previewContent.classList.add("offset-vorgezogen");
         printContent.classList.add("offset-vorgezogen");
