@@ -13,23 +13,50 @@
 
     <h1 class="title">PAUS Lieferung</h1>
 
+    <!-- Farbbuttons -->
     <div class="color-buttons">
         <button class="color-btn color-red active" data-color="red">Rot</button>
         <button class="color-btn color-blue" data-color="blue">Blau</button>
         <button class="color-btn color-black" data-color="black">Schwarz</button>
     </div>
 
+    <!-- Vorgezogen -->
     <div class="vorgezogen-row">
         <input type="checkbox" id="chkVorgezogen">
         <span>Auftrag vorgezogen</span>
     </div>
 
-    <input id="kommission" type="text" placeholder="Kommissionsnummer" readonly>
-    <input id="lieferdatum" type="text" placeholder="Lieferdatum (TT.MM)" readonly>
+    <!-- Fake-Feld gegen Autofill (sehr wichtig!) -->
+    <input type="text" style="display:none" autocomplete="off">
 
-    <!-- ⭐ NEUER BUTTON -->
+    <!-- Kommission (Autofill komplett blockiert) -->
+    <input id="kommission"
+           type="text"
+           name="kommission_no_autofill"
+           placeholder="Kommissionsnummer"
+           readonly
+           autocomplete="new-password"
+           autocorrect="off"
+           autocapitalize="off"
+           spellcheck="false"
+           inputmode="none">
+
+    <!-- Lieferdatum (Autofill komplett blockiert) -->
+    <input id="lieferdatum"
+           type="text"
+           name="lieferdatum_no_autofill"
+           placeholder="Lieferdatum (TT.MM)"
+           readonly
+           autocomplete="new-password"
+           autocorrect="off"
+           autocapitalize="off"
+           spellcheck="false"
+           inputmode="none">
+
+    <!-- Tastatur manuell öffnen (Zebra/PC) -->
     <button id="openKeyboardBtn" class="open-kb-btn">Tastatur öffnen</button>
 
+    <!-- Navigation -->
     <div class="bottom-row">
         <button id="backBtn" class="back-btn">◀ Zurück</button>
         <button id="druckenBtn" class="primary-btn">Weiter → Vorschau</button>
