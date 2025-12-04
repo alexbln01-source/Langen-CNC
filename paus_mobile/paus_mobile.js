@@ -30,15 +30,30 @@ window.onload = () => {
 };
 
 /* =============================
-   PC: Automatische Datumformatierung TT.MM
+   ⭐ NEUE DATUMFORMATIERUNG (FEHLERFREI)
 ============================= */
+
+/* Beim Tippen nur Zahlen erlauben */
 lieferdatum.addEventListener("input", () => {
+    lieferdatum.value = lieferdatum.value.replace(/\D/g, "");
+});
+
+/* Beim Verlassen formatieren */
+lieferdatum.addEventListener("blur", () => {
     let v = lieferdatum.value.replace(/\D/g, "");
 
-    if (v.length === 3) v = "0" + v;
+    if (v.length === 0) {
+        lieferdatum.value = "";
+        return;
+    }
 
-    if (v.length >= 4)
-        v = v.slice(0, 2) + "." + v.slice(2, 4);  // ❗ Kein Punkt am Ende
+    if (v.length === 3) {
+        v = "0" + v;     // 111 → 0111 → 01.11
+    }
+
+    if (v.length >= 4) {
+        v = v.slice(0, 2) + "." + v.slice(2, 4);
+    }
 
     lieferdatum.value = v;
 });
@@ -85,7 +100,7 @@ function openKeyboard(id) {
 
 /* ========= Manuelle Tastatur öffnen ========= */
 openKeyboardBtn.onclick = () => {
-    activeInput = kommission; 
+    activeInput = kommission;
     openKeyboard("kommission");
 };
 
@@ -103,23 +118,16 @@ function handleKeyboardOK() {
 
     if (!activeInput) return;
 
-    let val = keyboardInput.value.trim();
+    let val = keyboardInput.value.replace(/\D/g, "");
 
     if (activeInput.id === "lieferdatum") {
 
-        val = val.replace(/\D/g, "");
         if (val.length === 3) val = "0" + val;
         if (val.length >= 4)
-            val = val.slice(0,2) + "." + val.slice(2,4);  // ❗ Nur EIN Punkt
+            val = val.slice(0,2) + "." + val.slice(2,4);
     }
 
     activeInput.value = val;
-
-    if (activeInput.id === "kommission" && isMobile()) {
-        openKeyboard("lieferdatum");
-        return;
-    }
-
     keyboardPopup.style.display = "none";
 }
 
@@ -130,6 +138,11 @@ druckenBtn.onclick = () => {
 
     if (!kommission.value.trim()) {
         alert("Bitte Kommissionsnummer eingeben!");
+        return;
+    }
+
+    if (!lieferdatum.value.trim()) {
+        alert("Bitte Lieferdatum eingeben!");
         return;
     }
 
@@ -170,7 +183,7 @@ document.addEventListener("keydown", (e) => {
             let dat = raw;
             if (dat.length === 3) dat = "0" + dat;
             if (dat.length >= 4)
-                dat = dat.slice(0,2) + "." + dat.slice(2,4); // ❗ Nur ein Punkt
+                dat = dat.slice(0,2) + "." + dat.slice(2,4);
 
             kommission.value = kom;
             lieferdatum.value = dat;

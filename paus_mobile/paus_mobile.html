@@ -3,82 +3,86 @@
 <head>
 <meta charset="UTF-8">
 <title>PAUS Lieferung</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <link rel="stylesheet" href="paus_mobile.css">
+
 </head>
+<body autocomplete="off">
 
-<body>
+<!-- Dummy Input blockiert Chrome-Autofill vollständig -->
+<input type="text" style="display:none" autocomplete="off">
 
-<div class="page">
+<h1 class="title">PAUS Lieferung</h1>
 
-    <h1 class="title">PAUS Lieferung</h1>
-
-    <!-- Farbbuttons -->
-    <div class="color-buttons">
-        <button class="color-btn color-red active" data-color="red">Rot</button>
-        <button class="color-btn color-blue" data-color="blue">Blau</button>
-        <button class="color-btn color-black" data-color="black">Schwarz</button>
-    </div>
-
-    <!-- Vorgezogen -->
-    <div class="vorgezogen-row">
-        <input type="checkbox" id="chkVorgezogen">
-        <span>Auftrag vorgezogen</span>
-    </div>
-
-    <!-- Fake-Feld gegen Autofill (sehr wichtig!) -->
-    <input type="text" style="display:none" autocomplete="off">
-
-    <!-- Kommission (Autofill komplett blockiert) -->
-    <input id="kommission"
-           type="text"
-           name="kommission_no_autofill"
-           placeholder="Kommissionsnummer"
-           readonly
-           autocomplete="new-password"
-           autocorrect="off"
-           autocapitalize="off"
-           spellcheck="false"
-           inputmode="none">
-
-    <!-- Lieferdatum (Autofill komplett blockiert) -->
-    <input id="lieferdatum"
-           type="text"
-           name="lieferdatum_no_autofill"
-           placeholder="Lieferdatum (TT.MM)"
-           readonly
-           autocomplete="new-password"
-           autocorrect="off"
-           autocapitalize="off"
-           spellcheck="false"
-           inputmode="none">
-
-    <!-- Tastatur manuell öffnen (Zebra/PC) -->
-    <button id="openKeyboardBtn" class="open-kb-btn">Tastatur öffnen</button>
-
-    <!-- Navigation -->
-    <div class="bottom-row">
-        <button id="backBtn" class="back-btn">◀ Zurück</button>
-        <button id="druckenBtn" class="primary-btn">Weiter → Vorschau</button>
-    </div>
-
+<!-- ================= FARBAUSWAHL ================= -->
+<div class="color-row">
+    <button class="color-btn active" data-color="red">Rot</button>
+    <button class="color-btn" data-color="blue">Blau</button>
+    <button class="color-btn" data-color="black">Schwarz</button>
 </div>
 
-<!-- Popup Tastatur -->
-<div id="keyboardPopup" class="kb-popup">
-    <div class="kb-modal">
-        <h3 id="keyboardTitle">Eingeben</h3>
-        <input type="text" id="keyboardInput">
-        <div class="kb-grid" id="keyboardKeys"></div>
+<!-- ================= CHECKBOX ================= -->
+<div class="check-row">
+    <input type="checkbox" id="chkVorgezogen">
+    <label for="chkVorgezogen">Auftrag vorgezogen</label>
+</div>
 
-        <div class="kb-actions">
-            <button id="keyboardDelete" class="kb-del">⌫</button>
-            <button id="keyboardOK" class="kb-ok">OK</button>
-            <button id="keyboardClose" class="kb-close">Schließen</button>
+<!-- ================= KOMMISSION ================= -->
+<div class="input-row">
+    <input id="kommission"
+        type="text"
+        placeholder="Kommissionsnummer"
+        readonly
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false">
+</div>
+
+<!-- ================= LIEFERDATUM ================= -->
+<div class="input-row">
+    <input id="lieferdatum"
+        type="text"
+        placeholder="TT.MM"
+        readonly
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false">
+</div>
+
+<!-- ================= MANUELLE TASTATUR ================= -->
+<div class="keyboard-open-container">
+    <button id="openKeyboardBtn" class="open-keyboard-btn">Tastatur öffnen</button>
+</div>
+
+<!-- ================= POPUP TASTATUR ================= -->
+<div id="keyboardPopup" class="keyboard-popup">
+    <div class="keyboard-box">
+
+        <h2 id="keyboardTitle">Eingabe</h2>
+
+        <input id="keyboardInput" class="keyboard-input" type="text">
+
+        <div id="keyboardKeys" class="keyboard-grid"></div>
+
+        <div class="keyboard-actions">
+            <button id="keyboardDelete" class="key-btn delete-btn">Löschen</button>
+            <button id="keyboardOK" class="key-btn ok-btn">OK</button>
+            <button id="keyboardClose" class="key-btn close-btn">Schließen</button>
         </div>
+
     </div>
+</div>
+
+<!-- ================= BUTTONS UNTEN ================= -->
+<div class="bottom-row">
+    <button id="backBtn" class="back-btn">◀ Zurück</button>
+    <button id="druckenBtn" class="primary-btn">Weiter → Vorschau</button>
 </div>
 
 <script src="paus_mobile.js"></script>
+
 </body>
 </html>
