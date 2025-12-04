@@ -30,13 +30,15 @@ window.onload = () => {
 };
 
 /* =============================
-   PC: Automatische Datumformatierung
+   PC: Automatische Datumformatierung TT.MM
 ============================= */
 lieferdatum.addEventListener("input", () => {
     let v = lieferdatum.value.replace(/\D/g, "");
 
     if (v.length === 3) v = "0" + v;
-    if (v.length >= 4) v = v.slice(0, 2) + "." + v.slice(2, 4) + ".";
+
+    if (v.length >= 4)
+        v = v.slice(0, 2) + "." + v.slice(2, 4);  // ❗ Kein Punkt am Ende
 
     lieferdatum.value = v;
 });
@@ -104,9 +106,11 @@ function handleKeyboardOK() {
     let val = keyboardInput.value.trim();
 
     if (activeInput.id === "lieferdatum") {
+
         val = val.replace(/\D/g, "");
         if (val.length === 3) val = "0" + val;
-        if (val.length >= 4) val = val.slice(0,2) + "." + val.slice(2,4) + ".";
+        if (val.length >= 4)
+            val = val.slice(0,2) + "." + val.slice(2,4);  // ❗ Nur EIN Punkt
     }
 
     activeInput.value = val;
@@ -150,7 +154,7 @@ druckenBtn.onclick = () => {
 backBtn.onclick = () => history.back();
 
 /* =============================
-   ⭐ ZEBRA SCANNER — Kommission + Datum automatisch einfüllen
+   ⭐ ZEBRA SCANNER — Datum & Kommission einfüllen
 ============================= */
 document.addEventListener("keydown", (e) => {
 
@@ -161,16 +165,15 @@ document.addEventListener("keydown", (e) => {
         if (text.includes("K:") && text.includes("D:")) {
 
             const kom = text.match(/K:(.*?);/)[1];
-            const datRaw = text.match(/D:(.*)/)[1].replace(/\D/g, "");
+            const raw = text.match(/D:(.*)/)[1].replace(/\D/g, "");
 
-            let dat = datRaw;
+            let dat = raw;
             if (dat.length === 3) dat = "0" + dat;
-            if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4) + ".";
+            if (dat.length >= 4)
+                dat = dat.slice(0,2) + "." + dat.slice(2,4); // ❗ Nur ein Punkt
 
             kommission.value = kom;
             lieferdatum.value = dat;
-
-            // ⭐ Kein Weiter-Klick → Bediener muss noch Vorgezogen & Farbe setzen
         }
 
         scanBuffer = "";

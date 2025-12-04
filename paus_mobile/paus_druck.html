@@ -34,12 +34,12 @@ html, body {
     transform-origin: center;
 }
 
-/* Skalierung wie Kanten */
+/* Skalierung */
 @media (max-width: 900px) { .preview-area { transform: scale(0.51); } }
 @media (min-width: 901px) and (max-width: 1300px) { .preview-area { transform: scale(0.64); } }
 @media (min-width: 1301px) { .preview-area { transform: scale(0.72); } }
 
-/* Etikett (Grundfläche) */
+/* Etikett */
 .etikett {
     width: 148mm;
     height: 105mm;
@@ -48,22 +48,37 @@ html, body {
     position: relative;
 }
 
-/* --- NEU: Innerer Container für vertikale Zentrierung --- */
+/* ⭐ DYNAMISCHE MITTE (ohne Logo) */
 .etikett-inner {
     width: 100%;
-    height: 100%;
+    height: calc(100% - 25mm);
+
     display: flex;
     flex-direction: column;
-    justify-content: center;   /* vertikal zentrieren */
-    align-items: center;       /* horizontal zentrieren */
+
+    justify-content: center;
+    align-items: center;
     text-align: center;
+
+    margin-bottom: 25mm;
+    box-sizing: border-box;
+}
+
+/* ⭐ Getrennter Offset ohne vorgezogen */
+.offset-normal {
+    transform: translateY(7mm);   /* ← ANPASSBAR */
+}
+
+/* ⭐ Getrennter Offset mit vorgezogen */
+.offset-vorgezogen {
+    transform: translateY(4mm);   /* ← ANPASSBAR */
 }
 
 /* Logo */
 .logo {
     position: absolute;
     right: 5mm;
-    bottom: 3mm;
+    bottom: 4mm;
     width: 40mm;
 }
 
@@ -74,31 +89,32 @@ html, body {
     font-weight: bold;
 }
 
-/* Jede Zeile ist frei definierbar */
 .line-title {
     font-size: 40pt;
-    margin-top: 2mm;
+    margin-top: 1mm;
 }
+
 .line-kommission {
     font-size: 48pt;
-    margin-top: 2mm;
+    margin-top: 1mm;
 }
+
 .line-date {
     font-size: 48pt;
-    margin-top: 2mm;
+    margin-top: 1mm;
 }
 
-/* Datum in Vergangenheit rot */
-.date-past {
-    border: 3px solid red;
-    padding: 4px;
-    border-radius: 6px;
-}
-
-/* Vorgezogen */
 .line-vorgezogen {
     font-size: 40pt;
-    margin-top: 2mm;
+    margin-top: 1mm;
+}
+
+/* Datumrahmen */
+.date-past {
+    border: 3px solid red;
+    padding: 1px 8px;
+    border-radius: 6px;
+    display: inline-block;
 }
 
 /* Buttons */
@@ -109,6 +125,7 @@ html, body {
     gap: 16px;
     padding: 0 20px;
 }
+
 .btn {
     flex: 1;
     border: none;
@@ -117,6 +134,7 @@ html, body {
     font-weight: bold;
     color: white;
 }
+
 .back-btn { background: #444; }
 .print-btn { background: #00963d; }
 
@@ -149,7 +167,7 @@ html, body {
 
 <body>
 
-<!-- VORSCHAU -->
+<!-- Vorschau -->
 <div class="preview-wrapper">
     <div class="preview-area">
         <div class="etikett">
@@ -159,13 +177,13 @@ html, body {
     </div>
 </div>
 
-<!-- DRUCK -->
+<!-- Druck -->
 <div id="printArea" class="etikett" style="display:none;">
     <div id="printContent" class="etikett-inner"></div>
     <img src="langen.png" class="logo">
 </div>
 
-<!-- BUTTONS -->
+<!-- Buttons -->
 <div class="bottom-bar">
     <button class="btn back-btn" id="backBtn">◀ Zurück</button>
     <button class="btn print-btn" id="printBtn">Drucken</button>
@@ -182,36 +200,56 @@ window.onload = () => {
     const farbe = data.farbe;
     const vorgezogen = data.vorgezogen;
 
-    /* --- Datum prüfen --- */
+    /* ⭐ Datum validieren und korrekt interpretieren (TTMM → TT.MM.) */
     let isPast = false;
-    if (dat) {
-        const parts = dat.split(".");
-        const now  = new Date();
-        const d    = new Date(now.getFullYear(), parts[1]-1, parts[0]);
+    let finalFormattedDate = dat;
+
+    if (dat && dat.length === 5 || dat.length === 4) {
+        const p = dat.includes(".") ? dat.split(".") : [dat.slice(0, 2), dat.slice(2)];
+
+        const tag = parseInt(p[0]);
+        const monat = parseInt(p[1]) - 1;
+
+        const now = new Date();
+        let jahr = now.getFullYear();
+
+        let dTarget = new Date(jahr, monat, tag);
         const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        if (d < today) isPast = true;
+
+        if (dTarget < today) {
+            jahr++;
+            dTarget = new Date(jahr, monat, tag);
+        }
+
+        finalFormattedDate = `${String(tag).padStart(2, "0")}.${String(monat + 1).padStart(2, "0")}`;
+        isPast = dTarget < today;
     }
 
-    /* --- Inhalt zusammensetzen --- */
+    /* Inhalt erzeugen */
     let html = `
         <div class="line line-title">PAUS</div>
         <div class="line line-kommission" style="color:${farbe};">${kom}</div>
+        <div class="line line-date">
+            <span class="${isPast ? "date-past" : ""}">${finalFormattedDate}</span>
+        </div>
     `;
 
-    /* Datum-Zeile */
-    let dateClass = "line line-date";
-    if (isPast) dateClass += " date-past";
-
-    html += `<div class="${dateClass}">${dat}</div>`;
-
-    /* Vorgezogen-Zeile */
     if (vorgezogen) {
         html += `<div class="line line-vorgezogen" style="color:${farbe};">„Vorgezogen“</div>`;
     }
 
-    /* Inhalte einsetzen */
-    document.getElementById("previewContent").innerHTML = html;
-    document.getElementById("printContent").innerHTML   = html;
+    /* HTML einsetzen */
+    previewContent.innerHTML = html;
+    printContent.innerHTML = html;
+
+    /* ⭐ Richtigen Offset anwenden */
+    if (vorgezogen) {
+        previewContent.classList.add("offset-vorgezogen");
+        printContent.classList.add("offset-vorgezogen");
+    } else {
+        previewContent.classList.add("offset-normal");
+        printContent.classList.add("offset-normal");
+    }
 
     /* Buttons */
     printBtn.onclick = () => window.print();
