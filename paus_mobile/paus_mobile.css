@@ -1,127 +1,184 @@
+/* ===== ALLGEMEIN ===== */
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background: #f1f1f1;
+    font-family: Arial, sans-serif;
+    background: #ececec;
     text-align: center;
 }
 
-/* Überschrift */
-h1 {
+.title {
+    margin-top: 25px;
     font-size: 34px;
-    color: #003C78;
-    margin-top: 40px;
+    font-weight: bold;
+    color: #003b73;
 }
 
-/* Farbauswahl */
+/* ===== FARBBUTTONS ===== */
 .color-row {
     display: flex;
     justify-content: center;
-    gap: 20px;
-    margin-top: 25px;
+    gap: 14px;
+    margin-top: 10px;
+    margin-bottom: 18px;
 }
 
 .color-btn {
-    width: 160px;
-    height: 95px;
-    border-radius: 22px;
-    font-size: 32px;
+    width: 27%;
+    padding: 16px 0;
+    font-size: 26px;
     font-weight: bold;
     color: white;
-    border: 6px solid transparent;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border: none;
+    border-radius: 16px;
+    transition: 0.15s;
 }
 
-.color-btn.red { background: #C62828; }
-.color-btn.blue { background: #1565C0; }
-.color-btn.black { background: #333; }
+.color-btn[data-color="red"] { background: #c62828; }
+.color-btn[data-color="blue"] { background: #1565c0; }
+.color-btn[data-color="black"] { background: #333; }
 
 .color-btn.active {
-    border-color: #72A0FF;
+    outline: 4px solid #4d7cff;
 }
 
-/* Checkbox Text */
-.checkbox-row {
-    margin-top: 20px;
+/* ===== VORGEZOGEN ===== */
+.vorgezogen-row {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 14px;
-    font-size: 26px;
+    font-size: 22px;
+    gap: 10px;
+    margin-bottom: 18px;
 }
 
-/* Eingabe-Felder */
+/* ===== EINGABEFELDER ===== */
+.input-area {
+    width: 88%;
+    margin: 0 auto;
+}
+
 .input-field {
-    width: 90%;
-    margin: 18px auto;
-    height: 75px;
-    border-radius: 20px;
-    border: 3px solid #ccc;
-    background: white;
-    font-size: 32px;
+    width: 100%;
+    padding: 16px;
+    margin: 10px 0;
+    border-radius: 14px;
+    border: 2px solid #cfcfcf;
+    background: #ffffff;
+    font-size: 24px;
     text-align: center;
-    padding-top: 6px;
-    box-sizing: border-box;
 }
 
-/* Tastatur öffnen */
-.open-keyboard {
-    width: 90%;
-    margin: 25px auto;
-    background: #ddd;
-    color: #1565C0;
-    font-size: 32px;
+/* ===== MANUELLE TASTATUR ===== */
+.keyboard-open-row {
+    margin-top: 8px;
+    margin-bottom: 22px;
+}
+
+.keyboard-open-btn {
+    width: 88%;
     padding: 18px;
-    border-radius: 22px;
+    font-size: 24px;
+    border-radius: 18px;
+    border: none;
+    color: #0055cc;
+    background: #d9d9d9;
 }
 
-/* Buttons unten */
-.bottom-buttons {
+/* ===== UNTERE BUTTONS ===== */
+.bottom-row {
+    width: 90%;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
-    width: 90%;
-    margin: 40px auto;
+    margin-top: 18px;
 }
 
-.btn-back, .btn-print {
-    width: 45%;
-    height: 95px;
-    border-radius: 22px;
+.btn {
+    width: 47%;
+    padding: 18px 0;
+    border-radius: 16px;
     border: none;
-    font-size: 32px;
+    font-size: 26px;
     font-weight: bold;
     color: white;
 }
 
-.btn-back { background: #333; }
-.btn-print { background: #00963D; }
+.back-btn { background: #333; }
+.print-btn { background: #00963d; }
 
-/* Popup Tastatur */
+/* ===== POPUP TASTATUR ===== */
 .keyboard-popup {
     display: none;
     position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #e5e5e5;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    justify-content: center;
+    align-items: center;
+    z-index: 900;
+}
+
+.keyboard-content {
+    width: 90%;
+    max-width: 420px;
+    background: white;
+    border-radius: 16px;
     padding: 20px;
 }
 
-.keyboard-header {
-    font-size: 28px;
+#keyboardInput {
+    width: 90%;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid gray;
+    font-size: 22px;
+    text-align: center;
     margin-bottom: 10px;
 }
 
-.keyboard-grid {
+.keyboard-keys {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 14px;
+    gap: 10px;
 }
 
-.keyboard-grid button {
-    font-size: 32px;
-    padding: 22px;
-    border-radius: 14px;
+.keyboard-keys button {
+    padding: 16px 0;
+    font-size: 22px;
+    border-radius: 12px;
+    border: 1px solid #aaa;
+    background: #f2f2f2;
+}
+
+.keyboard-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.key-delete {
+    flex: 1;
+    background: #c62828;
+    color: white;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+}
+
+.key-ok {
+    flex: 1;
+    background: #00963d;
+    color: white;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+}
+
+.key-close {
+    flex: 1;
+    background: #555;
+    color: white;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
 }
