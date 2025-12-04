@@ -4,85 +4,79 @@
 <meta charset="UTF-8">
 <title>PAUS Lieferung</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <link rel="stylesheet" href="paus_mobile.css">
-
 </head>
-<body autocomplete="off">
 
-<!-- Dummy Input blockiert Chrome-Autofill vollständig -->
-<input type="text" style="display:none" autocomplete="off">
+<body>
+<div class="page">
 
-<h1 class="title">PAUS Lieferung</h1>
+    <div class="title">PAUS Lieferung</div>
 
-<!-- ================= FARBAUSWAHL ================= -->
-<div class="color-row">
-    <button class="color-btn active" data-color="red">Rot</button>
-    <button class="color-btn" data-color="blue">Blau</button>
-    <button class="color-btn" data-color="black">Schwarz</button>
-</div>
+    <!-- Farbwahl -->
+    <div class="color-row">
+        <button class="color-btn red active" data-color="red">Rot</button>
+        <button class="color-btn blue" data-color="blue">Blwarz</button>
+        <button class="color-btn black" data-color="black">Schwarz</button>
+    </div>
 
-<!-- ================= CHECKBOX ================= -->
-<div class="check-row">
-    <input type="checkbox" id="chkVorgezogen">
-    <label for="chkVorgezogen">Auftrag vorgezogen</label>
-</div>
+    <!-- Auftrag vorgezogen -->
+    <div class="checkbox-row">
+        <label><input type="checkbox" id="chkVorgezogen"> Auftrag vorgezogen</label>
+    </div>
 
-<!-- ================= KOMMISSION ================= -->
-<div class="input-row">
+    <!-- Eingabefeld: Kommission -->
     <input id="kommission"
-        type="text"
-        placeholder="Kommissionsnummer"
-        readonly
-        autocomplete="off"
-        autocorrect="off"
-        autocapitalize="off"
-        spellcheck="false">
-</div>
+           class="input-field"
+           placeholder="Kommissionsnummer"
+           readonly
+           autocomplete="off"
+           autocorrect="off"
+           autocapitalize="off"
+           spellcheck="false"
+           inputmode="none">
 
-<!-- ================= LIEFERDATUM ================= -->
-<div class="input-row">
+    <!-- Eingabefeld: Lieferdatum -->
     <input id="lieferdatum"
-        type="text"
-        placeholder="TT.MM"
-        readonly
-        autocomplete="off"
-        autocorrect="off"
-        autocapitalize="off"
-        spellcheck="false">
-</div>
+           class="input-field"
+           placeholder="TT.MM"
+           readonly
+           autocomplete="off"
+           autocorrect="off"
+           autocapitalize="off"
+           spellcheck="false"
+           inputmode="none">
 
-<!-- ================= MANUELLE TASTATUR ================= -->
-<div class="keyboard-open-container">
-    <button id="openKeyboardBtn" class="open-keyboard-btn">Tastatur öffnen</button>
-</div>
+    <!-- Tastatur öffnen -->
+    <button id="openKeyboardBtn">Tastatur öffnen</button>
 
-<!-- ================= POPUP TASTATUR ================= -->
-<div id="keyboardPopup" class="keyboard-popup">
-    <div class="keyboard-box">
+    <!-- Popup Tastatur – ORIGINAL PAUS VERSION -->
+    <div id="keyboardPopup">
+        <h3 id="keyboardTitle">Eingabe</h3>
 
-        <h2 id="keyboardTitle">Eingabe</h2>
+        <input id="keyboardInput"
+               autocomplete="off"
+               autocorrect="off"
+               autocapitalize="off"
+               spellcheck="false"
+               inputmode="none">
 
-        <input id="keyboardInput" class="keyboard-input" type="text">
-
-        <div id="keyboardKeys" class="keyboard-grid"></div>
+        <div id="keyboardKeys"></div>
 
         <div class="keyboard-actions">
-            <button id="keyboardDelete" class="key-btn delete-btn">Löschen</button>
-            <button id="keyboardOK" class="key-btn ok-btn">OK</button>
-            <button id="keyboardClose" class="key-btn close-btn">Schließen</button>
+            <button id="keyboardDelete">Löschen</button>
+            <button id="keyboardOK">OK</button>
+            <button id="keyboardClose">Schließen</button>
         </div>
-
     </div>
-</div>
 
-<!-- ================= BUTTONS UNTEN ================= -->
-<div class="bottom-row">
-    <button id="backBtn" class="back-btn">◀ Zurück</button>
-    <button id="druckenBtn" class="primary-btn">Weiter → Vorschau</button>
+    <!-- Buttons unten – wie Beschichtung -->
+    <div class="bottom-row">
+        <button class="back-btn" id="backBtn">◀ Zurück</button>
+        <button class="primary-btn" id="druckenBtn">Drucken</button>
+    </div>
+
 </div>
 
 <script src="paus_mobile.js"></script>
-
 </body>
 </html>

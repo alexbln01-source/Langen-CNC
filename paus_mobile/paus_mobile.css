@@ -1,155 +1,163 @@
-/* ====== GLOBAL (wie Beschichtung) ====== */
-body {
+* {
+    box-sizing: border-box;
+}
+
+html, body {
     margin: 0;
     padding: 0;
+    height: 100%;
+    background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
     font-family: Arial, sans-serif;
-    background: linear-gradient(#f7f7f7, #e8ecef);
+
     display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.title {
-    margin-top: 25px;
-    margin-bottom: 25px;
-    font-size: 34px;
-    font-weight: 900;
-    color: #003a73;
-    text-align: center;
-}
-
-/* ====== FARBWAHL (IDENTISCH WIE BESCHICHTUNG) ====== */
-.color-row {
-    width: 90%;
-    display: flex;
-    gap: 12px;
-    margin-bottom: 25px;
-}
-
-.color-btn {
-    flex: 1;
-    height: 65px;
-    font-size: 22px;
-    font-weight: bold;
-    color: #fff;
-    border-radius: 14px;
-    border: none;
-    cursor: pointer;
-}
-
-.color-btn[data-color="red"] { background: #c7362f; }
-.color-btn[data-color="blue"] { background: #2a63d7; }
-.color-btn[data-color="black"] { background: #333; }
-
-/* Aktiver Stil von Beschichtung */
-.color-btn.active {
-    box-shadow: 0 0 0 4px #4a8fff inset;
-}
-
-/* ====== CHECKBOX ====== */
-.check-row {
-    width: 90%;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 20px;
-}
-
-/* ====== EINGABEFELDER (wie Beschichtung) ====== */
-.input-row {
-    width: 90%;
-    margin-bottom: 18px;
-}
-
-.input-row input {
-    width: 100%;
-    height: 65px;
-    font-size: 26px;
-    text-align: center;
-    border-radius: 14px;
-    border: 2px solid #aaa;
-    outline: none;
-    background: #fff;
-}
-
-/* ====== TASTATUR ÖFFNEN BUTTON ====== */
-.keyboard-open-container {
-    margin-bottom: 25px;
-}
-
-.open-keyboard-btn {
-    padding: 10px 25px;
-    font-size: 18px;
-    border-radius: 12px;
-    background: #ccc;
-    border: none;
-    cursor: pointer;
-}
-
-/* ====== POPUP-TASTATUR ====== */
-.keyboard-popup {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
     justify-content: center;
     align-items: center;
 }
 
-.keyboard-box {
-    width: 90%;
-    max-width: 420px;
-    background: white;
-    border-radius: 14px;
-    padding: 22px;
-}
+/* ========= Seite ========= */
+.page {
+    width: 94vw;
+    height: 92vh;
 
-.keyboard-input {
-    width: 100%;
-    height: 60px;
-    font-size: 26px;
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.keyboard-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin: 18px 0;
-}
-
-.keyboard-grid button {
-    height: 60px;
-    font-size: 26px;
-}
-
-.keyboard-actions {
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+
+    overflow: hidden;
 }
 
-.key-btn {
-    flex: 1;
-    padding: 14px;
-    border-radius: 12px;
-    font-size: 20px;
+/* ========= Titel ========= */
+.title {
+    font-size: 28px;
+    font-weight: 900;
+    color: #003a73;
+    margin-bottom: 10px;
+}
+
+/* ========= Farb-Buttons ========= */
+.color-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.color-btn {
+    width: 130px;
+    height: 60px;
+    border-radius: 14px;
     border: none;
+    font-size: 22px;
+    font-weight: bold;
     color: white;
 }
 
-.ok-btn { background: #00963d; }
-.delete-btn { background: #d9534f; }
-.close-btn { background: #555; }
+.color-btn.active {
+    outline: 4px solid #1a73e8;
+}
 
-/* ====== UNTERE BUTTONLEISTE (100% wie Beschichtung) ====== */
+.red { background: #c9302c; }
+.blue { background: #1e63d5; }
+.black { background: #2d2d2d; }
+
+/* ========= Checkbox ========= */
+.checkbox-row {
+    width: 90%;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* ========= Eingabefelder ========= */
+.input-field {
+    width: 90%;
+    padding: 12px;
+    font-size: 22px;
+    border: 1px solid #777;
+    border-radius: 14px;
+    margin-bottom: 12px;
+}
+
+.input-field::placeholder {
+    color: #777;
+}
+
+/* ========= Tastatur öffnen ========= */
+#openKeyboardBtn {
+    margin-top: 5px;
+    padding: 10px 20px;
+    border-radius: 14px;
+    border: none;
+    background: #d0d0d0;
+    font-size: 18px;
+}
+
+/* ========= ORIGINAL PAUS POPUP TASTATUR ========= */
+#keyboardPopup {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #e0e0e0;
+    padding: 16px;
+    display: none;
+}
+
+#keyboardTitle {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+#keyboardInput {
+    width: 100%;
+    height: 50px;
+    font-size: 28px;
+    border: 1px solid #777;
+    border-radius: 12px;
+    text-align: center;
+}
+
+#keyboardKeys {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-top: 12px;
+}
+
+#keyboardKeys button {
+    padding: 12px;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 24px;
+}
+
+/* Buttons unten */
+.keyboard-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.keyboard-actions button {
+    flex: 1;
+    height: 50px;
+    border-radius: 12px;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#keyboardDelete { background: #d9534f; color: white; }
+#keyboardOK { background: #5cb85c; color: white; }
+#keyboardClose { background: #777; color: white; }
+
+/* ========= Unten Buttons (wie Beschichtung!) ========= */
 .bottom-row {
     width: 90%;
     display: flex;
     gap: 12px;
     margin-top: auto;
-    padding-bottom: 10px;
 }
 
 .back-btn,
@@ -158,15 +166,10 @@ body {
     padding: 14px;
     border-radius: 14px;
     border: none;
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 22px;
     color: white;
+    font-weight: bold;
 }
 
-.back-btn {
-    background: #444;
-}
-
-.primary-btn {
-    background: #00963d;
-}
+.back-btn { background: #444; }
+.primary-btn { background: #00963d; }
