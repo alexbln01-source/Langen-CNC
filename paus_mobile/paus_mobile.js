@@ -6,102 +6,41 @@ function isMobile() {
     return /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
 }
 
-/* 🎯 PC soll normal tippen, also readonly entfernen */
+/* =============================
+   PC → normale Tastatur erlauben
+============================= */
 if (!isMobile()) {
     kommission.removeAttribute("readonly");
     lieferdatum.removeAttribute("readonly");
 }
 
-document.querySelectorAll(".color-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-        document.querySelectorAll(".color-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        currentColor = btn.dataset.color;
-    });
-});
+/* =============================
+   PC: AUTOMATISCHE DATUMFORMATIERUNG
+============================= */
+lieferdatum.addEventListener("input", () => {
+    let v = lieferdatum.value.replace(/\D/g, ""); // nur Zahlen
 
-/* Tastatur erstellen */
-const grid = document.getElementById("keyboardKeys");
-["1","2","3","4","5","6","7","8","9","0"].forEach(c => {
-    const b = document.createElement("button");
-    b.textContent = c;
-    b.onclick = () => keyboardInput.value += c;
-    grid.appendChild(b);
-});
-
-/* Eingabefeld Klicks → Nur Handy öffnet Popup */
-kommission.onclick = () => {
-    if (isMobile()) openKeyboard("kommission");
-};
-
-lieferdatum.onclick = () => {
-    if (isMobile()) openKeyboard("lieferdatum");
-};
-
-function openKeyboard(id) {
-    activeInput = document.getElementById(id);
-    keyboardInput.value = "";
-    keyboardPopup.style.display = "flex";
-    keyboardTitle.textContent =
-        id === "kommission" ? "Kommissionsnummer" : "Lieferdatum";
-
-    setTimeout(() => keyboardInput.focus(), 100);
-}
-
-/* Popup Buttons */
-keyboardClose.onclick = () => keyboardPopup.style.display = "none";
-keyboardDelete.onclick = () => keyboardInput.value = keyboardInput.value.slice(0,-1);
-
-keyboardOK.onclick = handleKeyboardOK;
-
-keyboardInput.addEventListener("keydown", e => {
-    if (e.key === "Enter") handleKeyboardOK();
-});
-
-function handleKeyboardOK() {
-    if (!activeInput) return;
-
-    let val = keyboardInput.value.trim();
-
-    if (activeInput.id === "lieferdatum") {
-        val = val.replace(/\D/g, "");
-        if (val.length === 3) val = "0" + val;
-        if (val.length === 4) val = val.slice(0,2) + "." + val.slice(2);
+    if (v.length === 3) {
+        v = "0" + v;
     }
 
-    activeInput.value = val;
-
-    if (activeInput.id === "kommission") {
-        if (isMobile()) openKeyboard("lieferdatum");
-        return;
+    if (v.length >= 4) {
+        v = v.slice(0, 2) + "." + v.slice(2, 4) + ".";
     }
 
-    keyboardPopup.style.display = "none";
-}
+    lieferdatum.value = v;
+});
 
-/* Drucken Button */
-druckenBtn.onclick = () => {let activeInput = null;
-let currentColor = "red";
-
-/* Prüft, ob Gerät ein Smartphone/Tablet ist */
-function isMobile() {
-    return /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
-}
-
-/* 🎯 PC soll normal tippen, also readonly entfernen */
-if (!isMobile()) {
-    kommission.removeAttribute("readonly");
-    lieferdatum.removeAttribute("readonly");
-}
-
-/* ENTER auf PC-Tastatur -> zum Datum springen */
+/* ENTER → weiter zum Datum */
 kommission.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
         lieferdatum.focus();
     }
 });
 
-/* Farbauswahl */
+/* =============================
+   Farbe auswählen
+============================= */
 document.querySelectorAll(".color-btn").forEach(btn => {
     btn.addEventListener("click", () => {
         document.querySelectorAll(".color-btn").forEach(b => b.classList.remove("active"));
@@ -110,7 +49,9 @@ document.querySelectorAll(".color-btn").forEach(btn => {
     });
 });
 
-/* Tastatur erstellen */
+/* =============================
+   Popup Tastatur erstellen
+============================= */
 const grid = document.getElementById("keyboardKeys");
 ["1","2","3","4","5","6","7","8","9","0"].forEach(c => {
     const b = document.createElement("button");
@@ -119,7 +60,7 @@ const grid = document.getElementById("keyboardKeys");
     grid.appendChild(b);
 });
 
-/* Eingabefeld Klicks → Nur Handy öffnet Popup */
+/* Eingabefeld Klick → nur Handy */
 kommission.onclick = () => {
     if (isMobile()) openKeyboard("kommission");
 };
@@ -138,29 +79,42 @@ function openKeyboard(id) {
     setTimeout(() => keyboardInput.focus(), 100);
 }
 
-/* Popup Buttons */
+/* =============================
+   Popup Tasten
+============================= */
 keyboardClose.onclick = () => keyboardPopup.style.display = "none";
 keyboardDelete.onclick = () => keyboardInput.value = keyboardInput.value.slice(0,-1);
-
 keyboardOK.onclick = handleKeyboardOK;
 
 keyboardInput.addEventListener("keydown", e => {
     if (e.key === "Enter") handleKeyboardOK();
 });
 
+/* =============================
+   Popup Eingabe bestätigen
+============================= */
 function handleKeyboardOK() {
     if (!activeInput) return;
 
     let val = keyboardInput.value.trim();
 
+    /* Datum automatisch formatieren */
     if (activeInput.id === "lieferdatum") {
+
         val = val.replace(/\D/g, "");
-        if (val.length === 3) val = "0" + val;
-        if (val.length === 4) val = val.slice(0,2) + "." + val.slice(2);
+
+        if (val.length === 3) {
+            val = "0" + val;
+        }
+
+        if (val.length >= 4) {
+            val = val.slice(0,2) + "." + val.slice(2,4) + ".";
+        }
     }
 
     activeInput.value = val;
 
+    /* Nach Kommission automatisch zum Datum weiter */
     if (activeInput.id === "kommission") {
         if (isMobile()) openKeyboard("lieferdatum");
         return;
@@ -169,7 +123,9 @@ function handleKeyboardOK() {
     keyboardPopup.style.display = "none";
 }
 
-/* Drucken Button */
+/* =============================
+   DRUCKEN
+============================= */
 druckenBtn.onclick = () => {
 
     if (!kommission.value.trim()) {
@@ -186,37 +142,18 @@ druckenBtn.onclick = () => {
 
     const json = JSON.stringify(data);
 
+    /* Android App */
     if (window.Android && typeof Android.printPaus === "function") {
         Android.printPaus(json);
         return;
     }
 
+    /* Web-Druckseite */
     window.location.href =
         "paus_druck.html?data=" + encodeURIComponent(json);
 };
 
-backBtn.onclick = () => history.back();
-    if (!kommission.value.trim()) {
-        alert("Bitte Kommissionsnummer eingeben!");
-        return;
-    }
-
-    const data = {
-        kommission: kommission.value.trim(),
-        lieferdatum: lieiverdatum.value.trim(),
-        vorgezogen: chkVorgezogen.checked,
-        farbe: currentColor
-    };
-
-    const json = JSON.stringify(data);
-
-    if (window.Android && typeof Android.printPaus === "function") {
-        Android.printPaus(json);
-        return;
-    }
-
-    window.location.href =
-        "paus_druck.html?data=" + encodeURIComponent(json);
-};
-
+/* =============================
+   ZURÜCK
+============================= */
 backBtn.onclick = () => history.back();
