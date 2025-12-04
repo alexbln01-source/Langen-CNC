@@ -4,60 +4,50 @@
 <meta charset="UTF-8">
 <title>PAUS Lieferung</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <link rel="stylesheet" href="paus_mobile.css">
-<script src="paus_mobile.js" defer></script>
 </head>
 
 <body>
 
 <div class="page">
 
-    <div class="title">PAUS Lieferung</div>
+    <h1 class="title">PAUS Lieferung</h1>
 
-    <!-- Farbauswahl -->
-    <div class="color-row">
-        <button class="color-btn" data-color="red">Rot</button>
-        <button class="color-btn" data-color="blue">Blau</button>
-        <button class="color-btn" data-color="black">Schwarz</button>
+    <div class="color-buttons">
+        <button class="color-btn color-red active" data-color="red">Rot</button>
+        <button class="color-btn color-blue" data-color="blue">Blau</button>
+        <button class="color-btn color-black" data-color="black">Schwarz</button>
     </div>
 
-    <!-- Vorgezogen -->
     <div class="vorgezogen-row">
         <input type="checkbox" id="chkVorgezogen">
-        <label for="chkVorgezogen">Auftrag vorgezogen</label>
+        <span>Auftrag vorgezogen</span>
     </div>
 
-    <!-- Felder -->
-    <input class="input-field" id="kommission" placeholder="Kommissionsnummer" readonly>
-    <input class="input-field" id="lieferdatum" placeholder="Lieferdatum (TT.MM)" readonly>
+    <input id="kommission" type="text" placeholder="Kommissionsnummer" readonly>
+    <input id="lieferdatum" type="text" placeholder="Lieferdatum (TT.MM)" readonly>
 
-    <!-- Buttons -->
     <div class="bottom-row">
-        <button class="back-btn" id="backBtn">◀ Zurück</button>
-        <button class="primary-btn" id="nextBtn">Drucken</button>
+        <button id="backBtn" class="back-btn">◀ Zurück</button>
+        <button id="druckenBtn" class="primary-btn">Weiter → Vorschau</button>
     </div>
 
 </div>
 
-<!-- Tastatur -->
-<div id="keyboardPopup">
-    <div id="keyboardBox">
+<div id="keyboardPopup" class="kb-popup">
+    <div class="kb-modal">
+        <h3 id="keyboardTitle">Eingeben</h3>
+        <input type="text" id="keyboardInput">
+        <div class="kb-grid" id="keyboardKeys"></div>
 
-        <h2 id="keyboardTitle">Eingeben</h2>
-
-        <input id="keyboardInput" readonly>
-
-        <div id="keyboardKeys"></div>
-
-        <div id="kbActions">
-            <button id="keyboardDelete">⌫</button>
-            <button id="keyboardOK">OK</button>
-            <button id="keyboardClose">Schließen</button>
+        <div class="kb-actions">
+            <button id="keyboardDelete" class="kb-del">⌫</button>
+            <button id="keyboardOK" class="kb-ok">OK</button>
+            <button id="keyboardClose" class="kb-close">Schließen</button>
         </div>
-
     </div>
 </div>
 
+<script src="paus_mobile.js"></script>
 </body>
 </html>

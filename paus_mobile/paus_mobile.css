@@ -1,6 +1,4 @@
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html, body {
     margin: 0;
@@ -8,118 +6,81 @@ html, body {
     height: 100%;
     background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
     font-family: Arial, sans-serif;
-    overflow: hidden;
 
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* =============================
-     Seite
-   ============================= */
 .page {
     width: 94vw;
     height: 92vh;
-
     display: flex;
     flex-direction: column;
     align-items: center;
-
     padding: 10px;
 }
 
-/* =============================
-     Überschrift
-   ============================= */
 .title {
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 900;
     color: #003a73;
-    margin-bottom: 10px;
+    margin-bottom: 18px;
 }
 
-/* =============================
-     Farbauswahl (kräftige Buttons)
-   ============================= */
-.color-row {
+input[type="text"] {
+    width: 90%;
+    padding: 14px;
+    margin-bottom: 12px;
+    font-size: 20px;
+    border-radius: 14px;
+    border: 1px solid #777;
+    text-align: center;
+    background: white;
+}
+input::placeholder { color: #999; }
+
+.color-buttons {
+    width: 90%;
     display: flex;
     gap: 12px;
-    margin-bottom: 14px;
-    width: 100%;
-    justify-content: center;
+    margin-bottom: 12px;
 }
 
 .color-btn {
-    width: 100px;
-    padding: 12px 0;
-    border-radius: 14px;
-    border: none;
-    color: white;
-    font-size: 16px;
-    font-weight: 800;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-    transition: transform 0.08s ease;
-    cursor: pointer;
-}
-
-.color-btn:active {
-    transform: scale(0.94);
-}
-
-.color-btn[data-color="red"] {
-    background: #d92828;
-}
-
-.color-btn[data-color="blue"] {
-    background: #0066cc;
-}
-
-.color-btn[data-color="black"] {
-    background: #222;
-}
-
-.color-btn.active {
-    outline: 3px solid #003a73;
-    filter: brightness(1.15);
-}
-
-/* =============================
-     Vorgezogen Checkbox
-   ============================= */
-.vorgezogen-row {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    font-size: 16px;
-    margin-bottom: 10px;
-}
-
-/* =============================
-     Eingabefelder
-   ============================= */
-.input-field {
-    width: 100%;
+    flex: 1;
     padding: 14px;
     border-radius: 14px;
     border: none;
-    background: white;
+    color: white;
     font-size: 18px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-    margin-bottom: 14px;
+    font-weight: bold;
+}
+.color-btn.active { outline: 4px solid #1a73e8; }
+
+.color-red  { background:#d32f2f; }
+.color-blue { background:#1976d2; }
+.color-black{ background:#2b2b2b; }
+
+.vorgezogen-row {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+.vorgezogen-row input {
+    transform: scale(1.4);
+    margin-right: 10px;
 }
 
-/* =============================
-     Buttons unten
-   ============================= */
 .bottom-row {
     width: 90%;
     display: flex;
     gap: 12px;
     margin-top: auto;
-    padding-bottom: 10px;
+    padding-bottom: 12px;
 }
 
 .back-btn,
@@ -131,120 +92,58 @@ html, body {
     font-size: 20px;
     font-weight: bold;
     color: white;
-    cursor: pointer;
 }
+.back-btn { background:#444; }
+.primary-btn { background:#00963d; }
 
-.back-btn {
-    background: #444;
-}
-
-.primary-btn {
-    background: #00963d;
-}
-
-/* =============================
-   Popup-Keyboard (modern, rund)
-   ============================= */
-
-#keyboardPopup {
+.kb-popup {
     display: none;
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.45);
     justify-content: center;
     align-items: center;
-    z-index: 9000;
+    z-index: 999;
 }
 
-#keyboardBox {
-    background: #ffffff;
-    padding: 18px;
-    border-radius: 18px;
-    width: 92%;
-    max-width: 360px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
-    animation: popupFade 0.15s ease-out;
-}
-
-@keyframes popupFade {
-    from { transform: translateY(20px); opacity: 0; }
-    to   { transform: translateY(0);    opacity: 1; }
-}
-
-#keyboardTitle {
-    margin: 0 0 10px 0;
+.kb-modal {
+    width: 90%;
+    max-width: 420px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 16px;
     text-align: center;
-    font-size: 20px;
-    font-weight: 800;
-    color: #003a73;
 }
 
 #keyboardInput {
-    width: 100%;
+    width: 92%;
     padding: 12px;
-    font-size: 22px;
-    border: 2px solid #004a87;
-    border-radius: 12px;
     margin-bottom: 12px;
-    text-align: center;
+    font-size: 20px;
+    border-radius: 14px;
+    border: 1px solid #777;
 }
 
-/* Tasten Grid */
-#keyboardKeys {
+.kb-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 6px;
-    margin-bottom: 12px;
+    gap: 10px;
 }
 
-#keyboardKeys button {
-    padding: 14px 0;
+.kb-grid button {
+    padding: 12px;
     font-size: 20px;
     border-radius: 12px;
-    border: none;
-    background: #e5e9f0;
-    font-weight: bold;
-    color: #003a73;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    background: #f2f2f2;
+    border: 1px solid #ccc;
 }
 
-#keyboardKeys button:active {
-    background: #cbd3df;
-}
-
-/* Aktionen */
-#kbActions {
+.kb-actions {
+    margin-top: 14px;
     display: flex;
     gap: 10px;
 }
 
-#kbActions button {
-    flex: 1;
-    padding: 14px 0;
-    border-radius: 12px;
-    border: none;
-    font-size: 18px;
-    font-weight: bold;
-    color: white;
-}
-
-#keyboardDelete { background: #444; }
-#keyboardOK    { background: #00963d; }
-#keyboardClose { background: #777; }
-
-/* =============================
-   Skalierung für TC21/TC22
-   ============================= */
-@media screen and (max-width: 380px) {
-    .page {
-        transform: scale(0.90);
-        transform-origin: top center;
-    }
-}
-
-@media screen and (min-width: 381px) and (max-width: 430px) {
-    .page {
-        transform: scale(0.78);
-        transform-origin: top center;
-    }
-}
+.kb-del { background:#d9534f;color:white;border:none;padding:10px 16px;border-radius:8px; }
+.kb-ok  { background:#28a745;color:white;border:none;padding:10px 20px;border-radius:8px; }
+.kb-close { background:#6c757d;color:white;border:none;padding:10px 16px;border-radius:8px; }
