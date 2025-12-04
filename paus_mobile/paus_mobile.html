@@ -2,71 +2,74 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PAUS Lieferung</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="stylesheet" href="paus_mobile.css">
+<script defer src="paus_mobile.js"></script>
+
 </head>
 <body>
 
-<h1>PAUS Lieferung</h1>
+<h1 class="title">PAUS Lieferung</h1>
 
-<!-- Farbwahl -->
-<div class="color-select">
-    <div class="color-btn btn-red active" data-color="red">Rot</div>
-    <div class="color-btn btn-blue" data-color="blue">Blau</div>
-    <div class="color-btn btn-black" data-color="black">Schwarz</div>
+<!-- ================= FARBAUSWAHL ================= -->
+<div class="color-row">
+    <button class="color-btn active" data-color="red" id="btnRed">Rot</button>
+    <button class="color-btn" data-color="blue" id="btnBlue">Blau</button>
+    <button class="color-btn" data-color="black" id="btnBlack">Schwarz</button>
 </div>
 
-<!-- Auftrag vorgezogen -->
-<label>
+<!-- ================= OPTION VORGEZOGEN ================= -->
+<div class="vorgezogen-row">
     <input type="checkbox" id="chkVorgezogen">
-    Auftrag vorgezogen
-</label>
-
-<!-- Eingaben -->
-<div class="input-box">
-    <input id="kommission" type="text" placeholder="Kommissionsnummer" maxlength="7">
+    <label for="chkVorgezogen">Auftrag vorgezogen</label>
 </div>
 
-<div class="input-box">
-    <input id="lieferdatum" type="text" placeholder="TT.MM" maxlength="5">
+<!-- ================= EINGABEFELDER ================= -->
+<div class="input-area">
+
+    <input id="kommission" class="input-field"
+        autocomplete="off" autocorrect="off"
+        placeholder="Kommissionsnummer" readonly>
+
+    <input id="lieferdatum" class="input-field"
+        autocomplete="off" autocorrect="off"
+        placeholder="TT.MM" readonly>
+
 </div>
 
-<button class="keyboard-open" id="openKeyboardBtn">Tastatur öffnen</button>
-
-<!-- Bottom Buttons -->
-<div class="bottom-bar">
-    <button class="nav-btn btn-back" id="backBtn">◀ Zurück</button>
-    <button class="nav-btn btn-forward" id="druckenBtn">Drucken</button>
+<!-- ================= MANUELLE TASTATUR ÖFFNEN ================= -->
+<div class="keyboard-open-row">
+    <button id="openKeyboardBtn" class="keyboard-open-btn">Tastatur öffnen</button>
 </div>
 
-<!-- Popup Tastatur -->
-<div id="keyboardPopup">
-    <input id="keyboardInput" type="text">
+<!-- ================= ORIGINAL POPUP TASTATUR ================= -->
+<div id="keyboardPopup" class="keyboard-popup">
+    <div class="keyboard-content">
 
-    <div class="keyboard-row">
-        <button class="key-btn">1</button>
-        <button class="key-btn">2</button>
-        <button class="key-btn">3</button>
-        <button class="key-btn">4</button>
-        <button class="key-btn">5</button>
-    </div>
-    <div class="keyboard-row">
-        <button class="key-btn">6</button>
-        <button class="key-btn">7</button>
-        <button class="key-btn">8</button>
-        <button class="key-btn">9</button>
-        <button class="key-btn">0</button>
-    </div>
+        <h3 id="keyboardTitle">Eingabe</h3>
 
-    <div class="keyboard-row">
-        <button class="key-btn special" id="keyboardDelete">Löschen</button>
-        <button class="key-btn ok" id="keyboardOK">OK</button>
-        <button class="key-btn close" id="keyboardClose">Schließen</button>
+        <input id="keyboardInput"
+            autocomplete="off" autocorrect="off"
+            autocapitalize="off" spellcheck="false">
+
+        <div id="keyboardKeys" class="keyboard-keys"></div>
+
+        <div class="keyboard-actions">
+            <button id="keyboardDelete" class="key-delete">Löschen</button>
+            <button id="keyboardOK" class="key-ok">OK</button>
+            <button id="keyboardClose" class="key-close">Schließen</button>
+        </div>
+
     </div>
 </div>
 
-<script src="paus_mobile.js"></script>
+<!-- ================= UNTERE BUTTONLEISTE ================= -->
+<div class="bottom-row">
+    <button id="backBtn" class="btn back-btn">◀ Zurück</button>
+    <button id="druckenBtn" class="btn print-btn">Drucken</button>
+</div>
+
 </body>
 </html>
