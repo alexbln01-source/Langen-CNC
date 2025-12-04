@@ -9,52 +9,46 @@ function isMobile() {
 
     const ua = navigator.userAgent;
 
-    // Zebra-Scanner erkennen
     if (/Zebra|TC21|TC22|TC26|SDC/i.test(ua)) {
-        return false;  // Popup NICHT automatisch öffnen
+        return false;
     }
-
-    // Smartphones
-    return /Android|iPhone|iPad|iPod|Windows Phone/i.test(ua);
+    return /Android|iPhone|iPad|iPod/i.test(ua);
 }
 
-/* PC → Eingabe erlauben */
+/* PC darf normal tippen */
 if (!isMobile()) {
     kommission.removeAttribute("readonly");
     lieferdatum.removeAttribute("readonly");
 }
 
-/* ⭐ Beim Start sofort Kommission fokussieren */
+/* =============================
+   Focus beim Start & Felder leeren
+============================= */
 window.onload = () => {
+    kommission.value = "";
+    lieferdatum.value = "";
     kommission.focus();
 };
 
 /* =============================
-   ⭐ NEUE DATUMFORMATIERUNG (FEHLERFREI)
+   DATUM → nur bei blur formatieren
 ============================= */
-
-/* Beim Tippen nur Zahlen erlauben */
 lieferdatum.addEventListener("input", () => {
-    lieferdatum.value = lieferdatum.value.replace(/\D/g, "");
+    // während der Eingabe nur Zahlen und Punkt erlauben
+    lieferdatum.value = lieferdatum.value.replace(/[^\d.]/g, "");
 });
 
-/* Beim Verlassen formatieren */
 lieferdatum.addEventListener("blur", () => {
-    let v = lieferdatum.value.replace(/\D/g, "");
+    let v = lieferdatum.value.replace(/\D/g, ""); // Zahlen extrahieren
 
-    if (v.length === 0) {
-        lieferdatum.value = "";
-        return;
-    }
+    if (v.length === 0) return;
 
     if (v.length === 3) {
-        v = "0" + v;     // 111 → 0111 → 01.11
+        v = "0" + v;
     }
-
     if (v.length >= 4) {
         v = v.slice(0, 2) + "." + v.slice(2, 4);
     }
-
     lieferdatum.value = v;
 });
 
@@ -64,7 +58,7 @@ kommission.addEventListener("keydown", (e) => {
 });
 
 /* =============================
-   Farben auswählen
+   Farben wählen
 ============================= */
 document.querySelectorAll(".color-btn").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -75,80 +69,58 @@ document.querySelectorAll(".color-btn").forEach(btn => {
 });
 
 /* =============================
-   Popup Tastatur erzeugen
+   POPUP TASTATUR 
 ============================= */
-const grid = document.getElementById("keyboardKeys");
-["1","2","3","4","5","6","7","8","9","0"].forEach(c => {
-    const b = document.createElement("button");
-    b.textContent = c;
-    b.onclick = () => keyboardInput.value += c;
-    grid.appendChild(b);
-});
-
-/* Eingabefeld öffnet Popup (nur Handy) */
-kommission.onclick = () => { if (isMobile()) openKeyboard("kommission"); };
-lieferdatum.onclick = () => { if (isMobile()) openKeyboard("lieferdatum"); };
-
 function openKeyboard(id) {
     activeInput = document.getElementById(id);
-    keyboardInput.value = "";
-    keyboardPopup.style.display = "flex";
-    keyboardTitle.textContent = id === "kommission" ? "Kommissionsnummer" : "Lieferdatum";
 
-    setTimeout(() => keyboardInput.focus(), 100);
+    keyboardInput.value = "";
+    keyboardTitle.textContent = id === "kommission" ? "Kommissionsnummer" : "Lieferdatum";
+    keyboardPopup.style.display = "flex";
+
+    setTimeout(() => keyboardInput.focus(), 50);
 }
 
-/* ========= Manuelle Tastatur öffnen ========= */
-openKeyboardBtn.onclick = () => {
-    activeInput = kommission;
-    openKeyboard("kommission");
-};
-
-/* Popup Buttons */
-keyboardClose.onclick = () => keyboardPopup.style.display = "none";
-keyboardDelete.onclick = () => keyboardInput.value = keyboardInput.value.slice(0,-1);
-keyboardOK.onclick = handleKeyboardOK;
-
-keyboardInput.addEventListener("keydown", e => {
-    if (e.key === "Enter") handleKeyboardOK();
+/* Handy öffnet Popup */
+["click","touchstart"].forEach(evt => {
+    kommission.addEventListener(evt, () => { if (isMobile()) openKeyboard("kommission"); });
+    lieferdatum.addEventListener(evt, () => { if (isMobile()) openKeyboard("lieferdatum"); });
 });
 
-/* Popup Eingabe übernehmen */
-function handleKeyboardOK() {
+/* Tastatur–Buttons */
+keyboardClose.onclick = () => keyboardPopup.style.display = "none";
+keyboardDelete.onclick = () => keyboardInput.value = keyboardInput.value.slice(0, -1);
 
+keyboardOK.onclick = () => {
     if (!activeInput) return;
 
     let val = keyboardInput.value.replace(/\D/g, "");
 
     if (activeInput.id === "lieferdatum") {
-
         if (val.length === 3) val = "0" + val;
-        if (val.length >= 4)
-            val = val.slice(0,2) + "." + val.slice(2,4);
+        if (val.length >= 4) val = val.slice(0, 2) + "." + val.slice(2, 4);
     }
 
     activeInput.value = val;
     keyboardPopup.style.display = "none";
-}
+};
+
+/* ENTER im Popup */
+keyboardInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") keyboardOK.onclick();
+});
 
 /* =============================
    DRUCKEN
 ============================= */
 druckenBtn.onclick = () => {
 
-    if (!kommission.value.trim()) {
-        alert("Bitte Kommissionsnummer eingeben!");
-        return;
-    }
-
-    if (!lieferdatum.value.trim()) {
-        alert("Bitte Lieferdatum eingeben!");
-        return;
-    }
+    if (!kommission.value.trim()) return alert("Bitte Kommissionsnummer eingeben!");
+    if (!lieferdatum.value.trim()) return alert("Bitte Lieferdatum eingeben!");
 
     const data = {
-        kommission: kommission.value.trim(),
-        lieferdatum: lieferdatum.value.trim(),
+        kommission: kommission.value,
+        lieferdatum: lieferdatum.value,
         vorgezogen: chkVorgezogen.checked,
         farbe: currentColor
     };
@@ -163,11 +135,10 @@ druckenBtn.onclick = () => {
     window.location.href = "paus_druck.html?data=" + encodeURIComponent(json);
 };
 
-/* Zurück */
 backBtn.onclick = () => history.back();
 
 /* =============================
-   ⭐ ZEBRA SCANNER — Datum & Kommission einfüllen
+   ZEBRA SCANNER
 ============================= */
 document.addEventListener("keydown", (e) => {
 
@@ -182,16 +153,14 @@ document.addEventListener("keydown", (e) => {
 
             let dat = raw;
             if (dat.length === 3) dat = "0" + dat;
-            if (dat.length >= 4)
-                dat = dat.slice(0,2) + "." + dat.slice(2,4);
+            if (dat.length >= 4) dat = dat.slice(0, 2) + "." + dat.slice(2, 4);
 
             kommission.value = kom;
             lieferdatum.value = dat;
         }
 
         scanBuffer = "";
-    } 
-    else {
+    } else {
         scanBuffer += e.key;
     }
 });
