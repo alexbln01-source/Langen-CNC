@@ -1,45 +1,53 @@
 let activeInput = null;
 let currentColor = "red";
-
-/* Prüft, ob Gerät ein Smartphone/Tablet ist */
-function isMobile() {
-    return /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
-}
+let scanBuffer = "";
 
 /* =============================
-   PC → normale Tastatur erlauben
+   Gerät erkennen (Zebra → kein Popup)
 ============================= */
+function isMobile() {
+
+    const ua = navigator.userAgent;
+
+    // Zebra-Scanner erkennen
+    if (/Zebra|TC21|TC22|TC26|SDC/i.test(ua)) {
+        return false;  // Popup NICHT automatisch öffnen
+    }
+
+    // Smartphones
+    return /Android|iPhone|iPad|iPod|Windows Phone/i.test(ua);
+}
+
+/* PC → Eingabe erlauben */
 if (!isMobile()) {
     kommission.removeAttribute("readonly");
     lieferdatum.removeAttribute("readonly");
 }
 
+/* ⭐ Beim Start sofort Kommission fokussieren */
+window.onload = () => {
+    kommission.focus();
+};
+
 /* =============================
-   PC: AUTOMATISCHE DATUMFORMATIERUNG
+   PC: Automatische Datumformatierung
 ============================= */
 lieferdatum.addEventListener("input", () => {
-    let v = lieferdatum.value.replace(/\D/g, ""); // nur Zahlen
+    let v = lieferdatum.value.replace(/\D/g, "");
 
-    if (v.length === 3) {
-        v = "0" + v;
-    }
-
-    if (v.length >= 4) {
-        v = v.slice(0, 2) + "." + v.slice(2, 4) + ".";
-    }
+    if (v.length === 3) v = "0" + v;
+    if (v.length >= 4) v = v.slice(0, 2) + "." + v.slice(2, 4) + ".";
 
     lieferdatum.value = v;
 });
 
 /* ENTER → weiter zum Datum */
 kommission.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-        lieferdatum.focus();
-    }
+    if (e.key === "Enter") lieferdatum.focus();
 });
 
 /* =============================
-   Farbe auswählen
+   Farben auswählen
 ============================= */
 document.querySelectorAll(".color-btn").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -50,7 +58,7 @@ document.querySelectorAll(".color-btn").forEach(btn => {
 });
 
 /* =============================
-   Popup Tastatur erstellen
+   Popup Tastatur erzeugen
 ============================= */
 const grid = document.getElementById("keyboardKeys");
 ["1","2","3","4","5","6","7","8","9","0"].forEach(c => {
@@ -60,28 +68,26 @@ const grid = document.getElementById("keyboardKeys");
     grid.appendChild(b);
 });
 
-/* Eingabefeld Klick → nur Handy */
-kommission.onclick = () => {
-    if (isMobile()) openKeyboard("kommission");
-};
-
-lieferdatum.onclick = () => {
-    if (isMobile()) openKeyboard("lieferdatum");
-};
+/* Eingabefeld öffnet Popup (nur Handy) */
+kommission.onclick = () => { if (isMobile()) openKeyboard("kommission"); };
+lieferdatum.onclick = () => { if (isMobile()) openKeyboard("lieferdatum"); };
 
 function openKeyboard(id) {
     activeInput = document.getElementById(id);
     keyboardInput.value = "";
     keyboardPopup.style.display = "flex";
-    keyboardTitle.textContent =
-        id === "kommission" ? "Kommissionsnummer" : "Lieferdatum";
+    keyboardTitle.textContent = id === "kommission" ? "Kommissionsnummer" : "Lieferdatum";
 
     setTimeout(() => keyboardInput.focus(), 100);
 }
 
-/* =============================
-   Popup Tasten
-============================= */
+/* ========= Manuelle Tastatur öffnen ========= */
+openKeyboardBtn.onclick = () => {
+    activeInput = kommission; 
+    openKeyboard("kommission");
+};
+
+/* Popup Buttons */
 keyboardClose.onclick = () => keyboardPopup.style.display = "none";
 keyboardDelete.onclick = () => keyboardInput.value = keyboardInput.value.slice(0,-1);
 keyboardOK.onclick = handleKeyboardOK;
@@ -90,33 +96,23 @@ keyboardInput.addEventListener("keydown", e => {
     if (e.key === "Enter") handleKeyboardOK();
 });
 
-/* =============================
-   Popup Eingabe bestätigen
-============================= */
+/* Popup Eingabe übernehmen */
 function handleKeyboardOK() {
+
     if (!activeInput) return;
 
     let val = keyboardInput.value.trim();
 
-    /* Datum automatisch formatieren */
     if (activeInput.id === "lieferdatum") {
-
         val = val.replace(/\D/g, "");
-
-        if (val.length === 3) {
-            val = "0" + val;
-        }
-
-        if (val.length >= 4) {
-            val = val.slice(0,2) + "." + val.slice(2,4) + ".";
-        }
+        if (val.length === 3) val = "0" + val;
+        if (val.length >= 4) val = val.slice(0,2) + "." + val.slice(2,4) + ".";
     }
 
     activeInput.value = val;
 
-    /* Nach Kommission automatisch zum Datum weiter */
-    if (activeInput.id === "kommission") {
-        if (isMobile()) openKeyboard("lieferdatum");
+    if (activeInput.id === "kommission" && isMobile()) {
+        openKeyboard("lieferdatum");
         return;
     }
 
@@ -142,18 +138,44 @@ druckenBtn.onclick = () => {
 
     const json = JSON.stringify(data);
 
-    /* Android App */
     if (window.Android && typeof Android.printPaus === "function") {
         Android.printPaus(json);
         return;
     }
 
-    /* Web-Druckseite */
-    window.location.href =
-        "paus_druck.html?data=" + encodeURIComponent(json);
+    window.location.href = "paus_druck.html?data=" + encodeURIComponent(json);
 };
 
-/* =============================
-   ZURÜCK
-============================= */
+/* Zurück */
 backBtn.onclick = () => history.back();
+
+/* =============================
+   ⭐ ZEBRA SCANNER — Kommission + Datum automatisch einfüllen
+============================= */
+document.addEventListener("keydown", (e) => {
+
+    if (e.key === "Enter") {
+
+        let text = scanBuffer.trim();
+
+        if (text.includes("K:") && text.includes("D:")) {
+
+            const kom = text.match(/K:(.*?);/)[1];
+            const datRaw = text.match(/D:(.*)/)[1].replace(/\D/g, "");
+
+            let dat = datRaw;
+            if (dat.length === 3) dat = "0" + dat;
+            if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4) + ".";
+
+            kommission.value = kom;
+            lieferdatum.value = dat;
+
+            // ⭐ Kein Weiter-Klick → Bediener muss noch Vorgezogen & Farbe setzen
+        }
+
+        scanBuffer = "";
+    } 
+    else {
+        scanBuffer += e.key;
+    }
+});
