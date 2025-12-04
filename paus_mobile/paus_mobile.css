@@ -1,175 +1,203 @@
-* {
-    box-sizing: border-box;
-}
-
-html, body {
+/* ===== Grundlayout ===== */
+body {
     margin: 0;
-    padding: 0;
-    height: 100%;
-    background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
+    background: #f0f0f0;
     font-family: Arial, sans-serif;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
-/* ========= Seite ========= */
-.page {
-    width: 94vw;
-    height: 92vh;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-
-    overflow: hidden;
+/* Container */
+.container {
+    width: 95%;
+    margin: auto;
+    margin-top: 15px;
 }
 
-/* ========= Titel ========= */
+/* Titel */
 .title {
+    text-align: center;
     font-size: 28px;
-    font-weight: 900;
-    color: #003a73;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    font-weight: bold;
 }
 
-/* ========= Farb-Buttons ========= */
-.color-row {
+/* ===== Farb-Buttons ===== */
+.color-buttons {
     display: flex;
-    gap: 12px;
+    justify-content: space-between;
     margin-bottom: 20px;
 }
 
 .color-btn {
-    width: 130px;
-    height: 60px;
+    flex: 1;
+    margin: 0 5px;
+    height: 55px;
     border-radius: 14px;
     border: none;
-    font-size: 22px;
-    font-weight: bold;
+    font-size: 20px;
     color: white;
+    font-weight: bold;
 }
 
+/* Farben zuweisen */
+.color-btn[data-color="red"] {
+    background: #c9302c;
+}
+
+.color-btn[data-color="blue"] {
+    background: #1e63d5;
+}
+
+.color-btn[data-color="black"] {
+    background: #2d2d2d;
+}
+
+/* Aktive Farbe */
 .color-btn.active {
     outline: 4px solid #1a73e8;
 }
 
-.red { background: #c9302c; }
-.blue { background: #1e63d5; }
-.black { background: #2d2d2d; }
-
-/* ========= Checkbox ========= */
+/* ===== Checkbox ===== */
 .checkbox-row {
-    width: 90%;
+    margin-bottom: 18px;
     font-size: 18px;
-    margin-bottom: 10px;
 }
 
-/* ========= Eingabefelder ========= */
+/* ===== Eingabefelder ===== */
 .input-field {
-    width: 90%;
+    width: 100%;
     padding: 12px;
-    font-size: 22px;
-    border: 1px solid #777;
+    font-size: 20px;
     border-radius: 14px;
+    border: 1px solid #777;
     margin-bottom: 12px;
 }
 
 .input-field::placeholder {
-    color: #777;
+    color: #888;
 }
 
-/* ========= Tastatur öffnen ========= */
-#openKeyboardBtn {
-    margin-top: 5px;
-    padding: 10px 20px;
+/* ===== Tastatur öffnen Button ===== */
+.open-keyboard-btn {
+    width: 100%;
+    padding: 12px;
     border-radius: 14px;
-    border: none;
     background: #d0d0d0;
-    font-size: 18px;
+    border: none;
+    font-size: 17px;
+    margin-bottom: 20px;
 }
 
-/* ========= ORIGINAL PAUS POPUP TASTATUR ========= */
-#keyboardPopup {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #e0e0e0;
-    padding: 16px;
+/* ===========================================
+   ORIGINAL PAUS POPUP TASTATUR
+   =========================================== */
+.kb-popup {
     display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
 }
 
-#keyboardTitle {
+.kb-modal {
+    width: 90%;
+    max-width: 420px;
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
     text-align: center;
-    font-size: 20px;
-    margin-bottom: 10px;
 }
 
 #keyboardInput {
-    width: 100%;
-    height: 50px;
-    font-size: 28px;
-    border: 1px solid #777;
+    width: 90%;
+    padding: 12px;
+    margin-bottom: 12px;
+    font-size: 20px;
     border-radius: 12px;
-    text-align: center;
+    border: 1px solid #777;
 }
 
-#keyboardKeys {
+/* Zahlenfeld */
+.kb-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 10px;
-    margin-top: 12px;
 }
 
-#keyboardKeys button {
+.kb-grid button {
     padding: 12px;
-    background: white;
-    border-radius: 12px;
+    background: #f2f2f2;
     border: 1px solid #ccc;
-    font-size: 24px;
+    font-size: 20px;
+    border-radius: 12px;
+    cursor: pointer;
 }
 
-/* Buttons unten */
-.keyboard-actions {
+/* Popup Buttons */
+.kb-actions {
     display: flex;
     gap: 10px;
     margin-top: 14px;
 }
 
-.keyboard-actions button {
-    flex: 1;
-    height: 50px;
-    border-radius: 12px;
-    border: none;
-    font-size: 20px;
-    font-weight: bold;
+.kb-del {
+    background:#d9534f;
+    color:white;
+    border:none;
+    padding:10px;
+    border-radius:8px;
+    flex:1;
 }
 
-#keyboardDelete { background: #d9534f; color: white; }
-#keyboardOK { background: #5cb85c; color: white; }
-#keyboardClose { background: #777; color: white; }
+.kb-ok {
+    background:#28a745;
+    color:white;
+    border:none;
+    padding:10px;
+    border-radius:8px;
+    flex:1;
+}
 
-/* ========= Unten Buttons (wie Beschichtung!) ========= */
-.bottom-row {
-    width: 90%;
+.kb-close {
+    background:#6c757d;
+    color:white;
+    border:none;
+    padding:10px;
+    border-radius:8px;
+    flex:1;
+}
+
+/* ===========================================
+   UNTERE BUTTONS (wie Beschichtung)
+   =========================================== */
+.bottom-buttons {
     display: flex;
-    gap: 12px;
-    margin-top: auto;
+    justify-content: space-between;
+    margin-top: 25px;
 }
 
 .back-btn,
-.primary-btn {
+.print-btn {
     flex: 1;
-    padding: 14px;
+    height: 55px;
+    margin: 0 5px;
     border-radius: 14px;
-    border: none;
     font-size: 22px;
+    border: none;
     color: white;
     font-weight: bold;
 }
 
-.back-btn { background: #444; }
-.primary-btn { background: #00963d; }
+.back-btn {
+    background: #444;
+}
+
+.print-btn {
+    background: #00963d;
+}
+
+/* Fokusrahmen */
+button:focus {
+    outline: 4px solid #1a73e8;
+}
