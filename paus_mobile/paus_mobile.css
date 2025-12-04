@@ -1,3 +1,7 @@
+/* ============================
+   Grundlayout – identisch wie Beschichtung
+============================ */
+
 * { box-sizing: border-box; }
 
 html, body {
@@ -38,7 +42,12 @@ input[type="text"] {
     text-align: center;
     background: white;
 }
+
 input::placeholder { color: #999; }
+
+/* ============================
+   Farbwahl
+============================ */
 
 .color-buttons {
     width: 90%;
@@ -56,11 +65,16 @@ input::placeholder { color: #999; }
     font-size: 18px;
     font-weight: bold;
 }
+
 .color-btn.active { outline: 4px solid #1a73e8; }
 
 .color-red  { background:#d32f2f; }
 .color-blue { background:#1976d2; }
 .color-black{ background:#2b2b2b; }
+
+/* ============================
+   Vorgezogen
+============================ */
 
 .vorgezogen-row {
     width: 90%;
@@ -70,10 +84,15 @@ input::placeholder { color: #999; }
     font-size: 18px;
     font-weight: bold;
 }
+
 .vorgezogen-row input {
     transform: scale(1.4);
     margin-right: 10px;
 }
+
+/* ============================
+   🔥 Buttons – identisch zu Beschichtung!
+============================ */
 
 .bottom-row {
     width: 90%;
@@ -93,8 +112,13 @@ input::placeholder { color: #999; }
     font-weight: bold;
     color: white;
 }
+
 .back-btn { background:#444; }
 .primary-btn { background:#00963d; }
+
+/* ============================
+   Keyboard-Popup
+============================ */
 
 .kb-popup {
     display: none;
@@ -144,6 +168,26 @@ input::placeholder { color: #999; }
     gap: 10px;
 }
 
-.kb-del { background:#d9534f;color:white;border:none;padding:10px 16px;border-radius:8px; }
-.kb-ok  { background:#28a745;color:white;border:none;padding:10px 20px;border-radius:8px; }
-.kb-close { background:#6c757d;color:white;border:none;padding:10px 16px;border-radius:8px; }
+.kb-del { 
+    background:#d9534f;
+    color:white;
+    border:none;
+    padding:10px 16px;
+    border-radius:8px;
+}
+
+.kb-ok  { 
+    background:#28a745;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:8px;
+}
+
+.kb-close { 
+    background:#6c757d;
+    color:white;
+    border:none;
+    padding:10px 16px;
+    border-radius:8px;
+}
