@@ -42,13 +42,12 @@ function route() {
     }
 
     /* ============================================
-       ⭐ PAUS → noch Baustelle
-    ============================================ */
-    if (bereich === "paus") {
-        window.location.href = "baustelle.html";
-        return;
-    }
-
+   ⭐ PAUS → mobile Version starten
+============================================ */
+if (bereich === "paus") {
+    window.location.href = "paus_mobile.html";
+    return;
+}
     alert("Unbekannter Bereich: " + bereich);
 }
 
