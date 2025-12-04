@@ -4,9 +4,35 @@
 <meta charset="UTF-8">
 <title>PAUS Lieferung</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="paus_mobile.css">
-</head>
 
+<link rel="stylesheet" href="paus_mobile.css">
+
+<style>
+/* === Buttons identisch zu Beschichtung === */
+.bottom-row {
+    width: 90%;
+    display: flex;
+    gap: 12px;
+    margin-top: auto;
+    padding-bottom: 12px;
+}
+
+.back-btn,
+.primary-btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+}
+
+.back-btn { background:#444; }
+.primary-btn { background:#00963d; }
+</style>
+
+</head>
 <body>
 
 <div class="page">
@@ -27,12 +53,15 @@
     <input id="kommission" type="text" placeholder="Kommissionsnummer" readonly>
     <input id="lieferdatum" type="text" placeholder="Lieferdatum (TT.MM)" readonly>
 
+    <!-- ✔ Button-Layout jetzt identisch wie Beschichtung -->
     <div class="bottom-row">
         <button id="backBtn" class="back-btn">◀ Zurück</button>
-        <button id="druckenBtn" class="primary-btn">Weiter → Vorschau</button>
+        <button id="druckenBtn" class="primary-btn">Drucken</button>
     </div>
 
 </div>
+
+<!-- (Dein vorhandenes Popup-Keyboard bleibt vollständig unverändert) -->
 
 <div id="keyboardPopup" class="kb-popup">
     <div class="kb-modal">
