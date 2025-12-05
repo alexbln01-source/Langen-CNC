@@ -16,7 +16,7 @@ html, body {
 }
 
 /* =============================
-     Seite
+   Hauptseite Wrapper
    ============================= */
 .page {
     width: 94vw;
@@ -30,7 +30,7 @@ html, body {
 }
 
 /* =============================
-     Überschrift
+   Überschrift
    ============================= */
 .title {
     font-size: 24px;
@@ -40,7 +40,7 @@ html, body {
 }
 
 /* =============================
-     Inputfelder
+   Eingabefelder
    ============================= */
 #beistellInput,
 #kundeInput {
@@ -60,7 +60,7 @@ html, body {
 }
 
 /* =============================
-     Kunden Grid
+   Kunden Grid — PC DEFAULT !!!
    ============================= */
 .kunden-grid {
     width: 100%;
@@ -68,23 +68,43 @@ html, body {
 
     display: grid;
 
-    /* 👉 HIER kommt deine Zeile hin */
-    grid-template-columns: 160px 160px 160px;
+    /* PC-Version → flexibel, vollständig */
+    grid-template-columns: repeat(3, 1fr);
 
     gap: 12px;
-    justify-content: center;   /* sorgt dafür, dass das Grid mittig steht */
+    justify-items: stretch;
+    justify-content: center;
 }
+
 /* =============================
-     Kunden Buttons
+   TC22 (6 Zoll) – größere Buttons
+   ============================= */
+@media (max-width: 450px) {
+    .kunden-grid {
+        grid-template-columns: repeat(3, 130px);
+    }
+}
+
+/* =============================
+   TC21 (5 Zoll)
+   ============================= */
+@media (max-width: 380px) {
+    .kunden-grid {
+        grid-template-columns: repeat(3, 115px);
+    }
+}
+
+/* =============================
+   Kunden Buttons
    ============================= */
 .kunde-btn {
     width: 100%;
-    min-height: 70px;         /* einheitliche Höhe */
+    min-height: 75px;
     height: auto;
 
     padding: 6px;
 
-    display: flex;            /* perfekte Zentrierung */
+    display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -105,7 +125,7 @@ html, body {
 }
 
 /* =============================
-     EILT
+   EILT Button
    ============================= */
 #eiltBtn {
     margin-top: 12px;
@@ -126,7 +146,7 @@ html, body {
 }
 
 /* =============================
-     Unten
+   Untere Buttonreihe
    ============================= */
 .bottom-row {
     width: 90%;
@@ -156,44 +176,12 @@ html, body {
 }
 
 /* =============================
-     Fake-Tastaturen (Mini-Keyboards)
-   ============================= */
-.kb {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background: #dcdcdc;
-    box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
-}
-
-/* =============================
-     Fokus-Design
+   Fokus / Cursor
    ============================= */
 button:focus {
     outline: 4px solid #1a73e8;
 }
 
-/* =============================
-     Automatische Skalierung für TC21 / TC22
-   ============================= */
-@media screen and (max-width: 380px) {
-    .page {
-        transform: scale(0.90);
-        transform-origin: top center;
-    }
-}
-
-@media screen and (min-width: 381px) and (max-width: 430px) {
-    .page {
-        transform: scale(0.78);
-        transform-origin: top center;
-    }
-}
-
-/* =============================
-     Blinkender Cursor
-   ============================= */
 .input-blink {
     position: relative;
 }
@@ -217,7 +205,7 @@ button:focus {
 }
 
 /* =============================
-     Mobile Fokusrahmen
+   Mobile Fokusrahmen
    ============================= */
 .mobile-focus {
     outline: 4px solid #1a73e8 !important;
