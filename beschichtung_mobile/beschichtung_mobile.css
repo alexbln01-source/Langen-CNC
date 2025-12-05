@@ -16,7 +16,7 @@ html, body {
 }
 
 /* =============================
-   Hauptseite Wrapper
+   Hauptseite
    ============================= */
 .page {
     width: 94vw;
@@ -59,16 +59,16 @@ html, body {
     color: #999;
 }
 
-/* =============================
-   Kunden Grid — PC DEFAULT !!!
-   ============================= */
+/* ==========================================
+   Kunden GRID – STANDARD (PC + iPhone + Android)
+   ========================================== */
 .kunden-grid {
     width: 100%;
     padding: 0 12px;
 
     display: grid;
 
-    /* PC-Version → flexibel, vollständig */
+    /* FLEXIBEL für alle normalen Geräte */
     grid-template-columns: repeat(3, 1fr);
 
     gap: 12px;
@@ -76,19 +76,20 @@ html, body {
     justify-content: center;
 }
 
-/* =============================
-   TC22 (6 Zoll) – größere Buttons
-   ============================= */
-@media (max-width: 450px) {
+/* ==========================================
+   Spezielle Regeln NUR für Zebra TC22 (6 Zoll)
+   (Breite ca. 720px Höhe → Zebra Identifikation)
+   ========================================== */
+@media (max-width: 450px) and (device-height: 720px) {
     .kunden-grid {
         grid-template-columns: repeat(3, 130px);
     }
 }
 
-/* =============================
-   TC21 (5 Zoll)
-   ============================= */
-@media (max-width: 380px) {
+/* ==========================================
+   Spezielle Regeln NUR für Zebra TC21 (5 Zoll)
+   ========================================== */
+@media (max-width: 380px) and (device-height: 640px) {
     .kunden-grid {
         grid-template-columns: repeat(3, 115px);
     }
@@ -146,7 +147,7 @@ html, body {
 }
 
 /* =============================
-   Untere Buttonreihe
+   Untere Buttons
    ============================= */
 .bottom-row {
     width: 90%;
