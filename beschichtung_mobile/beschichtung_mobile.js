@@ -18,7 +18,7 @@ const kundenButtons = Array.from(document.querySelectorAll(".kunde-btn"));
 let activeInput       = null;
 let lastCustomerIndex = 0;
 
-// Geräteerkennung (Zebra / Android / iPhone)
+// Geräteerkennung (Zebra / Handy)
 const isMobile = /Android|iPhone|iPad|iPod|Zebra|TC21|TC22/i.test(navigator.userAgent);
 
 
@@ -30,95 +30,104 @@ if (isMobile) {
     beistell.readOnly   = true;
     kundenname.readOnly = true;
 
-    /* -------- Beistell-Input klicken → Nur Zahlentastatur -------- */
+    /* -------- Beistell-Input klicken -------- */
     beistell.addEventListener("click", () => {
         activeInput = beistell;
 
         beistell.classList.add("mobile-focus");
         kundenname.classList.remove("mobile-focus");
-        kundenname.classList.remove("input-blink");
+
+        beistell.classList.remove("input-blink");
 
         numKb.style.display   = "block";
         alphaKb.style.display = "none";
     });
 
-    /* -------- Kundenname klicken → QWERTZ-Keyboard -------- */
+    /* -------- Kundenname klicken -------- */
     kundenname.addEventListener("click", () => {
         activeInput = kundenname;
 
         kundenname.classList.add("mobile-focus");
         beistell.classList.remove("mobile-focus");
-        beistell.classList.remove("input-blink");
+
+        kundenname.classList.remove("input-blink");
 
         numKb.style.display   = "none";
         alphaKb.style.display = "block";
     });
 
     /* ============================================================
-       ZAHLENTASTATUR (0–9, Delete, OK)
+       Nummern-Keyboard (0–9, Delete, OK)
     ============================================================ */
     document.querySelectorAll("#numKeyboard .kbm-key").forEach(key => {
         key.addEventListener("click", () => {
-
             if (!activeInput) return;
-            const value = key.textContent;
 
-            // DELETE
-            if (value === "⌫") {
+            // Löschen
+            if (key.id === "numDel") {
                 activeInput.value = activeInput.value.slice(0, -1);
                 return;
             }
 
-            // OK → zu Kundenname springen
-            if (value === "OK") {
+            // OK → Wechsel zu Kundenname
+            if (key.id === "numOk") {
                 numKb.style.display = "none";
+                activeInput.blur();
 
+                // Fokus wechseln
                 beistell.classList.remove("mobile-focus");
                 kundenname.classList.add("mobile-focus");
+
+                // Blink-Cursor aktivieren
                 kundenname.classList.add("input-blink");
 
+                // Kundenname aktivieren + Alphabet öffnen
                 activeInput = kundenname;
                 alphaKb.style.display = "block";
+
                 return;
             }
 
             // Normale Eingabe
-            activeInput.value += value;
+            activeInput.value += key.textContent;
         });
     });
 
     /* ============================================================
-       QWERTZ-TASTATUR (Delete, Space, OK)
+       Alphabet-Keyboard (QWERTZ)
     ============================================================ */
     document.querySelectorAll("#alphaKeyboard .kbm-key").forEach(key => {
         key.addEventListener("click", () => {
-
             if (!activeInput) return;
-            const value = key.textContent;
 
-            // DELETE
-            if (value === "⌫") {
+            // Delete
+            if (key.id === "alphaDel") {
                 activeInput.value = activeInput.value.slice(0, -1);
                 return;
             }
 
-            // SPACE (Taste mit flex:3)
-            if (value === "" && key.style.flex === "3") {
+            // Space
+            if (key.id === "alphaSpace") {
                 activeInput.value += " ";
                 return;
             }
 
-            // OK → schließen
-            if (value === "OK") {
+            // OK → Eingabe komplett
+            if (key.id === "alphaOk") {
                 alphaKb.style.display = "none";
-                kundenname.classList.remove("input-blink");
-                kundenname.classList.remove("mobile-focus");
                 activeInput.blur();
+
+                // Blinkcursor entfernen
+                kundenname.classList.remove("input-blink");
+
+                // Fokus entfernen
+                kundenname.classList.remove("mobile-focus");
+
                 return;
             }
 
-            // Normale Eingabe
-            activeInput.value += value;
+            // Normale Buchstaben-Eingabe
+            activeInput.value += key.textContent;
         });
     });
 
@@ -341,4 +350,4 @@ druckenBtn.onclick = () => {
 /* ============================================================
    ZURÜCK BUTTON
 ============================================================ */
-backBtn.onclick = () => history.back();
+backBtn.onclick = () => history.back();    baue es hier ein 
