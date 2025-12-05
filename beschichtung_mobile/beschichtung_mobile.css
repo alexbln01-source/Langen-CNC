@@ -62,22 +62,18 @@ html, body {
 /* =============================
      Kunden Grid
    ============================= */
-.grid-label {
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-
 .kunden-grid {
     width: 100%;
     padding: 0 12px;
 
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+
+    /* 👉 HIER kommt deine Zeile hin */
+    grid-template-columns: 160px 160px 160px;
+
     gap: 12px;
-
-    justify-items: stretch;  /* wichtig! */
+    justify-content: center;   /* sorgt dafür, dass das Grid mittig steht */
 }
-
 /* =============================
      Kunden Buttons
    ============================= */
