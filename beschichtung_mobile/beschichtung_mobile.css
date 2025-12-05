@@ -5,7 +5,7 @@
 html, body {
     margin: 0;
     padding: 0;
-    height: 80%;
+    height: 100%;
     background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
     font-family: Arial, sans-serif;
     overflow: hidden;
@@ -16,7 +16,7 @@ html, body {
 }
 
 /* =============================
-     Seite – OHNE Rahmen!!!
+     Seite
    ============================= */
 .page {
     width: 94vw;
@@ -27,8 +27,6 @@ html, body {
     align-items: center;
 
     padding: 10px;
-    border-radius: 0;   /* kein Rahmen mehr */
-    background: none;   /* kein weißer Block mehr */
 }
 
 /* =============================
@@ -42,7 +40,7 @@ html, body {
 }
 
 /* =============================
-     Inputfelder OHNE Label
+     Inputfelder
    ============================= */
 #beistellInput,
 #kundeInput {
@@ -56,7 +54,6 @@ html, body {
     border-radius: 14px;
 }
 
-/* Placeholder */
 #beistellInput::placeholder,
 #kundeInput::placeholder {
     color: #999;
@@ -65,22 +62,33 @@ html, body {
 /* =============================
      Kunden Grid
    ============================= */
+.grid-label {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
 .kunden-grid {
     width: 100%;
     padding: 0 12px;
+
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
 
-    justify-items: stretch;   /* <-- statt center */
+    justify-items: stretch;  /* wichtig! */
 }
 
+/* =============================
+     Kunden Buttons
+   ============================= */
 .kunde-btn {
     width: 100%;
-    min-height: 70px;       /* statt height: 60px */
-    height: auto;           /* passt sich automatisch an */
-    
-    display: flex;          /* Text perfekt zentrieren */
+    min-height: 70px;         /* einheitliche Höhe */
+    height: auto;
+
+    padding: 6px;
+
+    display: flex;            /* perfekte Zentrierung */
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -152,7 +160,7 @@ html, body {
 }
 
 /* =============================
-     Tastatur
+     Fake-Tastaturen (Mini-Keyboards)
    ============================= */
 .kb {
     position: fixed;
@@ -164,18 +172,15 @@ html, body {
 }
 
 /* =============================
-     Fokus
+     Fokus-Design
    ============================= */
 button:focus {
     outline: 4px solid #1a73e8;
-    transform: none;
 }
 
 /* =============================
-   AUTOMATIK-SKALIERUNG
+     Automatische Skalierung für TC21 / TC22
    ============================= */
-
-/* TC21 (5 Zoll) */
 @media screen and (max-width: 380px) {
     .page {
         transform: scale(0.90);
@@ -183,15 +188,15 @@ button:focus {
     }
 }
 
-/* TC22 (6 Zoll) */
 @media screen and (min-width: 381px) and (max-width: 430px) {
     .page {
         transform: scale(0.78);
         transform-origin: top center;
     }
 }
+
 /* =============================
-     Blinkender Cursor (Fake-Caret)
+     Blinkender Cursor
    ============================= */
 .input-blink {
     position: relative;
@@ -214,8 +219,9 @@ button:focus {
     50% { opacity: 0; }
     100% { opacity: 1; }
 }
+
 /* =============================
-     Mobile Fokusrahmen (sichtbarer Focus auf Handy/Scanner)
+     Mobile Fokusrahmen
    ============================= */
 .mobile-focus {
     outline: 4px solid #1a73e8 !important;
