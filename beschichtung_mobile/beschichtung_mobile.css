@@ -1,4 +1,6 @@
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
 html, body {
     margin: 0;
@@ -13,15 +15,25 @@ html, body {
     align-items: center;
 }
 
+/* =============================
+     Seite – OHNE Rahmen!!!
+   ============================= */
 .page {
     width: 94vw;
     height: 92vh;
+
     display: flex;
     flex-direction: column;
     align-items: center;
+
     padding: 10px;
+    border-radius: 0;   /* kein Rahmen mehr */
+    background: none;   /* kein weißer Block mehr */
 }
 
+/* =============================
+     Überschrift
+   ============================= */
 .title {
     font-size: 24px;
     font-weight: 900;
@@ -29,56 +41,99 @@ html, body {
     margin-bottom: 10px;
 }
 
-#beistellInput, #kundeInput {
+/* =============================
+     Inputfelder OHNE Label
+   ============================= */
+#beistellInput,
+#kundeInput {
     width: 90%;
     padding: 12px;
     margin-bottom: 10px;
+
     font-size: 18px;
+
     border: 1px solid #777;
     border-radius: 14px;
+}
+
+/* Placeholder */
+#beistellInput::placeholder,
+#kundeInput::placeholder {
+    color: #999;
+}
+
+/* =============================
+     Kunden Grid
+   ============================= */
+.grid-label {
+    font-weight: bold;
+    margin-bottom: 8px;
 }
 
 .kunden-grid {
     width: 100%;
     padding: 0 12px;
+
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
+
+    justify-items: center;
 }
 
 .kunde-btn {
     width: 100%;
     height: 60px;
+
     border-radius: 14px;
     border: none;
+
     background: white;
     font-size: 14px;
-    font-weight: 700;
+        font-weight: 700;
     color: #003a73;
     box-shadow: 0 1px 4px rgba(0,0,0,0.25);
 }
 
+.kunde-btn.active {
+    background: #007bff;
+    color: white;
+}
+
+/* =============================
+     EILT
+   ============================= */
 #eiltBtn {
     margin-top: 12px;
     width: 90%;
     padding: 14px;
     font-size: 20px;
+
     border-radius: 14px;
     border: none;
+
     background: #777;
     color: white;
     font-weight: bold;
 }
 
+#eiltBtn.on {
+    background: #c80000;
+}
+
+/* =============================
+     Unten
+   ============================= */
 .bottom-row {
     width: 90%;
     display: flex;
     gap: 12px;
     margin-top: auto;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
 }
 
-.back-btn, .primary-btn {
+.back-btn,
+.primary-btn {
     flex: 1;
     padding: 14px;
     border-radius: 14px;
@@ -88,85 +143,81 @@ html, body {
     color: white;
 }
 
-.back-btn { background: #444; }
-.primary-btn { background: #00963d; }
+.back-btn {
+    background: #444;
+}
 
+.primary-btn {
+    background: #00963d;
+}
 
-/* ================================
-   ⭐ KEYBOARD – Modern, Einheitlich
-================================ */
-.kb-mini {
+/* =============================
+     Tastatur
+   ============================= */
+.kb {
     position: fixed;
-    bottom: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(255,255,255,0.93);
-    backdrop-filter: blur(10px);
-    padding: 10px 14px;
-    border-radius: 16px;
-    box-shadow: 0 4px 25px rgba(0,0,0,0.22);
-    z-index: 9999;
-    width: 92%;
-    max-width: 420px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background: #dcdcdc;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
 }
 
-.kbm-row {
-    display: flex;
-    justify-content: center;
-    margin: 5px 0;
+/* =============================
+     Fokus
+   ============================= */
+button:focus {
+    outline: 4px solid #1a73e8;
+    transform: none;
 }
 
-.kbm-key {
-    flex: 1;
-    margin: 4px;
-    padding: 14px 0;
-    font-size: 20px;
-    font-weight: 700;
-    border-radius: 12px;
-    border: none;
-    color: #003a73;
-    background: #ffffff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
-    transition: transform 0.07s ease, background 0.1s;
-}
+/* =============================
+   AUTOMATIK-SKALIERUNG
+   ============================= */
 
-.kbm-key:active {
-    transform: scale(0.92);
-    background: #dfe7f1;
-}
-
-.kbm-del {
-    background: #b00020 !important;
-    color: white !important;
-}
-
-.kbm-ok {
-    background: #00963d !important;
-    color: white !important;
-}
-
-
-/* ================================
-   ⭐ ZEBRA FIX – perfekt mittig
-================================ */
-@media screen and (max-width: 430px) {
-
-    html, body {
-        display: block;
-        overflow-y: auto;
-    }
-
+/* TC21 (5 Zoll) */
+@media screen and (max-width: 380px) {
     .page {
-        width: 100vw;
-        max-width: 420px;
-        margin: 20px auto;
-        padding-left: 10px;
-        padding-right: 10px;
+        transform: scale(0.90);
+        transform-origin: top center;
     }
+}
 
-    .kunden-grid { padding: 0 8px; }
-
-    .bottom-row {
-        padding-bottom: 30px;
+/* TC22 (6 Zoll) */
+@media screen and (min-width: 381px) and (max-width: 430px) {
+    .page {
+        transform: scale(0.78);
+        transform-origin: top center;
     }
+}
+/* =============================
+     Blinkender Cursor (Fake-Caret)
+   ============================= */
+.input-blink {
+    position: relative;
+}
+
+.input-blink::after {
+    content: "";
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    width: 2px;
+    height: 60%;
+    background: #000;
+    transform: translateY(-50%);
+    animation: blinkCursor 0.8s steps(1) infinite;
+}
+
+@keyframes blinkCursor {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+/* =============================
+     Mobile Fokusrahmen (sichtbarer Focus auf Handy/Scanner)
+   ============================= */
+.mobile-focus {
+    outline: 4px solid #1a73e8 !important;
+    border-radius: 14px;
 }

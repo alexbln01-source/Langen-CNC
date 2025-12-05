@@ -15,7 +15,7 @@
         overflow: hidden;
     }
 
-    /* ===== VORSCHAU ===== */
+    /* ===== VORSCHAU IMMER QUERFORMAT ===== */
     .preview-wrapper {
         width: 100%;
         height: calc(100% - 150px);
@@ -34,17 +34,21 @@
         transform-origin: center;
     }
 
-    /* Handy Skalierung */
+    /* HANDY SKALIERUNG */
     @media (max-width: 900px) {
-        .preview-area { transform: scale(0.36); }
+        .preview-area {
+            transform: scale(0.36);
+        }
     }
 
-    /* PC Skalierung */
+    /* PC SKALIERUNG */
     @media (min-width: 901px) {
-        .preview-area { transform: scale(0.45); }
+        .preview-area {
+            transform: scale(0.45);
+        }
     }
 
-    /* Etikett */
+    /* ETIKETT */
     .etikett {
         width: 210mm;
         height: 148mm;
@@ -66,7 +70,10 @@
         width: 100%;
     }
 
-    .etikett * { font-weight: bold !important; }
+    /* ALLES AUF DEM ETIKETT FETT */
+    .etikett * {
+        font-weight: bold !important;
+    }
 
     .kunde-lp { font-size: 70pt; margin-bottom: 8mm; }
     .sub-lp { font-size: 70pt; margin-bottom: 8mm; }
@@ -140,11 +147,7 @@
     .back-btn { background: #444; }
     .print-btn { background: #00963d; }
 
-    /* ==============================================
-       PRINT FIX – HIER IST DER WICHTIGE EINZIGE FIX
-       ============================================== */
     @media print {
-
         html, body {
             margin: 0 !important;
             padding: 0 !important;
@@ -163,9 +166,6 @@
             width: 210mm !important;
             height: 148mm !important;
         }
-
-        /* 🔥 FIX: verhindert falsche Skalierung auf Android */
-        .preview-area { transform: none !important; }
 
         @page {
             size: A5 landscape;
@@ -234,8 +234,26 @@ window.onload = () => {
     previewContent.innerHTML = html;
     printContent.innerHTML   = html;
 
-    printBtn.onclick = () => window.print();
-    backBtn.onclick  = () => history.back();
+    // 🔍 GitHub-Pages kompatibler Auto-Pfad:
+    const basePath = "/" + window.location.pathname.split("/")[1] + "/index.html";
+
+    /* 🔶 Drucken */
+    printBtn.onclick = () => {
+        window.print();
+        setTimeout(() => {
+            window.location.href = basePath;
+        }, 500);
+    };
+
+    /* 🔶 Automatisch zurück NACH dem Drucken */
+    window.onafterprint = () => {
+        window.location.href = basePath;
+    };
+
+    /* 🔶 Manueller Zurück-Button → eine Ebene zurück */
+    backBtn.onclick = () => {
+        history.back();
+    };
 };
 </script>
 
