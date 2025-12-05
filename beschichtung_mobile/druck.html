@@ -148,6 +148,7 @@
     .print-btn { background: #00963d; }
 
     @media print {
+
         html, body {
             margin: 0 !important;
             padding: 0 !important;
@@ -234,23 +235,12 @@ window.onload = () => {
     previewContent.innerHTML = html;
     printContent.innerHTML   = html;
 
-    // 🔍 GitHub-Pages kompatibler Auto-Pfad:
-    const basePath = "/" + window.location.pathname.split("/")[1] + "/index.html";
-
     /* 🔶 Drucken */
     printBtn.onclick = () => {
-        window.print();
-        setTimeout(() => {
-            window.location.href = basePath;
-        }, 500);
+        window.print();   // KEIN redirect mehr!
     };
 
-    /* 🔶 Automatisch zurück NACH dem Drucken */
-    window.onafterprint = () => {
-        window.location.href = basePath;
-    };
-
-    /* 🔶 Manueller Zurück-Button → eine Ebene zurück */
+    /* 🔶 Zurück */
     backBtn.onclick = () => {
         history.back();
     };
