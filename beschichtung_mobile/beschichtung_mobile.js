@@ -18,19 +18,19 @@ const kundenButtons = Array.from(document.querySelectorAll(".kunde-btn"));
 let activeInput       = null;
 let lastCustomerIndex = 0;
 
-// Geräteerkennung
+// Geräteerkennung (Zebra / Android / iPhone)
 const isMobile = /Android|iPhone|iPad|iPod|Zebra|TC21|TC22/i.test(navigator.userAgent);
 
 
 /* ============================================================
-   MOBIL: SCREENKEYBOARDS
+   MOBIL: POPUP-TASTATUREN
 ============================================================ */
 if (isMobile) {
 
     beistell.readOnly   = true;
     kundenname.readOnly = true;
 
-    /* -------- Beistellnummer öffnen → NUM KEYPAD -------- */
+    /* -------- Beistell-Input klicken → Nur Zahlentastatur -------- */
     beistell.addEventListener("click", () => {
         activeInput = beistell;
 
@@ -42,7 +42,7 @@ if (isMobile) {
         alphaKb.style.display = "none";
     });
 
-    /* -------- Kundenname öffnen → QWERTZ KEYPAD -------- */
+    /* -------- Kundenname klicken → QWERTZ-Keyboard -------- */
     kundenname.addEventListener("click", () => {
         activeInput = kundenname;
 
@@ -55,25 +55,24 @@ if (isMobile) {
     });
 
     /* ============================================================
-       ZAHLENTASTATUR
+       ZAHLENTASTATUR (0–9, Delete, OK)
     ============================================================ */
     document.querySelectorAll("#numKeyboard .kbm-key").forEach(key => {
         key.addEventListener("click", () => {
-            if (!activeInput) return;
 
-            const val = key.textContent;
+            if (!activeInput) return;
+            const value = key.textContent;
 
             // DELETE
-            if (key.id === "numDel") {
+            if (value === "⌫") {
                 activeInput.value = activeInput.value.slice(0, -1);
                 return;
             }
 
-            // OK → Zahlenkeyboard schließen, QWERTZ öffnen
-            if (key.id === "numOk") {
+            // OK → zu Kundenname springen
+            if (value === "OK") {
                 numKb.style.display = "none";
 
-                // Auf Kundenname wechseln
                 beistell.classList.remove("mobile-focus");
                 kundenname.classList.add("mobile-focus");
                 kundenname.classList.add("input-blink");
@@ -84,45 +83,47 @@ if (isMobile) {
             }
 
             // Normale Eingabe
-            activeInput.value += val;
+            activeInput.value += value;
         });
     });
 
     /* ============================================================
-       QWERTZ–TASTATUR
+       QWERTZ-TASTATUR (Delete, Space, OK)
     ============================================================ */
     document.querySelectorAll("#alphaKeyboard .kbm-key").forEach(key => {
         key.addEventListener("click", () => {
-            if (!activeInput) return;
 
-            const val = key.textContent;
+            if (!activeInput) return;
+            const value = key.textContent;
 
             // DELETE
-            if (key.id === "alphaDel") {
+            if (value === "⌫") {
                 activeInput.value = activeInput.value.slice(0, -1);
                 return;
             }
 
-            // OK → schließen
-            if (key.id === "alphaOk") {
-                alphaKb.style.display = "none";
-                kundenname.classList.remove("input-blink");
-                kundenname.classList.remove("mobile-focus");
-                return;
-            }
-
-            // SPACE
-            if (val === " " || key.id === "alphaSpace") {
+            // SPACE (Taste mit flex:3)
+            if (value === "" && key.style.flex === "3") {
                 activeInput.value += " ";
                 return;
             }
 
+            // OK → schließen
+            if (value === "OK") {
+                alphaKb.style.display = "none";
+                kundenname.classList.remove("input-blink");
+                kundenname.classList.remove("mobile-focus");
+                activeInput.blur();
+                return;
+            }
+
             // Normale Eingabe
-            activeInput.value += val;
+            activeInput.value += value;
         });
     });
 
 } else {
+
 
 /* ============================================================
    PC TASTATUR (normal)
@@ -144,7 +145,7 @@ if (isMobile) {
         if (e.key === "Enter") {
             e.preventDefault();
             if (kundenButtons.length > 0) {
-                kundenButtons[0].focus();
+                kundenButtons[0].focus(); 
             }
         }
     });
@@ -152,7 +153,7 @@ if (isMobile) {
 
 
 /* ============================================================
-   EILT BUTTON
+   EILT BUTTON – AUTO-SPRUNG
 ============================================================ */
 eiltBtn.onclick = () => {
     isEilt = !isEilt;
@@ -169,7 +170,7 @@ eiltBtn.onclick = () => {
 
 
 /* ============================================================
-   KUNDENBUTTONS
+   KUNDENBUTTONS – NAVIGATION
 ============================================================ */
 kundenButtons.forEach((btn, index) => {
 
@@ -184,11 +185,124 @@ kundenButtons.forEach((btn, index) => {
     };
 
     btn.onclick = () => selectCustomer();
+
+    btn.addEventListener("focus", () => {
+        lastCustomerIndex = index;
+    });
+
+    btn.addEventListener("keydown", (e) => {
+        const cols = 3; 
+        const upIndex = index - cols;
+        const downIndex = index + cols;
+
+        if (e.key === "ArrowLeft") {
+            e.preventDefault();
+            if (index > 0) kundenButtons[index - 1].focus();
+        }
+
+        if (e.key === "ArrowRight") {
+            e.preventDefault();
+            if (index < kundenButtons.length - 1) kundenButtons[index + 1].focus();
+        }
+
+        if (e.key === "ArrowUp") {
+            e.preventDefault();
+            if (upIndex >= 0) kundenButtons[upIndex].focus();
+            else kundenname.focus();
+        }
+
+        if (e.key === "ArrowDown") {
+            e.preventDefault();
+            if (downIndex < kundenButtons.length) kundenButtons[downIndex].focus();
+            else eiltBtn.focus();
+        }
+
+        if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            selectCustomer();
+        }
+    });
+});
+
+
+/* ============================================================
+   EILT NAVIGATION
+============================================================ */
+eiltBtn.addEventListener("keydown", (e) => {
+
+    if (e.key === "ArrowUp") {
+        e.preventDefault();
+        kundenButtons[lastCustomerIndex].focus();
+    }
+
+    if (e.key === "ArrowDown") {
+        e.preventDefault();
+        druckenBtn.focus();
+    }
+
+    if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        backBtn.focus();
+    }
+
+    if (e.key === "ArrowRight") {
+        e.preventDefault();
+        druckenBtn.focus();
+    }
+
+    if (e.key === "Enter") {
+        e.preventDefault();
+        eiltBtn.click();
+    }
 });
 
 
 /* ============================================================
    DRUCKEN
+============================================================ */
+druckenBtn.addEventListener("keydown", (e) => {
+
+    if (e.key === "ArrowUp") {
+        e.preventDefault();
+        eiltBtn.focus();
+    }
+
+    if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+        e.preventDefault();
+        backBtn.focus();
+    }
+
+    if (e.key === "Enter") {
+        e.preventDefault();
+        druckenBtn.click();
+    }
+});
+
+
+/* ============================================================
+   ZURÜCK
+============================================================ */
+backBtn.addEventListener("keydown", (e) => {
+
+    if (e.key === "ArrowUp") {
+        e.preventDefault();
+        eiltBtn.focus();
+    }
+
+    if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+        e.preventDefault();
+        druckenBtn.focus();
+    }
+
+    if (e.key === "Enter") {
+        e.preventDefault();
+        backBtn.click();
+    }
+});
+
+
+/* ============================================================
+   DRUCKLOGIK
 ============================================================ */
 druckenBtn.onclick = () => {
 
