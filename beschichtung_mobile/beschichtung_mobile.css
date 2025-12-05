@@ -77,14 +77,20 @@ html, body {
 
 .kunde-btn {
     width: 100%;
-    height: 60px;
+    min-height: 70px;       /* statt height: 60px */
+    height: auto;           /* passt sich automatisch an */
+    
+    display: flex;          /* Text perfekt zentrieren */
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 
     border-radius: 14px;
     border: none;
 
     background: white;
     font-size: 14px;
-        font-weight: 700;
+    font-weight: 700;
     color: #003a73;
     box-shadow: 0 1px 4px rgba(0,0,0,0.25);
 }
