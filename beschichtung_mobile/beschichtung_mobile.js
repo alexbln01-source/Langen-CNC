@@ -58,19 +58,22 @@ if (isMobile) {
 
     /* ============================================================
        Nummern-Keyboard (0–9, Delete, OK)
+       -> angepasst auf Tasten-Text ("⌫", "OK")
     ============================================================ */
     document.querySelectorAll("#numKeyboard .kbm-key").forEach(key => {
         key.addEventListener("click", () => {
             if (!activeInput) return;
 
-            // Löschen
-            if (key.id === "numDel") {
+            const val = key.textContent.trim();
+
+            // Löschen (wenn Taste ⌫ oder id=numDel)
+            if (val === "⌫" || key.id === "numDel") {
                 activeInput.value = activeInput.value.slice(0, -1);
                 return;
             }
 
             // OK → Wechsel zu Kundenname
-            if (key.id === "numOk") {
+            if (val === "OK" || key.id === "numOk") {
                 numKb.style.display = "none";
                 activeInput.blur();
 
@@ -88,32 +91,37 @@ if (isMobile) {
                 return;
             }
 
-            // Normale Eingabe
-            activeInput.value += key.textContent;
+            // Normale Eingabe (0–9)
+            activeInput.value += val;
         });
     });
 
     /* ============================================================
        Alphabet-Keyboard (QWERTZ)
+       -> Space, OK, Delete robust über Text + (optional) ID
     ============================================================ */
     document.querySelectorAll("#alphaKeyboard .kbm-key").forEach(key => {
         key.addEventListener("click", () => {
             if (!activeInput) return;
 
-            // Delete
-            if (key.id === "alphaDel") {
+            const val = key.textContent;
+
+            // Delete (⌫ oder id=alphaDel)
+            if (val === "⌫" || key.id === "alphaDel") {
                 activeInput.value = activeInput.value.slice(0, -1);
                 return;
             }
 
-            // Space
-            if (key.id === "alphaSpace") {
+            // Space:
+            // - entweder Taste hat ein Leerzeichen als Text
+            // - oder (falls du später willst) id="alphaSpace"
+            if (val === " " || key.id === "alphaSpace") {
                 activeInput.value += " ";
                 return;
             }
 
-            // OK → Eingabe komplett
-            if (key.id === "alphaOk") {
+            // OK → Eingabe komplett (Text "OK" oder id=alphaOk)
+            if (val === "OK" || key.id === "alphaOk") {
                 alphaKb.style.display = "none";
                 activeInput.blur();
 
@@ -127,7 +135,7 @@ if (isMobile) {
             }
 
             // Normale Buchstaben-Eingabe
-            activeInput.value += key.textContent;
+            activeInput.value += val;
         });
     });
 
