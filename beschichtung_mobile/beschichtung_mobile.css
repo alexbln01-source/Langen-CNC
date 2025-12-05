@@ -42,21 +42,19 @@ html, body {
 }
 
 /* =============================
-     Inputfelder OHNE Label
+     Inputfelder
 ============================= */
 #beistellInput,
 #kundeInput {
     width: 90%;
     padding: 12px;
     margin-bottom: 10px;
-
     font-size: 18px;
 
     border: 1px solid #777;
     border-radius: 14px;
 }
 
-/* Placeholder */
 #beistellInput::placeholder,
 #kundeInput::placeholder {
     color: #999;
@@ -77,14 +75,12 @@ html, body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
-
     justify-items: center;
 }
 
 .kunde-btn {
     width: 100%;
     height: 60px;
-
     border-radius: 14px;
     border: none;
 
@@ -122,7 +118,7 @@ html, body {
 }
 
 /* =============================
-     Unten
+     Unten (Buttons)
 ============================= */
 .bottom-row {
     width: 90%;
@@ -172,7 +168,7 @@ button:focus {
 }
 
 /* =============================
-     Blinkender Cursor (Fake-Caret)
+     Blinkender Cursor
 ============================= */
 .input-blink {
     position: relative;
@@ -206,19 +202,18 @@ button:focus {
 
 /* ============================================================
    ⭐ ZEBRA FIX – TC21 / TC26
-   Entfernt transform: scale
-   -> Keine Verzerrungen
-   -> Korrektes Layout
-   -> Korrekte spätere Druckberechnung
+   Entfernt transform: scale()
+   + zentriert + Button-Abstand
 ============================================================ */
 
-/* Kleine Zebra-Screens: TC21 */
+/* Kleinere Zebra-Screens: TC21 */
 @media screen and (max-width: 380px) {
 
     .page {
         width: 94vw;
         height: auto;
-        margin-top: 6px;
+        margin-top: 20px !important;
+        margin-bottom: 10px !important;
         transform: none !important;
     }
 
@@ -237,9 +232,14 @@ button:focus {
         padding: 12px;
     }
 
+    .bottom-row {
+        padding-bottom: 26px !important;
+        margin-top: 16px !important;
+    }
+
     .bottom-row button {
-        font-size: 18px;
-        padding: 12px;
+        font-size: 18px !important;
+        padding: 16px !important;
     }
 }
 
@@ -249,7 +249,8 @@ button:focus {
     .page {
         width: 92vw;
         height: auto;
-        margin-top: 10px;
+        margin-top: 20px !important;
+        margin-bottom: 14px !important;
         transform: none !important;
     }
 
@@ -268,8 +269,13 @@ button:focus {
         padding: 14px;
     }
 
+    .bottom-row {
+        padding-bottom: 26px !important;
+        margin-top: 18px !important;
+    }
+
     .bottom-row button {
-        font-size: 19px;
-        padding: 14px;
+        font-size: 19px !important;
+        padding: 16px !important;
     }
 }
