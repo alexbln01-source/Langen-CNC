@@ -10,13 +10,14 @@ html, body {
     font-family: Arial, sans-serif;
     overflow: hidden;
 
+    /* Wird auf Zebra später überschrieben */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 /* =============================
-     Seite – OHNE Rahmen!!!
+     Seite (Page)
 ============================= */
 .page {
     width: 94vw;
@@ -49,8 +50,8 @@ html, body {
     width: 90%;
     padding: 12px;
     margin-bottom: 10px;
-    font-size: 18px;
 
+    font-size: 18px;
     border: 1px solid #777;
     border-radius: 14px;
 }
@@ -61,7 +62,7 @@ html, body {
 }
 
 /* =============================
-     Kunden Grid
+     Kunden-Grid
 ============================= */
 .grid-label {
     font-weight: bold;
@@ -81,6 +82,7 @@ html, body {
 .kunde-btn {
     width: 100%;
     height: 60px;
+
     border-radius: 14px;
     border: none;
 
@@ -97,7 +99,7 @@ html, body {
 }
 
 /* =============================
-     EILT
+     EILT Button
 ============================= */
 #eiltBtn {
     margin-top: 12px;
@@ -118,7 +120,7 @@ html, body {
 }
 
 /* =============================
-     Unten (Buttons)
+     Untere Buttons
 ============================= */
 .bottom-row {
     width: 90%;
@@ -168,7 +170,7 @@ button:focus {
 }
 
 /* =============================
-     Blinkender Cursor
+     Fake-Cursor
 ============================= */
 .input-blink {
     position: relative;
@@ -193,7 +195,7 @@ button:focus {
 }
 
 /* =============================
-     Mobile Fokusrahmen
+     Fokusrahmen Mobil
 ============================= */
 .mobile-focus {
     outline: 4px solid #1a73e8 !important;
@@ -202,65 +204,44 @@ button:focus {
 
 /* ============================================================
    ⭐ ZEBRA FIX – TC21 / TC26
-   Entfernt transform: scale()
-   + zentriert + Button-Abstand
+   Korrekte Zentrierung
+   Kein transform()
+   Gleiche Abstände links/rechts
+   Mehr Luft unten bei Buttons
 ============================================================ */
 
-/* Kleinere Zebra-Screens: TC21 */
-@media screen and (max-width: 380px) {
+/* Einziger gemeinsamer Zebra-Fix */
+@media screen and (max-width: 430px) {
 
+    /* Flex-Layout DEAKTIVIEREN → verhindert Linksverschiebung */
+    html, body {
+        display: block;
+        justify-content: flex-start;
+        align-items: stretch;
+        overflow-y: auto;
+    }
+
+    /* Seite wirklich mittig */
     .page {
-        width: 94vw;
+        width: 100vw;
+        max-width: 420px;
+        margin: 20px auto 20px auto !important; /* gleich viel links & rechts */
+        padding-left: 10px;
+        padding-right: 10px;
         height: auto;
-        margin-top: 20px !important;
-        margin-bottom: 10px !important;
         transform: none !important;
     }
 
+    /* Grid sauber ausrichten */
     .kunden-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
+        width: 100%;
+        padding: 0 8px;
+        margin: 0 auto; /* zentriert */
     }
 
+    /* Buttons innerhalb des Grids */
     .kunde-btn {
-        height: 58px;
-        font-size: 13px;
-    }
-
-    #eiltBtn {
-        font-size: 18px;
-        padding: 12px;
-    }
-
-    .bottom-row {
-        padding-bottom: 26px !important;
-        margin-top: 16px !important;
-    }
-
-    .bottom-row button {
-        font-size: 18px !important;
-        padding: 16px !important;
-    }
-}
-
-/* Größere Zebra-Screens: TC26 / TC22 */
-@media screen and (min-width: 381px) and (max-width: 430px) {
-
-    .page {
-        width: 92vw;
-        height: auto;
-        margin-top: 20px !important;
-        margin-bottom: 14px !important;
-        transform: none !important;
-    }
-
-    .kunden-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-    }
-
-    .kunde-btn {
-        height: 62px;
+        height: 60px;
         font-size: 14px;
     }
 
@@ -269,9 +250,10 @@ button:focus {
         padding: 14px;
     }
 
+    /* Untere Buttonreihe – mehr Abstand zum Rand */
     .bottom-row {
-        padding-bottom: 26px !important;
-        margin-top: 18px !important;
+        padding-bottom: 32px !important;
+        margin-top: 20px !important;
     }
 
     .bottom-row button {
