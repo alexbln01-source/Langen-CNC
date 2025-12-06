@@ -11,71 +11,64 @@
 </head>
 <body>
 
-<!-- Geräteanzeige -->
-<div id="deviceInfo" class="device-info"></div>
+<div id="deviceInfo">Gerät: ...</div>
 
-<h1 class="title">PAUS Lieferung</h1>
+<div class="page-wrapper">
 
-<!-- ================= FARBAUSWAHL ================= -->
-<div class="color-row">
-    <button class="color-btn active" data-color="red" id="btnRed">Rot</button>
-    <button class="color-btn" data-color="blue" id="btnBlue">Blau</button>
-    <button class="color-btn" data-color="black" id="btnBlack">Schwarz</button>
-</div>
+    <h1 class="title">PAUS Lieferung</h1>
 
-<!-- ================= OPTION VORGEZOGEN ================= -->
-<div class="vorgezogen-row">
-    <input type="checkbox" id="chkVorgezogen">
-    <label for="chkVorgezogen">Auftrag vorgezogen</label>
-</div>
-
-<!-- ================= EINGABEFELDER ================= -->
-<div class="input-area">
-
-    <input id="kommission" class="input-field"
-        autocomplete="off" autocorrect="off"
-        placeholder="Kommissionsnummer" readonly>
-
-    <input id="lieferdatum" class="input-field"
-        autocomplete="off" autocorrect="off"
-        placeholder="TT.MM" readonly>
-
-</div>
-
-<!-- ================= MANUELLE TASTATUR ÖFFNEN ================= -->
-<div class="keyboard-open-row">
-    <button id="openKeyboardBtn" class="keyboard-open-btn">Tastatur öffnen</button>
-</div>
-
-<!-- ================= ORIGINAL POPUP TASTATUR ================= -->
-<div id="keyboardPopup" class="keyboard-popup">
-    <div class="keyboard-content">
-
-        <h3 id="keyboardTitle">Eingabe</h3>
-
-        <input id="keyboardInput"
-            autocomplete="off" autocorrect="off"
-            autocapitalize="off" spellcheck="false">
-
-        <div id="keyboardKeys" class="keyboard-keys"></div>
-
-        <div class="keyboard-actions">
-            <button id="keyboardDelete" class="key-delete">Löschen</button>
-            <button id="keyboardOK" class="key-ok">OK</button>
-            <button id="keyboardClose" class="key-close">Schließen</button>
-        </div>
-
+    <!-- ===== Farbauswahl ===== -->
+    <div class="color-row">
+        <button class="color-btn active" data-color="red">Rot</button>
+        <button class="color-btn" data-color="blue">Blau</button>
+        <button class="color-btn" data-color="black">Schwarz</button>
     </div>
+
+    <!-- ===== Auftrag vorgezogen ===== -->
+    <div class="vorgezogen-row">
+        <input type="checkbox" id="chkVorgezogen">
+        <label for="chkVorgezogen">Auftrag vorgezogen</label>
+    </div>
+
+    <!-- ===== Eingabefelder ===== -->
+    <div class="input-area">
+        <input id="kommission" class="input-field" placeholder="Kommissionsnummer" readonly>
+        <input id="lieferdatum" class="input-field" placeholder="TT.MM" readonly>
+    </div>
+
+    <!-- ===== Popup manuell öffnen ===== -->
+    <div class="keyboard-open-row">
+        <button id="openKeyboardBtn" class="keyboard-open-btn">Tastatur öffnen</button>
+    </div>
+
+    <!-- ===== Popup Tastatur ===== -->
+    <div id="keyboardPopup" class="keyboard-popup">
+        <div class="keyboard-content">
+
+            <h3 id="keyboardTitle">Eingabe</h3>
+
+            <input id="keyboardInput">
+
+            <div id="keyboardKeys" class="keyboard-keys"></div>
+
+            <div class="keyboard-actions">
+                <button id="keyboardDelete" class="key-delete">Löschen</button>
+                <button id="keyboardOK" class="key-ok">OK</button>
+                <button id="keyboardClose" class="key-close">Schließen</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ===== Footer Buttons ===== -->
+    <div class="bottom-row">
+        <button id="backBtn" class="btn back-btn">◀ Zurück</button>
+        <button id="druckenBtn" class="btn print-btn">Drucken</button>
+    </div>
+
 </div>
 
-<!-- ================= UNTERE BUTTONLEISTE ================= -->
-<div class="bottom-row">
-    <button id="backBtn" class="btn back-btn">◀ Zurück</button>
-    <button id="druckenBtn" class="btn print-btn">Drucken</button>
-</div>
-
-<!-- Build-Anzeige -->
-<div id="buildInfo" class="build-info"></div>
+<div id="buildInfo"></div>
 
 </body>
 </html>
