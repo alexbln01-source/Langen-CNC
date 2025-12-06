@@ -209,7 +209,23 @@ kundenButtons.forEach((btn, index) => {
         eiltBtn.focus();
     };
 
-    btn.onclick = () => selectCustomer();
+ btn.onclick = () => {
+    selectCustomer();
+
+    // Tastaturen schließen
+    alphaKb.style.display = "none";
+    numKb.style.display = "none";
+
+    // Mobile Fokus entfernen
+    beistell.classList.remove("mobile-focus");
+    kundenname.classList.remove("mobile-focus");
+
+    // Blink-Cursor entfernen
+    beistell.classList.remove("input-blink");
+    kundenname.classList.remove("input-blink");
+
+    activeInput = null;
+};
 
     btn.addEventListener("focus", () => {
         lastCustomerIndex = index;
