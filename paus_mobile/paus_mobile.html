@@ -7,55 +7,59 @@
 
 <link rel="stylesheet" href="paus_mobile.css">
 <script defer src="paus_mobile.js"></script>
-
 </head>
+
 <body>
 
-<!-- GERÄTEINFO -->
-<div id="deviceInfo" class="device-info">Gerät lädt…</div>
+<div class="page">
 
-<h1 class="title">PAUS Lieferung</h1>
+    <!-- Geräteanzeige -->
+    <div id="deviceInfo" class="device-info">Gerät lädt…</div>
 
-<!-- ================= FARBAUSWAHL ================= -->
-<div class="color-row">
-    <button class="color-btn active" data-color="red" id="btnRed">Rot</button>
-    <button class="color-btn" data-color="blue" id="btnBlue">Blau</button>
-    <button class="color-btn" data-color="black" id="btnBlack">Schwarz</button>
+    <!-- Titel -->
+    <h1 class="title">PAUS Lieferung</h1>
+
+    <!-- Farben -->
+    <div class="color-row">
+        <button class="color-btn active" data-color="red" id="btnRed">Rot</button>
+        <button class="color-btn" data-color="blue" id="btnBlue">Blau</button>
+        <button class="color-btn" data-color="black" id="btnBlack">Schwarz</button>
+    </div>
+
+    <!-- Vorgezogen -->
+    <div class="vorgezogen-row">
+        <input type="checkbox" id="chkVorgezogen">
+        <label for="chkVorgezogen">Auftrag vorgezogen</label>
+    </div>
+
+    <!-- Eingabefelder -->
+    <div class="input-area">
+        <input id="kommission" class="input-field" placeholder="Kommissionsnummer" readonly>
+        <input id="lieferdatum" class="input-field" placeholder="TT.MM" readonly>
+    </div>
+
+    <!-- Popup-Tastatur öffnen -->
+    <div id="openRow" class="keyboard-open-row">
+        <button id="openKeyboardBtn" class="keyboard-open-btn">Tastatur öffnen</button>
+    </div>
+
+    <!-- Unten -->
+    <div class="bottom-row">
+        <button id="backBtn" class="btn back-btn">◀ Zurück</button>
+        <button id="druckenBtn" class="btn print-btn">Drucken</button>
+    </div>
+
+    <!-- Buildnummer -->
+    <div id="buildInfo" class="build-info">Build…</div>
+
 </div>
 
-<!-- ================= OPTION VORGEZOGEN ================= -->
-<div class="vorgezogen-row">
-    <input type="checkbox" id="chkVorgezogen">
-    <label for="chkVorgezogen">Auftrag vorgezogen</label>
-</div>
-
-<!-- ================= EINGABEFELDER ================= -->
-<div class="input-area">
-
-    <input id="kommission" class="input-field"
-        autocomplete="off" autocorrect="off"
-        placeholder="Kommissionsnummer" readonly>
-
-    <input id="lieferdatum" class="input-field"
-        autocomplete="off" autocorrect="off"
-        placeholder="TT.MM" readonly>
-
-</div>
-
-<!-- ================= MANUELLE TASTATUR ÖFFNEN ================= -->
-<div id="openRow" class="keyboard-open-row">
-    <button id="openKeyboardBtn" class="keyboard-open-btn">Tastatur öffnen</button>
-</div>
-
-<!-- ================= POPUP TASTATUR ================= -->
+<!-- Popup-Tastatur -->
 <div id="keyboardPopup" class="keyboard-popup">
     <div class="keyboard-content">
-
         <h3 id="keyboardTitle">Eingabe</h3>
 
-        <input id="keyboardInput"
-            autocomplete="off" autocorrect="off"
-            autocapitalize="off" spellcheck="false">
+        <input id="keyboardInput" autocomplete="off">
 
         <div id="keyboardKeys" class="keyboard-keys"></div>
 
@@ -64,18 +68,8 @@
             <button id="keyboardOK" class="key-ok">OK</button>
             <button id="keyboardClose" class="key-close">Schließen</button>
         </div>
-
     </div>
 </div>
-
-<!-- ================= UNTERE BUTTONLEISTE ================= -->
-<div class="bottom-row">
-    <button id="backBtn" class="btn back-btn">◀ Zurück</button>
-    <button id="druckenBtn" class="btn print-btn">Drucken</button>
-</div>
-
-<!-- BUILD INFO -->
-<div id="buildInfo" class="build-info">Build lädt…</div>
 
 </body>
 </html>
