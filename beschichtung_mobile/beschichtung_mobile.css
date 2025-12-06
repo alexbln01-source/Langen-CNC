@@ -82,7 +82,7 @@ html, body {
    ============================================================ */
 /* Zebra – bessere Breite + Abstand korrekt */
 body.zebra-device .kunden-grid {
-    grid-template-columns: repeat(3, 110px); /* 110px statt 120px */
+    grid-template-columns: repeat(3, 110px); /* 100px statt 120px */
     justify-content: center;
 }
 /* Mehr Abstand zwischen EILT und den unteren Buttons (nur Zebra) */
