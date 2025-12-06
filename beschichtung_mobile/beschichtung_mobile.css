@@ -17,7 +17,7 @@ html, body {
 
 /* =============================
    Hauptseite
-   ============================= */
+============================= */
 .page {
     width: 94vw;
     height: 92vh;
@@ -30,8 +30,8 @@ html, body {
 }
 
 /* =============================
-   Überschrift
-   ============================= */
+   Titel
+============================= */
 .title {
     font-size: 24px;
     font-weight: 900;
@@ -40,8 +40,19 @@ html, body {
 }
 
 /* =============================
+   Grid-Label (NEU – wie Titel!)
+============================= */
+.grid-label {
+    font-size: 24px;
+    font-weight: 900;
+    color: #003a73;
+    text-align: center;
+    margin: 10px 0 6px 0;
+}
+
+/* =============================
    Eingabefelder
-   ============================= */
+============================= */
 #beistellInput,
 #kundeInput {
     width: 90%;
@@ -49,7 +60,6 @@ html, body {
     margin-bottom: 10px;
 
     font-size: 18px;
-
     border: 1px solid #777;
     border-radius: 14px;
 }
@@ -59,96 +69,40 @@ html, body {
     color: #999;
 }
 
-/* ============================================================
-   GRID – STANDARD (PC + iOS + normale Androids)
-============================================================ */
+/* =============================
+   GRID – STANDARD
+============================= */
 .kunden-grid {
     width: 100%;
     padding: 0 12px;
-
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
-
     justify-items: stretch;
     justify-content: center;
 }
 
-/* ============================================================
-   ZEBRA TC21 – 5 Zoll (360×640)
-============================================================ */
-
-body.zebra-tc21 .kunden-grid {
-    grid-template-columns: repeat(3, 100px);
-    justify-content: center;
-}
-
-body.zebra-tc21 .kunde-btn {
-    width: 100px;
-    height: 70px;
-    min-height: 70px;
-    padding: 4px;
-    font-size: 13px;
-}
-
-body.zebra-tc21 #eiltBtn {
-    margin-top: 16px;
-    margin-bottom: 20px;
-}
-
-body.zebra-tc21 .bottom-row {
-    padding-bottom: 20px;
-}
-
-/* ============================================================
-   ZEBRA TC22 – Optimiert für 360 × 648 nutzbare Höhe
-============================================================ */
-
+/* =============================
+   ZEBRA TC22
+============================= */
 body.zebra-tc22 .kunden-grid {
-    width: 100%;
-    padding: 0 6px;
-    display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 8px;     /* kleiner Abstand */
+    gap: 10px;
 }
 
-/* kleinere + kompaktere Buttons */
 body.zebra-tc22 .kunde-btn {
-    min-height: 48px !important;
-    padding: 3px !important;
-    font-size: 12.5px !important;
-    line-height: 1.15 !important;
-    word-break: break-word;
-    border-radius: 12px;
-}
-
-/* EILT Button kompakter */
-body.zebra-tc22 #eiltBtn {
-    margin-top: 14px;
-    margin-bottom: 18px;
-    padding: 10px;
-    font-size: 18px;
-}
-
-/* Untere Buttons kompakter */
-body.zebra-tc22 .bottom-row {
-    padding-bottom: 6px;
-}
-
-body.zebra-tc22 .back-btn,
-body.zebra-tc22 .primary-btn {
-    padding: 10px;
-    font-size: 18px;
+    min-height: 62px;
+    padding: 4px;
+    font-size: 14px;
+    line-height: 1.2;
 }
 
 /* =============================
-   Kunden Buttons (Standard)
+   Kundenbuttons
 ============================= */
 .kunde-btn {
-    width: auto;
+    width: 100%;
     min-height: 75px;
-    height: auto;
-
     padding: 6px;
 
     display: flex;
@@ -172,17 +126,15 @@ body.zebra-tc22 .primary-btn {
 }
 
 /* =============================
-   EILT Button
+   EILT-Button
 ============================= */
 #eiltBtn {
-    margin-top: 12px;
+    margin-top: 14px;
     width: 90%;
     padding: 14px;
     font-size: 20px;
-
     border-radius: 14px;
     border: none;
-
     background: #777;
     color: white;
     font-weight: bold;
@@ -229,30 +181,8 @@ button:focus {
     outline: 4px solid #1a73e8;
 }
 
-.input-blink {
-    position: relative;
-}
-
-.input-blink::after {
-    content: "";
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    width: 2px;
-    height: 60%;
-    background: #000;
-    transform: translateY(-50%);
-    animation: blinkCursor 0.8s steps(1) infinite;
-}
-
-@keyframes blinkCursor {
-    0% { opacity: 1; }
-    50% { opacity: 0; }
-    100% { opacity: 1; }
-}
-
 /* =============================
-   Mobile Fokusrahmen
+   Mobile Fokus
 ============================= */
 .mobile-focus {
     outline: 4px solid #1a73e8 !important;
