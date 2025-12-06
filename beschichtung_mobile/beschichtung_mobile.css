@@ -16,7 +16,8 @@ html, body {
 }
 
 /* =============================
-   Hauptseite
+   Hauptseite (STANDARD = PC + alle Geräte)
+   → HIER stellst du PC ein
 ============================= */
 .page {
     width: 94vw;
@@ -40,10 +41,10 @@ html, body {
 }
 
 /* =============================
-   Grid-Label (NEU – wie Titel!)
+   Grid-Label (Beschichter wählen:)
 ============================= */
 .grid-label {
-    font-size: 12px;
+    font-size: 12px;          /* HIER änderst du die Größe von "Beschichter wählen:" */
     font-weight: 900;
     color: #003a73;
     text-align: center;
@@ -70,20 +71,53 @@ html, body {
 }
 
 /* =============================
-   GRID – STANDARD
+   GRID – STANDARD (PC + normale Geräte)
+   → HIER stellst du das Raster für PC ein
 ============================= */
 .kunden-grid {
     width: 100%;
     padding: 0 12px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr); /* 3 Spalten */
     gap: 12px;
     justify-items: stretch;
     justify-content: center;
 }
 
 /* =============================
-   ZEBRA TC22
+   ZEBRA TC21 – 5 Zoll
+   → EXTRA-Layout nur für TC21
+============================= */
+body.zebra-tc21 .kunden-grid {
+    width: 100%;
+    padding: 0 6px;
+    display: grid;
+    grid-template-columns: repeat(3, 100px); /* feste Breite pro Button */
+    gap: 8px;
+    justify-content: center;
+    justify-items: center;
+}
+
+body.zebra-tc21 .kunde-btn {
+    width: 100px;
+    min-height: 60px;
+    padding: 4px;
+    font-size: 12px;
+}
+
+/* Falls du EILT + unten beim TC21 anpassen willst: */
+body.zebra-tc21 #eiltBtn {
+    margin-top: 14px;
+    margin-bottom: 18px;
+}
+
+body.zebra-tc21 .bottom-row {
+    padding-bottom: 8px;
+}
+
+/* =============================
+   ZEBRA TC22 – 6 Zoll
+   → EXTRA-Layout nur für TC22
 ============================= */
 body.zebra-tc22 .kunden-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -97,8 +131,14 @@ body.zebra-tc22 .kunde-btn {
     line-height: 1.2;
 }
 
+/* Wenn du EILT & unten für TC22 separat willst, kannst du z.B. noch machen:
+body.zebra-tc22 #eiltBtn { ... }
+body.zebra-tc22 .bottom-row { ... }
+*/
+
 /* =============================
-   Kundenbuttons
+   Kundenbuttons – STANDARD (PC + alle)
+   → HIER stellst du PC-Buttongröße ein
 ============================= */
 .kunde-btn {
     width: 100%;
@@ -126,7 +166,7 @@ body.zebra-tc22 .kunde-btn {
 }
 
 /* =============================
-   EILT-Button
+   EILT-Button – STANDARD (PC + alle)
 ============================= */
 #eiltBtn {
     margin-top: 14px;
@@ -145,7 +185,7 @@ body.zebra-tc22 .kunde-btn {
 }
 
 /* =============================
-   Untere Buttons
+   Untere Buttons – STANDARD (PC + alle)
 ============================= */
 .bottom-row {
     width: 90%;
