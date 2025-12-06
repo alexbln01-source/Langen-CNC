@@ -91,49 +91,29 @@ document.getElementById("kbOk").onclick = () => {
 };
 
 /* =============================
-   ZEBRA SCANNER – final für Format "K:12345;D:0103"
+   Scanner — Zebra
 ============================= */
-let scanBuffer = "";
-
 document.addEventListener("keydown", (e) => {
+    if (numKb.style.display === "flex") return; // Popup offen? Kein Scan
 
-    // ENTER → Scan fertig
     if (e.key === "Enter") {
+        const txt = scanBuffer.trim();
 
-        const raw = scanBuffer.trim();
-        scanBuffer = "";
+        if (txt.includes("K:") && txt.includes("D:")) {
+            const kom = txt.match(/K:(.*?);/)[1];
+            let dat = txt.match(/D:(.*)/)[1].replace(/\D/g, "");
 
-        if (!raw) return;
+            if (dat.length === 3) dat = "0" + dat;
+            if (dat.length >= 4) dat = dat.slice(0, 2) + "." + dat.slice(2, 4);
 
-        console.log("SCAN:", raw);
-
-        // K:xxxx extrahieren
-        const komMatch = raw.match(/K[: ]?(\d+)/i);
-        // D:xxxx extrahieren
-        const datMatch = raw.match(/D[: ]?(\d+)/i);
-
-        if (!komMatch || !datMatch) {
-            console.warn("Ungültiges Scanformat:", raw);
-            return;
+            document.getElementById("kommission").value = kom;
+            document.getElementById("lieferdatum").value = dat;
         }
 
-        let kom = komMatch[1];
-        let dat = datMatch[1];
-
-        // Datum TTMM → TT.MM
-        dat = dat.replace(/\D/g, "");
-        if (dat.length === 3) dat = "0" + dat;
-        if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4);
-
-        // Feldeinträge
-        document.getElementById("kommission").value = kom;
-        document.getElementById("lieferdatum").value = dat;
-
-        return;
+        scanBuffer = "";
+    } else {
+        scanBuffer += e.key;
     }
-
-    // Sonst Zeichen in Buffer
-    scanBuffer += e.key;
 });
 
 /* =============================
