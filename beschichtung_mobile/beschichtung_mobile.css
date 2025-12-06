@@ -103,32 +103,38 @@ body.zebra-tc21 .bottom-row {
 }
 
 /* ============================================================
-   ZEBRA TC22 – Optimierte Größe
+   ZEBRA TC22 – Kompakt & passend für 360px
    ============================================================ */
 
 body.zebra-tc22 .kunden-grid {
-    grid-template-columns: repeat(3, 115px);  /* perfekt für 360px Breite */
+    width: 100%;
+    padding: 0 4px;                    /* weniger Rand innen */
+    display: grid;
+    grid-template-columns: repeat(3, 94px); /* 3 x 94px passt in 94vw */
+    gap: 8px;                          /* kleinerer Abstand */
     justify-content: center;
+    justify-items: center;             /* Buttons zentriert in den Spalten */
 }
 
 body.zebra-tc22 .kunde-btn {
-    width: 115px;
-    height: 70px;        /* gut lesbar */
-    min-height: 70px;
-    padding: 6px;
-    font-size: 15px;     /* bessere Lesbarkeit */
-    border-radius: 14px;
+    width: 94px;                       /* feste Breite */
+    height: 60px;                      /* etwas flacher als Standard */
+    min-height: 60px;
+    padding: 4px;
+    font-size: 13px;                   /* etwas kleiner, damit Text reinpasst */
+    border-radius: 12px;
 }
 
 body.zebra-tc22 #eiltBtn {
-    margin-top: 20px;
-    margin-bottom: 28px; /* guter Abstand nach unten */
-    font-size: 22px;     /* weil TC22 mehr Platz hat */
+    margin-top: 18px;
+    margin-bottom: 26px;               /* Abstand zu Zurück/Drucken */
+    font-size: 20px;                   /* wie Standard, nicht zu groß */
 }
 
 body.zebra-tc22 .bottom-row {
-    padding-bottom: 22px;
+    padding-bottom: 18px;
 }
+
 /* =============================
    Kunden Buttons
    ============================= */
