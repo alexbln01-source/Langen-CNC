@@ -103,38 +103,38 @@ body.zebra-tc21 .bottom-row {
 }
 
 /* ============================================================
-   ZEBRA TC22 – Kompakt & passend für 360px
+   ZEBRA TC22 – Dynamische Breiten + kompakte Höhe
    ============================================================ */
 
 body.zebra-tc22 .kunden-grid {
     width: 100%;
-    padding: 0 4px;                    /* weniger Rand innen */
+    padding: 0 8px;
     display: grid;
-    grid-template-columns: repeat(3, 94px); /* 3 x 94px passt in 94vw */
-    gap: 8px;                          /* kleinerer Abstand */
-    justify-content: center;
-    justify-items: center;             /* Buttons zentriert in den Spalten */
+    grid-template-columns: repeat(3, 1fr);   /* automatische Spaltenbreiten */
+    gap: 10px;                               /* angenehmer Abstand */
 }
 
+/* Buttons passen sich der Textlänge an (kein width!) */
 body.zebra-tc22 .kunde-btn {
-    width: 94px;                       /* feste Breite */
-    height: 60px;                      /* etwas flacher als Standard */
-    min-height: 60px;
-    padding: 4px;
-    font-size: 13px;                   /* etwas kleiner, damit Text reinpasst */
-    border-radius: 12px;
+    min-height: 68px;        /* etwas kompakter als Standard */
+    padding: 6px;
+    font-size: 14px;         /* gute Lesbarkeit */
+    line-height: 1.2;        /* sorgt für schöne Textumbrüche */
+    border-radius: 14px;
+    word-break: break-word;  /* lange Wörter umbrechen */
 }
 
+/* EILT-Button */
 body.zebra-tc22 #eiltBtn {
     margin-top: 18px;
-    margin-bottom: 26px;               /* Abstand zu Zurück/Drucken */
-    font-size: 20px;                   /* wie Standard, nicht zu groß */
+    margin-bottom: 26px;
+    font-size: 20px;
 }
 
+/* Abstand unten */
 body.zebra-tc22 .bottom-row {
-    padding-bottom: 18px;
+    padding-bottom: 20px;
 }
-
 /* =============================
    Kunden Buttons
    ============================= */
