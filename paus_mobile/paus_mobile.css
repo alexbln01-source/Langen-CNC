@@ -1,56 +1,67 @@
-/* ===== GRUNDLAYOUT ===== */
-body {
+/* ===== RESET ===== */
+* { box-sizing: border-box; }
+
+html, body {
     margin: 0;
     padding: 0;
+    height: 100%;
+    background: #eef1f4;
     font-family: Arial, sans-serif;
-    background: #ececec;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ===== DEVICE INFO + BUILD ===== */
+.device-info {
+    position: fixed;
+    top: 6px;
+    left: 10px;
+    font-size: 12px;
+    color: #003a73;
+}
+
+.build-info {
+    position: fixed;
+    bottom: 6px;
+    right: 10px;
+    font-size: 12px;
+    color: #003a73;
+}
+
+/* ===== PAGE FRAME (wie Beschichtung max 600px) ===== */
+.page {
+    width: 100%;
+    max-width: 600px;
+    padding: 10px;
     text-align: center;
 }
 
-/* Geräteinfo */
-#deviceInfo {
-    position: absolute;
-    top: 4px;
-    left: 6px;
-    font-size: 12px;
-    color: #003b73;
-    font-weight: bold;
-}
-
-/* Buildinfo */
-#buildInfo {
-    position: absolute;
-    bottom: 4px;
-    right: 6px;
-    font-size: 12px;
-    color: #003b73;
-    font-weight: bold;
-}
-
+/* ===== TITLE ===== */
 .title {
-    margin-top: 20px;
     font-size: 26px;
-    font-weight: bold;
-    color: #003b73;
+    font-weight: 900;
+    color: #003a73;
+    margin-bottom: 12px;
 }
 
 /* ===== FARBBUTTONS ===== */
 .color-row {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-top: 6px;
-    margin-bottom: 12px;
+    gap: 12px;
+    margin: 10px 0 16px 0;
 }
 
 .color-btn {
-    width: 28%;
-    padding: 10px 0;
-    font-size: 20px;
+    flex: 1;
+    padding: 12px 0;
+    font-size: 18px;
+    border-radius: 14px;
+    border: none;
     font-weight: bold;
     color: white;
-    border: none;
-    border-radius: 12px;
+    background: #555;
 }
 
 .color-btn[data-color="red"] { background: #c62828; }
@@ -58,75 +69,49 @@ body {
 .color-btn[data-color="black"] { background: #333; }
 
 .color-btn.active {
-    outline: 3px solid #4d7cff;
+    outline: 3px solid #1a73e8;
 }
 
-/* ===== OPTION ===== */
+/* ===== CHECKBOX ===== */
 .vorgezogen-row {
-    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
     margin-bottom: 14px;
 }
 
 /* ===== INPUTS ===== */
-.input-area {
-    width: 86%;
-    margin: 0 auto;
-}
-
 .input-field {
     width: 100%;
-    padding: 12px;
-    font-size: 20px;
-    border-radius: 12px;
-    border: 2px solid #cfcfcf;
-    margin: 6px 0;
+    padding: 14px;
+    font-size: 18px;
+    margin-bottom: 12px;
+    border: 1px solid #777;
+    border-radius: 14px;
     text-align: center;
 }
 
-/* ===== TASTATUR ÖFFNEN ===== */
-.keyboard-open-row {
-    margin-top: 8px;
-}
-
+/* ===== Tastatur öffnen (nur Zebra sichtbar) ===== */
 .keyboard-open-btn {
-    width: 86%;
-    padding: 14px;
-    font-size: 20px;
-    border-radius: 12px;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 14px;
+    margin-bottom: 20px;
     border: none;
-    background: #d9d9d9;
+    background: #ddd;
     color: #0055cc;
 }
 
-/* PC darf Button nicht anzeigen */
-body.pc-device #kbRow {
-    display: none;
+/* Nur auf PC ausblenden */
+body.pc-device .keyboard-open-btn {
+    display: none !important;
 }
 
-/* ===== UNTERE BUTTONS ===== */
-.bottom-row {
-    width: 86%;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
-.btn {
-    width: 48%;
-    padding: 14px 0;
-    border-radius: 12px;
-    border: none;
-    font-size: 22px;
-    font-weight: bold;
-    color: white;
-}
-
-.back-btn { background: #333; }
-.print-btn { background: #00963d; }
-
-/* ===== POPUP NUMERIC KEYBOARD ===== */
-.popup-kb {
+/* ===== POPUP ===== */
+.keyboard-popup {
     display: none;
     position: fixed;
     inset: 0;
@@ -136,52 +121,65 @@ body.pc-device #kbRow {
     z-index: 999;
 }
 
-.kb-content {
-    background: white;
-    padding: 20px;
-    border-radius: 14px;
+.keyboard-content {
     width: 90%;
     max-width: 360px;
-}
-
-.kb-title {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.kb-input {
-    width: 100%;
-    padding: 12px;
-    font-size: 22px;
-    border: 1px solid gray;
-    border-radius: 10px;
-    margin-bottom: 12px;
+    background: white;
+    padding: 16px;
+    border-radius: 14px;
     text-align: center;
 }
 
-.kb-grid {
+.keyboard-input {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 12px;
+    font-size: 18px;
+    border: 1px solid #777;
+    border-radius: 12px;
+}
+
+.keyboard-keys {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
 }
 
-.kb-key {
+.keyboard-keys button {
     padding: 12px 0;
-    font-size: 22px;
-    background: #f2f2f2;
+    font-size: 18px;
+    border-radius: 10px;
     border: 1px solid #aaa;
-    border-radius: 10px;
+    background: #f2f2f2;
 }
 
-.kb-del {
-    background: #c62828;
-    color: white;
-    border-radius: 10px;
+.keyboard-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
 }
 
-.kb-ok {
-    background: #00963d;
-    color: white;
-    border-radius: 10px;
+.key-delete { flex: 1; background: #c62828; color: white; padding: 10px; border-radius: 10px; border: none; }
+.key-ok     { flex: 1; background: #00963d; color: white; padding: 10px; border-radius: 10px; border: none; }
+.key-close  { flex: 1; background: #555;    color: white; padding: 10px; border-radius: 10px; border: none; }
+
+/* ===== BOTTOM BUTTONS ===== */
+.bottom-row {
+    width: 100%;
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
 }
+
+.back-btn, .primary-btn {
+    flex: 1;
+    padding: 14px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 14px;
+    border: none;
+    color: white;
+}
+
+.back-btn { background: #333; }
+.primary-btn { background: #00963d; }
