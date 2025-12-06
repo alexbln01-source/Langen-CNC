@@ -1,169 +1,171 @@
 * { box-sizing: border-box; }
 
+/********************************
+    Grundlayout wie Beschichtung
+********************************/
 body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background: #ececec;
-    text-align: center;
 
+    height: 100vh;
+    background: #ececec;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page {
+    width: 94vw;
+    height: 94vh;
+
+    max-width: 420px;     /* EXAKT wie Beschichtung */
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* Gerätinfo */
 .device-info {
-    position: fixed;
-    top: 6px;
-    left: 6px;
+    align-self: flex-start;
     font-size: 12px;
-    padding: 4px 10px;
-    background: rgba(0,0,0,0.1);
-    border-radius: 6px;
+    margin-bottom: 4px;
 }
 
+/********************************
+    Titel
+********************************/
 .title {
-    margin-top: 35px;
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 900;
-    color: #003b73;
+    color: #003a73;
+    margin-bottom: 12px;
 }
 
-/* ================= FARBAUSWAHL ================= */
+/********************************
+    Farbauswahl
+********************************/
 .color-row {
+    width: 100%;
     display: flex;
-    justify-content: center;
     gap: 10px;
-    margin: 20px 0;
+    margin-bottom: 16px;
 }
 
 .color-btn {
-    width: 28%;
-    padding: 14px 0;
-    font-size: 20px;
+    flex: 1;
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 14px;
+    border: none;
     font-weight: bold;
     color: white;
-    border: none;
-    border-radius: 14px;
 }
 
 .color-btn[data-color="red"] { background:#c62828; }
-.color-btn[data-color="blue"] { background:#1565c0; }
+color-btn[data-color="blue"] { background:#1565c0; }
 .color-btn[data-color="black"] { background:#333; }
 
 .color-btn.active {
     outline: 4px solid #4d7cff;
 }
 
-/* ================= OPTION ================= */
+/********************************
+    Checkbox
+********************************/
 .vorgezogen-row {
     font-size: 16px;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
-/* ================= INPUTS ================= */
+/********************************
+    Eingabefelder
+********************************/
 .input-area {
-    width: 90%;
+    width: 100%;
 }
 
 .input-field {
     width: 100%;
-    padding: 14px;
-    margin: 10px 0;
-    border-radius: 12px;
-    border: 2px solid #cfcfcf;
-    font-size: 18px;
-    background: #fff;
-}
-
-/* ================= POPUP TASTATUR ================= */
-.keyboard-popup {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-}
-
-.keyboard-content {
-    width: 90%;
-    max-width: 420px;
-    background: white;
-    border-radius: 16px;
-    padding: 20px;
-}
-
-#keyboardInput {
-    width: 90%;
     padding: 12px;
-    font-size: 20px;
-    border-radius: 10px;
-    border: 1px solid gray;
-    margin-bottom: 10px;
-}
-
-.keyboard-keys {
-    display: grid;
-    grid-template-columns: repeat(5,1fr);
-    gap: 10px;
-}
-
-.keyboard-keys button {
-    padding: 14px 0;
+    margin: 8px 0;
     font-size: 18px;
-    border-radius: 10px;
-    border: 1px solid #aaa;
-    background: #f2f2f2;
+    border-radius: 14px;
+    border: 2px solid #ccc;
+    text-align: center;
 }
 
-.keyboard-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 14px;
+/********************************
+    Tastatur öffnen
+********************************/
+.keyboard-open-row {
+    width: 100%;
+    margin: 16px 0;
 }
 
-.key-delete { background:#c62828; color:white; }
-.key-ok { background:#00963d; color:white; }
-.key-close { background:#555; color:white; }
+.keyboard-open-btn {
+    width: 100%;
+    padding: 12px;
+    background: #d9d9d9;
+    color: #0055cc;
+    font-size: 18px;
+    border-radius: 14px;
+    border: none;
+}
 
+/********************************
+    Unten Buttons
+********************************/
 .bottom-row {
-    width: 90%;
+    width: 100%;
     display: flex;
     gap: 12px;
     margin-top: auto;
-    padding-bottom: 16px;
 }
 
 .btn {
     flex: 1;
-    padding: 14px 0;
+    padding: 12px 0;
     border-radius: 14px;
     border: none;
     font-size: 18px;
-    font-weight:bold;
-    color:white;
+    font-weight: bold;
+    color: white;
 }
 
 .back-btn { background:#333; }
 .print-btn { background:#00963d; }
 
+/********************************
+    Buildnummer
+********************************/
 .build-info {
-    position: fixed;
-    bottom: 6px;
+    position: absolute;
+    bottom: 8px;
     right: 8px;
     font-size: 11px;
-    opacity:.75;
+    opacity: 0.7;
 }
 
-/* ================= TC22 ================= */
-body.zebra-tc22 .title { font-size: 26px; margin-top: 20px; }
-body.zebra-tc22 .input-field { font-size: 18px; padding: 12px; }
-body.zebra-tc22 .color-btn { font-size: 18px; padding: 12px 0; }
+/********************************
+    TC22 Anpassung (identisch zu Beschichtung)
+********************************/
+body.zebra-tc22 .page {
+    max-width: 380px;
+}
 
-/* ================= PC ================= */
-body.pc-device .color-btn { font-size: 24px; padding:18px 0; }
-body.pc-device .input-field { font-size:20px; padding:16px; }
-body.pc-device #openRow { display:none; }
+body.zebra-tc22 .color-btn {
+    padding: 10px;
+    font-size: 16px;
+}
+
+body.zebra-tc22 .input-field {
+    font-size: 16px;
+}
+
+/********************************
+    PC Version → größere Buttons
+********************************/
+body.pc-device #openRow {
+    display: none;
+}
