@@ -18,32 +18,36 @@ const kundenButtons = Array.from(document.querySelectorAll(".kunde-btn"));
 let activeInput       = null;
 let lastCustomerIndex = 0;
 
-// Geräteerkennung (Zebra / Handy)
+// Geräteerkennung allgemein (Mobile)
 const isMobile = /Android|iPhone|iPad|iPod|Zebra|TC21|TC22/i.test(navigator.userAgent);
 
+
 /*******************************************************
- * ZEBRA TC21 / TC22 ERKENNUNG (Android + Displaygröße)
+ * ULTRA-STABILE ZEBRA ERKENNUNG (TC21 + TC22)
  *******************************************************/
 const ua = navigator.userAgent.toLowerCase();
-const w = window.screen.width;
-const h = window.screen.height;
+const w  = window.screen.width;
+const h  = window.screen.height;
 
-// TC21 (5 Zoll)
-if (ua.includes("android") && w === 360 && h === 640) {
+/* TC21 (5 Zoll) */
+if (
+    ua.includes("tc21") ||
+    (ua.includes("zebra") && w === 360 && h === 640)
+) {
     document.body.classList.add("zebra-tc21");
 }
 
-// TC22 (6 Zoll)
-// TC22 – echte Werte von deinem Gerät
+/* TC22 (6 Zoll) */
 if (
-    ua.includes("android") &&
-    w === 360 &&
-    h === 720 &&
-    window.devicePixelRatio === 3
+    ua.includes("tc22") ||
+    ua.includes("zebra") ||
+    ua.includes("sd660") || 
+    ua.includes("qualcomm")
 ) {
     document.body.classList.add("zebra-tc22");
 }
-// DEBUG AUSGABE – zeigt dir exakt, was das Zebra liefert
+
+/* DEBUG – zeigt dir genau Werte & UA */
 alert(
     "UA: " + navigator.userAgent +
     "\nScreen width: " + window.screen.width +
@@ -52,27 +56,27 @@ alert(
     "\nInner height: " + window.innerHeight +
     "\nPixel ratio: " + window.devicePixelRatio
 );
+
+/* Anzeige im UI */
 const deviceInfo = document.getElementById("deviceInfo");
 
 if (document.body.classList.contains("zebra-tc21")) {
     deviceInfo.textContent = "Gerät: Zebra TC21 (5 Zoll)";
 }
-
 else if (document.body.classList.contains("zebra-tc22")) {
     deviceInfo.textContent = "Gerät: Zebra TC22 (6 Zoll)";
 }
-
 else if (/android/i.test(navigator.userAgent)) {
     deviceInfo.textContent = "Gerät: Android (kein Zebra)";
 }
-
 else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
     deviceInfo.textContent = "Gerät: iOS";
 }
-
 else {
     deviceInfo.textContent = "Gerät: PC / Unbekannt";
 }
+
+
 /* ============================================================
    MOBIL: POPUP-TASTATUREN
 ============================================================ */
@@ -81,7 +85,7 @@ if (isMobile) {
     beistell.readOnly   = true;
     kundenname.readOnly = true;
 
-    /* -------- Beistell-Input klicken -------- */
+    /* ---------- Beistell klicken ---------- */
     beistell.addEventListener("click", () => {
         activeInput = beistell;
 
@@ -94,13 +98,12 @@ if (isMobile) {
         alphaKb.style.display = "none";
     });
 
-    /* -------- Kundenname klicken -------- */
+    /* ---------- Kundenname klicken ---------- */
     kundenname.addEventListener("click", () => {
         activeInput = kundenname;
 
         kundenname.classList.add("mobile-focus");
         beistell.classList.remove("mobile-focus");
-
         kundenname.classList.remove("input-blink");
 
         numKb.style.display   = "none";
@@ -108,86 +111,68 @@ if (isMobile) {
     });
 
     /* ============================================================
-       Nummern-Keyboard (0–9, Delete, OK)
+       NUMMER-KEYBOARD
     ============================================================ */
     document.querySelectorAll("#numKeyboard .kbm-key").forEach(key => {
         key.addEventListener("click", () => {
             if (!activeInput) return;
 
-            // Löschen
             if (key.id === "numDel") {
                 activeInput.value = activeInput.value.slice(0, -1);
                 return;
             }
 
-            // OK → Wechsel zu Kundenname
             if (key.id === "numOk") {
                 numKb.style.display = "none";
                 activeInput.blur();
 
-                // Fokus wechseln
                 beistell.classList.remove("mobile-focus");
                 kundenname.classList.add("mobile-focus");
-
-                // Blink-Cursor aktivieren
                 kundenname.classList.add("input-blink");
 
-                // Kundenname aktivieren + Alphabet öffnen
                 activeInput = kundenname;
                 alphaKb.style.display = "block";
-
                 return;
             }
 
-            // Normale Eingabe
             activeInput.value += key.textContent;
         });
     });
 
     /* ============================================================
-       Alphabet-Keyboard (QWERTZ)
+       ALPHA-KEYBOARD
     ============================================================ */
     document.querySelectorAll("#alphaKeyboard .kbm-key").forEach(key => {
         key.addEventListener("click", () => {
             if (!activeInput) return;
 
-            // Delete
             if (key.id === "alphaDel") {
                 activeInput.value = activeInput.value.slice(0, -1);
                 return;
             }
 
-            // Space
             if (key.id === "alphaSpace") {
                 activeInput.value += " ";
                 return;
             }
 
-            // OK → Eingabe komplett
             if (key.id === "alphaOk") {
                 alphaKb.style.display = "none";
                 activeInput.blur();
-
-                // Blinkcursor entfernen
                 kundenname.classList.remove("input-blink");
-
-                // Fokus entfernen
                 kundenname.classList.remove("mobile-focus");
-
                 return;
             }
 
-            // Normale Buchstaben-Eingabe
             activeInput.value += key.textContent;
         });
     });
 
 } else {
 
-
-/* ============================================================
-   PC TASTATUR (normal)
-============================================================ */
+    /* ============================================================
+       PC-Nutzung
+    ============================================================ */
     numKb.style.display   = "none";
     alphaKb.style.display = "none";
 
@@ -204,16 +189,14 @@ if (isMobile) {
     kundenname.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
             e.preventDefault();
-            if (kundenButtons.length > 0) {
-                kundenButtons[0].focus(); 
-            }
+            kundenButtons[0].focus();
         }
     });
 }
 
 
 /* ============================================================
-   EILT BUTTON – AUTO-SPRUNG
+   EILT BUTTON
 ============================================================ */
 eiltBtn.onclick = () => {
     isEilt = !isEilt;
@@ -230,7 +213,7 @@ eiltBtn.onclick = () => {
 
 
 /* ============================================================
-   KUNDENBUTTONS – NAVIGATION
+   KUNDENBUTTON NAVIGATION
 ============================================================ */
 kundenButtons.forEach((btn, index) => {
 
@@ -251,18 +234,18 @@ kundenButtons.forEach((btn, index) => {
     });
 
     btn.addEventListener("keydown", (e) => {
-        const cols = 3; 
+        const cols = 3;
         const upIndex = index - cols;
         const downIndex = index + cols;
 
-        if (e.key === "ArrowLeft") {
+        if (e.key === "ArrowLeft" && index > 0) {
             e.preventDefault();
-            if (index > 0) kundenButtons[index - 1].focus();
+            kundenButtons[index - 1].focus();
         }
 
-        if (e.key === "ArrowRight") {
+        if (e.key === "ArrowRight" && index < kundenButtons.length - 1) {
             e.preventDefault();
-            if (index < kundenButtons.length - 1) kundenButtons[index + 1].focus();
+            kundenButtons[index + 1].focus();
         }
 
         if (e.key === "ArrowUp") {
@@ -286,83 +269,7 @@ kundenButtons.forEach((btn, index) => {
 
 
 /* ============================================================
-   EILT NAVIGATION
-============================================================ */
-eiltBtn.addEventListener("keydown", (e) => {
-
-    if (e.key === "ArrowUp") {
-        e.preventDefault();
-        kundenButtons[lastCustomerIndex].focus();
-    }
-
-    if (e.key === "ArrowDown") {
-        e.preventDefault();
-        druckenBtn.focus();
-    }
-
-    if (e.key === "ArrowLeft") {
-        e.preventDefault();
-        backBtn.focus();
-    }
-
-    if (e.key === "ArrowRight") {
-        e.preventDefault();
-        druckenBtn.focus();
-    }
-
-    if (e.key === "Enter") {
-        e.preventDefault();
-        eiltBtn.click();
-    }
-});
-
-
-/* ============================================================
    DRUCKEN
-============================================================ */
-druckenBtn.addEventListener("keydown", (e) => {
-
-    if (e.key === "ArrowUp") {
-        e.preventDefault();
-        eiltBtn.focus();
-    }
-
-    if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
-        e.preventDefault();
-        backBtn.focus();
-    }
-
-    if (e.key === "Enter") {
-        e.preventDefault();
-        druckenBtn.click();
-    }
-});
-
-
-/* ============================================================
-   ZURÜCK
-============================================================ */
-backBtn.addEventListener("keydown", (e) => {
-
-    if (e.key === "ArrowUp") {
-        e.preventDefault();
-        eiltBtn.focus();
-    }
-
-    if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
-        e.preventDefault();
-        druckenBtn.focus();
-    }
-
-    if (e.key === "Enter") {
-        e.preventDefault();
-        backBtn.click();
-    }
-});
-
-
-/* ============================================================
-   DRUCKLOGIK
 ============================================================ */
 druckenBtn.onclick = () => {
 
@@ -396,18 +303,17 @@ druckenBtn.onclick = () => {
     window.location.href =
         "druck.html?data=" + encodeURIComponent(JSON.stringify(data));
 };
-/* ============================================
-   AUTOMATISCHE BUILD-NUMMER AUS LETZTER ÄNDERUNG
-============================================ */
+
+
+/* ============================================================
+   AUTOMATISCHE BUILD NUMMER
+============================================================ */
 document.addEventListener("DOMContentLoaded", () => {
-    // Zeitpunkt, wann die HTML-Datei zuletzt geändert wurde
+
     const lastModString = document.lastModified;
     const lastModDate = new Date(lastModString);
-
-    // Falls irgendwas schiefgeht (sehr alt/komischer Browser), abbrechen
     if (isNaN(lastModDate.getTime())) return;
 
-    // Format: YYYYMMDD.HHMM
     const build =
         lastModDate.getFullYear().toString() +
         String(lastModDate.getMonth() + 1).padStart(2, "0") +
@@ -418,6 +324,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const el = document.getElementById("buildInfo");
     if (el) el.textContent = "Build " + build;
 });
+
+
 /* ============================================================
    ZURÜCK BUTTON
 ============================================================ */
