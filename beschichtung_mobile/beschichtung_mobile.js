@@ -34,7 +34,13 @@ if (ua.includes("android") && w === 360 && h === 640) {
 }
 
 // TC22 (6 Zoll)
-if (ua.includes("android") && w === 412 && h === 732) {
+// TC22 – echte Werte von deinem Gerät
+if (
+    ua.includes("android") &&
+    w === 360 &&
+    h === 720 &&
+    window.devicePixelRatio === 3
+) {
     document.body.classList.add("zebra-tc22");
 }
 // DEBUG AUSGABE – zeigt dir exakt, was das Zebra liefert
