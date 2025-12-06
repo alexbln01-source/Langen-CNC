@@ -89,8 +89,8 @@ body.zebra-device .kunden-grid {
 /* Zebra – Kunden-Buttons: manuelle Breite & Höhe */
 body.zebra-device .kunde-btn {
     width: 80px;        /* ← Button-BREITE manuell */
-    height: 40px;        /* ← Button-HÖHE manuell */
-    min-height: 40px;    /* ← verhindert Hochziehen */
+    height: 20px;        /* ← Button-HÖHE manuell */
+    min-height: 20px;    /* ← verhindert Hochziehen */
     padding: 4px;        /* optional kleinerer Innenabstand */
     font-size: 13px;     /* optional kleinere Schrift */
 }
