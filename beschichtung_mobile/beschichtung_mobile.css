@@ -107,12 +107,12 @@ body.zebra-tc21 .bottom-row {
    ============================================================ */
 
 body.zebra-tc22 .kunden-grid {
-    grid-template-columns: repeat(3, 120px);
+    grid-template-columns: repeat(3, 140px);
     justify-content: center;
 }
 
 body.zebra-tc22 .kunde-btn {
-    width: 120px;
+    width: 140px;
     height: 40px;
     min-height: 40px;
     padding: 6px;
