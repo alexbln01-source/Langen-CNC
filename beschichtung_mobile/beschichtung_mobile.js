@@ -29,33 +29,28 @@ const dpr = window.devicePixelRatio;
 // generell mobile?
 const isMobile = /android|iphone|ipad|ipod/i.test(ua);
 
-// vorbereiteter TC21 (Werte ggf. anpassen)
+// TC21 (optional)
 const isZebraTC21 = ua.includes("android") && sw === 360 && sh === 640;
 
-// dein TC22: 360 × 720, DPR 3
+// TC22 (dein Gerät)
 const isZebraTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
 
-if (isZebraTC21) {
-    document.body.classList.add("zebra-tc21");
-}
-if (isZebraTC22) {
-    document.body.classList.add("zebra-tc22");
+// Klassen setzen
+if (isZebraTC21) document.body.classList.add("zebra-tc21");
+if (isZebraTC22) document.body.classList.add("zebra-tc22");
+
+// PC erkennen (NICHT mobil + kein Zebra)
+if (!isMobile && !isZebraTC21 && !isZebraTC22) {
+    document.body.classList.add("pc-device");
 }
 
-// Debug-Anzeige im UI
+/* Debug-Ausgabe */
 const deviceInfo = document.getElementById("deviceInfo");
 if (deviceInfo) {
-    if (isZebraTC22) {
-        deviceInfo.textContent = "Gerät: Zebra TC22";
-    } else if (isZebraTC21) {
-        deviceInfo.textContent = "Gerät: Zebra TC21";
-    } else if (/android/i.test(ua)) {
-        deviceInfo.textContent = "Gerät: Android (kein Zebra)";
-    } else if (/iphone|ipad|ipod/i.test(ua)) {
-        deviceInfo.textContent = "Gerät: iOS";
-    } else {
-        deviceInfo.textContent = "Gerät: PC / Unbekannt";
-    }
+    if (isZebraTC22) deviceInfo.textContent = "Gerät: Zebra TC22";
+    else if (isZebraTC21) deviceInfo.textContent = "Gerät: Zebra TC21";
+    else if (isMobile) deviceInfo.textContent = "Gerät: Android / iOS";
+    else deviceInfo.textContent = "Gerät: PC";
 }
 
 /* ============================================================
@@ -66,33 +61,22 @@ if (isMobile) {
     beistell.readOnly   = true;
     kundenname.readOnly = true;
 
-    // Beistell klicken
     beistell.addEventListener("click", () => {
         activeInput = beistell;
-
         beistell.classList.add("mobile-focus");
         kundenname.classList.remove("mobile-focus");
-        beistell.classList.remove("input-blink");
-
-        numKb.style.display   = "block";
+        numKb.style.display = "block";
         alphaKb.style.display = "none";
     });
 
-    // Kundenname klicken
     kundenname.addEventListener("click", () => {
         activeInput = kundenname;
-
         kundenname.classList.add("mobile-focus");
         beistell.classList.remove("mobile-focus");
-        kundenname.classList.remove("input-blink");
-
-        numKb.style.display   = "none";
+        numKb.style.display = "none";
         alphaKb.style.display = "block";
     });
 
-    /* ===========================
-       NUMMER-KEYBOARD
-    ============================ */
     document.querySelectorAll("#numKeyboard .kbm-key").forEach(key => {
         key.addEventListener("click", () => {
             if (!activeInput) return;
@@ -104,27 +88,19 @@ if (isMobile) {
 
             if (key.id === "numOk") {
                 numKb.style.display = "none";
-                activeInput.blur();
-
-                beistell.classList.remove("mobile-focus");
-                kundenname.classList.add("mobile-focus");
-                kundenname.classList.add("input-blink");
-
                 activeInput = kundenname;
+                kundenname.classList.add("mobile-focus");
                 alphaKb.style.display = "block";
                 return;
             }
 
-            // Ziffer (inkl. 0)
             activeInput.value += key.textContent;
         });
     });
 
-    /* ===========================
-       ALPHA-KEYBOARD
-    ============================ */
     document.querySelectorAll("#alphaKeyboard .kbm-key").forEach(key => {
         key.addEventListener("click", () => {
+
             if (!activeInput) return;
 
             if (key.id === "alphaDel") {
@@ -139,13 +115,10 @@ if (isMobile) {
 
             if (key.id === "alphaOk") {
                 alphaKb.style.display = "none";
-                activeInput.blur();
-                kundenname.classList.remove("input-blink");
-                kundenname.classList.remove("mobile-focus");
+                activeInput = null;
                 return;
             }
 
-            // normaler Buchstabe
             activeInput.value += key.textContent;
         });
     });
@@ -154,28 +127,12 @@ if (isMobile) {
 
     /* ============================================================
        PC MODUS
-    ============================================================ */
+============================================================ */
     numKb.style.display   = "none";
     alphaKb.style.display = "none";
 
     beistell.readOnly   = false;
     kundenname.readOnly = false;
-
-    beistell.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            kundenname.focus();
-        }
-    });
-
-    kundenname.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            if (kundenButtons.length > 0) {
-                kundenButtons[0].focus();
-            }
-        }
-    });
 }
 
 /* ============================================================
@@ -183,104 +140,53 @@ if (isMobile) {
 ============================================================ */
 eiltBtn.onclick = () => {
     isEilt = !isEilt;
-
     if (isEilt) {
         eiltBtn.textContent = "EILT SEHR: AN";
         eiltBtn.classList.add("on");
-        druckenBtn.focus();
     } else {
         eiltBtn.textContent = "EILT SEHR: AUS";
         eiltBtn.classList.remove("on");
     }
 };
 
-btn.onclick = () => {
+/* ============================================================
+   KUNDENBUTTON AUSWAHL + Tastatur schließen
+============================================================ */
+kundenButtons.forEach((btn, index) => {
 
-    // Erst Fokus ENTZIEHEN -> sonst bleiben Tastaturen aktiv!
-    beistell.blur();
-    kundenname.blur();
-    activeInput = null;
+    const selectCustomer = () => {
+        kundenButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedType = btn.dataset.type;
+        eiltBtn.focus();
+    };
 
-    // Tastaturen wirklich schließen
-    numKb.style.display = "none";
-    alphaKb.style.display = "none";
+    btn.onclick = () => {
 
-    // Visuelle Fokusmarkierungen entfernen
-    beistell.classList.remove("mobile-focus", "input-blink");
-    kundenname.classList.remove("mobile-focus", "input-blink");
+        // Eingaben beenden
+        beistell.blur();
+        kundenname.blur();
+        activeInput = null;
 
-    // Kunde auswählen (Button markieren, Fokus auf EILT)
-    selectCustomer();
-};
+        // Tastaturen schließen
+        numKb.style.display = "none";
+        alphaKb.style.display = "none";
 
-    btn.addEventListener("focus", () => {
-        lastCustomerIndex = index;
-    });
+        beistell.classList.remove("mobile-focus");
+        kundenname.classList.remove("mobile-focus");
 
-    btn.addEventListener("keydown", (e) => {
-        const cols = 3;
-        const upIndex = index - cols;
-        const downIndex = index + cols;
-
-        if (e.key === "ArrowLeft" && index > 0) {
-            e.preventDefault();
-            kundenButtons[index - 1].focus();
-        }
-
-        if (e.key === "ArrowRight" && index < kundenButtons.length - 1) {
-            e.preventDefault();
-            kundenButtons[index + 1].focus();
-        }
-
-        if (e.key === "ArrowUp") {
-            e.preventDefault();
-            if (upIndex >= 0) kundenButtons[upIndex].focus();
-            else kundenname.focus();
-        }
-
-        if (e.key === "ArrowDown") {
-            e.preventDefault();
-            if (downIndex < kundenButtons.length) kundenButtons[downIndex].focus();
-            else eiltBtn.focus();
-        }
-
-        if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            selectCustomer();
-        }
-    });
+        selectCustomer();
+    };
 });
 
 /* ============================================================
-   DRUCKEN
+   PRINT
 ============================================================ */
 druckenBtn.onclick = () => {
-
-    const beistellwert  = beistell.value.trim();
-    const kundenameWert = kundenname.value.trim();
-
-    if (!beistellwert) {
-        alert("Bitte Beistellnummer eingeben!");
-        return;
-    }
-
-    if (!selectedType) {
-        alert("Bitte einen Kunden auswählen!");
-        return;
-    }
-
-    let finalType = selectedType;
-
-    if (isEilt) {
-        if (selectedType === "LP")       finalType = "LPEILT";
-        if (selectedType === "SCHUETTE") finalType = "SCHUETTEEILT";
-        if (selectedType === "KLEY")     finalType = "KLEYEILT";
-    }
-
     const data = {
-        beistell:     beistellwert,
-        selectedType: finalType,
-        kundename:    kundenameWert
+        beistell: beistell.value.trim(),
+        selectedType: selectedType,
+        kundename: kundenname.value.trim()
     };
 
     window.location.href =
@@ -288,12 +194,10 @@ druckenBtn.onclick = () => {
 };
 
 /* ============================================================
-   AUTOMATISCHE BUILD NUMMER
+   BUILD INFO
 ============================================================ */
 document.addEventListener("DOMContentLoaded", () => {
     const lastMod = new Date(document.lastModified);
-    if (isNaN(lastMod.getTime())) return;
-
     const build =
         lastMod.getFullYear().toString() +
         String(lastMod.getMonth() + 1).padStart(2, "0") +
