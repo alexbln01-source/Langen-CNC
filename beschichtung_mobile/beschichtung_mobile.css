@@ -80,11 +80,21 @@ html, body {
    NUR FÜR ZEBRA TC21 / TC22
    (aktiviert über JS → body.zebra-device)
    ============================================================ */
+/* Zebra – bessere Breite + Abstand korrekt */
 body.zebra-device .kunden-grid {
-    grid-template-columns: repeat(3, 120px);   /* falls zu breit → 115px */
+    grid-template-columns: repeat(3, 110px); /* 110px statt 120px */
     justify-content: center;
 }
+/* Mehr Abstand zwischen EILT und den unteren Buttons (nur Zebra) */
+body.zebra-device #eiltBtn {
+    margin-top: 16px;
+    margin-bottom: 20px;
+}
 
+/* Unten ebenfalls mehr Abstand (nur Zebra) */
+body.zebra-device .bottom-row {
+    padding-bottom: 20px;
+}
 /* =============================
    Kunden Buttons
    ============================= */
