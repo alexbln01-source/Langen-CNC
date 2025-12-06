@@ -1,6 +1,3 @@
-/* =========================================
-   GLOBAL
-========================================= */
 * {
     box-sizing: border-box;
 }
@@ -18,9 +15,9 @@ html, body {
     align-items: center;
 }
 
-/* =========================================
-   HAUPTSEITE
-========================================= */
+/* =============================
+   Hauptseite
+   ============================= */
 .page {
     width: 94vw;
     height: 92vh;
@@ -32,9 +29,9 @@ html, body {
     padding: 10px;
 }
 
-/* =========================================
-   TITEL
-========================================= */
+/* =============================
+   Überschrift
+   ============================= */
 .title {
     font-size: 24px;
     font-weight: 900;
@@ -42,9 +39,9 @@ html, body {
     margin-bottom: 10px;
 }
 
-/* =========================================
-   EINGABEFELDER
-========================================= */
+/* =============================
+   Eingabefelder
+   ============================= */
 #beistellInput,
 #kundeInput {
     width: 90%;
@@ -62,9 +59,9 @@ html, body {
     color: #999;
 }
 
-/* =========================================
+/* ============================================================
    GRID – STANDARD (PC + iOS + normale Androids)
-========================================= */
+============================================================ */
 .kunden-grid {
     width: 100%;
     padding: 0 12px;
@@ -77,20 +74,21 @@ html, body {
     justify-content: center;
 }
 
-/* =========================================
-   ZEBRA TC21 – 5 ZOLL (360 × 640)
-========================================= */
+/* ============================================================
+   ZEBRA TC21 – 5 Zoll (360×640)
+============================================================ */
+
 body.zebra-tc21 .kunden-grid {
     grid-template-columns: repeat(3, 100px);
     justify-content: center;
 }
 
 body.zebra-tc21 .kunde-btn {
-    width: 100px !important;
-    height: 70px !important;
-    min-height: 70px !important;
-    padding: 4px !important;
-    font-size: 13px !important;
+    width: 100px;
+    height: 70px;
+    min-height: 70px;
+    padding: 4px;
+    font-size: 13px;
 }
 
 body.zebra-tc21 #eiltBtn {
@@ -102,43 +100,55 @@ body.zebra-tc21 .bottom-row {
     padding-bottom: 20px;
 }
 
-/* =========================================
-   ZEBRA TC22 – 6 ZOLL (360 × 720 sichtbar)
-   → kompakter + dynamisch
-========================================= */
+/* ============================================================
+   ZEBRA TC22 – Optimiert für 360 × 648 nutzbare Höhe
+============================================================ */
+
 body.zebra-tc22 .kunden-grid {
     width: 100%;
-    padding: 0 8px;
+    padding: 0 6px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 8px;     /* kleiner Abstand */
 }
 
+/* kleinere + kompaktere Buttons */
 body.zebra-tc22 .kunde-btn {
-    min-height: 50px !important;
-    padding: 4px !important;
-    font-size: 13px !important;
+    min-height: 48px !important;
+    padding: 3px !important;
+    font-size: 12.5px !important;
     line-height: 1.15 !important;
-    border-radius: 14px;
     word-break: break-word;
+    border-radius: 12px;
 }
 
+/* EILT Button kompakter */
 body.zebra-tc22 #eiltBtn {
-    margin-top: 18px;
-    margin-bottom: 26px;
-    font-size: 20px;
+    margin-top: 14px;
+    margin-bottom: 18px;
+    padding: 10px;
+    font-size: 18px;
 }
 
+/* Untere Buttons kompakter */
 body.zebra-tc22 .bottom-row {
-    padding-bottom: 20px;
+    padding-bottom: 6px;
 }
 
-/* =========================================
-   STANDARD BUTTONS – Basisstil (wird überschrieben)
-========================================= */
+body.zebra-tc22 .back-btn,
+body.zebra-tc22 .primary-btn {
+    padding: 10px;
+    font-size: 18px;
+}
+
+/* =============================
+   Kunden Buttons (Standard)
+============================= */
 .kunde-btn {
-    width: 100%;
-    min-height: 65px; /* kleiner gemacht, damit Zebra mehr Kontrolle hat */
+    width: auto;
+    min-height: 75px;
+    height: auto;
+
     padding: 6px;
 
     display: flex;
@@ -161,9 +171,9 @@ body.zebra-tc22 .bottom-row {
     color: white;
 }
 
-/* =========================================
-   EILT BUTTON
-========================================= */
+/* =============================
+   EILT Button
+============================= */
 #eiltBtn {
     margin-top: 12px;
     width: 90%;
@@ -182,9 +192,9 @@ body.zebra-tc22 .bottom-row {
     background: #c80000;
 }
 
-/* =========================================
-   UNTERE BUTTONS
-========================================= */
+/* =============================
+   Untere Buttons
+============================= */
 .bottom-row {
     width: 90%;
     display: flex;
@@ -212,9 +222,9 @@ body.zebra-tc22 .bottom-row {
     background: #00963d;
 }
 
-/* =========================================
-   FOKUS / CURSOR
-========================================= */
+/* =============================
+   Fokus / Cursor
+============================= */
 button:focus {
     outline: 4px solid #1a73e8;
 }
@@ -241,9 +251,9 @@ button:focus {
     100% { opacity: 1; }
 }
 
-/* =========================================
-   MOBILE FOKUSRAND
-========================================= */
+/* =============================
+   Mobile Fokusrahmen
+============================= */
 .mobile-focus {
     outline: 4px solid #1a73e8 !important;
     border-radius: 14px;
