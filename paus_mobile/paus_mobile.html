@@ -11,58 +11,66 @@
 
 <body>
 
-<div id="deviceInfo" class="device-info"></div>
+<div id="deviceInfo"></div>
+<div id="buildInfo"></div>
 
-<div class="page">
+<h1 class="title">PAUS Lieferung</h1>
 
-    <h1 class="title">PAUS Lieferung</h1>
+<!-- ================= FARBAUSWAHL ================= -->
+<div class="color-row">
+    <button class="color-btn active" data-color="red">Rot</button>
+    <button class="color-btn" data-color="blue">Blau</button>
+    <button class="color-btn" data-color="black">Schwarz</button>
+</div>
 
-    <!-- FARBAUSWAHL -->
-    <div class="color-row">
-        <button class="color-btn active" data-color="red">Rot</button>
-        <button class="color-btn" data-color="blue">Blau</button>
-        <button class="color-btn" data-color="black">Schwarz</button>
-    </div>
+<!-- ================= OPTION VORGEZOGEN ================= -->
+<div class="vorgezogen-row">
+    <input type="checkbox" id="chkVorgezogen">
+    <label for="chkVorgezogen">Auftrag vorgezogen</label>
+</div>
 
-    <!-- VORGEZOGEN -->
-    <label class="vorgezogen-row">
-        <input type="checkbox" id="chkVorgezogen">
-        <span>Auftrag vorgezogen</span>
-    </label>
-
-    <!-- EINGABEN -->
+<!-- ================= EINGABEFELDER ================= -->
+<div class="input-area">
     <input id="kommission" class="input-field" placeholder="Kommissionsnummer" autocomplete="off" readonly>
     <input id="lieferdatum" class="input-field" placeholder="TT.MM" autocomplete="off" readonly>
-
-    <!-- Tastatur öffnen (nur Zebra) -->
-    <button id="openKeyboardBtn" class="keyboard-open-btn">Tastatur öffnen</button>
-
-    <!-- POPUP TASTATUR -->
-    <div id="keyboardPopup" class="keyboard-popup">
-        <div class="keyboard-content">
-            <h3 id="keyboardTitle">Eingabe</h3>
-
-            <input id="keyboardInput" class="keyboard-input" autocomplete="off" autocorrect="off"
-                   autocapitalize="off" spellcheck="false">
-
-            <div id="keyboardKeys" class="keyboard-keys"></div>
-
-            <div class="keyboard-actions">
-                <button id="keyboardDelete" class="key-delete">Löschen</button>
-                <button id="keyboardOK" class="key-ok">OK</button>
-                <button id="keyboardClose" class="key-close">Schließen</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- UNTEN -->
-    <div class="bottom-row">
-        <button id="backBtn" class="back-btn">◀ Zurück</button>
-        <button id="druckenBtn" class="primary-btn">Drucken</button>
-    </div>
-
-    <div id="buildInfo" class="build-info"></div>
-
 </div>
+
+<!-- ================= TASTATUR ÖFFNEN ================= -->
+<div class="keyboard-open-row" id="kbRow">
+    <button id="openKeyboardBtn" class="keyboard-open-btn">Tastatur öffnen</button>
+</div>
+
+<!-- ================= POPUP NUMERIC KEYBOARD ================= -->
+<div id="numKeyboard" class="popup-kb">
+    <div class="kb-content">
+
+        <div id="kbTitle" class="kb-title">Eingabe</div>
+
+        <input id="kbInput" class="kb-input">
+
+        <div class="kb-grid">
+            <button class="kb-key">1</button>
+            <button class="kb-key">2</button>
+            <button class="kb-key">3</button>
+            <button class="kb-key">4</button>
+            <button class="kb-key">5</button>
+            <button class="kb-key">6</button>
+            <button class="kb-key">7</button>
+            <button class="kb-key">8</button>
+            <button class="kb-key">9</button>
+            <button class="kb-key">0</button>
+            <button id="kbDel" class="kb-del">Löschen</button>
+            <button id="kbOk" class="kb-ok">OK</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- ================= UNTERE BUTTONS ================= -->
+<div class="bottom-row">
+    <button id="backBtn" class="btn back-btn">◀ Zurück</button>
+    <button id="druckenBtn" class="btn print-btn">Drucken</button>
+</div>
+
 </body>
 </html>
