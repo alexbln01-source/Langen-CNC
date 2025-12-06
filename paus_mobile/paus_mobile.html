@@ -7,8 +7,8 @@
 
 <link rel="stylesheet" href="paus_mobile.css">
 <script defer src="paus_mobile.js"></script>
-
 </head>
+
 <body>
 
 <div id="deviceInfo" class="device-info"></div>
@@ -17,59 +17,52 @@
 
     <h1 class="title">PAUS Lieferung</h1>
 
-    <!-- ================= FARBAUSWAHL ================= -->
+    <!-- FARBAUSWAHL -->
     <div class="color-row">
         <button class="color-btn active" data-color="red">Rot</button>
         <button class="color-btn" data-color="blue">Blau</button>
         <button class="color-btn" data-color="black">Schwarz</button>
     </div>
 
-    <!-- ================= VORGEZOGEN ================= -->
-    <div class="vorgezogen-row">
+    <!-- VORGEZOGEN -->
+    <label class="vorgezogen-row">
         <input type="checkbox" id="chkVorgezogen">
-        <label for="chkVorgezogen">Auftrag vorgezogen</label>
-    </div>
+        <span>Auftrag vorgezogen</span>
+    </label>
 
-    <!-- ================= EINGABEFELDER ================= -->
-    <input id="kommission" class="input-field"
-           placeholder="Kommissionsnummer" readonly>
+    <!-- EINGABEN -->
+    <input id="kommission" class="input-field" placeholder="Kommissionsnummer" autocomplete="off" readonly>
+    <input id="lieferdatum" class="input-field" placeholder="TT.MM" autocomplete="off" readonly>
 
-    <input id="lieferdatum" class="input-field"
-           placeholder="TT.MM" readonly>
-
-    <!-- ================= TASTATUR ÖFFNEN (nur TC) ================= -->
+    <!-- Tastatur öffnen (nur Zebra) -->
     <button id="openKeyboardBtn" class="keyboard-open-btn">Tastatur öffnen</button>
 
-    <!-- ================= POPUP TASTATUR ================= -->
+    <!-- POPUP TASTATUR -->
     <div id="keyboardPopup" class="keyboard-popup">
         <div class="keyboard-content">
-
             <h3 id="keyboardTitle">Eingabe</h3>
 
-            <input id="keyboardInput"
-                   autocomplete="off"
-                   autocorrect="off"
-                   autocapitalize="off"
-                   spellcheck="false">
+            <input id="keyboardInput" class="keyboard-input" autocomplete="off" autocorrect="off"
+                   autocapitalize="off" spellcheck="false">
+
+            <div id="keyboardKeys" class="keyboard-keys"></div>
 
             <div class="keyboard-actions">
                 <button id="keyboardDelete" class="key-delete">Löschen</button>
                 <button id="keyboardOK" class="key-ok">OK</button>
                 <button id="keyboardClose" class="key-close">Schließen</button>
             </div>
-
         </div>
     </div>
 
-    <!-- ================= BUTTONS ================= -->
+    <!-- UNTEN -->
     <div class="bottom-row">
         <button id="backBtn" class="back-btn">◀ Zurück</button>
         <button id="druckenBtn" class="primary-btn">Drucken</button>
     </div>
 
+    <div id="buildInfo" class="build-info"></div>
+
 </div>
-
-<div id="buildInfo" class="build-info"></div>
-
 </body>
 </html>
