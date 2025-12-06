@@ -194,37 +194,23 @@ eiltBtn.onclick = () => {
     }
 };
 
-/* ============================================================
-   KUNDENBUTTON NAVIGATION + AUSWAHL
-============================================================ */
-kundenButtons.forEach((btn, index) => {
+btn.onclick = () => {
 
-    const selectCustomer = () => {
-        kundenButtons.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-
-        selectedType = btn.dataset.type;
-        lastCustomerIndex = index;
-
-        eiltBtn.focus();
-    };
-
- btn.onclick = () => {
-    selectCustomer();
-
-    // Tastaturen schließen
-    alphaKb.style.display = "none";
-    numKb.style.display = "none";
-
-    // Mobile Fokus entfernen
-    beistell.classList.remove("mobile-focus");
-    kundenname.classList.remove("mobile-focus");
-
-    // Blink-Cursor entfernen
-    beistell.classList.remove("input-blink");
-    kundenname.classList.remove("input-blink");
-
+    // Erst Fokus ENTZIEHEN -> sonst bleiben Tastaturen aktiv!
+    beistell.blur();
+    kundenname.blur();
     activeInput = null;
+
+    // Tastaturen wirklich schließen
+    numKb.style.display = "none";
+    alphaKb.style.display = "none";
+
+    // Visuelle Fokusmarkierungen entfernen
+    beistell.classList.remove("mobile-focus", "input-blink");
+    kundenname.classList.remove("mobile-focus", "input-blink");
+
+    // Kunde auswählen (Button markieren, Fokus auf EILT)
+    selectCustomer();
 };
 
     btn.addEventListener("focus", () => {
