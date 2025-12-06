@@ -155,50 +155,34 @@ keyboardClose.onclick = () =>
 
 renderKeyboard();
 
-/* =============================
-   ZEBRA SCANNER – final für Format "K:12345;D:0103"
-============================= */
-let scanBuffer = "";
+/* ============================
+   SCANNER (Zebra DataWedge)
+============================ */
+document.addEventListener("keydown", e => {
 
-document.addEventListener("keydown", (e) => {
+    if (isZebra) {
+        if (e.key === "Enter") {
 
-    // ENTER → Scan fertig
-    if (e.key === "Enter") {
+            let text = scanBuffer.trim();
 
-        const raw = scanBuffer.trim();
-        scanBuffer = "";
+            if (text.includes("K:") && text.includes("D:")) {
 
-        if (!raw) return;
+                const kom = text.match(/K:(.*?);/)[1];
+                const raw = text.match(/D:(.*)/)[1].replace(/\D/g, "");
 
-        console.log("SCAN:", raw);
+                let dat = raw;
+                if (dat.length === 3) dat = "0" + dat;
+                if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4);
 
-        // K:xxxx extrahieren
-        const komMatch = raw.match(/K[: ]?(\d+)/i);
-        // D:xxxx extrahieren
-        const datMatch = raw.match(/D[: ]?(\d+)/i);
+                kommission.value = kom;
+                lieferdatum.value = dat;
+            }
 
-        if (!komMatch || !datMatch) {
-            console.warn("Ungültiges Scanformat:", raw);
-            return;
+            scanBuffer = "";
+        } else {
+            scanBuffer += e.key;
         }
-
-        let kom = komMatch[1];
-        let dat = datMatch[1];
-
-        // Datum TTMM → TT.MM
-        dat = dat.replace(/\D/g, "");
-        if (dat.length === 3) dat = "0" + dat;
-        if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4);
-
-        // Feldeinträge
-        document.getElementById("kommission").value = kom;
-        document.getElementById("lieferdatum").value = dat;
-
-        return;
     }
-
-    // Sonst Zeichen in Buffer
-    scanBuffer += e.key;
 });
 
 /* ============================
