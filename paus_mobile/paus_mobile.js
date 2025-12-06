@@ -2,140 +2,145 @@ let activeInput = null;
 let currentColor = "red";
 
 /* =============================
-   GERÄTE ERKENNUNG
+   DEVICE DETECTION
 ============================= */
-const ua  = navigator.userAgent.toLowerCase();
-const sw  = window.screen.width;
-const sh  = window.screen.height;
+const ua = navigator.userAgent.toLowerCase();
+const sw = window.screen.width;
+const sh = window.screen.height;
 const dpr = window.devicePixelRatio;
 
-const isMobile = /android|iphone|ipad|ipod/i.test(ua);
+const isMobile = /android|iphone|ipad|ipod/.test(ua);
+const isZebraTC21 = ua.includes("zebra") || (sw === 360 && sh === 640);
+const isZebraTC22 = ua.includes("zebra") || (sw === 360 && sh === 720 && dpr === 3);
 
-const isZebraTC21 = ua.includes("android") && sw === 360 && sh === 640;
-const isZebraTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
-
-if (isZebraTC21) document.body.classList.add("zebra-tc21");
-if (isZebraTC22) document.body.classList.add("zebra-tc22");
-if (!isMobile && !isZebraTC21 && !isZebraTC22) document.body.classList.add("pc-device");
-
-/* Geräteanzeige */
-const dev = document.getElementById("deviceInfo");
-if (isZebraTC22) dev.textContent = "Gerät: Zebra TC22";
-else if (isZebraTC21) dev.textContent = "Gerät: Zebra TC21";
-else if (!isMobile) dev.textContent = "Gerät: PC";
-else dev.textContent = "Gerät: Mobil";
-
-/* =============================
-   FELDER
-============================= */
-const kommission = document.getElementById("kommission");
-const lieferdatum = document.getElementById("lieferdatum");
-
-/* Felder frei schalten auf PC */
-if (!isMobile) {
-    kommission.removeAttribute("readonly");
-    lieferdatum.removeAttribute("readonly");
+if (!isMobile && !isZebraTC21 && !isZebraTC22) {
+    document.body.classList.add("pc-device");
 }
 
-/* =============================
-   BUILD INFO
-============================= */
+/* Geräteinfo UI */
+const deviceInfo = document.getElementById("deviceInfo");
+if (isZebraTC22) deviceInfo.textContent = "Gerät: Zebra TC22";
+else if (isZebraTC21) deviceInfo.textContent = "Gerät: Zebra TC21";
+else if (isMobile)    deviceInfo.textContent = "Gerät: Handy";
+else                  deviceInfo.textContent = "Gerät: PC";
+
+/* BUILD INFO */
 document.addEventListener("DOMContentLoaded", () => {
-    const d = new Date(document.lastModified);
+    const t = new Date(document.lastModified);
     const build =
-        d.getFullYear().toString() +
-        String(d.getMonth()+1).padStart(2,"0") +
-        String(d.getDate()).padStart(2,"0") + "." +
-        String(d.getHours()).padStart(2,"0") +
-        String(d.getMinutes()).toString().padStart(2,"0");
+        t.getFullYear().toString() +
+        String(t.getMonth() + 1).padStart(2, "0") +
+        String(t.getDate()).padStart(2, "0") + "." +
+        String(t.getHours()).padStart(2, "0") +
+        String(t.getMinutes()).padStart(2, "0");
 
     document.getElementById("buildInfo").textContent = "Build " + build;
 });
 
 /* =============================
-   POPUP TASTATUR
+   ELEMENTE
 ============================= */
+const kommission = document.getElementById("kommission");
+const lieferdatum = document.getElementById("lieferdatum");
 const keyboardPopup = document.getElementById("keyboardPopup");
 const keyboardInput = document.getElementById("keyboardInput");
-const keyboardKeys  = document.getElementById("keyboardKeys");
 const keyboardTitle = document.getElementById("keyboardTitle");
-
-const keyboardOK     = document.getElementById("keyboardOK");
+const keyboardClose = document.getElementById("keyboardClose");
 const keyboardDelete = document.getElementById("keyboardDelete");
-const keyboardClose  = document.getElementById("keyboardClose");
+const keyboardOK = document.getElementById("keyboardOK");
+const druckenBtn = document.getElementById("druckenBtn");
+const backBtn = document.getElementById("backBtn");
 
-document.getElementById("openKeyboardBtn").onclick = () => {
-    activeInput = (kommission === document.activeElement) ? kommission : kommission;
-    keyboardTitle.textContent = "Eingabe";
-    keyboardInput.value = "";
-    keyboardPopup.style.display = "flex";
-    setTimeout(() => keyboardInput.focus(), 50);
-};
+/* =============================
+   PC → Eingabe direkt
+============================= */
+if (document.body.classList.contains("pc-device")) {
+    kommission.removeAttribute("readonly");
+    lieferdatum.removeAttribute("readonly");
+}
 
-/* Tastaturbelegung */
-const keys = "12345 67890".replace(/ /g,"").split("");
-keyboardKeys.innerHTML = "";
-keys.forEach(k => {
-    const b = document.createElement("button");
-    b.textContent = k;
-    b.onclick = () => keyboardInput.value += k;
-    keyboardKeys.appendChild(b);
+/* =============================
+   NUMMERNEINGABE FORMATIERUNG
+============================= */
+lieferdatum.addEventListener("input", () => {
+    lieferdatum.value = lieferdatum.value.replace(/[^\d.]/g, "");
 });
 
-/* Aktionen */
-keyboardDelete.onclick = () => {
-    keyboardInput.value = keyboardInput.value.slice(0, -1);
+lieferdatum.addEventListener("blur", () => {
+    let v = lieferdatum.value.replace(/\D/g, "");
+    if (v.length === 3) v = "0" + v;
+    if (v.length >= 4) v = v.slice(0, 2) + "." + v.slice(2, 4);
+    lieferdatum.value = v;
+});
+
+/* =============================
+   POPUP TASTATUR (NUR MOBILE)
+============================= */
+function openKeyboard(id) {
+    if (document.body.classList.contains("pc-device")) return;
+
+    activeInput = document.getElementById(id);
+    keyboardInput.value = "";
+    keyboardTitle.textContent = id === "kommission" ? "Kommissionsnummer" : "Lieferdatum";
+
+    keyboardPopup.style.display = "flex";
+    setTimeout(() => keyboardInput.focus(), 50);
+}
+
+document.getElementById("openKeyboardBtn").onclick = () => {
+    openKeyboard("kommission");
 };
+
+/* =============================
+   POPUP BUTTONS
+============================= */
+keyboardClose.onclick = () => keyboardPopup.style.display = "none";
+keyboardDelete.onclick = () =>
+    keyboardInput.value = keyboardInput.value.slice(0, -1);
 
 keyboardOK.onclick = () => {
     if (!activeInput) return;
 
-    let val = keyboardInput.value.replace(/\D/g,"");
+    let val = keyboardInput.value.replace(/\D/g, "");
 
     if (activeInput.id === "lieferdatum") {
         if (val.length === 3) val = "0" + val;
-        if (val.length >= 4) val = val.slice(0,2) + "." + val.slice(2,4);
+        if (val.length >= 4) val = val.slice(0, 2) + "." + val.slice(2, 4);
     }
 
     activeInput.value = val;
     keyboardPopup.style.display = "none";
 };
 
-keyboardClose.onclick = () => {
-    keyboardPopup.style.display = "none";
-};
-
 /* =============================
-   FARBAUSWAHL
+   FARBWAHL
 ============================= */
 document.querySelectorAll(".color-btn").forEach(btn => {
-    btn.onclick = () => {
+    btn.addEventListener("click", () => {
         document.querySelectorAll(".color-btn").forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
         currentColor = btn.dataset.color;
-    };
+    });
 });
 
 /* =============================
    DRUCKEN
 ============================= */
-document.getElementById("druckenBtn").onclick = () => {
+druckenBtn.onclick = () => {
+    if (!kommission.value.trim()) return alert("Bitte Kommissionsnummer eingeben!");
+    if (!lieferdatum.value.trim()) return alert("Bitte Lieferdatum eingeben!");
 
-    if (!kommission.value.trim()) return alert("Kommissionsnummer fehlt!");
-    if (!lieferdatum.value.trim()) return alert("Datum fehlt!");
-
-    const data = {
+    const json = JSON.stringify({
         kommission: kommission.value,
         lieferdatum: lieferdatum.value,
-        farbe: currentColor,
-        vorgezogen: chkVorgezogen.checked
-    };
+        vorgezogen: chkVorgezogen.checked,
+        farbe: currentColor
+    });
 
-    window.location.href =
-        "paus_druck.html?data=" + encodeURIComponent(JSON.stringify(data));
+    if (window.Android && Android.printPaus)
+        return Android.printPaus(json);
+
+    location.href = "paus_druck.html?data=" + encodeURIComponent(json);
 };
 
-/* =============================
-   ZURÜCK
-============================= */
-document.getElementById("backBtn").onclick = () => history.back();
+backBtn.onclick = () => history.back();
