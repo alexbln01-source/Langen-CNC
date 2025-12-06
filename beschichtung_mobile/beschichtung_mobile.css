@@ -77,32 +77,54 @@ html, body {
 }
 
 /* ============================================================
-   NUR FÜR ZEBRA TC21 / TC22
+   ZEBRA TC21 – 5 Zoll (360×640)
    ============================================================ */
 
-/* Zebra – Grid-Breite */
-body.zebra-device .kunden-grid {
-    grid-template-columns: repeat(3, 100px); /* ← Breite hier einstellen */
+body.zebra-tc21 .kunden-grid {
+    grid-template-columns: repeat(3, 100px);
     justify-content: center;
 }
 
-/* Zebra – Kunden-Buttons: manuelle Breite & Höhe */
-body.zebra-device .kunde-btn {
-    width: 80px;        /* ← Button-BREITE manuell */
-    height: 20px;        /* ← Button-HÖHE manuell */
-    min-height: 20px;    /* ← verhindert Hochziehen */
-    padding: 4px;        /* optional kleinerer Innenabstand */
-    font-size: 13px;     /* optional kleinere Schrift */
+body.zebra-tc21 .kunde-btn {
+    width: 100px;
+    height: 70px;
+    min-height: 70px;
+    padding: 4px;
+    font-size: 13px;
 }
 
-/* Mehr Abstand zwischen EILT und den unteren Buttons (nur Zebra) */
-body.zebra-device #eiltBtn {
+body.zebra-tc21 #eiltBtn {
     margin-top: 16px;
     margin-bottom: 20px;
 }
 
-/* Unten ebenfalls mehr Abstand (nur Zebra) */
-body.zebra-device .bottom-row {
+body.zebra-tc21 .bottom-row {
+    padding-bottom: 20px;
+}
+
+/* ============================================================
+   ZEBRA TC22 – 6 Zoll (412×732)
+   ============================================================ */
+
+body.zebra-tc22 .kunden-grid {
+    grid-template-columns: repeat(3, 120px);
+    justify-content: center;
+}
+
+body.zebra-tc22 .kunde-btn {
+    width: 120px;
+    height: 80px;
+    min-height: 80px;
+    padding: 6px;
+    font-size: 14px;
+}
+
+body.zebra-tc22 #eiltBtn {
+    margin-top: 18px;
+    margin-bottom: 22px;
+}
+
+body.zebra-tc22 .bottom-row {
     padding-bottom: 20px;
 }
 /* =============================
