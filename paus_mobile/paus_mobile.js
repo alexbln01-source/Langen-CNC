@@ -2,113 +2,47 @@ let activeInput = null;
 let currentColor = "red";
 let scanBuffer = "";
 
-/*****************************************
-    GERÄT ERKENNEN
-*****************************************/
-const ua = navigator.userAgent.toLowerCase();
-const sw = window.screen.width;
-const sh = window.screen.height;
-const dpr = window.devicePixelRatio;
+/* =============================
+   GERÄTEKENNUNG
+============================= */
+const ua = navigator.userAgent;
+const sw = screen.width;
+const sh = screen.height;
+const dpr = devicePixelRatio;
 
-const isZebraTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
-const isZebraTC21 = ua.includes("android") && sw === 360 && sh === 640;
-const isMobile = /android|iphone|ipad|ipod/.test(ua) && !isZebraTC22 && !isZebraTC21;
+const isTC21 = ua.includes("TC21");
+const isTC22 = ua.includes("TC22") || (sw === 360 && sh === 720 && dpr === 3);
+const isAndroid = /android/i.test(ua);
+const isMobile = isTC21 || isTC22 || isAndroid;
 
-if (isZebraTC22) document.body.classList.add("zebra-tc22");
-if (isZebraTC21) document.body.classList.add("zebra-tc21");
-if (!isMobile && !isZebraTC22 && !isZebraTC21) document.body.classList.add("pc-device");
+document.getElementById("deviceInfo").textContent =
+    isTC22 ? "Gerät: Zebra TC22" :
+    isTC21 ? "Gerät: Zebra TC21" :
+    isAndroid ? "Gerät: Android" :
+    "Gerät: PC";
 
-/*****************************************
-    Geräteanzeige
-*****************************************/
-const deviceInfo = document.getElementById("deviceInfo");
-
-if (isZebraTC22) deviceInfo.textContent = "Gerät: Zebra TC22";
-else if (isZebraTC21) deviceInfo.textContent = "Gerät: Zebra TC21";
-else if (isMobile) deviceInfo.textContent = "Gerät: Mobile";
-else deviceInfo.textContent = "Gerät: PC";
-
-/*****************************************
-    Elemente
-*****************************************/
-const kommission = document.getElementById("kommission");
-const lieferdatum = document.getElementById("lieferdatum");
-
-const openKeyboardBtn = document.getElementById("openKeyboardBtn");
-const keyboardPopup = document.getElementById("keyboardPopup");
-const keyboardInput = document.getElementById("keyboardInput");
-const keyboardTitle = document.getElementById("keyboardTitle");
-
-const keyboardOK = document.getElementById("keyboardOK");
-const keyboardDelete = document.getElementById("keyboardDelete");
-const keyboardClose = document.getElementById("keyboardClose");
-
-/*****************************************
-    INITIALISIERUNG
-*****************************************/
-window.onload = () => {
-    kommission.value = "";
-    lieferdatum.value = "";
-
-    // TC22 → sofort Kommission fokussieren
-    if (isZebraTC22) kommission.focus();
-
-    // Build-Nummer setzen
-    const d = new Date(document.lastModified);
-    document.getElementById("buildInfo").textContent =
-        "Build " +
-        d.getFullYear() + "-" +
-        String(d.getMonth()+1).padStart(2,"0") + "-" +
-        String(d.getDate()).padStart(2,"0") + "." +
-        String(d.getHours()).padStart(2,"0") +
-        String(d.getMinutes()).padStart(2,"0");
-};
-
-/*****************************************
-    POPUP-TASTATUR
-*****************************************/
-function openKeyboard(id) {
-    activeInput = document.getElementById(id);
-
-    keyboardInput.value = activeInput.value;
-    keyboardTitle.textContent =
-        id === "kommission" ? "Kommissionsnummer" : "Lieferdatum";
-
-    keyboardPopup.style.display = "flex";
-
-    setTimeout(() => keyboardInput.focus(), 50);
+/* =============================
+   PC → Eingaben normal
+============================= */
+if (!isMobile) {
+    document.getElementById("openKeyboardBtn").style.display = "none";
+    document.getElementById("kommission").removeAttribute("readonly");
+    document.getElementById("lieferdatum").removeAttribute("readonly");
 }
 
-openKeyboardBtn.onclick = () => openKeyboard("kommission");
+/* =============================
+   TC → Cursor sofort im Kommissionsfeld
+============================= */
+window.onload = () => {
+    document.getElementById("kommission").value = "";
+    document.getElementById("lieferdatum").value = "";
 
-keyboardClose.onclick = () => keyboardPopup.style.display = "none";
-keyboardDelete.onclick = () => {
-    keyboardInput.value = keyboardInput.value.slice(0, -1);
+    if (isMobile) document.getElementById("kommission").focus();
 };
 
-keyboardOK.onclick = () => {
-    if (!activeInput) return;
-
-    let val = keyboardInput.value.replace(/\D/g, "");
-
-    if (activeInput.id === "lieferdatum") {
-        if (val.length === 3) val = "0" + val;
-        if (val.length >= 4) val = val.slice(0,2) + "." + val.slice(2,4);
-    }
-
-    activeInput.value = val;
-
-    if (activeInput.id === "kommission") {
-        openKeyboard("lieferdatum");
-        return;
-    }
-
-    keyboardPopup.style.display = "none";
-};
-
-/*****************************************
-    FARBAUSWAHL
-*****************************************/
+/* =============================
+   FARBWAHL
+============================= */
 document.querySelectorAll(".color-btn").forEach(btn => {
     btn.onclick = () => {
         document.querySelectorAll(".color-btn").forEach(b => b.classList.remove("active"));
@@ -117,25 +51,82 @@ document.querySelectorAll(".color-btn").forEach(btn => {
     };
 });
 
-/*****************************************
-    SCANNER (TC22)
-*****************************************/
+/* =============================
+   POPUP TASTATUR
+============================= */
+const popup = document.getElementById("keyboardPopup");
+const popupInput = document.getElementById("keyboardInput");
+const title = document.getElementById("keyboardTitle");
+
+function openKeyboard(inputId) {
+    activeInput = document.getElementById(inputId);
+    title.textContent = inputId === "kommission" ? "Kommissionsnummer" : "Lieferdatum";
+    popupInput.value = "";
+    popup.style.display = "flex";
+    setTimeout(() => popupInput.focus(), 50);
+}
+
+/* Öffnen */
+document.getElementById("openKeyboardBtn").onclick = () => openKeyboard("kommission");
+
+/* Schließen */
+document.getElementById("keyboardClose").onclick = () => {
+    popup.style.display = "none";
+};
+
+/* Löschen */
+document.getElementById("keyboardDelete").onclick = () =>
+    popupInput.value = popupInput.value.slice(0, -1);
+
+/* OK */
+document.getElementById("keyboardOK").onclick = () => {
+    if (!activeInput) return;
+
+    let value = popupInput.value.replace(/\D/g, "");
+
+    if (activeInput.id === "lieferdatum") {
+        if (value.length === 3) value = "0" + value;
+        if (value.length >= 4)
+            value = value.slice(0, 2) + "." + value.slice(2, 4);
+        activeInput.value = value;
+        popup.style.display = "none";
+        return;
+    }
+
+    // Kommission
+    activeInput.value = value;
+    popup.style.display = "none";
+
+    // weiter zu Datum
+    openKeyboard("lieferdatum");
+};
+
+/* ENTER im Popup */
+popupInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") document.getElementById("keyboardOK").onclick();
+});
+
+/* =============================
+   SCANNER (TC)
+============================= */
 document.addEventListener("keydown", e => {
 
+    if (!isMobile) return;
+
     if (e.key === "Enter") {
-        let t = scanBuffer.trim();
+        let text = scanBuffer.trim();
 
-        if (t.includes("K:") && t.includes("D:")) {
-
-            const kom = t.match(/K:(.*?);/)[1];
-            const raw = t.match(/D:(.*)/)[1].replace(/\D/g, "");
+        if (text.includes("K:") && text.includes("D:")) {
+            const kom = text.match(/K:(.*?);/)[1];
+            const raw = text.match(/D:(.*)/)[1].replace(/\D/g, "");
 
             let dat = raw;
             if (dat.length === 3) dat = "0" + dat;
-            if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4);
+            if (dat.length >= 4)
+                dat = dat.slice(0, 2) + "." + dat.slice(2, 4);
 
-            kommission.value = kom;
-            lieferdatum.value = dat;
+            document.getElementById("kommission").value = kom;
+            document.getElementById("lieferdatum").value = dat;
         }
 
         scanBuffer = "";
@@ -144,28 +135,53 @@ document.addEventListener("keydown", e => {
     }
 });
 
-/*****************************************
-    DRUCKEN
-*****************************************/
+/* =============================
+   DRUCKEN
+============================= */
 document.getElementById("druckenBtn").onclick = () => {
 
-    if (!kommission.value.trim()) return alert("Bitte Kommissionsnummer eingeben!");
-    if (!lieferdatum.value.trim()) return alert("Bitte Lieferdatum eingeben!");
+    const kom = document.getElementById("kommission").value.trim();
+    const dat = document.getElementById("lieferdatum").value.trim();
+
+    if (!kom) return alert("Bitte Kommissionsnummer eingeben!");
+    if (!dat) return alert("Bitte Lieferdatum eingeben!");
 
     const data = {
-        kommission: kommission.value,
-        lieferdatum: lieferdatum.value,
-        farbe: currentColor,
-        vorgezogen: document.getElementById("chkVorgezogen").checked
+        kommission: kom,
+        lieferdatum: dat,
+        vorgezogen: document.getElementById("chkVorgezogen").checked,
+        farbe: currentColor
     };
 
     const json = JSON.stringify(data);
 
-    if (window.Android && Android.printPaus)
-        return Android.printPaus(json);
+    // Android App?
+    if (window.Android && typeof Android.printPaus === "function") {
+        Android.printPaus(json);
+        return;
+    }
 
-    window.location.href =
-        "paus_druck.html?data=" + encodeURIComponent(json);
+    window.location.href = "paus_druck.html?data=" + encodeURIComponent(json);
 };
 
+/* =============================
+   ZURÜCK
+============================= */
 document.getElementById("backBtn").onclick = () => history.back();
+
+/* =============================
+   BUILD NUMMER
+============================= */
+document.addEventListener("DOMContentLoaded", () => {
+    const lastMod = new Date(document.lastModified);
+    const build =
+        lastMod.getFullYear() + "-" +
+        String(lastMod.getMonth()+1).padStart(2,"0") +
+        "-" +
+        String(lastMod.getDate()).padStart(2,"0") +
+        "." +
+        String(lastMod.getHours()).padStart(2,"0") +
+        String(lastMod.getMinutes()).padStart(2,"0");
+
+    document.getElementById("buildInfo").textContent = "Build " + build;
+});
