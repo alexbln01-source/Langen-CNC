@@ -1,207 +1,147 @@
-/* ===== ALLGEMEIN ===== */
-body {
+/* ===== RESET ===== */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
     background: #ececec;
+    height: 100%;
+    width: 100%;
+}
+
+/* ===== Gerätespezifische Layouts ===== */
+
+/* 🔵 PC – NICHT zentriert */
+body.pc-device {
+    padding-top: 30px;
+}
+
+/* 🟡 TC21 / TC22 – komplett zentriert */
+body.tc-device {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page {
+    width: 92%;
+    max-width: 480px;
+    margin: auto;
     text-align: center;
 }
 
-/* Geräte-Info oben links */
+/* ===== Infoanzeigen ===== */
 #deviceInfo {
     position: fixed;
-    top: 6px;
-    left: 6px;
-    background: rgba(0,0,0,0.1);
-    padding: 4px 10px;
-    border-radius: 6px;
+    top: 5px;
+    left: 5px;
     font-size: 12px;
-    z-index: 9999;
+    color: #003a73;
 }
 
-/* Build unten rechts */
 #buildInfo {
     position: fixed;
     bottom: 6px;
     right: 8px;
     font-size: 11px;
-    color: #444;
-    opacity: .8;
+    opacity: 0.8;
 }
 
-/* ===== TITEL ===== */
+/* ===== Titel ===== */
 .title {
-    margin-top: 20px;
-    font-size: 26px;
-    font-weight: 900;
+    font-size: 28px;
+    font-weight: bold;
     color: #003b73;
+    margin-bottom: 20px;
 }
 
-/* ===== FARBBUTTONS ===== */
+/* ===== Farbbuttons ===== */
 .color-row {
     display: flex;
     justify-content: center;
-    gap: 12px;
-    margin-top: 10px;
-    margin-bottom: 12px;
+    gap: 10px;
+    margin-bottom: 16px;
 }
 
 .color-btn {
-    width: 26%;
-    padding: 12px 0;
+    flex: 1;
+    padding: 14px 0;
     font-size: 20px;
-    font-weight: bold;
-    color: white;
+    border-radius: 12px;
     border: none;
-    border-radius: 14px;
+    color: white;
+    font-weight: bold;
 }
-
-.color-btn[data-color="red"] { background: #c62828; }
-.color-btn[data-color="blue"] { background: #1565c0; }
-.color-btn[data-color="black"] { background: #333; }
 
 .color-btn.active {
-    outline: 3px solid #4d7cff;
+    outline: 4px solid #4d7cff;
 }
 
-/* ===== OPTION: VORGEZOGEN ===== */
-.vorgezogen-row {
-    font-size: 18px;
-    margin-bottom: 12px;
-}
-
-/* ===== EINGABEFELDER ===== */
-.input-area {
-    width: 88%;
-    margin: 0 auto;
-}
-
+/* ===== Eingabefelder ===== */
 .input-field {
     width: 100%;
-    padding: 12px;
-    margin: 8px 0;
-    border-radius: 12px;
-    border: 1px solid #bbb;
-    background: #ffffff;
-    font-size: 18px;
-    text-align: center;
-}
-
-/* ===== TASTATUR-ÖFFNEN BUTTON ===== */
-.keyboard-open-row {
-    margin-top: 10px;
-    margin-bottom: 14px;
-}
-
-.keyboard-open-btn {
-    width: 88%;
     padding: 14px;
     font-size: 20px;
-    border-radius: 14px;
-    border: none;
-    color: #0055cc;
-    background: #d9d9d9;
+    border-radius: 12px;
+    border: 1px solid #bbb;
+    text-align: center;
+    margin-bottom: 12px;
+    background: #fff;
 }
 
-/* PC → Tastatur öffnen ausblenden */
-body.pc-device .keyboard-open-row {
-    display: none;
-}
-
-/* ===== UNTERE BUTTONS ===== */
-.bottom-row {
-    width: 90%;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    margin-top: 14px;
-}
-
-.btn {
-    width: 47%;
-    padding: 14px 0;
-    border-radius: 14px;
-    border: none;
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-}
-
-.back-btn { background: #333; }
-.print-btn { background: #00963d; }
-
-/* ===== POPUP TASTATUR ===== */
+/* ===== Popup Tastatur ===== */
 .keyboard-popup {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0,0,0,0.45);
     justify-content: center;
     align-items: center;
-    z-index: 900;
+    z-index: 5000;
 }
 
 .keyboard-content {
     width: 90%;
     max-width: 380px;
     background: white;
+    padding: 20px;
     border-radius: 16px;
-    padding: 18px;
-}
-
-#keyboardInput {
-    width: 90%;
-    padding: 12px;
-    border-radius: 12px;
-    border: 1px solid gray;
-    font-size: 20px;
     text-align: center;
-    margin-bottom: 10px;
 }
 
-.keyboard-keys {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-}
-
-.keyboard-keys button {
-    padding: 12px 0;
+.keyboard-actions button {
+    flex: 1;
+    padding: 14px 0;
+    border-radius: 12px;
     font-size: 18px;
-    border-radius: 10px;
-    border: 1px solid #aaa;
-    background: #f2f2f2;
-}
-
-.keyboard-actions {
-    display: flex;
-    gap: 10px;
+    border: none;
+    color: white;
     margin-top: 10px;
 }
 
-.key-delete {
-    flex: 1;
-    background: #c62828;
-    color: white;
-    padding: 12px;
-    border-radius: 12px;
-    border: none;
+.key-delete { background: #d32f2f; }
+.key-ok     { background: #00963d; }
+.key-close  { background: #555; }
+
+/* ===== Untere Buttons ===== */
+.bottom-row {
+    margin-top: 20px;
+    display: flex;
+    gap: 12px;
 }
 
-.key-ok {
+.btn {
     flex: 1;
-    background: #00963d;
-    color: white;
-    padding: 12px;
-    border-radius: 12px;
+    padding: 16px 0;
+    border-radius: 14px;
+    font-size: 20px;
     border: none;
+    color: white;
+    font-weight: bold;
 }
 
-.key-close {
-    flex: 1;
-    background: #555;
-    color: white;
-    padding: 12px;
-    border-radius: 12px;
-    border: none;
-}
+.back-btn { background: #333; }
+.print-btn { background: #00963d; }
