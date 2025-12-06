@@ -18,54 +18,45 @@ const kundenButtons = Array.from(document.querySelectorAll(".kunde-btn"));
 let activeInput       = null;
 let lastCustomerIndex = 0;
 
-// Geräteerkennung allgemein (Mobile)
-const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-
-/*******************************************************
- * ZEBRA TC22 ERKENNUNG (NUR ÜBER DISPLAYWERTE)
- *******************************************************/
-const w   = window.screen.width;
-const h   = window.screen.height;
+/* ============================================================
+   GERÄTEERKENNUNG
+============================================================ */
+const ua  = navigator.userAgent.toLowerCase();
+const sw  = window.screen.width;
+const sh  = window.screen.height;
 const dpr = window.devicePixelRatio;
 
-// DEIN TC22: 360 × 720, DPR 3
-const isZebraTC22 = /android/i.test(navigator.userAgent) &&
-                    w === 360 &&
-                    h === 720 &&
-                    dpr === 3;
+// generell mobile?
+const isMobile = /android|iphone|ipad|ipod/i.test(ua);
 
+// vorbereiteter TC21 (Werte ggf. anpassen)
+const isZebraTC21 = ua.includes("android") && sw === 360 && sh === 640;
+
+// dein TC22: 360 × 720, DPR 3
+const isZebraTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
+
+if (isZebraTC21) {
+    document.body.classList.add("zebra-tc21");
+}
 if (isZebraTC22) {
     document.body.classList.add("zebra-tc22");
 }
 
-/* DEBUG – einmal Werte anzeigen */
-alert(
-    "UA: " + navigator.userAgent +
-    "\nScreen width: " + w +
-    "\nScreen height: " + h +
-    "\nInner width: " + window.innerWidth +
-    "\nInner height: " + window.innerHeight +
-    "\nPixel ratio: " + dpr +
-    "\nZebra erkannt: " + (isZebraTC22 ? "JA (TC22)" : "NEIN")
-);
-
-/* Anzeige im UI */
+// Debug-Anzeige im UI
 const deviceInfo = document.getElementById("deviceInfo");
-
-if (isZebraTC22) {
-    deviceInfo.textContent = "Gerät: Zebra TC22";
+if (deviceInfo) {
+    if (isZebraTC22) {
+        deviceInfo.textContent = "Gerät: Zebra TC22";
+    } else if (isZebraTC21) {
+        deviceInfo.textContent = "Gerät: Zebra TC21";
+    } else if (/android/i.test(ua)) {
+        deviceInfo.textContent = "Gerät: Android (kein Zebra)";
+    } else if (/iphone|ipad|ipod/i.test(ua)) {
+        deviceInfo.textContent = "Gerät: iOS";
+    } else {
+        deviceInfo.textContent = "Gerät: PC / Unbekannt";
+    }
 }
-else if (/android/i.test(navigator.userAgent)) {
-    deviceInfo.textContent = "Gerät: Android (kein Zebra)";
-}
-else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
-    deviceInfo.textContent = "Gerät: iOS";
-}
-else {
-    deviceInfo.textContent = "Gerät: PC / Unbekannt";
-}
-
 
 /* ============================================================
    MOBIL: POPUP-TASTATUREN
@@ -75,20 +66,19 @@ if (isMobile) {
     beistell.readOnly   = true;
     kundenname.readOnly = true;
 
-    /* ---------- Beistell klicken ---------- */
+    // Beistell klicken
     beistell.addEventListener("click", () => {
         activeInput = beistell;
 
         beistell.classList.add("mobile-focus");
         kundenname.classList.remove("mobile-focus");
-
         beistell.classList.remove("input-blink");
 
         numKb.style.display   = "block";
         alphaKb.style.display = "none";
     });
 
-    /* ---------- Kundenname klicken ---------- */
+    // Kundenname klicken
     kundenname.addEventListener("click", () => {
         activeInput = kundenname;
 
@@ -100,9 +90,9 @@ if (isMobile) {
         alphaKb.style.display = "block";
     });
 
-    /* ============================================================
+    /* ===========================
        NUMMER-KEYBOARD
-    ============================================================ */
+    ============================ */
     document.querySelectorAll("#numKeyboard .kbm-key").forEach(key => {
         key.addEventListener("click", () => {
             if (!activeInput) return;
@@ -125,13 +115,14 @@ if (isMobile) {
                 return;
             }
 
+            // Ziffer (inkl. 0)
             activeInput.value += key.textContent;
         });
     });
 
-    /* ============================================================
+    /* ===========================
        ALPHA-KEYBOARD
-    ============================================================ */
+    ============================ */
     document.querySelectorAll("#alphaKeyboard .kbm-key").forEach(key => {
         key.addEventListener("click", () => {
             if (!activeInput) return;
@@ -154,6 +145,7 @@ if (isMobile) {
                 return;
             }
 
+            // normaler Buchstabe
             activeInput.value += key.textContent;
         });
     });
@@ -161,7 +153,7 @@ if (isMobile) {
 } else {
 
     /* ============================================================
-       PC-Nutzung
+       PC MODUS
     ============================================================ */
     numKb.style.display   = "none";
     alphaKb.style.display = "none";
@@ -180,12 +172,11 @@ if (isMobile) {
         if (e.key === "Enter") {
             e.preventDefault();
             if (kundenButtons.length > 0) {
-                kundenButtons[0].focus(); 
+                kundenButtons[0].focus();
             }
         }
     });
 }
-
 
 /* ============================================================
    EILT BUTTON
@@ -203,9 +194,8 @@ eiltBtn.onclick = () => {
     }
 };
 
-
 /* ============================================================
-   KUNDENBUTTON NAVIGATION
+   KUNDENBUTTON NAVIGATION + AUSWAHL
 ============================================================ */
 kundenButtons.forEach((btn, index) => {
 
@@ -259,7 +249,6 @@ kundenButtons.forEach((btn, index) => {
     });
 });
 
-
 /* ============================================================
    DRUCKEN
 ============================================================ */
@@ -296,27 +285,23 @@ druckenBtn.onclick = () => {
         "druck.html?data=" + encodeURIComponent(JSON.stringify(data));
 };
 
-
 /* ============================================================
    AUTOMATISCHE BUILD NUMMER
 ============================================================ */
 document.addEventListener("DOMContentLoaded", () => {
-
-    const lastModString = document.lastModified;
-    const lastModDate = new Date(lastModString);
-    if (isNaN(lastModDate.getTime())) return;
+    const lastMod = new Date(document.lastModified);
+    if (isNaN(lastMod.getTime())) return;
 
     const build =
-        lastModDate.getFullYear().toString() +
-        String(lastModDate.getMonth() + 1).padStart(2, "0") +
-        String(lastModDate.getDate()).toString().padStart(2, "0") + "." +
-        String(lastModDate.getHours()).toString().padStart(2, "0") +
-        String(lastModDate.getMinutes()).toString().padStart(2, "0");
+        lastMod.getFullYear().toString() +
+        String(lastMod.getMonth() + 1).padStart(2, "0") +
+        String(lastMod.getDate()).padStart(2, "0") + "." +
+        String(lastMod.getHours()).padStart(2, "0") +
+        String(lastMod.getMinutes()).padStart(2, "0");
 
     const el = document.getElementById("buildInfo");
     if (el) el.textContent = "Build " + build;
 });
-
 
 /* ============================================================
    ZURÜCK BUTTON
