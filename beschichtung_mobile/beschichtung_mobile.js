@@ -37,7 +37,27 @@ if (ua.includes("android") && w === 360 && h === 640) {
 if (ua.includes("android") && w === 412 && h === 732) {
     document.body.classList.add("zebra-tc22");
 }
+const deviceInfo = document.getElementById("deviceInfo");
 
+if (document.body.classList.contains("zebra-tc21")) {
+    deviceInfo.textContent = "Gerät: Zebra TC21 (5 Zoll)";
+}
+
+else if (document.body.classList.contains("zebra-tc22")) {
+    deviceInfo.textContent = "Gerät: Zebra TC22 (6 Zoll)";
+}
+
+else if (/android/i.test(navigator.userAgent)) {
+    deviceInfo.textContent = "Gerät: Android (kein Zebra)";
+}
+
+else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
+    deviceInfo.textContent = "Gerät: iOS";
+}
+
+else {
+    deviceInfo.textContent = "Gerät: PC / Unbekannt";
+}
 /* ============================================================
    MOBIL: POPUP-TASTATUREN
 ============================================================ */
