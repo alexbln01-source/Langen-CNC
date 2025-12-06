@@ -103,29 +103,31 @@ body.zebra-tc21 .bottom-row {
 }
 
 /* ============================================================
-   ZEBRA TC22 – 6 Zoll (412×732)
+   ZEBRA TC22 – Optimierte Größe
    ============================================================ */
 
 body.zebra-tc22 .kunden-grid {
-    grid-template-columns: repeat(3, 140px);
+    grid-template-columns: repeat(3, 115px);  /* perfekt für 360px Breite */
     justify-content: center;
 }
 
 body.zebra-tc22 .kunde-btn {
-    width: 140px;
-    height: 40px;
-    min-height: 40px;
+    width: 115px;
+    height: 70px;        /* gut lesbar */
+    min-height: 70px;
     padding: 6px;
-    font-size: 14px;
+    font-size: 15px;     /* bessere Lesbarkeit */
+    border-radius: 14px;
 }
 
 body.zebra-tc22 #eiltBtn {
-    margin-top: 18px;
-    margin-bottom: 10px;
+    margin-top: 20px;
+    margin-bottom: 28px; /* guter Abstand nach unten */
+    font-size: 22px;     /* weil TC22 mehr Platz hat */
 }
 
 body.zebra-tc22 .bottom-row {
-    padding-bottom: 20px;
+    padding-bottom: 22px;
 }
 /* =============================
    Kunden Buttons
