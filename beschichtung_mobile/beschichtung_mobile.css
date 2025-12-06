@@ -43,7 +43,7 @@ html, body {
    Grid-Label (Beschichter wählen:)
 ============================= */
 .grid-label {
-    font-size: 12px;          /* hier stellst du "Beschichter wählen:" ein */
+    font-size: 18px;          /* hier stellst du "Beschichter wählen:" ein */
     font-weight: 900;
     color: #003a73;
     text-align: center;
