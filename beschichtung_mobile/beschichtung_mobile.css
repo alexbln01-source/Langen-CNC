@@ -131,7 +131,7 @@ body.zebra-tc22 .bottom-row {
    Kunden Buttons
    ============================= */
 .kunde-btn {
-    width: 100%;
+    width: auto;
     min-height: 75px;
     height: auto;
 
