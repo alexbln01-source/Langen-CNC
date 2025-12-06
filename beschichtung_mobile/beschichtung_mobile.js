@@ -349,8 +349,23 @@ druckenBtn.onclick = () => {
     window.location.href =
         "druck.html?data=" + encodeURIComponent(JSON.stringify(data));
 };
+/* ============================================
+   AUTOMATISCHE BUILD-NUMMER
+============================================ */
+document.addEventListener("DOMContentLoaded", () => {
 
+    const now = new Date();
 
+    const build =
+        now.getFullYear().toString() +
+        String(now.getMonth() + 1).padStart(2, "0") +
+        String(now.getDate()).padStart(2, "0") + "." +
+        String(now.getHours()).padStart(2, "0") +
+        String(now.getMinutes()).padStart(2, "0");
+
+    const el = document.getElementById("buildInfo");
+    if (el) el.textContent = "Build " + build;
+});
 /* ============================================================
    ZURÜCK BUTTON
 ============================================================ */
