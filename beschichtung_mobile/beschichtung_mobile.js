@@ -19,52 +19,42 @@ let activeInput       = null;
 let lastCustomerIndex = 0;
 
 // Geräteerkennung allgemein (Mobile)
-const isMobile = /Android|iPhone|iPad|iPod|Zebra|TC21|TC22/i.test(navigator.userAgent);
+const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
 
 /*******************************************************
- * ULTRA-STABILE ZEBRA ERKENNUNG (TC21 + TC22)
+ * ZEBRA TC22 ERKENNUNG (NUR ÜBER DISPLAYWERTE)
  *******************************************************/
-const ua = navigator.userAgent.toLowerCase();
-const w  = window.screen.width;
-const h  = window.screen.height;
+const w   = window.screen.width;
+const h   = window.screen.height;
+const dpr = window.devicePixelRatio;
 
-/* TC21 (5 Zoll) */
-if (
-    ua.includes("tc21") ||
-    (ua.includes("zebra") && w === 360 && h === 640)
-) {
-    document.body.classList.add("zebra-tc21");
-}
+// DEIN TC22: 360 × 720, DPR 3
+const isZebraTC22 = /android/i.test(navigator.userAgent) &&
+                    w === 360 &&
+                    h === 720 &&
+                    dpr === 3;
 
-/* TC22 (6 Zoll) */
-if (
-    ua.includes("tc22") ||
-    ua.includes("zebra") ||
-    ua.includes("sd660") || 
-    ua.includes("qualcomm")
-) {
+if (isZebraTC22) {
     document.body.classList.add("zebra-tc22");
 }
 
-/* DEBUG – zeigt dir genau Werte & UA */
+/* DEBUG – einmal Werte anzeigen */
 alert(
     "UA: " + navigator.userAgent +
-    "\nScreen width: " + window.screen.width +
-    "\nScreen height: " + window.screen.height +
+    "\nScreen width: " + w +
+    "\nScreen height: " + h +
     "\nInner width: " + window.innerWidth +
     "\nInner height: " + window.innerHeight +
-    "\nPixel ratio: " + window.devicePixelRatio
+    "\nPixel ratio: " + dpr +
+    "\nZebra erkannt: " + (isZebraTC22 ? "JA (TC22)" : "NEIN")
 );
 
 /* Anzeige im UI */
 const deviceInfo = document.getElementById("deviceInfo");
 
-if (document.body.classList.contains("zebra-tc21")) {
-    deviceInfo.textContent = "Gerät: Zebra TC21 (5 Zoll)";
-}
-else if (document.body.classList.contains("zebra-tc22")) {
-    deviceInfo.textContent = "Gerät: Zebra TC22 (6 Zoll)";
+if (isZebraTC22) {
+    deviceInfo.textContent = "Gerät: Zebra TC22";
 }
 else if (/android/i.test(navigator.userAgent)) {
     deviceInfo.textContent = "Gerät: Android (kein Zebra)";
@@ -189,7 +179,9 @@ if (isMobile) {
     kundenname.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
             e.preventDefault();
-            kundenButtons[0].focus();
+            if (kundenButtons.length > 0) {
+                kundenButtons[0].focus(); 
+            }
         }
     });
 }
@@ -317,9 +309,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const build =
         lastModDate.getFullYear().toString() +
         String(lastModDate.getMonth() + 1).padStart(2, "0") +
-        String(lastModDate.getDate()).padStart(2, "0") + "." +
-        String(lastModDate.getHours()).padStart(2, "0") +
-        String(lastModDate.getMinutes()).padStart(2, "0");
+        String(lastModDate.getDate()).toString().padStart(2, "0") + "." +
+        String(lastModDate.getHours()).toString().padStart(2, "0") +
+        String(lastModDate.getMinutes()).toString().padStart(2, "0");
 
     const el = document.getElementById("buildInfo");
     if (el) el.textContent = "Build " + build;
