@@ -350,18 +350,23 @@ druckenBtn.onclick = () => {
         "druck.html?data=" + encodeURIComponent(JSON.stringify(data));
 };
 /* ============================================
-   AUTOMATISCHE BUILD-NUMMER
+   AUTOMATISCHE BUILD-NUMMER AUS LETZTER ÄNDERUNG
 ============================================ */
 document.addEventListener("DOMContentLoaded", () => {
+    // Zeitpunkt, wann die HTML-Datei zuletzt geändert wurde
+    const lastModString = document.lastModified;
+    const lastModDate = new Date(lastModString);
 
-    const now = new Date();
+    // Falls irgendwas schiefgeht (sehr alt/komischer Browser), abbrechen
+    if (isNaN(lastModDate.getTime())) return;
 
+    // Format: YYYYMMDD.HHMM
     const build =
-        now.getFullYear().toString() +
-        String(now.getMonth() + 1).padStart(2, "0") +
-        String(now.getDate()).padStart(2, "0") + "." +
-        String(now.getHours()).padStart(2, "0") +
-        String(now.getMinutes()).padStart(2, "0");
+        lastModDate.getFullYear().toString() +
+        String(lastModDate.getMonth() + 1).padStart(2, "0") +
+        String(lastModDate.getDate()).padStart(2, "0") + "." +
+        String(lastModDate.getHours()).padStart(2, "0") +
+        String(lastModDate.getMinutes()).padStart(2, "0");
 
     const el = document.getElementById("buildInfo");
     if (el) el.textContent = "Build " + build;
