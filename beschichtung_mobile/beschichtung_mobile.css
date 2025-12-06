@@ -16,7 +16,7 @@ html, body {
 }
 
 /* =============================
-   Hauptseite (STANDARD = PC + Geräte)
+   Hauptseite Basis
 ============================= */
 .page {
     width: 94vw;
@@ -40,10 +40,10 @@ html, body {
 }
 
 /* =============================
-   Grid-Label (Beschichter wählen:)
+   Grid-Label
 ============================= */
 .grid-label {
-    font-size: 18px;          /* hier stellst du "Beschichter wählen:" ein */
+    font-size: 18px;
     font-weight: 900;
     color: #003a73;
     text-align: center;
@@ -58,7 +58,6 @@ html, body {
     width: 90%;
     padding: 12px;
     margin-bottom: 10px;
-
     font-size: 18px;
     border: 1px solid #777;
     border-radius: 14px;
@@ -70,7 +69,7 @@ html, body {
 }
 
 /* =============================
-   GRID – STANDARD (PC + normale Geräte)
+   GRID Standard (fallback)
 ============================= */
 .kunden-grid {
     width: 100%;
@@ -83,23 +82,20 @@ html, body {
 }
 
 /* =============================
-   ZEBRA TC21 – 5 Zoll (optional vorbereitet)
+   TC21 Layout
 ============================= */
 body.zebra-tc21 .kunden-grid {
-    width: 100%;
     padding: 0 6px;
-    display: grid;
     grid-template-columns: repeat(3, 100px);
     gap: 8px;
     justify-content: center;
-    justify-items: center;
 }
 
 body.zebra-tc21 .kunde-btn {
     width: 100px;
     min-height: 60px;
-    padding: 4px;
     font-size: 12px;
+    padding: 4px;
 }
 
 body.zebra-tc21 #eiltBtn {
@@ -107,12 +103,8 @@ body.zebra-tc21 #eiltBtn {
     margin-bottom: 18px;
 }
 
-body.zebra-tc21 .bottom-row {
-    padding-bottom: 8px;
-}
-
 /* =============================
-   ZEBRA TC22 – 6 Zoll (360×720, DPR 3)
+   TC22 Layout
 ============================= */
 body.zebra-tc22 .kunden-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -127,7 +119,7 @@ body.zebra-tc22 .kunde-btn {
 }
 
 /* =============================
-   Kundenbuttons (STANDARD)
+   Kundenbuttons Standard
 ============================= */
 .kunde-btn {
     width: 100%;
@@ -141,11 +133,10 @@ body.zebra-tc22 .kunde-btn {
 
     border-radius: 14px;
     border: none;
-
-    background: white;
     font-size: 14px;
     font-weight: 700;
     color: #003a73;
+    background: white;
     box-shadow: 0 1px 4px rgba(0,0,0,0.25);
 }
 
@@ -155,7 +146,7 @@ body.zebra-tc22 .kunde-btn {
 }
 
 /* =============================
-   EILT-Button
+   EILT Button
 ============================= */
 #eiltBtn {
     margin-top: 14px;
@@ -195,13 +186,8 @@ body.zebra-tc22 .kunde-btn {
     color: white;
 }
 
-.back-btn {
-    background: #444;
-}
-
-.primary-btn {
-    background: #00963d;
-}
+.back-btn { background: #444; }
+.primary-btn { background: #00963d; }
 
 /* =============================
    Fokus / Cursor
@@ -216,4 +202,29 @@ button:focus {
 .mobile-focus {
     outline: 4px solid #1a73e8 !important;
     border-radius: 14px;
+}
+
+/* ============================================================
+   PC – eigene Layoutklasse (NEU)
+============================================================ */
+body.pc-device .kunden-grid {
+    grid-template-columns: repeat(3, 160px);
+    gap: 10px;
+}
+
+body.pc-device .kunde-btn {
+    min-height: 55px;
+    height: 55px;
+    padding: 4px;
+    font-size: 13px;
+}
+
+body.pc-device #eiltBtn {
+    font-size: 18px;
+    padding: 12px;
+}
+
+body.pc-device .bottom-row button {
+    font-size: 18px;
+    padding: 12px;
 }
