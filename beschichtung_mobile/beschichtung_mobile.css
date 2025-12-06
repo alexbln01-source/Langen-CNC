@@ -78,13 +78,23 @@ html, body {
 
 /* ============================================================
    NUR FÜR ZEBRA TC21 / TC22
-   (aktiviert über JS → body.zebra-device)
    ============================================================ */
-/* Zebra – bessere Breite + Abstand korrekt */
+
+/* Zebra – Grid-Breite */
 body.zebra-device .kunden-grid {
-    grid-template-columns: repeat(3, 100px); /* 100px statt 120px */
+    grid-template-columns: repeat(3, 100px); /* ← Breite hier einstellen */
     justify-content: center;
 }
+
+/* Zebra – Kunden-Buttons: manuelle Breite & Höhe */
+body.zebra-device .kunde-btn {
+    width: 100px;        /* ← Button-BREITE manuell */
+    height: 80px;        /* ← Button-HÖHE manuell */
+    min-height: 80px;    /* ← verhindert Hochziehen */
+    padding: 4px;        /* optional kleinerer Innenabstand */
+    font-size: 13px;     /* optional kleinere Schrift */
+}
+
 /* Mehr Abstand zwischen EILT und den unteren Buttons (nur Zebra) */
 body.zebra-device #eiltBtn {
     margin-top: 16px;
