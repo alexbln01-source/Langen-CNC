@@ -60,13 +60,11 @@
     color: white !important;
 }
 </style>
-
 </head>
+
 <body>
 
-<!-- ===========================
-     GERÄTE-ERKENNUNG ANZEIGE (Debug)
-=========================== -->
+<!-- Debug / Geräteanzeige -->
 <div id="deviceInfo" style="
     position: fixed;
     top: 5px;
@@ -76,11 +74,9 @@
     font-size: 12px;
     color: #000;
     border-radius: 6px;
-    z-index: 999999;
-">
+    z-index: 999999;">
     Gerät lädt…
 </div>
-
 
 <div class="page">
 
@@ -120,102 +116,36 @@
 
 </div>
 
-
-
-<!-- ===========================
-     MINI QWERTZ KEYBOARD
-=========================== -->
+<!-- Tastaturen -->
 <div id="alphaKeyboard" class="kb-mini" style="display:none;">
-
-    <div class="kbm-row">
-        <button class="kbm-key">Q</button>
-        <button class="kbm-key">W</button>
-        <button class="kbm-key">E</button>
-        <button class="kbm-key">R</button>
-        <button class="kbm-key">T</button>
-        <button class="kbm-key">Z</button>
-    </div>
-
-    <div class="kbm-row">
-        <button class="kbm-key">A</button>
-        <button class="kbm-key">S</button>
-        <button class="kbm-key">D</button>
-        <button class="kbm-key">F</button>
-        <button class="kbm-key">G</button>
-    </div>
-
-    <div class="kbm-row">
-        <button class="kbm-key">H</button>
-        <button class="kbm-key">J</button>
-        <button class="kbm-key">K</button>
-        <button class="kbm-key">L</button>
-        <button class="kbm-key">Ö</button>
-    </div>
-
-    <div class="kbm-row">
-        <button class="kbm-key">Y</button>
-        <button class="kbm-key">X</button>
-        <button class="kbm-key">C</button>
-        <button class="kbm-key">V</button>
-        <button class="kbm-key">B</button>
-        <button class="kbm-key">N</button>
-        <button class="kbm-key">M</button>
-    </div>
+    <div class="kbm-row"><button class="kbm-key">Q</button><button class="kbm-key">W</button><button class="kbm-key">E</button><button class="kbm-key">R</button><button class="kbm-key">T</button><button class="kbm-key">Z</button></div>
+    <div class="kbm-row"><button class="kbm-key">A</button><button class="kbm-key">S</button><button class="kbm-key">D</button><button class="kbm-key">F</button><button class="kbm-key">G</button></div>
+    <div class="kbm-row"><button class="kbm-key">H</button><button class="kbm-key">J</button><button class="kbm-key">K</button><button class="kbm-key">L</button><button class="kbm-key">Ö</button></div>
+    <div class="kbm-row"><button class="kbm-key">Y</button><button class="kbm-key">X</button><button class="kbm-key">C</button><button class="kbm-key">V</button><button class="kbm-key">B</button><button class="kbm-key">N</button><button class="kbm-key">M</button></div>
 
     <div class="kbm-row">
         <button class="kbm-key" style="flex:3;"> </button>
         <button class="kbm-key kbm-ok" id="alphaOk">OK</button>
         <button class="kbm-key kbm-del" id="alphaDel">⌫</button>
     </div>
-
 </div>
 
-
-
-<!-- ===========================
-     NUMERIC KEYBOARD (FEHLERFREI!)
-=========================== -->
 <div id="numKeyboard" class="kb-mini" style="display:none;">
-
-    <div class="kbm-row">
-        <button class="kbm-key">1</button>
-        <button class="kbm-key">2</button>
-        <button class="kbm-key">3</button>
-    </div>
-
-    <div class="kbm-row">
-        <button class="kbm-key">4</button>
-        <button class="kbm-key">5</button>
-        <button class="kbm-key">6</button>
-    </div>
-
-    <div class="kbm-row">
-        <button class="kbm-key">7</button>
-        <button class="kbm-key">8</button>
-        <button class="kbm-key">9</button>
-    </div>
-
-    <div class="kbm-row">
-        <button class="kbm-key">0</button>
-        <button class="kbm-key kbm-del" id="numDel">⌫</button>
-        <button class="kbm-key kbm-ok" id="numOk">OK</button>
-    </div>
-
+    <div class="kbm-row"><button class="kbm-key">1</button><button class="kbm-key">2</button><button class="kbm-key">3</button></div>
+    <div class="kbm-row"><button class="kbm-key">4</button><button class="kbm-key">5</button><button class="kbm-key">6</button></div>
+    <div class="kbm-row"><button class="kbm-key">7</button><button class="kbm-key">8</button><button class="kbm-key">9</button></div>
+    <div class="kbm-row"><button class="kbm-key">0</button><button class="kbm-key kbm-del" id="numDel">⌫</button><button class="kbm-key kbm-ok" id="numOk">OK</button></div>
 </div>
-
-
 
 <script src="beschichtung_mobile.js"></script>
 
-<!-- Build-Anzeige -->
 <div id="buildInfo" style="
     position: fixed;
     bottom: 6px;
     right: 8px;
     font-size: 11px;
     color: #555;
-    opacity: 0.7;
-">
+    opacity: 0.7;">
     Build lädt…
 </div>
 
