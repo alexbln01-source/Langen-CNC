@@ -20,7 +20,11 @@ let lastCustomerIndex = 0;
 
 // Geräteerkennung (Zebra / Handy)
 const isMobile = /Android|iPhone|iPad|iPod|Zebra|TC21|TC22/i.test(navigator.userAgent);
-
+// Zebra / TC21 / TC22 erkennen
+const isZebra = /Zebra|TC21|TC22/i.test(navigator.userAgent);
+if (isZebra) {
+    document.body.classList.add("zebra-device");
+}
 
 /* ============================================================
    MOBIL: POPUP-TASTATUREN
