@@ -37,6 +37,15 @@ if (ua.includes("android") && w === 360 && h === 640) {
 if (ua.includes("android") && w === 412 && h === 732) {
     document.body.classList.add("zebra-tc22");
 }
+// DEBUG AUSGABE – zeigt dir exakt, was das Zebra liefert
+alert(
+    "UA: " + navigator.userAgent +
+    "\nScreen width: " + window.screen.width +
+    "\nScreen height: " + window.screen.height +
+    "\nInner width: " + window.innerWidth +
+    "\nInner height: " + window.innerHeight +
+    "\nPixel ratio: " + window.devicePixelRatio
+);
 const deviceInfo = document.getElementById("deviceInfo");
 
 if (document.body.classList.contains("zebra-tc21")) {
