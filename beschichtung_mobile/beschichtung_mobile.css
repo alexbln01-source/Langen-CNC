@@ -59,16 +59,16 @@ html, body {
     color: #999;
 }
 
-/* ==========================================
-   Kunden GRID – STANDARD (PC + iPhone + Android)
-   ========================================== */
+/* ============================================================
+   GRID – STANDARD (PC + iOS + normale Androids)
+   ============================================================ */
 .kunden-grid {
     width: 100%;
     padding: 0 12px;
 
     display: grid;
 
-    /* FLEXIBEL für alle normalen Geräte */
+    /* Standard – flexibel, funktioniert perfekt auf PC + iOS */
     grid-template-columns: repeat(3, 1fr);
 
     gap: 12px;
@@ -76,23 +76,13 @@ html, body {
     justify-content: center;
 }
 
-/* ==========================================
-   Spezielle Regeln NUR für Zebra TC22 (6 Zoll)
-   (Breite ca. 720px Höhe → Zebra Identifikation)
-   ========================================== */
-@media (max-width: 450px) and (device-height: 720px) {
-    .kunden-grid {
-        grid-template-columns: repeat(3, 130px);
-    }
-}
-
-/* ==========================================
-   Spezielle Regeln NUR für Zebra TC21 (5 Zoll)
-   ========================================== */
-@media (max-width: 380px) and (device-height: 640px) {
-    .kunden-grid {
-        grid-template-columns: repeat(3, 115px);
-    }
+/* ============================================================
+   NUR FÜR ZEBRA TC21 / TC22
+   (aktiviert über JS → body.zebra-device)
+   ============================================================ */
+body.zebra-device .kunden-grid {
+    grid-template-columns: repeat(3, 120px);   /* falls zu breit → 115px */
+    justify-content: center;
 }
 
 /* =============================
