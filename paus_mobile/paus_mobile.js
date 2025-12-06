@@ -1,86 +1,109 @@
 let activeInput = null;
 let currentColor = "red";
-let scanBuffer = "";
-
-/* ============================================================
-   GERÄTEERKENNUNG
-============================================================ */
-function detectDevice() {
-
-    const ua  = navigator.userAgent.toLowerCase();
-    const sw  = window.screen.width;
-    const sh  = window.screen.height;
-    const dpr = window.devicePixelRatio;
-
-    let text = "Gerät: ";
-
-    if (/zebra|tc21|tc26/i.test(ua)) { text += "Zebra TC21/26"; }
-    else if (/tc22/.test(ua) || (sw === 360 && sh === 720 && dpr === 3))
-        text += "Zebra TC22";
-    else if (/android/.test(ua)) text += "Android";
-    else if (/iphone|ipad|ipod/.test(ua)) text += "iOS";
-    else text += "PC";
-
-    document.getElementById("deviceInfo").textContent = text;
-}
-
-detectDevice();
-
-/* ============================================================
-   BUILD NUMMER AUTOMATISCH
-============================================================ */
-document.addEventListener("DOMContentLoaded", () => {
-    const lastMod = new Date(document.lastModified);
-    const b =
-        lastMod.getFullYear() +
-        String(lastMod.getMonth() + 1).padStart(2, "0") +
-        String(lastMod.getDate()).padStart(2, "0") + "." +
-        String(lastMod.getHours()).padStart(2, "0") +
-        String(lastMod.getMinutes()).padStart(2, "0");
-
-    document.getElementById("buildInfo").textContent = "Build " + b;
-});
 
 /* =============================
-   KEIN AUTOMATISCHES ÖFFNEN!
+   GERÄTE ERKENNUNG
 ============================= */
-function isMobileDevice() {
-    const ua = navigator.userAgent;
-    if (/Zebra|TC21|TC22|TC26/i.test(ua)) return false;
-    return /Android|iPhone|iPad|iPod/i.test(ua);
-}
+const ua  = navigator.userAgent.toLowerCase();
+const sw  = window.screen.width;
+const sh  = window.screen.height;
+const dpr = window.devicePixelRatio;
 
-/* Handy → Felder readonly, aber öffnen NICHT automatisch */
-if (!isMobileDevice()) {
+const isMobile = /android|iphone|ipad|ipod/i.test(ua);
+
+const isZebraTC21 = ua.includes("android") && sw === 360 && sh === 640;
+const isZebraTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
+
+if (isZebraTC21) document.body.classList.add("zebra-tc21");
+if (isZebraTC22) document.body.classList.add("zebra-tc22");
+if (!isMobile && !isZebraTC21 && !isZebraTC22) document.body.classList.add("pc-device");
+
+/* Geräteanzeige */
+const dev = document.getElementById("deviceInfo");
+if (isZebraTC22) dev.textContent = "Gerät: Zebra TC22";
+else if (isZebraTC21) dev.textContent = "Gerät: Zebra TC21";
+else if (!isMobile) dev.textContent = "Gerät: PC";
+else dev.textContent = "Gerät: Mobil";
+
+/* =============================
+   FELDER
+============================= */
+const kommission = document.getElementById("kommission");
+const lieferdatum = document.getElementById("lieferdatum");
+
+/* Felder frei schalten auf PC */
+if (!isMobile) {
     kommission.removeAttribute("readonly");
     lieferdatum.removeAttribute("readonly");
 }
 
 /* =============================
-   TASTATUR ÖFFNEN NUR PER BUTTON
+   BUILD INFO
 ============================= */
-openKeyboardBtn.onclick = () => {
-    activeInput = kommission; // Standard
+document.addEventListener("DOMContentLoaded", () => {
+    const d = new Date(document.lastModified);
+    const build =
+        d.getFullYear().toString() +
+        String(d.getMonth()+1).padStart(2,"0") +
+        String(d.getDate()).padStart(2,"0") + "." +
+        String(d.getHours()).padStart(2,"0") +
+        String(d.getMinutes()).toString().padStart(2,"0");
+
+    document.getElementById("buildInfo").textContent = "Build " + build;
+});
+
+/* =============================
+   POPUP TASTATUR
+============================= */
+const keyboardPopup = document.getElementById("keyboardPopup");
+const keyboardInput = document.getElementById("keyboardInput");
+const keyboardKeys  = document.getElementById("keyboardKeys");
+const keyboardTitle = document.getElementById("keyboardTitle");
+
+const keyboardOK     = document.getElementById("keyboardOK");
+const keyboardDelete = document.getElementById("keyboardDelete");
+const keyboardClose  = document.getElementById("keyboardClose");
+
+document.getElementById("openKeyboardBtn").onclick = () => {
+    activeInput = (kommission === document.activeElement) ? kommission : kommission;
     keyboardTitle.textContent = "Eingabe";
     keyboardInput.value = "";
     keyboardPopup.style.display = "flex";
-
     setTimeout(() => keyboardInput.focus(), 50);
 };
 
-/* =============================
-   DATUMSFORMAT
-============================= */
-lieferdatum.addEventListener("input", () => {
-    lieferdatum.value = lieferdatum.value.replace(/[^\d.]/g, "");
+/* Tastaturbelegung */
+const keys = "12345 67890".replace(/ /g,"").split("");
+keyboardKeys.innerHTML = "";
+keys.forEach(k => {
+    const b = document.createElement("button");
+    b.textContent = k;
+    b.onclick = () => keyboardInput.value += k;
+    keyboardKeys.appendChild(b);
 });
 
-lieferdatum.addEventListener("blur", () => {
-    let v = lieferdatum.value.replace(/\D/g, "");
-    if (v.length === 3) v = "0" + v;
-    if (v.length >= 4) v = v.slice(0, 2) + "." + v.slice(2, 4);
-    lieferdatum.value = v;
-});
+/* Aktionen */
+keyboardDelete.onclick = () => {
+    keyboardInput.value = keyboardInput.value.slice(0, -1);
+};
+
+keyboardOK.onclick = () => {
+    if (!activeInput) return;
+
+    let val = keyboardInput.value.replace(/\D/g,"");
+
+    if (activeInput.id === "lieferdatum") {
+        if (val.length === 3) val = "0" + val;
+        if (val.length >= 4) val = val.slice(0,2) + "." + val.slice(2,4);
+    }
+
+    activeInput.value = val;
+    keyboardPopup.style.display = "none";
+};
+
+keyboardClose.onclick = () => {
+    keyboardPopup.style.display = "none";
+};
 
 /* =============================
    FARBAUSWAHL
@@ -94,67 +117,25 @@ document.querySelectorAll(".color-btn").forEach(btn => {
 });
 
 /* =============================
-   POPUP-TASTATUR
-============================= */
-keyboardClose.onclick = () => keyboardPopup.style.display = "none";
-keyboardDelete.onclick = () => keyboardInput.value = keyboardInput.value.slice(0, -1);
-
-keyboardOK.onclick = () => {
-    let val = keyboardInput.value.replace(/\D/g, "");
-    kommission.value = val;
-    keyboardPopup.style.display = "none";
-};
-
-/* =============================
-   SCANNER (Zebra)
-============================= */
-document.addEventListener("keydown", e => {
-    if (e.key === "Enter") {
-
-        let text = scanBuffer.trim();
-
-        if (text.includes("K:") && text.includes("D:")) {
-
-            const kom = text.match(/K:(.*?);/)[1];
-            const raw = text.match(/D:(.*)/)[1].replace(/\D/g, "");
-
-            let dat = raw;
-            if (dat.length === 3) dat = "0" + dat;
-            if (dat.length >= 4) dat = dat.slice(0, 2) + "." + dat.slice(2, 4);
-
-            kommission.value = kom;
-            lieferdatum.value = dat;
-        }
-
-        scanBuffer = "";
-    } else {
-        scanBuffer += e.key;
-    }
-});
-
-/* =============================
    DRUCKEN
 ============================= */
-druckenBtn.onclick = () => {
+document.getElementById("druckenBtn").onclick = () => {
 
-    if (!kommission.value.trim()) return alert("Bitte Kommissionsnummer eingeben!");
-    if (!lieferdatum.value.trim()) return alert("Bitte Lieferdatum eingeben!");
+    if (!kommission.value.trim()) return alert("Kommissionsnummer fehlt!");
+    if (!lieferdatum.value.trim()) return alert("Datum fehlt!");
 
     const data = {
         kommission: kommission.value,
         lieferdatum: lieferdatum.value,
-        vorgezogen: chkVorgezogen.checked,
-        farbe: currentColor
+        farbe: currentColor,
+        vorgezogen: chkVorgezogen.checked
     };
 
-    const json = JSON.stringify(data);
-
-    if (window.Android && Android.printPaus) {
-        Android.printPaus(json);
-        return;
-    }
-
-    window.location.href = "paus_druck.html?data=" + encodeURIComponent(json);
+    window.location.href =
+        "paus_druck.html?data=" + encodeURIComponent(JSON.stringify(data));
 };
 
-backBtn.onclick = () => history.back();
+/* =============================
+   ZURÜCK
+============================= */
+document.getElementById("backBtn").onclick = () => history.back();
