@@ -113,8 +113,8 @@ body.zebra-tc22 .kunden-grid {
 
 body.zebra-tc22 .kunde-btn {
     width: 120px;
-    height: 80px;
-    min-height: 80px;
+    height: 40px;
+    min-height: 40px;
     padding: 6px;
     font-size: 14px;
 }
