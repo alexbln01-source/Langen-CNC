@@ -20,10 +20,22 @@ let lastCustomerIndex = 0;
 
 // Geräteerkennung (Zebra / Handy)
 const isMobile = /Android|iPhone|iPad|iPod|Zebra|TC21|TC22/i.test(navigator.userAgent);
-// Zebra / TC21 / TC22 erkennen
-const isZebra = /Zebra|TC21|TC22/i.test(navigator.userAgent);
-if (isZebra) {
-    document.body.classList.add("zebra-device");
+
+/*******************************************************
+ * ZEBRA TC21 / TC22 ERKENNUNG (Android + Displaygröße)
+ *******************************************************/
+const ua = navigator.userAgent.toLowerCase();
+const w = window.screen.width;
+const h = window.screen.height;
+
+// TC21 (5 Zoll)
+if (ua.includes("android") && w === 360 && h === 640) {
+    document.body.classList.add("zebra-tc21");
+}
+
+// TC22 (6 Zoll)
+if (ua.includes("android") && w === 412 && h === 732) {
+    document.body.classList.add("zebra-tc22");
 }
 
 /* ============================================================
