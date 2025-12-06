@@ -1,234 +1,230 @@
-/* ALLGEMEIN */
-body {
+* {
+    box-sizing: border-box;
+}
+
+html, body {
     margin: 0;
     padding: 0;
+    height: 100%;
+    background: linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
     font-family: Arial, sans-serif;
-    background: #ececec;
-    text-align: center;
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* =============================
+   Hauptseite Basis
+============================= */
+.page {
+    width: 94vw;
+    height: 92vh;
 
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    padding: 10px;
 }
 
-.device-info {
-    position: absolute;
-    top: 6px;
-    left: 10px;
-    color: #222;
-    font-size: 14px;
-}
-
-.build-info {
-    position: fixed;
-    right: 10px;
-    bottom: 10px;
-    font-size: 12px;
-    color: #444;
-}
-
-.page {
-    width: 100%;
-    max-width: 600px;
-}
-
-/* TITLE */
+/* =============================
+   Titel
+============================= */
 .title {
-    margin-top: 40px;
-    font-size: 34px;
-    font-weight: bold;
-    color: #003b73;
-}
-
-/* FARBBUTTONS */
-.color-row {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 10px;
-    margin-bottom: 18px;
-}
-
-.color-btn {
-    width: 27%;
-    padding: 16px 0;
-    font-size: 26px;
-    font-weight: bold;
-    border-radius: 16px;
-    border: none;
-    color: white;
-}
-
-.color-btn[data-color="red"] { background: #c62828; }
-.color-btn[data-color="blue"] { background: #1565c0; }
-.color-btn[data-color="black"] { background: #222; }
-
-.color-btn.active {
-    outline: 4px solid #4d7cff;
-}
-
-/* VORGEZOGEN */
-.vorgezogen-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    font-size: 22px;
-    margin-bottom: 18px;
-}
-
-/* EINGABEN */
-.input-area {
-    width: 88%;
-    margin: 0 auto;
-}
-
-.input-field {
-    width: 100%;
-    padding: 16px;
-    margin: 10px 0;
-    border-radius: 14px;
-    border: 2px solid #cfcfcf;
-    background: white;
-    text-align: center;
     font-size: 24px;
-}
-
-/* MANUELLE TASTATUR */
-.keyboard-open-row {
-    margin-top: 8px;
-    margin-bottom: 22px;
-}
-
-.keyboard-open-btn {
-    width: 88%;
-    padding: 18px;
-    border-radius: 18px;
-    border: none;
-    font-size: 24px;
-    background: #d9d9d9;
-    color: #0055cc;
-}
-
-/* POPUP */
-.keyboard-popup {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-}
-
-.keyboard-content {
-    width: 90%;
-    max-width: 420px;
-    background: white;
-    border-radius: 16px;
-    padding: 20px;
-}
-
-#keyboardInput {
-    width: 90%;
-    padding: 14px;
-    border-radius: 12px;
-    border: 1px solid gray;
-    font-size: 22px;
-    text-align: center;
+    font-weight: 900;
+    color: #003a73;
     margin-bottom: 10px;
 }
 
-.keyboard-keys {
+/* =============================
+   Grid-Label
+============================= */
+.grid-label {
+    font-size: 18px;
+    font-weight: 900;
+    color: #003a73;
+    text-align: center;
+    margin: 10px 0 6px 0;
+}
+
+/* =============================
+   Eingabefelder
+============================= */
+#beistellInput,
+#kundeInput {
+    width: 90%;
+    padding: 12px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    border: 1px solid #777;
+    border-radius: 14px;
+}
+
+#beistellInput::placeholder,
+#kundeInput::placeholder {
+    color: #999;
+}
+
+/* =============================
+   GRID Standard (fallback)
+============================= */
+.kunden-grid {
+    width: 100%;
+    padding: 0 12px;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 12px;
+    justify-items: stretch;
+    justify-content: center;
 }
 
-.keyboard-keys button {
-    padding: 16px 0;
-    font-size: 22px;
-    border-radius: 12px;
-    border: 1px solid #aaa;
-    background: #f2f2f2;
+/* =============================
+   TC21 Layout
+============================= */
+body.zebra-tc21 .kunden-grid {
+    padding: 0 6px;
+    grid-template-columns: repeat(3, 100px);
+    gap: 8px;
+    justify-content: center;
 }
 
-.keyboard-actions {
-    display: flex;
-    gap: 10px;
+body.zebra-tc21 .kunde-btn {
+    width: 100px;
+    min-height: 60px;
+    font-size: 12px;
+    padding: 4px;
+}
+
+body.zebra-tc21 #eiltBtn {
     margin-top: 14px;
+    margin-bottom: 18px;
 }
 
-.key-delete {
-    flex: 1;
-    background: #c62828;
-    color: white;
-    padding: 14px;
-    border-radius: 12px;
+/* =============================
+   TC22 Layout
+============================= */
+body.zebra-tc22 .kunden-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
 }
 
-.key-ok {
-    flex: 1;
-    background: #00963d;
-    color: white;
-    padding: 14px;
-    border-radius: 12px;
+body.zebra-tc22 .kunde-btn {
+    min-height: 62px;
+    padding: 4px;
+    font-size: 14px;
+    line-height: 1.2;
 }
 
-.key-close {
-    flex: 1;
-    background: #444;
-    color: white;
-    padding: 14px;
-    border-radius: 12px;
-}
+/* =============================
+   Kundenbuttons Standard
+============================= */
+.kunde-btn {
+    width: 100%;
+    min-height: 75px;
+    padding: 6px;
 
-/* UNTERE BUTTONS */
-.bottom-row {
     display: flex;
-    width: 88%;
-    gap: 12px;
-    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    border-radius: 14px;
+    border: none;
+    font-size: 14px;
+    font-weight: 700;
+    color: #003a73;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
 }
 
-.btn {
-    width: 50%;
-    padding: 18px 0;
-    border-radius: 16px;
+.kunde-btn.active {
+    background: #007bff;
+    color: white;
+}
+
+/* =============================
+   EILT Button
+============================= */
+#eiltBtn {
+    margin-top: 14px;
+    width: 90%;
+    padding: 14px;
+    font-size: 20px;
+    border-radius: 14px;
     border: none;
-    font-size: 26px;
+    background: #777;
+    color: white;
+    font-weight: bold;
+}
+
+#eiltBtn.on {
+    background: #c80000;
+}
+
+/* =============================
+   Untere Buttons
+============================= */
+.bottom-row {
+    width: 90%;
+    display: flex;
+    gap: 12px;
+    margin-top: auto;
+    padding-bottom: 10px;
+}
+
+.back-btn,
+.primary-btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    font-size: 20px;
     font-weight: bold;
     color: white;
 }
 
-.back-btn { background: #333; }
-.print-btn { background: #00963d; }
+.back-btn { background: #444; }
+.primary-btn { background: #00963d; }
 
-/* PC LAYOUT */
-body.pc-device .color-btn {
-    padding: 20px 40px;
-    font-size: 26px;
+/* =============================
+   Fokus / Cursor
+============================= */
+button:focus {
+    outline: 4px solid #1a73e8;
 }
 
-body.pc-device #openKeyboardBtn {
-    display: none !important;
+/* =============================
+   Mobile Fokus
+============================= */
+.mobile-focus {
+    outline: 4px solid #1a73e8 !important;
+    border-radius: 14px;
 }
 
-body.pc-device #keyboardPopup {
-    display: none !important;
+/* ============================================================
+   PC – eigene Layoutklasse (NEU)
+============================================================ */
+body.pc-device .kunden-grid {
+    grid-template-columns: repeat(3, 160px);
+    gap: 10px;
 }
 
-body.pc-device .input-field {
-    padding: 18px;
-    font-size: 26px;
+body.pc-device .kunde-btn {
+    min-height: 55px;
+    height: 55px;
+    padding: 4px;
+    font-size: 13px;
 }
 
-body.pc-device .bottom-row {
-    width: 60%;
-    margin-top: 30px;
+body.pc-device #eiltBtn {
+    font-size: 18px;
+    padding: 12px;
 }
 
-body.pc-device .btn {
-    font-size: 26px;
-    padding: 20px;
+body.pc-device .bottom-row button {
+    font-size: 18px;
+    padding: 12px;
 }

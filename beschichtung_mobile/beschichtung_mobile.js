@@ -1,187 +1,215 @@
-let activeInput = null;
-let currentColor = "red";
-let scanBuffer = "";
+let selectedType = null;
+let isEilt = false;
 
-const kommission = document.getElementById("kommission");
-const lieferdatum = document.getElementById("lieferdatum");
+/* ============================================================
+   GRUNDREFERENZEN
+============================================================ */
+const beistell   = document.getElementById("beistellInput");
+const kundenname = document.getElementById("kundeInput");
+const numKb      = document.getElementById("numKeyboard");
+const alphaKb    = document.getElementById("alphaKeyboard");
 
-/* =============================
-   GERÄTE ERKENNEN
-============================= */
+const backBtn    = document.getElementById("backBtn");
+const druckenBtn = document.getElementById("druckenBtn");
+const eiltBtn    = document.getElementById("eiltBtn");
 
-function detectDevice() {
-    const ua = navigator.userAgent;
-    const sw = screen.width;
-    const sh = screen.height;
+const kundenButtons = Array.from(document.querySelectorAll(".kunde-btn"));
 
-    if (/TC21|TC22|TC26|Zebra/i.test(ua)) return "zebra";
+let activeInput       = null;
+let lastCustomerIndex = 0;
 
-    if (/Android|iPhone|iPad/i.test(ua)) return "mobile";
+/* ============================================================
+   GERÄTEERKENNUNG
+============================================================ */
+const ua  = navigator.userAgent.toLowerCase();
+const sw  = window.screen.width;
+const sh  = window.screen.height;
+const dpr = window.devicePixelRatio;
 
-    return "pc";
-}
+// generell mobile?
+const isMobile = /android|iphone|ipad|ipod/i.test(ua);
 
-const deviceType = detectDevice();
+// TC21 (optional)
+const isZebraTC21 = ua.includes("android") && sw === 360 && sh === 640;
 
-document.getElementById("deviceInfo").textContent =
-    deviceType === "zebra" ? "Gerät: Zebra TC22"
-  : deviceType === "mobile" ? "Gerät: Mobil"
-  : "Gerät: PC";
+// TC22 (dein Gerät)
+const isZebraTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
 
-/* =============================
-   PC → keine Popup Tastatur
-============================= */
-if (deviceType === "pc") {
+// Klassen setzen
+if (isZebraTC21) document.body.classList.add("zebra-tc21");
+if (isZebraTC22) document.body.classList.add("zebra-tc22");
+
+// PC erkennen (NICHT mobil + kein Zebra)
+if (!isMobile && !isZebraTC21 && !isZebraTC22) {
     document.body.classList.add("pc-device");
-
-    kommission.removeAttribute("readonly");
-    lieferdatum.removeAttribute("readonly");
-
-    document.getElementById("openKeyboardBtn").style.display = "none";
-    document.getElementById("keyboardPopup").style.display = "none";
 }
 
-/* =============================
-   Zebra → Popup, Cursor setzen
-============================= */
-if (deviceType === "zebra") {
-    kommission.readOnly = true;
-    lieferdatum.readOnly = true;
-
-    setTimeout(() => kommission.focus(), 300);
+/* Debug-Ausgabe */
+const deviceInfo = document.getElementById("deviceInfo");
+if (deviceInfo) {
+    if (isZebraTC22) deviceInfo.textContent = "Gerät: Zebra TC22";
+    else if (isZebraTC21) deviceInfo.textContent = "Gerät: Zebra TC21";
+    else if (isMobile) deviceInfo.textContent = "Gerät: Android / iOS";
+    else deviceInfo.textContent = "Gerät: PC";
 }
 
-/* =============================
-   MOBILE TASTATUR → Popup
-============================= */
+/* ============================================================
+   MOBIL: POPUP-TASTATUREN
+============================================================ */
+if (isMobile) {
 
-function openKeyboard(field) {
-    activeInput = field;
+    beistell.readOnly   = true;
+    kundenname.readOnly = true;
 
-    keyboardInput.value = field.value;
-    keyboardTitle.textContent = field.id === "kommission"
-        ? "Kommissionsnummer"
-        : "Lieferdatum";
+    beistell.addEventListener("click", () => {
+        activeInput = beistell;
+        beistell.classList.add("mobile-focus");
+        kundenname.classList.remove("mobile-focus");
+        numKb.style.display = "block";
+        alphaKb.style.display = "none";
+    });
 
-    keyboardPopup.style.display = "flex";
+    kundenname.addEventListener("click", () => {
+        activeInput = kundenname;
+        kundenname.classList.add("mobile-focus");
+        beistell.classList.remove("mobile-focus");
+        numKb.style.display = "none";
+        alphaKb.style.display = "block";
+    });
 
-    setTimeout(() => keyboardInput.focus(), 50);
+    document.querySelectorAll("#numKeyboard .kbm-key").forEach(key => {
+        key.addEventListener("click", () => {
+            if (!activeInput) return;
+
+            if (key.id === "numDel") {
+                activeInput.value = activeInput.value.slice(0, -1);
+                return;
+            }
+
+            if (key.id === "numOk") {
+                numKb.style.display = "none";
+                activeInput = kundenname;
+                kundenname.classList.add("mobile-focus");
+                alphaKb.style.display = "block";
+                return;
+            }
+
+            activeInput.value += key.textContent;
+        });
+    });
+
+    document.querySelectorAll("#alphaKeyboard .kbm-key").forEach(key => {
+        key.addEventListener("click", () => {
+
+            if (!activeInput) return;
+
+            if (key.id === "alphaDel") {
+                activeInput.value = activeInput.value.slice(0, -1);
+                return;
+            }
+
+            if (key.id === "alphaSpace") {
+                activeInput.value += " ";
+                return;
+            }
+
+            if (key.id === "alphaOk") {
+                alphaKb.style.display = "none";
+                activeInput = null;
+                return;
+            }
+
+            activeInput.value += key.textContent;
+        });
+    });
+
+} else {
+
+    /* ============================================================
+       PC MODUS
+============================================================ */
+    numKb.style.display   = "none";
+    alphaKb.style.display = "none";
+
+    beistell.readOnly   = false;
+    kundenname.readOnly = false;
 }
 
-openKeyboardBtn.onclick = () => openKeyboard(kommission);
-
-kommission.addEventListener("click", () => {
-    if (deviceType !== "pc") openKeyboard(kommission);
-});
-lieferdatum.addEventListener("click", () => {
-    if (deviceType !== "pc") openKeyboard(lieferdatum);
-});
-
-/* KEYS erzeugen */
-const letters = "12345ABCDE67890FGHIJ";
-keyboardKeys.innerHTML = "";
-for (let c of letters) {
-    let b = document.createElement("button");
-    b.textContent = c;
-    b.onclick = () => keyboardInput.value += c;
-    keyboardKeys.appendChild(b);
-}
-
-keyboardDelete.onclick = () => {
-    keyboardInput.value = keyboardInput.value.slice(0, -1);
-};
-
-keyboardClose.onclick = () => {
-    keyboardPopup.style.display = "none";
-};
-
-keyboardOK.onclick = () => {
-    let val = keyboardInput.value;
-
-    if (activeInput.id === "lieferdatum") {
-        let raw = val.replace(/\D/g, "");
-        if (raw.length === 3) raw = "0" + raw;
-        if (raw.length >= 4) raw = raw.slice(0,2) + "." + raw.slice(2,4);
-        val = raw;
-    }
-
-    activeInput.value = val;
-    keyboardPopup.style.display = "none";
-
-    if (activeInput.id === "kommission") {
-        lieferdatum.focus();
-    }
-};
-
-/* =============================
-   DRUCKEN
-============================= */
-druckenBtn.onclick = () => {
-    if (!kommission.value.trim()) return alert("Bitte Kommissionsnummer eingeben!");
-    if (!lieferdatum.value.trim()) return alert("Bitte Lieferdatum eingeben!");
-
-    const data = {
-        kommission: kommission.value,
-        lieferdatum: lieferdatum.value,
-        vorgezogen: chkVorgezogen.checked,
-        farbe: currentColor
-    };
-
-    const json = JSON.stringify(data);
-
-    if (window.Android?.printPaus) {
-        Android.printPaus(json);
+/* ============================================================
+   EILT BUTTON
+============================================================ */
+eiltBtn.onclick = () => {
+    isEilt = !isEilt;
+    if (isEilt) {
+        eiltBtn.textContent = "EILT SEHR: AN";
+        eiltBtn.classList.add("on");
     } else {
-        location.href = "paus_druck.html?data=" + encodeURIComponent(json);
+        eiltBtn.textContent = "EILT SEHR: AUS";
+        eiltBtn.classList.remove("on");
     }
 };
 
-/* =============================
-   FARBAUSWAHL
-============================= */
-document.querySelectorAll(".color-btn").forEach(btn => {
-    btn.onclick = () => {
-        document.querySelectorAll(".color-btn").forEach(b => b.classList.remove("active"));
+/* ============================================================
+   KUNDENBUTTON AUSWAHL + Tastatur schließen
+============================================================ */
+kundenButtons.forEach((btn, index) => {
+
+    const selectCustomer = () => {
+        kundenButtons.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
-        currentColor = btn.dataset.color;
+        selectedType = btn.dataset.type;
+        eiltBtn.focus();
+    };
+
+    btn.onclick = () => {
+
+        // Eingaben beenden
+        beistell.blur();
+        kundenname.blur();
+        activeInput = null;
+
+        // Tastaturen schließen
+        numKb.style.display = "none";
+        alphaKb.style.display = "none";
+
+        beistell.classList.remove("mobile-focus");
+        kundenname.classList.remove("mobile-focus");
+
+        selectCustomer();
     };
 });
 
-/* =============================
-   SCANNER (Zebra)
-============================= */
-document.addEventListener("keydown", e => {
+/* ============================================================
+   PRINT
+============================================================ */
+druckenBtn.onclick = () => {
+    const data = {
+        beistell: beistell.value.trim(),
+        selectedType: selectedType,
+        kundename: kundenname.value.trim()
+    };
 
-    if (deviceType !== "zebra") return;
+    window.location.href =
+        "druck.html?data=" + encodeURIComponent(JSON.stringify(data));
+};
 
-    if (e.key === "Enter") {
-        const text = scanBuffer.trim();
-
-        if (text.includes("K:") && text.includes("D:")) {
-            kommission.value = text.match(/K:(.*?);/)[1];
-            let d = text.match(/D:(.*)/)[1].replace(/\D/g, "");
-            if (d.length === 3) d = "0" + d;
-            if (d.length >= 4) d = d.slice(0,2) + "." + d.slice(2,4);
-            lieferdatum.value = d;
-        }
-
-        scanBuffer = "";
-    } else {
-        scanBuffer += e.key;
-    }
-});
-
-/* =============================
+/* ============================================================
    BUILD INFO
-============================= */
+============================================================ */
 document.addEventListener("DOMContentLoaded", () => {
-    const d = new Date(document.lastModified);
+    const lastMod = new Date(document.lastModified);
     const build =
-        d.getFullYear() + "-" +
-        String(d.getMonth()+1).padStart(2,"0") + "-" +
-        String(d.getDate()).padStart(2,"0") + " " +
-        String(d.getHours()).padStart(2,"0") +
-        String(d.getMinutes()).padStart(2,"0");
+        lastMod.getFullYear().toString() +
+        String(lastMod.getMonth() + 1).padStart(2, "0") +
+        String(lastMod.getDate()).padStart(2, "0") + "." +
+        String(lastMod.getHours()).padStart(2, "0") +
+        String(lastMod.getMinutes()).padStart(2, "0");
 
-    document.getElementById("buildInfo").textContent = "Build " + build;
+    const el = document.getElementById("buildInfo");
+    if (el) el.textContent = "Build " + build;
 });
+
+/* ============================================================
+   ZURÜCK BUTTON
+============================================================ */
+backBtn.onclick = () => history.back();
