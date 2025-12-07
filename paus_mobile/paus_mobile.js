@@ -2,6 +2,7 @@
 //  GLOBALE VARIABLEN
 // ============================================================
 let activeInput = null;
+let vorgezogenAktiv = false;
 
 // ============================================================
 //  DEVICE DETECTION
@@ -36,9 +37,7 @@ const backBtn    = document.getElementById("backBtn");
 const deviceInfo = document.getElementById("deviceInfo");
 const buildInfo  = document.getElementById("buildInfo");
 
-// ⭐ NEU: Vorgezogen-Button
-const vorgezogenBtn = document.getElementById("vorgezogenBtn");
-let isVorgezogen = false;
+const btnVorgezogen = document.getElementById("btnVorgezogen");
 
 // ============================================================
 //  DEVICE INFO
@@ -51,7 +50,6 @@ deviceInfo.textContent =
 
 if (isPC) document.body.classList.add("pc-device");
 
-
 // ============================================================
 //  START
 // ============================================================
@@ -62,6 +60,7 @@ window.onload = () => {
 
     buildNumber();
 
+    // Android Tastatur blockieren
     if (!isPC) {
         [kommission, lieferdatum, keyboardInput].forEach(inp => {
             inp.setAttribute("inputmode", "none");
@@ -74,32 +73,28 @@ window.onload = () => {
 
     if (isZebra) kommission.focus();
 
-    // Zurück Button
+    // BACK BUTTON
     backBtn.onclick = () => history.back();
 
-    // ⭐ NEU: Button "Auftrag vorgezogen"
-    vorgezogenBtn.onclick = () => {
-        isVorgezogen = !isVorgezogen;
-        vorgezogenBtn.classList.toggle("active", isVorgezogen);
+    // VORGEZOGEN BUTTON
+    btnVorgezogen.onclick = () => {
+        vorgezogenAktiv = !vorgezogenAktiv;
+        btnVorgezogen.classList.toggle("active");
     };
 
-    // DRUCKEN
+    // DRUCKEN BUTTON
     druckenBtn.onclick = () => {
 
-        parseKommissionField();
-
-        if (!kommission.value.trim())
-            return alert("Bitte Kommissionsnummer eingeben!");
-        if (!lieferdatum.value.trim())
-            return alert("Bitte Lieferdatum eingeben!");
+        if (!kommission.value.trim()) return alert("Bitte Kommissionsnummer eingeben!");
+        if (!lieferdatum.value.trim()) return alert("Bitte Lieferdatum eingeben!");
 
         const colorBtn = document.querySelector(".color-btn.active");
-        const farbe = colorBtn ? colorBtn.dataset.color : "red";
+        const farbe    = colorBtn ? colorBtn.dataset.color : null;
 
         const data = {
             kommission : kommission.value.trim(),
             lieferdatum: lieferdatum.value.trim(),
-            vorgezogen : isVorgezogen,
+            vorgezogen : vorgezogenAktiv,
             farbe
         };
 
@@ -111,7 +106,6 @@ window.onload = () => {
             location.href = "paus_druck.html?data=" + encodeURIComponent(json);
     };
 };
-
 
 // ============================================================
 //  BUILD INFO
@@ -128,18 +122,15 @@ function buildNumber() {
     buildInfo.textContent = "Build " + stamp;
 }
 
-
 // ============================================================
 //  FARBWAHL
 // ============================================================
 document.querySelectorAll(".color-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-        document.querySelectorAll(".color-btn")
-            .forEach(b => b.classList.remove("active"));
+    btn.onclick = () => {
+        document.querySelectorAll(".color-btn").forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
-    });
+    };
 });
-
 
 // ============================================================
 //  POPUP TASTATUR
@@ -190,55 +181,3 @@ keyboardDelete.onclick = () =>
 
 keyboardClose.onclick = () =>
     keyboardPopup.style.display = "none";
-
-
-// ============================================================
-//  K:xxx;D:xxxx AUTOMATISCH TRENNEN
-// ============================================================
-function parseKommissionField() {
-
-    let text = kommission.value.trim();
-    if (!text) return;
-
-    if (!text.includes("K:") || !text.includes("D:"))
-        return;
-
-    let startK = text.indexOf("K:") + 2;
-    let endK   = text.indexOf(";", startK);
-    const idxD = text.indexOf("D:");
-
-    if (endK === -1 || (idxD !== -1 && endK > idxD))
-        endK = idxD === -1 ? text.length : idxD;
-
-    let kom = text.substring(startK, endK).trim();
-
-    let startD = text.indexOf("D:") + 2;
-    let dat = text.substring(startD).replace(/\D/g, "");
-
-    if (dat.length === 3) dat = "0" + dat;
-    if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4);
-
-    kommission.value  = kom;
-    lieferdatum.value = dat;
-}
-
-
-// ============================================================
-//  ENTER / TAB vom Scanner → trennen
-// ============================================================
-kommission.addEventListener("blur", parseKommissionField);
-
-document.addEventListener("keydown", e => {
-
-    if (!isZebra) return;
-
-    if (document.activeElement !== kommission) return;
-
-    if (e.key === "Tab" || e.key === "Enter" || e.key === "Unidentified") {
-
-        setTimeout(() => {
-            parseKommissionField();
-            kommission.focus();
-        }, 10);
-    }
-});
