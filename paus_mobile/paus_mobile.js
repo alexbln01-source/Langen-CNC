@@ -1,49 +1,3 @@
-/* ============================================================
-   ZEBRA SCANNER – 100 % zuverlässig (TC21/TC22)
-============================================================ */
-
-let scanString = "";
-let scanStarted = false;
-
-document.addEventListener("beforeinput", e => {
-    if (e.inputType === "insertText") {
-        scanStarted = true;
-        scanString += e.data ?? "";
-    }
-});
-
-document.addEventListener("keypress", e => {
-    scanStarted = true;
-    scanString += e.key;
-});
-
-document.addEventListener("keydown", e => {
-
-    if (e.key !== "Enter" || !scanStarted) return;
-
-    scanStarted = false;
-    const text = scanString.trim();
-    scanString = "";
-
-    console.log("SCAN:", text);
-
-    const k = text.match(/K:([^;]+)/);
-    const d = text.match(/D:(\d+)/);
-
-    if (!k || !d) return;
-
-    const kom = k[1];
-    let dat = d[1];
-
-    if (dat.length === 3) dat = "0" + dat;
-    if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4);
-
-    kommission.value = kom;
-    lieferdatum.value = dat;
-
-    kommission.focus();
-});
-
 
 /* ============================================================
    DEVICE DETECTION
@@ -210,3 +164,46 @@ keyboardDelete.onclick = () =>
 
 keyboardClose.onclick = () =>
     keyboardPopup.style.display = "none";
+/* ============================================================
+   ZEBRA SCANNER – 100 % zuverlässig (TC21/TC22)
+============================================================ */
+
+let scanString = "";
+let scanStarted = false;
+
+document.addEventListener("beforeinput", e => {
+    if (e.inputType === "insertText") {
+        scanStarted = true;
+        scanString += e.data ?? "";
+    }
+});
+
+document.addEventListener("keypress", e => {
+    scanStarted = true;
+    scanString += e.key;
+});
+
+document.addEventListener("keydown", e => {
+
+    if (e.key !== "Enter" || !scanStarted) return;
+
+    scanStarted = false;
+    const text = scanString.trim();
+    scanString = "";
+
+    const k = text.match(/K:([^;]+)/);
+    const d = text.match(/D:(\d+)/);
+
+    if (!k || !d) return;
+
+    const kom = k[1];
+    let dat = d[1];
+
+    if (dat.length === 3) dat = "0" + dat;
+    if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4);
+
+    kommission.value = kom;
+    lieferdatum.value = dat;
+
+    kommission.focus();
+});
