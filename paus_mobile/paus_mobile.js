@@ -57,7 +57,7 @@ window.onload = () => {
 
     buildNumber();
 
-    // Android Tastatur aus (aber Cursor sichtbar!)
+    // Android-Tastatur entfernen
     if (!isPC) {
         [kommission, lieferdatum, keyboardInput].forEach(inp => {
             inp.setAttribute("inputmode", "none");
@@ -71,19 +71,20 @@ window.onload = () => {
         lieferdatum.removeAttribute("readonly");
     }
 
-    // Sofort Cursor im Kommissionsfeld → Scanner ready
     if (isZebra) kommission.focus();
 
-    // ===== Buttons =====
+    // Buttons
     backBtn.onclick = () => history.back();
 
     druckenBtn.onclick = () => {
 
-        // vor dem Drucken sicherstellen, dass K/D getrennt ist
+        // sicherstellen, dass getrennt wurde
         parseKommissionField();
 
-        if (!kommission.value.trim())  return alert("Bitte Kommissionsnummer eingeben!");
-        if (!lieferdatum.value.trim()) return alert("Bitte Lieferdatum eingeben!");
+        if (!kommission.value.trim())
+            return alert("Bitte Kommissionsnummer eingeben!");
+        if (!lieferdatum.value.trim())
+            return alert("Bitte Lieferdatum eingeben!");
 
         const colorBtn = document.querySelector(".color-btn.active");
         const farbe = colorBtn ? colorBtn.dataset.color : "red";
@@ -97,11 +98,10 @@ window.onload = () => {
 
         const json = JSON.stringify(data);
 
-        if (window.Android && typeof Android.printPaus === "function") {
+        if (window.Android && typeof Android.printPaus === "function")
             Android.printPaus(json);
-        } else {
+        else
             location.href = "paus_druck.html?data=" + encodeURIComponent(json);
-        }
     };
 };
 
@@ -182,38 +182,29 @@ keyboardDelete.onclick = () =>
 keyboardClose.onclick = () =>
     keyboardPopup.style.display = "none";
 
-
 // ============================================================
-//  K:...;D:... AUTOMATISCH TRENNEN
-//  (Scanner schreibt alles in kommission; wir parsen danach)
+//  K:xxx;D:xxxx AUTOMATISCH TRENNEN
 // ============================================================
-
 function parseKommissionField() {
 
     let text = kommission.value.trim();
     if (!text) return;
 
-    // Nur reagieren, wenn wirklich K: und D: drin stehen
-    if (!text.includes("K:") || !text.includes("D:")) return;
+    if (!text.includes("K:") || !text.includes("D:"))
+        return;
 
-    // K-Teil
-    let kom = "";
-    if (text.includes("K:")) {
-        let startK = text.indexOf("K:") + 2;
-        let endK   = text.indexOf(";", startK);
-        if (endK === -1 || endK > text.indexOf("D:")) endK = text.indexOf("D:");
-        if (endK === -1) endK = text.length;
-        kom = text.substring(startK, endK).trim();
-    }
+    // --- Kommission ---
+    let startK = text.indexOf("K:") + 2;
+    let endK   = text.indexOf(";", startK);
+    if (endK === -1 || endK > text.indexOf("D:"))
+        endK = text.indexOf("D:");
+    if (endK === -1) endK = text.length;
 
-    // D-Teil
-    let dat = "";
-    if (text.includes("D:")) {
-        let startD = text.indexOf("D:") + 2;
-        dat = text.substring(startD).replace(/\D/g, "").trim();
-    }
+    let kom = text.substring(startK, endK).trim();
 
-    if (!kom || !dat) return;
+    // --- Datum ---
+    let startD = text.indexOf("D:") + 2;
+    let dat = text.substring(startD).replace(/\D/g, "");
 
     if (dat.length === 3) dat = "0" + dat;
     if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4);
@@ -222,6 +213,11 @@ function parseKommissionField() {
     lieferdatum.value = dat;
 }
 
-// Wenn Scanner TAB schickt und das Feld verlässt → direkt trennen
-kommission.addEventListener("blur",  parseKommissionField);
-kommission.addEventListener("change", parseKommissionField);
+// Sobald Zebra ENTER sendet → sofort K/D trennen
+document.addEventListener("keydown", e => {
+    if (!isZebra) return;
+    if (e.key === "Enter") {
+        parseKommissionField();
+        kommission.focus();
+    }
+});
