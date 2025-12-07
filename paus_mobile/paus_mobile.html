@@ -31,24 +31,25 @@
     </label>
 
     <!-- EINGABEN -->
-    <input id="kommission" class="input-field" placeholder="Kommissionsnummer" autocomplete="off" readonly>
-    <input id="lieferdatum" class="input-field" placeholder="TT.MM" autocomplete="off" readonly>
+    <input id="kommission" class="input-field" placeholder="Kommissionsnummer"
+           autocomplete="off" readonly inputmode="none">
 
-    <!-- Tastatur öffnen (nur Zebra) -->
+    <input id="lieferdatum" class="input-field" placeholder="TT.MM"
+           autocomplete="off" readonly inputmode="none">
+
+    <!-- Tastatur öffnen -->
     <button id="openKeyboardBtn" class="keyboard-open-btn">Tastatur öffnen</button>
 
-    <!-- POPUP TASTATUR -->
+    <!-- POPUP -->
     <div id="keyboardPopup" class="keyboard-popup">
         <div class="keyboard-content">
-            <h3 id="keyboardTitle">Eingabe</h3>
 
-           <input id="keyboardInput" 
-       class="keyboard-input"
-       inputmode="none"
-       autocomplete="off"
-       autocorrect="off"
-       autocapitalize="off"
-       spellcheck="false">
+            <input id="keyboardInput"
+                   class="keyboard-input"
+                   autocomplete="off"
+                   autocorrect="off"
+                   spellcheck="false"
+                   inputmode="none">
 
             <div id="keyboardKeys" class="keyboard-keys"></div>
 
@@ -69,5 +70,6 @@
     <div id="buildInfo" class="build-info"></div>
 
 </div>
+
 </body>
 </html>
