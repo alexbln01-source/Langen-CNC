@@ -82,6 +82,9 @@ const keyboardOK    = document.getElementById("keyboardOK");
 const keyboardDelete= document.getElementById("keyboardDelete");
 const keyboardClose = document.getElementById("keyboardClose");
 
+const druckenBtn = document.getElementById("druckenBtn");
+const backBtn = document.getElementById("backBtn");
+
 let activeInput = null;
 
 
@@ -109,6 +112,29 @@ window.onload = () => {
     }
 
     if (isZebra) kommission.focus();
+
+    /* BUTTON EVENTS */
+    backBtn.onclick = () => history.back();
+
+    druckenBtn.onclick = () => {
+
+        if (!kommission.value.trim()) return alert("Bitte Kommissionsnummer eingeben!");
+        if (!lieferdatum.value.trim()) return alert("Bitte Lieferdatum eingeben!");
+
+        const data = {
+            kommission: kommission.value,
+            lieferdatum: lieferdatum.value,
+            vorgezogen: document.getElementById("chkVorgezogen").checked,
+            farbe: document.querySelector(".color-btn.active").dataset.color
+        };
+
+        const json = JSON.stringify(data);
+
+        if (window.Android && Android.printPaus)
+            Android.printPaus(json);
+        else
+            location.href = "paus_druck.html?data=" + encodeURIComponent(json);
+    };
 };
 
 
@@ -117,24 +143,23 @@ window.onload = () => {
 ============================================================ */
 function buildNumber() {
     const d = new Date(document.lastModified);
-    const t =
+    const stamp =
         d.getFullYear() + "-" +
         String(d.getMonth()+1).padStart(2,"0") + "-" +
         String(d.getDate()).padStart(2,"0") + "." +
         String(d.getHours()).padStart(2,"0") +
         String(d.getMinutes()).padStart(2,"0");
 
-    document.getElementById("buildInfo").textContent = "Build " + t;
+    document.getElementById("buildInfo").textContent = "Build " + stamp;
 }
 
 
 /* ============================================================
-   FARBAUSWAHL
+   FARBWAHL
 ============================================================ */
 document.querySelectorAll(".color-btn").forEach(btn => {
     btn.addEventListener("click", () => {
-        document.querySelectorAll(".color-btn")
-            .forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".color-btn").forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
     });
 });
