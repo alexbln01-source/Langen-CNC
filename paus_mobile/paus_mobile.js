@@ -1,5 +1,5 @@
 /* ============================================================
-   SCANNER – Ganz oben platzieren
+   ZEBRA SCANNER – GANZ OBEN
 ============================================================ */
 let scanData = "";
 let scanActive = false;
@@ -57,6 +57,7 @@ const isZebra = isTC21 || isTC22 || ua.includes("zebra");
 const isMobile = /android|iphone|ipad|ipod/i.test(ua);
 const isPC = !isZebra && !isMobile;
 
+/* PC = normales Keyboard */
 if (isPC) document.body.classList.add("pc-device");
 
 /* ============================================================
@@ -64,14 +65,14 @@ if (isPC) document.body.classList.add("pc-device");
 ============================================================ */
 function buildNumber() {
     const d = new Date(document.lastModified);
-    const s =
+    const stamp =
         d.getFullYear() + "-" +
         String(d.getMonth()+1).padStart(2,"0") + "-" +
         String(d.getDate()).padStart(2,"0") + "." +
         String(d.getHours()).padStart(2,"0") +
         String(d.getMinutes()).padStart(2,"0");
 
-    document.getElementById("buildInfo").textContent = "Build " + s;
+    document.getElementById("buildInfo").textContent = "Build " + stamp;
 }
 
 document.getElementById("deviceInfo").textContent =
@@ -121,8 +122,8 @@ window.onload = () => {
         return;
     }
 
-    // Android-Keyboard verhindern
-    [kommission, lieferdatum].forEach(inp => {
+    // ANDROID TASTATUR ABSCHALTEN
+    [kommission, lieferdatum, keyboardInput].forEach(inp => {
         inp.setAttribute("inputmode", "none");
         inp.setAttribute("autocomplete", "off");
         inp.setAttribute("autocorrect", "off");
@@ -143,13 +144,14 @@ document.querySelectorAll(".color-btn").forEach(btn => {
     btn.addEventListener("click", () => {
         document.querySelectorAll(".color-btn")
             .forEach(b => b.classList.remove("active"));
+
         btn.classList.add("active");
         currentColor = btn.dataset.color;
     });
 });
 
 /* ============================================================
-   POPUP KEYBOARD
+   POPUP ZAHLEN-TASTATUR
 ============================================================ */
 const NUMBER_KEYS = ["1","2","3","4","5","6","7","8","9","0"];
 
@@ -177,19 +179,19 @@ openKeyboardBtn.onclick = () => openKeyboard("kommission");
 
 keyboardOK.onclick = () => {
 
-    let val = keyboardInput.value;
+    let v = keyboardInput.value;
 
     if (activeInput.id === "lieferdatum") {
-        val = val.replace(/\D/g, "");
-        if (val.length === 3) val = "0" + val;
-        if (val.length >= 4) val = val.slice(0, 2) + "." + val.slice(2, 4);
-        activeInput.value = val;
+        v = v.replace(/\D/g, "");
+        if (v.length === 3) v = "0" + v;
+        if (v.length >= 4) v = v.slice(0,2) + "." + v.slice(2,4);
+        activeInput.value = v;
         keyboardPopup.style.display = "none";
         focusField("lieferdatum");
         return;
     }
 
-    activeInput.value = val;
+    activeInput.value = v;
     openKeyboard("lieferdatum");
     focusField("lieferdatum");
 };
