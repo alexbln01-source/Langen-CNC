@@ -217,57 +217,66 @@ document.addEventListener("keydown", e => {
     raw = raw.replace(/,/g, ".");    // Komma zu Punkt
     raw = raw.toUpperCase();         // Großschreibung
 
-    // ================================================
-    // 2. K-WERT extrahieren
-    // -----------------------------------------------
-    let kom = "";
-    let dKom = raw.indexOf("K:");
-    if (dKom >= 0) {
+// ============================================================
+//  ZEBRA SCANNER — FINAL WORKING VERSION
+//  Unterstützt DataWedge-Chunks und trennt K/D sicher
+// ============================================================
 
-        // beginnt direkt hinter K:
-        let start = dKom + 2;
+let scanBuffer = "";
+let scanActive = false;
 
-        // endet am nächsten Sonderzeichen oder bei D:
-        let end = raw.slice(start).search(/[^0-9]|D:/i);
-        if (end === -1) end = raw.length - start;
-        end = start + end;
+// 1) DataWedge sendet Text-Blöcke → sammeln
+document.addEventListener("beforeinput", e => {
+    if (!isZebra) return;
 
-        kom = raw.slice(start, end).replace(/\D/g, "");
+    if (e.inputType === "insertText" && e.data) {
+        scanActive = true;
+        scanBuffer += e.data;
     }
+});
 
-    // ================================================
-    // 3. D-WERT extrahieren
-    // -----------------------------------------------
-    let dat = "";
-    let dDat = raw.indexOf("D:");
-    if (dDat >= 0) {
+// 2) Fallback wenn DataWedge keypress nutzt
+document.addEventListener("keypress", e => {
+    if (!isZebra) return;
 
-        let start = dDat + 2;
+    scanActive = true;
+    scanBuffer += e.key;
+});
 
-        // alles dahinter sammeln, nur Zahlen behalten
-        dat = raw.slice(start).replace(/\D/g, "");
-    }
+// 3) ENTER → kompletter Scan liegt vor → K/D extrahieren
+document.addEventListener("keydown", e => {
+    if (!isZebra) return;
+    if (e.key !== "Enter" || !scanActive) return;
 
-    // ================================================
-    // 4. PRÜFEN
-    // -----------------------------------------------
+    scanActive = false;
+
+    let text = scanBuffer.trim();
+    scanBuffer = "";
+
+    console.log("SCAN-ROH:", text);
+
+    // ==== K extrahieren ====
+    let komMatch = text.match(/K:([^;]+)/i);
+    let kom = komMatch ? komMatch[1].trim() : "";
+
+    // ==== D extrahieren ====
+    let datMatch = text.match(/D:([0-9]+)/i);
+    let dat = datMatch ? datMatch[1].trim() : "";
+
+    // Fehlerbehandlung
     if (!kom || !dat) {
-        console.warn("K oder D leer → Scan ignoriert:", raw);
+        console.warn("K oder D nicht gefunden:", text);
         return;
     }
 
-    // ================================================
-    // 5. Datum formatieren TT.MM
-    // -----------------------------------------------
+    // Datum formatieren
     if (dat.length === 3) dat = "0" + dat;
-    if (dat.length >= 4) dat = dat.slice(0, 2) + "." + dat.slice(2, 4);
+    if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4);
 
-    // ================================================
-    // 6. Eintragen
-    // -----------------------------------------------
+    // Eintragen
     kommission.value  = kom;
     lieferdatum.value = dat;
 
-    // Scanner bereit für nächsten Scan
+    // Fokus zurück für nächsten Scan
     kommission.focus();
 });
