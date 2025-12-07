@@ -5,7 +5,13 @@
 let scanData = "";
 let scanActive = false;
 
-// BEFOREINPUT – gesamter Scan als Text
+function cleanScan(str) {
+    return str
+        .replace(/(.)\1+/g, "$1") // doppelte Zeichen entfernen
+        .replace(/[^A-Za-z0-9:;]/g, ""); // Sonderzeichen raus
+}
+
+// BEFOREINPUT (Hauptquelle bei TC22)
 document.addEventListener("beforeinput", e => {
     if (e.inputType === "insertText") {
         scanActive = true;
@@ -13,43 +19,39 @@ document.addEventListener("beforeinput", e => {
     }
 });
 
-// KEYPRESS – fallback wenn DataWedge Zeichen sendet
+// KEYPRESS (Backup)
 document.addEventListener("keypress", e => {
     scanActive = true;
     scanData += e.key;
 });
 
-// ENTER = Scan komplett → jetzt auswerten
+// ENTER = Scan fertig
 document.addEventListener("keydown", e => {
 
     if (e.key !== "Enter" || !scanActive) return;
 
-    const text = scanData.trim();
+    let text = cleanScan(scanData);
     scanActive = false;
     scanData = "";
 
-    console.log("SCAN EMPFANGEN:", text);
+    console.log("SCAN BEREINIGT:", text);
 
-    // Falscher Scan → ignorieren
-    if (!text.includes("K:") || !text.includes("D:")) return;
-
-    const komMatch = text.match(/K:(.*?);/);
-    const datMatch = text.match(/D:(.*)/);
+    const komMatch = text.match(/K:([0-9]+)/);
+    const datMatch = text.match(/D:([0-9]+)/);
 
     if (!komMatch || !datMatch) return;
 
-    const kom = komMatch[1];  // nur die Nummer
-    let dat  = datMatch[1].replace(/\D/g, ""); // Datum roh
+    const kom = komMatch[1];
+    let raw = datMatch[1];
 
-    if (dat.length === 3) dat = "0" + dat;
-    if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4);
+    if (raw.length === 3) raw = "0" + raw;
+    if (raw.length >= 4) raw = raw.slice(0,2) + "." + raw.slice(2,4);
 
     document.getElementById("kommission").value = kom;
-    document.getElementById("lieferdatum").value = dat;
+    document.getElementById("lieferdatum").value = raw;
 
     document.getElementById("kommission").focus();
 });
-
 
 /* ============================================================
    DEVICE DETECTION
