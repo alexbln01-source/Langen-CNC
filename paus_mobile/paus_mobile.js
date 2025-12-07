@@ -181,55 +181,70 @@ keyboardClose.onclick = () =>
     keyboardPopup.style.display = "none";
 
 // ============================================================
-//  ZEBRA SCANNER — FINALE VERSION (trennt K und D IMMER)
+//  ZEBRA SCANNER — FIXED, IMMER K-/D-TRENNUNG
 // ============================================================
+
+let scanBuffer = "";
+let scanActive = false;
+
+// beforeinput – DataWedge bulk text
 document.addEventListener("beforeinput", e => {
-    if (!isZebra) return;
-    if (e.inputType === "insertText") {
-        scanStarted = true;
-        scanString += e.data ?? "";
-    }
+    scanActive = true;
+    if (e.data) scanBuffer += e.data;
 });
 
+// keypress – fallback
 document.addEventListener("keypress", e => {
-    if (!isZebra) return;
-    scanStarted = true;
-    scanString += e.key;
+    scanActive = true;
+    scanBuffer += e.key;
 });
 
+// ENTER = Scan abgeschlossen
 document.addEventListener("keydown", e => {
-    if (!isZebra) return;
-    if (e.key !== "Enter" || !scanStarted) return;
 
-    scanStarted = false;
-    let text = scanString.trim();
-    scanString = "";
+    if (e.key !== "Enter" || !scanActive) return;
 
-    console.log("SCAN-ROH:", JSON.stringify(text));
+    scanActive = false;
 
-    // Alle Störzeichen entfernen
-    text = text.replace(/\r/g, "").replace(/\n/g, "").replace(/\s+/g, "");
+    let text = scanBuffer.trim();
+    scanBuffer = "";
 
-    // Jetzt K und D suchen
-    const idxK = text.indexOf("K:");
-    const idxD = text.indexOf("D:");
+    console.log("SCAN EMPFANGEN:", text);
 
-    if (idxK === -1 || idxD === -1) {
-        console.warn("K oder D nicht gefunden");
+    // ---------------------------
+    // MANUELLE K-/D-SEPARATION
+    // ---------------------------
+
+    // 1. K: extrahieren
+    let kom = "";
+    if (text.includes("K:")) {
+        let startK = text.indexOf("K:") + 2;
+        let endK = text.indexOf(";", startK);
+        if (endK === -1) endK = text.length;
+        kom = text.substring(startK, endK).trim();
+    }
+
+    // 2. D: extrahieren
+    let dat = "";
+    if (text.includes("D:")) {
+        let startD = text.indexOf("D:") + 2;
+        dat = text.substring(startD).replace(/\D/g, "").trim();
+    }
+
+    // Absicherung
+    if (!kom || !dat) {
+        console.warn("K/D Parsing fehlgeschlagen:", text);
         return;
     }
 
-    let endKom = text.indexOf(";", idxK);
-    if (endKom === -1 || endKom > idxD) endKom = idxD;
+    // 3. Datum formatieren
+    if (dat.length === 3) dat = "0" + dat;
+    if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4);
 
-    let kom = text.substring(idxK + 2, endKom).trim();
-    let datRaw = text.substring(idxD + 2).replace(/\D/g, "");
+    // 4. Eintragen
+    document.getElementById("kommission").value = kom;
+    document.getElementById("lieferdatum").value = dat;
 
-    if (datRaw.length === 3) datRaw = "0" + datRaw;
-    if (datRaw.length >= 4) datRaw = datRaw.slice(0,2) + "." + datRaw.slice(2,4);
-
-    kommission.value  = kom;
-    lieferdatum.value = datRaw;
-
-    kommission.focus();
+    // 5. Cursor wieder ins Kommissionsfeld
+    document.getElementById("kommission").focus();
 });
