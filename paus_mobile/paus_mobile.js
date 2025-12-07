@@ -180,70 +180,94 @@ keyboardClose.onclick = () =>
     keyboardPopup.style.display = "none";
 
 // ============================================================
-//  ZEBRA SCANNER — FIXED, IMMER K-/D-TRENNUNG
+//  ZEBRA SCANNER – UNIVERSAL-PARSER (trennt IMMER K und D)
 // ============================================================
 
-let scanBuffer = "";
-let scanActive = false;
+let scan = "";
+let scanning = false;
 
-// beforeinput – DataWedge bulk text
+// DataWedge liefert Textblöcke → einlesen
 document.addEventListener("beforeinput", e => {
-    scanActive = true;
-    if (e.data) scanBuffer += e.data;
+    scanning = true;
+    if (e.data) scan += e.data;
 });
 
-// keypress – fallback
+// Fallback
 document.addEventListener("keypress", e => {
-    scanActive = true;
-    scanBuffer += e.key;
+    scanning = true;
+    scan += e.key;
 });
 
-// ENTER = Scan abgeschlossen
+// ENTER → kompletter Scan fertig
 document.addEventListener("keydown", e => {
 
-    if (e.key !== "Enter" || !scanActive) return;
+    if (e.key !== "Enter" || !scanning) return;
 
-    scanActive = false;
+    scanning = false;
 
-    let text = scanBuffer.trim();
-    scanBuffer = "";
+    let raw = scan.trim();
+    scan = "";
 
-    console.log("SCAN EMPFANGEN:", text);
+    console.log("SCAN-ROH:", raw);
 
-    // ---------------------------
-    // MANUELLE K-/D-SEPARATION
-    // ---------------------------
+    // ================================================
+    // 1. ALLES standardisieren
+    // -----------------------------------------------
+    raw = raw.replace(/\s+/g, "");   // alle Leerzeichen raus
+    raw = raw.replace(/,/g, ".");    // Komma zu Punkt
+    raw = raw.toUpperCase();         // Großschreibung
 
-    // 1. K: extrahieren
+    // ================================================
+    // 2. K-WERT extrahieren
+    // -----------------------------------------------
     let kom = "";
-    if (text.includes("K:")) {
-        let startK = text.indexOf("K:") + 2;
-        let endK = text.indexOf(";", startK);
-        if (endK === -1) endK = text.length;
-        kom = text.substring(startK, endK).trim();
+    let dKom = raw.indexOf("K:");
+    if (dKom >= 0) {
+
+        // beginnt direkt hinter K:
+        let start = dKom + 2;
+
+        // endet am nächsten Sonderzeichen oder bei D:
+        let end = raw.slice(start).search(/[^0-9]|D:/i);
+        if (end === -1) end = raw.length - start;
+        end = start + end;
+
+        kom = raw.slice(start, end).replace(/\D/g, "");
     }
 
-    // 2. D: extrahieren
+    // ================================================
+    // 3. D-WERT extrahieren
+    // -----------------------------------------------
     let dat = "";
-    if (text.includes("D:")) {
-        let startD = text.indexOf("D:") + 2;
-        dat = text.substring(startD).replace(/\D/g, "").trim();
+    let dDat = raw.indexOf("D:");
+    if (dDat >= 0) {
+
+        let start = dDat + 2;
+
+        // alles dahinter sammeln, nur Zahlen behalten
+        dat = raw.slice(start).replace(/\D/g, "");
     }
 
-    // Absicherung
+    // ================================================
+    // 4. PRÜFEN
+    // -----------------------------------------------
     if (!kom || !dat) {
-        console.warn("K/D Parsing fehlgeschlagen:", text);
+        console.warn("K oder D leer → Scan ignoriert:", raw);
         return;
     }
 
-    // 3. Datum formatieren
+    // ================================================
+    // 5. Datum formatieren TT.MM
+    // -----------------------------------------------
     if (dat.length === 3) dat = "0" + dat;
-    if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4);
+    if (dat.length >= 4) dat = dat.slice(0, 2) + "." + dat.slice(2, 4);
 
-    // 4. Eintragen
-    document.getElementById("kommission").value = kom;
-    document.getElementById("lieferdatum").value = dat;
+    // ================================================
+    // 6. Eintragen
+    // -----------------------------------------------
+    kommission.value  = kom;
+    lieferdatum.value = dat;
 
-    // 5. Cursor wieder ins Kommissionsfeld
-    document.getElementById("kommission").focus();
+    // Scanner bereit für nächsten Scan
+    kommission.focus();
 });
