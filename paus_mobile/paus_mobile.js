@@ -38,9 +38,8 @@ const backBtn    = document.getElementById("backBtn");
 const deviceInfo = document.getElementById("deviceInfo");
 const buildInfo  = document.getElementById("buildInfo");
 
-
 // ============================================================
-//  DEVICE INFO & PC-LAYOUT
+//  DEVICE INFO
 // ============================================================
 deviceInfo.textContent =
     isTC22 ? "Gerät: Zebra TC22" :
@@ -48,10 +47,7 @@ deviceInfo.textContent =
     isZebra ? "Gerät: Zebra" :
     isMobile ? "Gerät: Mobil" : "Gerät: PC";
 
-if (isPC) {
-    document.body.classList.add("pc-device");
-}
-
+if (isPC) document.body.classList.add("pc-device");
 
 // ============================================================
 //  START
@@ -63,7 +59,7 @@ window.onload = () => {
 
     buildNumber();
 
-    // Android-Tastatur auf Zebra / Handy abschalten
+    // Android Tastatur aus (aber Cursor sichtbar!)
     if (!isPC) {
         [kommission, lieferdatum, keyboardInput].forEach(inp => {
             inp.setAttribute("inputmode", "none");
@@ -73,17 +69,14 @@ window.onload = () => {
             inp.setAttribute("spellcheck", "false");
         });
     } else {
-        // PC: normale Eingabe erlauben
         kommission.removeAttribute("readonly");
         lieferdatum.removeAttribute("readonly");
     }
 
-    // TC: direkt Kommissionsfeld fokussieren → Scanner kann sofort reinballern
-    if (isZebra) {
-        kommission.focus();
-    }
+    // Sofort Cursor im Kommissionsfeld → Scanner ready
+    if (isZebra) kommission.focus();
 
-    // Buttons unten
+    // ===== Buttons =====
     backBtn.onclick = () => history.back();
 
     druckenBtn.onclick = () => {
@@ -91,7 +84,7 @@ window.onload = () => {
         if (!lieferdatum.value.trim()) return alert("Bitte Lieferdatum eingeben!");
 
         const colorBtn = document.querySelector(".color-btn.active");
-        const farbe    = colorBtn ? colorBtn.dataset.color : "red";
+        const farbe = colorBtn ? colorBtn.dataset.color : "red";
 
         const data = {
             kommission : kommission.value.trim(),
@@ -110,7 +103,6 @@ window.onload = () => {
     };
 };
 
-
 // ============================================================
 //  BUILD INFO
 // ============================================================
@@ -126,7 +118,6 @@ function buildNumber() {
     buildInfo.textContent = "Build " + stamp;
 }
 
-
 // ============================================================
 //  FARBWAHL
 // ============================================================
@@ -137,7 +128,6 @@ document.querySelectorAll(".color-btn").forEach(btn => {
         btn.classList.add("active");
     });
 });
-
 
 // ============================================================
 //  POPUP TASTATUR
@@ -172,11 +162,10 @@ keyboardOK.onclick = () => {
 
     if (activeInput.id === "lieferdatum") {
         val = val.replace(/\D/g, "");
-        if (val.length === 3)  val = "0" + val;
-        if (val.length >= 4)  val = val.slice(0,2) + "." + val.slice(2,4);
+        if (val.length === 3) val = "0" + val;
+        if (val.length >= 4) val = val.slice(0,2) + "." + val.slice(2,4);
         keyboardPopup.style.display = "none";
     } else {
-        // Kommission fertig → direkt Datum-Popup öffnen
         activeInput.value = val;
         openKeyboard("lieferdatum");
         return;
@@ -191,13 +180,9 @@ keyboardDelete.onclick = () =>
 keyboardClose.onclick = () =>
     keyboardPopup.style.display = "none";
 
-
 // ============================================================
-//  ZEBRA SCANNER – KUNDENSPEZIFISCHES PARSING
-//  Erwartetes Format: K:12345;D:0103
+//  ZEBRA SCANNER — GANZ UNTEN! (trennt K und D korrekt)
 // ============================================================
-
-// beforeinput → DataWedge-Textblöcke (optimal)
 document.addEventListener("beforeinput", e => {
     if (!isZebra) return;
     if (e.inputType === "insertText") {
@@ -206,14 +191,12 @@ document.addEventListener("beforeinput", e => {
     }
 });
 
-// keypress → Fallback
 document.addEventListener("keypress", e => {
     if (!isZebra) return;
     scanStarted = true;
     scanString += e.key;
 });
 
-// ENTER = Scan fertig → jetzt manuell K und D trennen
 document.addEventListener("keydown", e => {
     if (!isZebra) return;
     if (e.key !== "Enter" || !scanStarted) return;
@@ -222,41 +205,24 @@ document.addEventListener("keydown", e => {
     let text = scanString.trim();
     scanString = "";
 
-    console.log("SCAN-ROH:", JSON.stringify(text));
-
-    // ------- MANUELLES PARSING OHNE REGEX -------
+    console.log("SCAN-ROH:", text);
 
     const idxK = text.indexOf("K:");
     const idxD = text.indexOf("D:");
 
-    if (idxK === -1 || idxD === -1) {
-        console.warn("Scan ohne K: oder D: → ignoriert:", text);
-        return;
-    }
+    if (idxK === -1 || idxD === -1) return;
 
-    // Kommission: nach "K:" bis zum ersten ";" oder bis "D:"
     let endKom = text.indexOf(";", idxK);
     if (endKom === -1 || endKom > idxD) endKom = idxD;
 
     let kom = text.substring(idxK + 2, endKom).trim();
+    let datRaw = text.substring(idxD + 2).replace(/\D/g, "");
 
-    // Datum: alles nach "D:" → nur Ziffern rausziehen
-    let datRaw = text.substring(idxD + 2);
-    datRaw = datRaw.replace(/\D/g, ""); // nur Zahlen
-
-    if (!kom || !datRaw) {
-        console.warn("K oder D leer nach Parsing:", kom, datRaw);
-        return;
-    }
-
-    // Datum TT.MM formatieren
     if (datRaw.length === 3) datRaw = "0" + datRaw;
     if (datRaw.length >= 4) datRaw = datRaw.slice(0,2) + "." + datRaw.slice(2,4);
 
-    // In Felder schreiben
     kommission.value  = kom;
     lieferdatum.value = datRaw;
 
-    // Fokus wieder auf Kommission
     kommission.focus();
 });
