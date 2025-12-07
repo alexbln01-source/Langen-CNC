@@ -1,24 +1,11 @@
-/* ===== RESET ===== */
-* { box-sizing: border-box; }
-
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background: #eef1f4;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 /* ============================================================
-   ZEBRA SCANNER – FANGT JEDEN SCAN AB (TC21/TC22 100 % FIX)
+   ZEBRA SCANNER – 100% zuverlässig (TC21/TC22)
 ============================================================ */
 
 let scanString = "";
 let scanStarted = false;
 
-// 1) DataWedge liefert meistens komplette Zeichenblöcke
+// BEFOREINPUT → DataWedge blockweise
 document.addEventListener("beforeinput", e => {
     if (e.inputType === "insertText") {
         scanStarted = true;
@@ -26,13 +13,13 @@ document.addEventListener("beforeinput", e => {
     }
 });
 
-// 2) Zusätzlich normale Keypress-Events abgreifen
+// KEYPRESS → fallback
 document.addEventListener("keypress", e => {
     scanStarted = true;
     scanString += e.key;
 });
 
-// 3) ENTER bedeutet: Scan ist fertig
+// ENTER = Scan abgeschlossen → auswerten
 document.addEventListener("keydown", e => {
 
     if (e.key !== "Enter" || !scanStarted) return;
@@ -41,202 +28,132 @@ document.addEventListener("keydown", e => {
     const text = scanString.trim();
     scanString = "";
 
-    console.log("SCAN EMPFANGEN:", text);
+    console.log("SCAN:", text);
 
-    // Prüfen ob K: und D: vorhanden sind
     const k = text.match(/K:([^;]+)/);
     const d = text.match(/D:(\d+)/);
 
-    if (!k || !d) return;  // Scan nicht gültig
+    if (!k || !d) return;
 
-    // Werte extrahieren
     const kom = k[1];
     let dat = d[1];
 
-    // Datum formatieren
     if (dat.length === 3) dat = "0" + dat;
     if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4);
 
-    // In Felder eintragen
     document.getElementById("kommission").value = kom;
     document.getElementById("lieferdatum").value = dat;
-
-    // Cursor wieder auf Kommission
     document.getElementById("kommission").focus();
 });
-/* ===== DEVICE INFO + BUILD ===== */
-.device-info {
-    position: fixed;
-    top: 6px;
-    left: 10px;
-    font-size: 12px;
-    color: #003a73;
+
+/* ============================================================
+   DEVICE DETECTION
+============================================================ */
+const ua = navigator.userAgent.toLowerCase();
+const sw = window.screen.width;
+const sh = window.screen.height;
+const dpr = window.devicePixelRatio;
+
+const isTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
+const isTC21 = ua.includes("android") && sw === 360 && sh === 640;
+const isZebra = isTC22 || isTC21 || ua.includes("zebra");
+const isMobile = /android|iphone|ipad|ipod/i.test(ua);
+const isPC = !isZebra && !isMobile;
+
+if (isPC) document.body.classList.add("pc-device");
+
+/* ============================================================
+   DOM ELEMENTE
+============================================================ */
+const kommission = document.getElementById("kommission");
+const lieferdatum = document.getElementById("lieferdatum");
+const openKeyboardBtn = document.getElementById("openKeyboardBtn");
+const keyboardPopup = document.getElementById("keyboardPopup");
+const keyboardInput = document.getElementById("keyboardInput");
+const keyboardKeys = document.getElementById("keyboardKeys");
+const keyboardOK = document.getElementById("keyboardOK");
+const keyboardDelete = document.getElementById("keyboardDelete");
+const keyboardClose = document.getElementById("keyboardClose");
+
+let activeInput = null;
+
+/* ============================================================
+   START
+============================================================ */
+window.onload = () => {
+
+    kommission.value = "";
+    lieferdatum.value = "";
+
+    if (!isPC) {
+        // Android Tastatur ausschalten
+        [kommission, lieferdatum, keyboardInput].forEach(inp => {
+            inp.setAttribute("inputmode", "none");
+            inp.setAttribute("autocomplete", "off");
+            inp.setAttribute("autocorrect", "off");
+            inp.setAttribute("autocapitalize", "off");
+            inp.setAttribute("spellcheck", "false");
+        });
+    } else {
+        kommission.removeAttribute("readonly");
+        lieferdatum.removeAttribute("readonly");
+    }
+
+    if (isZebra) kommission.focus();
+};
+
+/* ============================================================
+   FARBEN
+============================================================ */
+document.querySelectorAll(".color-btn").forEach(btn => {
+    btn.onclick = () => {
+        document.querySelectorAll(".color-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+    };
+});
+
+/* ============================================================
+   POPUP TASTATUR
+============================================================ */
+const NUM_KEYS = ["1","2","3","4","5","6","7","8","9","0"];
+
+function renderKeyboard() {
+    keyboardKeys.innerHTML = "";
+    NUM_KEYS.forEach(k => {
+        const b = document.createElement("button");
+        b.textContent = k;
+        b.onclick = () => keyboardInput.value += k;
+        keyboardKeys.appendChild(b);
+    });
+}
+renderKeyboard();
+
+openKeyboardBtn.onclick = () => openKeyboard("kommission");
+
+function openKeyboard(id) {
+    activeInput = document.getElementById(id);
+    keyboardInput.value = activeInput.value;
+    keyboardPopup.style.display = "flex";
+    setTimeout(() => keyboardInput.focus(), 20);
 }
 
-.build-info {
-    position: fixed;
-    bottom: 6px;
-    right: 10px;
-    font-size: 12px;
-    color: #003a73;
-}
+keyboardOK.onclick = () => {
+    let val = keyboardInput.value;
 
-/* ===== PAGE FRAME ===== */
-.page {
-    width: 100%;
-    max-width: 600px;
-    padding: 10px;
-    text-align: center;
-}
+    if (activeInput.id === "lieferdatum") {
+        val = val.replace(/\D/g, "");
+        if (val.length === 3) val = "0" + val;
+        if (val.length >= 4) val = val.slice(0,2) + "." + val.slice(2,4);
+        keyboardPopup.style.display = "none";
+    } else {
+        openKeyboard("lieferdatum");
+    }
 
-/* ===== TITLE ===== */
-.title {
-    font-size: 26px;
-    font-weight: 900;
-    color: #003a73;
-    margin-bottom: 12px;
-}
+    activeInput.value = val;
+};
 
-/* ===== FARBBUTTONS ===== */
-.color-row {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin: 10px 0 16px 0;
-}
+keyboardDelete.onclick = () =>
+    keyboardInput.value = keyboardInput.value.slice(0, -1);
 
-.color-btn {
-    flex: 1;
-    padding: 12px 0;
-    font-size: 18px;
-    border-radius: 14px;
-    border: none;
-    font-weight: bold;
-    color: white;
-    background: #555;
-}
-
-.color-btn[data-color="red"] { background: #c62828; }
-.color-btn[data-color="blue"] { background: #1565c0; }
-.color-btn[data-color="black"] { background: #333; }
-
-.color-btn.active {
-    outline: 3px solid #1a73e8;
-}
-
-/* ===== CHECKBOX ===== */
-.vorgezogen-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    font-size: 16px;
-    margin-bottom: 14px;
-}
-
-/* ===== INPUTS ===== */
-.input-field {
-    width: 100%;
-    padding: 14px;
-    font-size: 18px;
-    margin-bottom: 12px;
-    border: 1px solid #777;
-    border-radius: 14px;
-    text-align: center;
-    background: white;
-}
-
-/* Cursor sichtbar auch ohne Android-Tastatur */
-input[inputmode="none"] {
-    caret-color: black !important;
-}
-
-/* ===== Tastatur öffnen (nur Zebra sichtbar) ===== */
-.keyboard-open-btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    border-radius: 14px;
-    margin-bottom: 20px;
-    border: none;
-    background: #ddd;
-    color: #0055cc;
-}
-
-body.pc-device .keyboard-open-btn {
-    display: none !important;
-}
-
-/* ===== POPUP ===== */
-.keyboard-popup {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-}
-
-.keyboard-content {
-    width: 90%;
-    max-width: 360px;
-    background: white;
-    padding: 16px;
-    border-radius: 14px;
-    text-align: center;
-}
-
-.keyboard-input {
-    width: 90%;
-    padding: 10px;
-    margin-bottom: 12px;
-    font-size: 18px;
-    border: 1px solid #777;
-    border-radius: 12px;
-}
-
-.keyboard-keys {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-}
-
-.keyboard-keys button {
-    padding: 12px 0;
-    font-size: 18px;
-    border-radius: 10px;
-    border: 1px solid #aaa;
-    background: #f2f2f2;
-}
-
-.keyboard-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 12px;
-}
-
-.key-delete { flex: 1; background: #c62828; color: white; padding: 10px; border-radius: 10px; border: none; }
-.key-ok     { flex: 1; background: #00963d; color: white; padding: 10px; border-radius: 10px; border: none; }
-.key-close  { flex: 1; background: #555;    color: white; padding: 10px; border-radius: 10px; border: none; }
-
-/* ===== BUTTONS ===== */
-.bottom-row {
-    width: 100%;
-    display: flex;
-    gap: 12px;
-    margin-top: 20px;
-}
-
-.back-btn, .primary-btn {
-    flex: 1;
-    padding: 14px;
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 14px;
-    border: none;
-    color: white;
-}
-
-.back-btn { background: #333; }
-.primary-btn { background: #00963d; }
+keyboardClose.onclick = () =>
+    keyboardPopup.style.display = "none";
