@@ -151,9 +151,20 @@ renderKeyboard();
 openKeyboardBtn.onclick = () => openKeyboard("kommission");
 
 function openKeyboard(id) {
+
     activeInput = document.getElementById(id);
     keyboardInput.value = activeInput.value;
+
+    // Titel je nach Feld setzen
+    if (id === "kommission") {
+        document.getElementById("keyboardTitle").textContent = "Kommissionsnummer";
+    } 
+    else if (id === "lieferdatum") {
+        document.getElementById("keyboardTitle").textContent = "Lieferdatum";
+    }
+
     keyboardPopup.style.display = "flex";
+
     setTimeout(() => keyboardInput.focus(), 20);
 }
 
