@@ -143,32 +143,50 @@ keyboardDelete.onclick = () =>
 keyboardClose.onclick = () =>
     keyboardPopup.style.display = "none";
 
-/* ============================
-   SCANNER (Zebra DataWedge)
-============================ */
-document.addEventListener("keypress", e => {
-    if (isZebra) scanBuffer += e.key;
+/* =============================
+   ZEBRA SCANNER (DataWedge kompatibel)
+============================= */
+
+let dwBuffer = "";
+
+// DataWedge sendet Text in BEFOREINPUT
+document.addEventListener("beforeinput", e => {
+    if (!isZebra) return;
+
+    // Nur "insertText" zulassen
+    if (e.inputType === "insertText") {
+        dwBuffer += e.data ?? "";
+    }
 });
 
+// ENTER = Scan fertig
 document.addEventListener("keydown", e => {
+
     if (!isZebra) return;
 
     if (e.key === "Enter") {
-        const text = scanBuffer.trim();
-        scanBuffer = "";
 
-        const kom = text.match(/K:(.*?);/);
-        const dat = text.match(/D:(.*)/);
+        const text = dwBuffer.trim();
+        dwBuffer = "";
 
-        if (!kom || !dat) return;
+        if (!text.includes("K:") || !text.includes("D:")) return;
 
-        kommission.value = kom[1];
+        const komMatch = text.match(/K:(.*?);/);
+        const dMatch = text.match(/D:(.*)/);
 
-        let raw = dat[1].replace(/\D/g,"");
+        if (!komMatch || !dMatch) return;
+
+        const kom = komMatch[1];
+        let raw = dMatch[1].replace(/\D/g, "");
+
         if (raw.length === 3) raw = "0" + raw;
-        if (raw.length >= 4) raw = raw.slice(0,2) + "." + raw.slice(2,4);
+        if (raw.length >= 4) raw = raw.slice(0, 2) + "." + raw.slice(2, 4);
 
+        kommission.value = kom;
         lieferdatum.value = raw;
+
+        // Nach Scan Fokus wieder auf Kommission
+        kommission.focus();
     }
 });
 
