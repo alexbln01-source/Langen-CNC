@@ -127,41 +127,38 @@ keyboardClose.onclick = () =>
     keyboardPopup.style.display = "none";
 
 /* ============================
-   SCAN LISTENER (universell)
+   ZEBRA SCAN (DataWedge - ohne ENTER!)
 ============================ */
-
-// Fängt *jedes* Zeichen ab, auch wenn Android "e.key" nicht liefert
 document.addEventListener("keypress", e => {
     if (!isZebra) return;
+
+    // Zeichen sammeln
     scanBuffer += e.key;
-});
 
-// ENTER trennt Scan
-document.addEventListener("keydown", e => {
+    // Trigger: Wir haben ein Semikolon → könnte Paket sein
+    if (e.key === ";") {
 
-    if (!isZebra) return;
+        // Prüfen ob vollständiges Paket drin ist
+        if (scanBuffer.includes("K:") && scanBuffer.includes("D:")) {
 
-    if (e.key === "Enter") {
+            const komMatch = scanBuffer.match(/K:(.*?);/);
+            const dMatch = scanBuffer.match(/D:(\d+)/);
 
-        const text = scanBuffer.trim();
-        scanBuffer = "";
+            if (komMatch && dMatch) {
 
-        if (text.includes("K:") && text.includes("D:")) {
+                const kom = komMatch[1];
+                let raw = dMatch[1];
 
-            const komMatch = text.match(/K:(.*?);/);
-            const dMatch = text.match(/D:(.*)/);
+                // Datum formatieren
+                if (raw.length === 3) raw = "0" + raw;
+                if (raw.length >= 4) raw = raw.slice(0,2) + "." + raw.slice(2,4);
 
-            if (!komMatch || !dMatch) return;
+                kommission.value = kom;
+                lieferdatum.value = raw;
+            }
 
-            const kom = komMatch[1];
-
-            let raw = dMatch[1].replace(/\D/g, "");
-
-            if (raw.length === 3) raw = "0" + raw;
-            if (raw.length >= 4) raw = raw.slice(0,2) + "." + raw.slice(2,4);
-
-            kommission.value = kom;
-            lieferdatum.value = raw;
+            // Buffer leeren nach Verarbeitung
+            scanBuffer = "";
         }
     }
 });
