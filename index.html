@@ -1,117 +1,99 @@
 <!DOCTYPE html>
-<html lang="de">
+<html>
 <head>
-<meta charset="utf-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-<title>Warenanhänger</title>
-
-<link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/png" sizes="192x192" href="icon192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="icon512.png">
-<link rel="apple-touch-icon" href="icon192.png">
-
+<meta charset="UTF-8">
+<title>Zebra Scanner Debug</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-/* (dein vorhandenes CSS bleibt unverändert!) */
-html, body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
-    font-family: "Segoe UI", Arial, sans-serif;
+body {
+    font-family: monospace;
+    padding: 10px;
+    background: #111;
+    color: #0f0;
 }
-@media (min-width: 601px) { html, body { overflow: hidden; } }
-
-@media (max-width: 600px) {
-    html, body {
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-    }
-    #main { width: 100%; max-width: 380px; transform: scale(0.95); }
-    button { width: 260px; height: 85px; font-size: 24px; }
+.box {
+    border: 1px solid #0f0;
+    padding: 8px;
+    margin-bottom: 12px;
 }
-@media (min-width: 601px) {
-    #main { margin: 60px auto; width: 100%; max-width: 650px; padding: 20px 40px; }
-    button { width: 450px; height: 60px; font-size: 20px; }
-    h1 { font-size: 40px; }
-}
-
-#logo { width: 80%; max-width: 320px; margin: 0 auto 25px auto; display: block; }
-
-h1 {
-    margin: 0 0 30px 0;
-    font-size: 32px;
-    font-weight: 900;
-    color: #003a73;
-    text-align: center;
-}
-
-button {
-    margin: 18px auto;
-    display: block;
-    border: none;
-    border-radius: 18px;
-    font-weight: bold;
-    color: white;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-#btnBeschichtung { background: linear-gradient(#007bff,#0056b3); }
-#btnKanten       { background: linear-gradient(#ff9800,#e67e00); }
-#btnPaus         { background: linear-gradient(#28a745,#1d7f31); }
-#btnSchweissen   { background: linear-gradient(#9c27b0,#6a0080); }
-
-footer {
-    margin-top: 40px;
-    font-size: 16px;
-    text-align: center;
-    color: #444;
-}
+h2 { margin: 0 0 8px 0; }
 </style>
-
-<script>
-/* ⭐ Beschichtung aktiv */
-function openBeschichtung() {
-    window.location.href = "start.html?bereich=beschichtung";
-}
-
-/* ⭐ Kanten jetzt aktiv – führt zu kanten_mobile */
-function openKanten() {
-    window.location.href = "start.html?bereich=kanten";
-}
-
-   function openPaus() {
-    window.location.href = "start.html?bereich=paus";
-}
-
-
-function openSchweissen() {
-    window.location.href = "baustelle.html";
-}
-</script>
-
 </head>
 <body>
 
-<div id="main">
+<h1>Zebra Scanner Debug</h1>
+<p>Scanne jetzt deinen Code und schicke mir ALLE Boxen als Screenshot.</p>
 
-    <img id="logo" src="langen.png" alt="Langen CNC Logo">
-
-    <h1>Warenanhänger</h1>
-
-    <button id="btnBeschichtung" onclick="openBeschichtung()">Beschichtung (A5)</button>
-    <button id="btnKanten" onclick="openKanten()">Kanten (A6)</button>
-    <button id="btnPaus" onclick="openPaus()">PAUS Lieferung (A6)</button>
-    <button id="btnSchweissen" onclick="openSchweissen()">Schweißen</button>
-
-    <footer>Langen CNC Metalltechnik GmbH & Co. KG</footer>
-
+<div class="box">
+    <h2>beforeinput</h2>
+    <div id="beforeinput"></div>
 </div>
+
+<div class="box">
+    <h2>input</h2>
+    <div id="input"></div>
+</div>
+
+<div class="box">
+    <h2>keypress</h2>
+    <div id="keypress"></div>
+</div>
+
+<div class="box">
+    <h2>keydown</h2>
+    <div id="keydown"></div>
+</div>
+
+<div class="box">
+    <h2>keyup</h2>
+    <div id="keyup"></div>
+</div>
+
+<div class="box">
+    <h2>RAW BUFFER</h2>
+    <div id="raw"></div>
+</div>
+
+<script>
+let buffer = "";
+
+function log(id, text) {
+    document.getElementById(id).innerHTML += text + "<br>";
+}
+
+// BEFOREINPUT
+document.addEventListener("beforeinput", e => {
+    log("beforeinput", "type=" + e.inputType + " data=" + JSON.stringify(e.data));
+    if (e.data) buffer += e.data;
+    document.getElementById("raw").innerText = buffer;
+});
+
+// INPUT
+document.addEventListener("input", e => {
+    log("input", "value=" + e.data);
+});
+
+// KEYPRESS
+document.addEventListener("keypress", e => {
+    log("keypress", "key=" + e.key);
+    buffer += e.key;
+    document.getElementById("raw").innerText = buffer;
+});
+
+// KEYDOWN
+document.addEventListener("keydown", e => {
+    log("keydown", "key=" + e.key);
+});
+
+// KEYUP
+document.addEventListener("keyup", e => {
+    log("keyup", "key=" + e.key);
+
+    if (e.key === "Enter") {
+        log("raw", "=== FINAL RAW === " + buffer);
+    }
+});
+</script>
 
 </body>
 </html>
