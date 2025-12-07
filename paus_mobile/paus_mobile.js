@@ -3,7 +3,6 @@
 // ============================================================
 let activeInput = null;
 
-
 // ============================================================
 //  DEVICE DETECTION
 // ============================================================
@@ -79,6 +78,10 @@ window.onload = () => {
     backBtn.onclick = () => history.back();
 
     druckenBtn.onclick = () => {
+
+        // vor dem Drucken sicherstellen, dass K/D getrennt ist
+        parseKommissionField();
+
         if (!kommission.value.trim())  return alert("Bitte Kommissionsnummer eingeben!");
         if (!lieferdatum.value.trim()) return alert("Bitte Lieferdatum eingeben!");
 
@@ -179,104 +182,46 @@ keyboardDelete.onclick = () =>
 keyboardClose.onclick = () =>
     keyboardPopup.style.display = "none";
 
-// ============================================================
-//  ZEBRA SCANNER – UNIVERSAL-PARSER (trennt IMMER K und D)
-// ============================================================
-
-let scan = "";
-let scanning = false;
-
-// DataWedge liefert Textblöcke → einlesen
-document.addEventListener("beforeinput", e => {
-    scanning = true;
-    if (e.data) scan += e.data;
-});
-
-// Fallback
-document.addEventListener("keypress", e => {
-    scanning = true;
-    scan += e.key;
-});
-
-// ENTER → kompletter Scan fertig
-document.addEventListener("keydown", e => {
-
-    if (e.key !== "Enter" || !scanning) return;
-
-    scanning = false;
-
-    let raw = scan.trim();
-    scan = "";
-
-    console.log("SCAN-ROH:", raw);
-
-    // ================================================
-    // 1. ALLES standardisieren
-    // -----------------------------------------------
-    raw = raw.replace(/\s+/g, "");   // alle Leerzeichen raus
-    raw = raw.replace(/,/g, ".");    // Komma zu Punkt
-    raw = raw.toUpperCase();         // Großschreibung
 
 // ============================================================
-//  ZEBRA SCANNER — FINAL WORKING VERSION
-//  Unterstützt DataWedge-Chunks und trennt K/D sicher
+//  K:...;D:... AUTOMATISCH TRENNEN
+//  (Scanner schreibt alles in kommission; wir parsen danach)
 // ============================================================
 
-let scanBuffer = "";
-let scanActive = false;
+function parseKommissionField() {
 
-// 1) DataWedge sendet Text-Blöcke → sammeln
-document.addEventListener("beforeinput", e => {
-    if (!isZebra) return;
+    let text = kommission.value.trim();
+    if (!text) return;
 
-    if (e.inputType === "insertText" && e.data) {
-        scanActive = true;
-        scanBuffer += e.data;
-    }
-});
+    // Nur reagieren, wenn wirklich K: und D: drin stehen
+    if (!text.includes("K:") || !text.includes("D:")) return;
 
-// 2) Fallback wenn DataWedge keypress nutzt
-document.addEventListener("keypress", e => {
-    if (!isZebra) return;
-
-    scanActive = true;
-    scanBuffer += e.key;
-});
-
-// 3) ENTER → kompletter Scan liegt vor → K/D extrahieren
-document.addEventListener("keydown", e => {
-    if (!isZebra) return;
-    if (e.key !== "Enter" || !scanActive) return;
-
-    scanActive = false;
-
-    let text = scanBuffer.trim();
-    scanBuffer = "";
-
-    console.log("SCAN-ROH:", text);
-
-    // ==== K extrahieren ====
-    let komMatch = text.match(/K:([^;]+)/i);
-    let kom = komMatch ? komMatch[1].trim() : "";
-
-    // ==== D extrahieren ====
-    let datMatch = text.match(/D:([0-9]+)/i);
-    let dat = datMatch ? datMatch[1].trim() : "";
-
-    // Fehlerbehandlung
-    if (!kom || !dat) {
-        console.warn("K oder D nicht gefunden:", text);
-        return;
+    // K-Teil
+    let kom = "";
+    if (text.includes("K:")) {
+        let startK = text.indexOf("K:") + 2;
+        let endK   = text.indexOf(";", startK);
+        if (endK === -1 || endK > text.indexOf("D:")) endK = text.indexOf("D:");
+        if (endK === -1) endK = text.length;
+        kom = text.substring(startK, endK).trim();
     }
 
-    // Datum formatieren
+    // D-Teil
+    let dat = "";
+    if (text.includes("D:")) {
+        let startD = text.indexOf("D:") + 2;
+        dat = text.substring(startD).replace(/\D/g, "").trim();
+    }
+
+    if (!kom || !dat) return;
+
     if (dat.length === 3) dat = "0" + dat;
     if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4);
 
-    // Eintragen
     kommission.value  = kom;
     lieferdatum.value = dat;
+}
 
-    // Fokus zurück für nächsten Scan
-    kommission.focus();
-});
+// Wenn Scanner TAB schickt und das Feld verlässt → direkt trennen
+kommission.addEventListener("blur",  parseKommissionField);
+kommission.addEventListener("change", parseKommissionField);
