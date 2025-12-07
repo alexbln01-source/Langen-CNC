@@ -41,10 +41,12 @@ document.addEventListener("keydown", e => {
     if (dat.length === 3) dat = "0" + dat;
     if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4);
 
-    document.getElementById("kommission").value = kom;
-    document.getElementById("lieferdatum").value = dat;
-    document.getElementById("kommission").focus();
+    kommission.value = kom;
+    lieferdatum.value = dat;
+
+    kommission.focus();
 });
+
 
 /* ============================================================
    DEVICE DETECTION
@@ -62,6 +64,13 @@ const isPC = !isZebra && !isMobile;
 
 if (isPC) document.body.classList.add("pc-device");
 
+document.getElementById("deviceInfo").textContent =
+    isTC22 ? "Gerät: Zebra TC22" :
+    isTC21 ? "Gerät: Zebra TC21" :
+    isZebra ? "Gerät: Zebra" :
+    isMobile ? "Gerät: Mobil" : "Gerät: PC";
+
+
 /* ============================================================
    DOM ELEMENTE
 ============================================================ */
@@ -77,6 +86,7 @@ const keyboardClose = document.getElementById("keyboardClose");
 
 let activeInput = null;
 
+
 /* ============================================================
    START
 ============================================================ */
@@ -86,7 +96,7 @@ window.onload = () => {
     lieferdatum.value = "";
 
     if (!isPC) {
-        // Android Tastatur ausschalten
+        // Android Tastatur deaktivieren
         [kommission, lieferdatum, keyboardInput].forEach(inp => {
             inp.setAttribute("inputmode", "none");
             inp.setAttribute("autocomplete", "off");
@@ -102,15 +112,18 @@ window.onload = () => {
     if (isZebra) kommission.focus();
 };
 
+
 /* ============================================================
-   FARBEN
+   FARBBUTTONS
 ============================================================ */
 document.querySelectorAll(".color-btn").forEach(btn => {
-    btn.onclick = () => {
-        document.querySelectorAll(".color-btn").forEach(b => b.classList.remove("active"));
+    btn.addEventListener("click", () => {
+        document.querySelectorAll(".color-btn")
+            .forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
-    };
+    });
 });
+
 
 /* ============================================================
    POPUP TASTATUR
