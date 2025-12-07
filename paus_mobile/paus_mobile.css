@@ -115,8 +115,8 @@ input[inputmode="none"] {
     border-radius: 14px;
     margin-bottom: 20px;
     border: none;
-    background: #ddd;
-    color: #0055cc;
+    background: #777;
+    color: #ff8800;
 }
 
 body.pc-device .keyboard-open-btn {
