@@ -48,23 +48,9 @@ const keyboardOK = document.getElementById("keyboardOK");
 const keyboardClose = document.getElementById("keyboardClose");
 const keyboardKeys = document.getElementById("keyboardKeys");
 
-/* ============================
-   INITIAL FOCUS (Zebra)
-============================ */
-window.onload = () => {
-    kommission.value = "";
-    lieferdatum.value = "";
-
-    if (isZebra) {
-        kommission.focus();
-    } else {
-        // PC darf normal tippen
-        kommission.removeAttribute("readonly");
-        lieferdatum.removeAttribute("readonly");
-    }
-
-    buildNumber();
-};
+const druckenBtn = document.getElementById("druckenBtn");
+const backBtn    = document.getElementById("backBtn");
+const chkVorgezogen = document.getElementById("chkVorgezogen");
 
 /* ============================
    BUILD INFO
@@ -80,6 +66,41 @@ function buildNumber() {
 
     document.getElementById("buildInfo").textContent = "Build " + stamp;
 }
+
+/* ============================
+   HILFSFUNKTIONEN FÜR BLINK-CURSOR
+============================ */
+function setBlinkOn(input) {
+    kommission.classList.remove("input-blink");
+    lieferdatum.classList.remove("input-blink");
+    if (input) {
+        input.classList.add("input-blink");
+    }
+}
+
+/* ============================
+   INITIAL FOCUS (Zebra / PC)
+============================ */
+window.onload = () => {
+    kommission.value = "";
+    lieferdatum.value = "";
+
+    buildNumber();
+
+    if (isZebra) {
+        // Zebra: Felder bleiben readonly im HTML, Scanner schreibt trotzdem rein
+        kommission.readOnly = false;
+        lieferdatum.readOnly = false;
+
+        kommission.focus();
+        setBlinkOn(kommission);
+    } else {
+        // PC darf normal tippen
+        kommission.removeAttribute("readonly");
+        lieferdatum.removeAttribute("readonly");
+        openKeyboardBtn.style.display = "none";  // Button auf PC unnötig
+    }
+};
 
 /* ============================
    FARBAUSWAHL
@@ -105,20 +126,29 @@ function renderKeyboard() {
     KEY_LAYOUT.forEach(k => {
         const b = document.createElement("button");
         b.textContent = k;
+        b.type = "button";
         b.onclick = () => keyboardInput.value += k;
         keyboardKeys.appendChild(b);
     });
 }
+renderKeyboard();
 
 function openKeyboard(id) {
     activeInput = document.getElementById(id);
     keyboardInput.value = activeInput.value;
     keyboardPopup.style.display = "flex";
-    keyboardInput.focus();
+
+    // Blink-Cursor auf dem aktiven Feld
+    setBlinkOn(activeInput);
+
+    setTimeout(() => keyboardInput.focus(), 20);
 }
 
 /* NICHT automatisch öffnen → nur per Button */
-openKeyboardBtn.onclick = () => openKeyboard("kommission");
+openKeyboardBtn.onclick = () => {
+    if (!isZebra) return;    // Sicherheit: nur auf Zebra sinnvoll
+    openKeyboard("kommission");
+};
 
 /* OK */
 keyboardOK.onclick = () => {
@@ -143,6 +173,7 @@ keyboardOK.onclick = () => {
 
     // Popup schließen nach Datum
     keyboardPopup.style.display = "none";
+    setBlinkOn(null); // nach fertiger Eingabe Blink aus
 };
 
 /* Delete */
@@ -150,10 +181,16 @@ keyboardDelete.onclick = () =>
     keyboardInput.value = keyboardInput.value.slice(0, -1);
 
 /* Close */
-keyboardClose.onclick = () =>
+keyboardClose.onclick = () => {
     keyboardPopup.style.display = "none";
-
-renderKeyboard();
+    // optional: Blink auf Kommission zurück
+    if (isZebra) {
+        kommission.focus();
+        setBlinkOn(kommission);
+    } else {
+        setBlinkOn(null);
+    }
+};
 
 /* ============================
    SCANNER (Zebra DataWedge)
@@ -176,6 +213,10 @@ document.addEventListener("keydown", e => {
 
                 kommission.value = kom;
                 lieferdatum.value = dat;
+
+                // Nach Scan Blink auf Kommission
+                kommission.focus();
+                setBlinkOn(kommission);
             }
 
             scanBuffer = "";
@@ -188,7 +229,7 @@ document.addEventListener("keydown", e => {
 /* ============================
    DRUCKEN
 ============================ */
-document.getElementById("druckenBtn").onclick = () => {
+druckenBtn.onclick = () => {
 
     if (!kommission.value.trim()) return alert("Bitte Kommissionsnummer eingeben!");
     if (!lieferdatum.value.trim()) return alert("Bitte Lieferdatum eingeben!");
@@ -196,7 +237,7 @@ document.getElementById("druckenBtn").onclick = () => {
     const data = {
         kommission: kommission.value.trim(),
         lieferdatum: lieferdatum.value.trim(),
-        vorgezogen: document.getElementById("chkVorgezogen").checked,
+        vorgezogen: chkVorgezogen.checked,
         farbe: currentColor
     };
 
@@ -211,4 +252,4 @@ document.getElementById("druckenBtn").onclick = () => {
 };
 
 /* BACK */
-document.getElementById("backBtn").onclick = () => history.back();
+backBtn.onclick = () => history.back();
