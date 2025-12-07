@@ -204,27 +204,26 @@ button:focus {
     border-radius: 14px;
 }
 
-/* ============================================================
-   PC – eigene Layoutklasse (NEU)
-============================================================ */
+/* =============================
+   PC – kompakteres Layout
+   (Zebra / Mobile bleiben unverändert)
+============================= */
+body.pc-device .page {
+    width: 80vw;          /* weniger Breite */
+    height: auto;         /* nicht auf Vollbild stretchen */
+    max-width: 1100px;    /* schöner Desktop-Rahmen */
+    padding-top: 20px;
+}
+
 body.pc-device .kunden-grid {
-    grid-template-columns: repeat(3, 300px);
+    grid-template-columns: repeat(3, 220px);  /* statt 300px */
     gap: 10px;
 }
 
-body.pc-device .kunde-btn {
-    min-height: 55px;
-    height: 55px;
-    padding: 4px;
-    font-size: 13px;
-}
-
 body.pc-device #eiltBtn {
-    font-size: 18px;
-    padding: 12px;
+    margin-top: 12px;
 }
 
-body.pc-device .bottom-row button {
-    font-size: 18px;
-    padding: 12px;
+body.pc-device .bottom-row {
+    margin-top: 40px;  /* statt margin-top: auto */
 }
