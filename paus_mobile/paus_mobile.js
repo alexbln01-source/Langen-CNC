@@ -11,7 +11,59 @@ html, body {
     justify-content: center;
     align-items: center;
 }
+/* ============================================================
+   ZEBRA SCANNER – FANGT JEDEN SCAN AB (TC21/TC22 100 % FIX)
+============================================================ */
 
+let scanString = "";
+let scanStarted = false;
+
+// 1) DataWedge liefert meistens komplette Zeichenblöcke
+document.addEventListener("beforeinput", e => {
+    if (e.inputType === "insertText") {
+        scanStarted = true;
+        scanString += e.data ?? "";
+    }
+});
+
+// 2) Zusätzlich normale Keypress-Events abgreifen
+document.addEventListener("keypress", e => {
+    scanStarted = true;
+    scanString += e.key;
+});
+
+// 3) ENTER bedeutet: Scan ist fertig
+document.addEventListener("keydown", e => {
+
+    if (e.key !== "Enter" || !scanStarted) return;
+
+    scanStarted = false;
+    const text = scanString.trim();
+    scanString = "";
+
+    console.log("SCAN EMPFANGEN:", text);
+
+    // Prüfen ob K: und D: vorhanden sind
+    const k = text.match(/K:([^;]+)/);
+    const d = text.match(/D:(\d+)/);
+
+    if (!k || !d) return;  // Scan nicht gültig
+
+    // Werte extrahieren
+    const kom = k[1];
+    let dat = d[1];
+
+    // Datum formatieren
+    if (dat.length === 3) dat = "0" + dat;
+    if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4);
+
+    // In Felder eintragen
+    document.getElementById("kommission").value = kom;
+    document.getElementById("lieferdatum").value = dat;
+
+    // Cursor wieder auf Kommission
+    document.getElementById("kommission").focus();
+});
 /* ===== DEVICE INFO + BUILD ===== */
 .device-info {
     position: fixed;
