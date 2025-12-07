@@ -1,72 +1,117 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<title>Zebra Scanner Debug</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<title>Warenanhänger</title>
+
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon512.png">
+<link rel="apple-touch-icon" href="icon192.png">
 
 <style>
-body {
-    background: black;
-    color: #0f0;
-    font-family: monospace;
-    padding: 10px;
+/* (dein vorhandenes CSS bleibt unverändert!) */
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
+    font-family: "Segoe UI", Arial, sans-serif;
 }
+@media (min-width: 601px) { html, body { overflow: hidden; } }
+
+@media (max-width: 600px) {
+    html, body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+    #main { width: 100%; max-width: 380px; transform: scale(0.95); }
+    button { width: 260px; height: 85px; font-size: 24px; }
+}
+@media (min-width: 601px) {
+    #main { margin: 60px auto; width: 100%; max-width: 650px; padding: 20px 40px; }
+    button { width: 450px; height: 60px; font-size: 20px; }
+    h1 { font-size: 40px; }
+}
+
+#logo { width: 80%; max-width: 320px; margin: 0 auto 25px auto; display: block; }
 
 h1 {
-    color: #0f0;
+    margin: 0 0 30px 0;
+    font-size: 32px;
+    font-weight: 900;
+    color: #003a73;
+    text-align: center;
 }
 
-.box {
-    border: 2px solid #0f0;
-    padding: 10px;
-    margin-top: 15px;
-    white-space: pre-wrap;
+button {
+    margin: 18px auto;
+    display: block;
+    border: none;
+    border-radius: 18px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
+#btnBeschichtung { background: linear-gradient(#007bff,#0056b3); }
+#btnKanten       { background: linear-gradient(#ff9800,#e67e00); }
+#btnPaus         { background: linear-gradient(#28a745,#1d7f31); }
+#btnSchweissen   { background: linear-gradient(#9c27b0,#6a0080); }
+
+footer {
+    margin-top: 40px;
+    font-size: 16px;
+    text-align: center;
+    color: #444;
+}
 </style>
+
+<script>
+/* ⭐ Beschichtung aktiv */
+function openBeschichtung() {
+    window.location.href = "start.html?bereich=beschichtung";
+}
+
+/* ⭐ Kanten jetzt aktiv – führt zu kanten_mobile */
+function openKanten() {
+    window.location.href = "start.html?bereich=kanten";
+}
+
+   function openPaus() {
+    window.location.href = "start.html?bereich=paus";
+}
+
+
+function openSchweissen() {
+    window.location.href = "baustelle.html";
+}
+</script>
+
 </head>
 <body>
 
-<h1>Zebra Scanner Debug</h1>
-<p>Scanne jetzt deinen Code und schicke mir ALLE Boxen als Screenshot.</p>
+<div id="main">
 
-<div class="box" id="b1">beforeinput</div>
-<div class="box" id="b2">input</div>
-<div class="box" id="b3">keypress</div>
-<div class="box" id="b4">keydown</div>
-<div class="box" id="b5">keyup</div>
-<div class="box" id="raw">RAW BUFFER</div>
+    <img id="logo" src="langen.png" alt="Langen CNC Logo">
 
-<script>
-let raw = "";
+    <h1>Warenanhänger</h1>
 
-document.addEventListener("beforeinput", e => {
-    document.getElementById("b1").textContent += "\n" + JSON.stringify(e.data);
-    if (e.data) raw += e.data;
-    document.getElementById("raw").textContent = raw;
-});
+    <button id="btnBeschichtung" onclick="openBeschichtung()">Beschichtung (A5)</button>
+    <button id="btnKanten" onclick="openKanten()">Kanten (A6)</button>
+    <button id="btnPaus" onclick="openPaus()">PAUS Lieferung (A6)</button>
+    <button id="btnSchweissen" onclick="openSchweissen()">Schweißen</button>
 
-document.addEventListener("input", e => {
-    document.getElementById("b2").textContent += "\n" + e.data;
-});
+    <footer>Langen CNC Metalltechnik GmbH & Co. KG</footer>
 
-document.addEventListener("keypress", e => {
-    document.getElementById("b3").textContent += "\nkey=" + e.key;
-    raw += e.key;
-    document.getElementById("raw").textContent = raw;
-});
-
-document.addEventListener("keydown", e => {
-    document.getElementById("b4").textContent += "\nkey=" + e.key;
-});
-
-document.addEventListener("keyup", e => {
-    document.getElementById("b5").textContent += "\nkey=" + e.key;
-    if (e.key === "Enter") raw += "\n[ENTER]\n";
-    document.getElementById("raw").textContent = raw;
-});
-</script>
+</div>
 
 </body>
 </html>
