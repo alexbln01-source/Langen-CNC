@@ -36,6 +36,10 @@ const backBtn    = document.getElementById("backBtn");
 const deviceInfo = document.getElementById("deviceInfo");
 const buildInfo  = document.getElementById("buildInfo");
 
+// ⭐ NEU: Vorgezogen-Button
+const vorgezogenBtn = document.getElementById("vorgezogenBtn");
+let isVorgezogen = false;
+
 // ============================================================
 //  DEVICE INFO
 // ============================================================
@@ -47,6 +51,7 @@ deviceInfo.textContent =
 
 if (isPC) document.body.classList.add("pc-device");
 
+
 // ============================================================
 //  START
 // ============================================================
@@ -57,7 +62,6 @@ window.onload = () => {
 
     buildNumber();
 
-    // Android Tastatur aus (aber Cursor sichtbar!)
     if (!isPC) {
         [kommission, lieferdatum, keyboardInput].forEach(inp => {
             inp.setAttribute("inputmode", "none");
@@ -70,8 +74,16 @@ window.onload = () => {
 
     if (isZebra) kommission.focus();
 
+    // Zurück Button
     backBtn.onclick = () => history.back();
 
+    // ⭐ NEU: Button "Auftrag vorgezogen"
+    vorgezogenBtn.onclick = () => {
+        isVorgezogen = !isVorgezogen;
+        vorgezogenBtn.classList.toggle("active", isVorgezogen);
+    };
+
+    // DRUCKEN
     druckenBtn.onclick = () => {
 
         parseKommissionField();
@@ -87,7 +99,7 @@ window.onload = () => {
         const data = {
             kommission : kommission.value.trim(),
             lieferdatum: lieferdatum.value.trim(),
-            vorgezogen : document.getElementById("chkVorgezogen").checked,
+            vorgezogen : isVorgezogen,
             farbe
         };
 
@@ -99,6 +111,7 @@ window.onload = () => {
             location.href = "paus_druck.html?data=" + encodeURIComponent(json);
     };
 };
+
 
 // ============================================================
 //  BUILD INFO
@@ -115,6 +128,7 @@ function buildNumber() {
     buildInfo.textContent = "Build " + stamp;
 }
 
+
 // ============================================================
 //  FARBWAHL
 // ============================================================
@@ -125,6 +139,7 @@ document.querySelectorAll(".color-btn").forEach(btn => {
         btn.classList.add("active");
     });
 });
+
 
 // ============================================================
 //  POPUP TASTATUR
@@ -188,7 +203,6 @@ function parseKommissionField() {
     if (!text.includes("K:") || !text.includes("D:"))
         return;
 
-    // --- Kommission ---
     let startK = text.indexOf("K:") + 2;
     let endK   = text.indexOf(";", startK);
     const idxD = text.indexOf("D:");
@@ -198,7 +212,6 @@ function parseKommissionField() {
 
     let kom = text.substring(startK, endK).trim();
 
-    // --- Datum ---
     let startD = text.indexOf("D:") + 2;
     let dat = text.substring(startD).replace(/\D/g, "");
 
@@ -209,10 +222,12 @@ function parseKommissionField() {
     lieferdatum.value = dat;
 }
 
-// Beim Verlassen des Feldes (TAB vom Scanner) → trennen
+
+// ============================================================
+//  ENTER / TAB vom Scanner → trennen
+// ============================================================
 kommission.addEventListener("blur", parseKommissionField);
 
-// Zebra sendet TAB / ENTER / UNIDENTIFIED → trennen
 document.addEventListener("keydown", e => {
 
     if (!isZebra) return;
