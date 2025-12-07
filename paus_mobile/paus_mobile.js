@@ -157,48 +157,51 @@ keyboardClose.onclick = () =>
     keyboardPopup.style.display = "none";
 
 /* =============================
-   ZEBRA SCANNER (DataWedge kompatibel)
+   ZEBRA SCANNER (TC21/TC22 garantiert)
 ============================= */
 
 let dwBuffer = "";
+let scanActive = false;
 
-// DataWedge sendet Text in BEFOREINPUT
-document.addEventListener("beforeinput", e => {
+// Jeder Barcode-Buchstabe kommt über keypress
+document.addEventListener("keypress", e => {
     if (!isZebra) return;
 
-    // Nur "insertText" zulassen
-    if (e.inputType === "insertText") {
-        dwBuffer += e.data ?? "";
-    }
+    scanActive = true;
+    dwBuffer += e.key;
 });
 
-// ENTER = Scan fertig
+// ENTER = Ende des Scans
 document.addEventListener("keydown", e => {
 
     if (!isZebra) return;
 
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && scanActive) {
+
+        scanActive = false;
 
         const text = dwBuffer.trim();
         dwBuffer = "";
 
+        console.log("SCAN:", text);
+
         if (!text.includes("K:") || !text.includes("D:")) return;
 
         const komMatch = text.match(/K:(.*?);/);
-        const dMatch = text.match(/D:(.*)/);
+        const dMatch   = text.match(/D:(.*)/);
 
         if (!komMatch || !dMatch) return;
 
         const kom = komMatch[1];
-        let raw = dMatch[1].replace(/\D/g, "");
+        let raw   = dMatch[1].replace(/\D/g, "");
 
         if (raw.length === 3) raw = "0" + raw;
-        if (raw.length >= 4) raw = raw.slice(0, 2) + "." + raw.slice(2, 4);
+        if (raw.length >= 4) raw = raw.slice(0,2) + "." + raw.slice(2,4);
 
         kommission.value = kom;
         lieferdatum.value = raw;
 
-        // Nach Scan Fokus wieder auf Kommission
+        // Fokus zurück auf Kommission
         kommission.focus();
     }
 });
