@@ -208,7 +208,7 @@ button:focus {
    PC – eigene Layoutklasse (NEU)
 ============================================================ */
 body.pc-device .kunden-grid {
-    grid-template-columns: repeat(3, 160px);
+    grid-template-columns: repeat(3, 300px);
     gap: 10px;
 }
 
