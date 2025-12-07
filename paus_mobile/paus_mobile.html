@@ -17,6 +17,10 @@
 
     <h1 class="title">PAUS Lieferung</h1>
 
+    <!-- EINGABEN -->
+    <input id="kommission" class="input-field" placeholder="Kommissionsnummer" autocomplete="off">
+    <input id="lieferdatum" class="input-field" placeholder="TT.MM" autocomplete="off">
+
     <!-- FARBAUSWAHL -->
     <div class="color-row">
         <button class="color-btn" data-color="red">Rot</button>
@@ -24,25 +28,15 @@
         <button class="color-btn" data-color="black">Schwarz</button>
     </div>
 
-    <!-- VORGEZOGEN -->
-    <label class="vorgezogen-row">
-        <input type="checkbox" id="chkVorgezogen">
-        <span>Auftrag vorgezogen</span>
-    </label>
-
-    <!-- EINGABEN -->
-    <input id="kommission" class="input-field" placeholder="Kommissionsnummer" autocomplete="off">
-    <input id="lieferdatum" class="input-field" placeholder="TT.MM" autocomplete="off">
+    <!-- BUTTON: Auftrag vorgezogen -->
+    <button id="btnVorgezogen" class="vorgezogen-btn">Auftrag vorgezogen</button>
 
     <!-- Tastatur öffnen -->
-    <button id="openKeyboardBtn" class="keyboard-open-btn">
-        Tastatur öffnen
-    </button>
+    <button id="openKeyboardBtn" class="keyboard-open-btn">Tastatur öffnen</button>
 
     <!-- POPUP TASTATUR -->
     <div id="keyboardPopup" class="keyboard-popup">
         <div class="keyboard-content">
-
             <h3 id="keyboardTitle">Eingabe</h3>
 
             <input id="keyboardInput"
