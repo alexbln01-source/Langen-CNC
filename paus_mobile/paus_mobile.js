@@ -181,7 +181,7 @@ keyboardClose.onclick = () =>
     keyboardPopup.style.display = "none";
 
 // ============================================================
-//  ZEBRA SCANNER — GANZ UNTEN! (trennt K und D korrekt)
+//  ZEBRA SCANNER — FINALE VERSION (trennt K und D IMMER)
 // ============================================================
 document.addEventListener("beforeinput", e => {
     if (!isZebra) return;
@@ -205,12 +205,19 @@ document.addEventListener("keydown", e => {
     let text = scanString.trim();
     scanString = "";
 
-    console.log("SCAN-ROH:", text);
+    console.log("SCAN-ROH:", JSON.stringify(text));
 
+    // Alle Störzeichen entfernen
+    text = text.replace(/\r/g, "").replace(/\n/g, "").replace(/\s+/g, "");
+
+    // Jetzt K und D suchen
     const idxK = text.indexOf("K:");
     const idxD = text.indexOf("D:");
 
-    if (idxK === -1 || idxD === -1) return;
+    if (idxK === -1 || idxD === -1) {
+        console.warn("K oder D nicht gefunden");
+        return;
+    }
 
     let endKom = text.indexOf(";", idxK);
     if (endKom === -1 || endKom > idxD) endKom = idxD;
