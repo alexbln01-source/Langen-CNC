@@ -1,22 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
 <meta charset="UTF-8">
 <title>Zebra Scanner Debug</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
 body {
+    background: black;
+    color: #0f0;
     font-family: monospace;
     padding: 10px;
-    background: #111;
+}
+
+h1 {
     color: #0f0;
 }
+
 .box {
-    border: 1px solid #0f0;
-    padding: 8px;
-    margin-bottom: 12px;
+    border: 2px solid #0f0;
+    padding: 10px;
+    margin-top: 15px;
+    white-space: pre-wrap;
 }
-h2 { margin: 0 0 8px 0; }
+
 </style>
 </head>
 <body>
@@ -24,74 +31,40 @@ h2 { margin: 0 0 8px 0; }
 <h1>Zebra Scanner Debug</h1>
 <p>Scanne jetzt deinen Code und schicke mir ALLE Boxen als Screenshot.</p>
 
-<div class="box">
-    <h2>beforeinput</h2>
-    <div id="beforeinput"></div>
-</div>
-
-<div class="box">
-    <h2>input</h2>
-    <div id="input"></div>
-</div>
-
-<div class="box">
-    <h2>keypress</h2>
-    <div id="keypress"></div>
-</div>
-
-<div class="box">
-    <h2>keydown</h2>
-    <div id="keydown"></div>
-</div>
-
-<div class="box">
-    <h2>keyup</h2>
-    <div id="keyup"></div>
-</div>
-
-<div class="box">
-    <h2>RAW BUFFER</h2>
-    <div id="raw"></div>
-</div>
+<div class="box" id="b1">beforeinput</div>
+<div class="box" id="b2">input</div>
+<div class="box" id="b3">keypress</div>
+<div class="box" id="b4">keydown</div>
+<div class="box" id="b5">keyup</div>
+<div class="box" id="raw">RAW BUFFER</div>
 
 <script>
-let buffer = "";
+let raw = "";
 
-function log(id, text) {
-    document.getElementById(id).innerHTML += text + "<br>";
-}
-
-// BEFOREINPUT
 document.addEventListener("beforeinput", e => {
-    log("beforeinput", "type=" + e.inputType + " data=" + JSON.stringify(e.data));
-    if (e.data) buffer += e.data;
-    document.getElementById("raw").innerText = buffer;
+    document.getElementById("b1").textContent += "\n" + JSON.stringify(e.data);
+    if (e.data) raw += e.data;
+    document.getElementById("raw").textContent = raw;
 });
 
-// INPUT
 document.addEventListener("input", e => {
-    log("input", "value=" + e.data);
+    document.getElementById("b2").textContent += "\n" + e.data;
 });
 
-// KEYPRESS
 document.addEventListener("keypress", e => {
-    log("keypress", "key=" + e.key);
-    buffer += e.key;
-    document.getElementById("raw").innerText = buffer;
+    document.getElementById("b3").textContent += "\nkey=" + e.key;
+    raw += e.key;
+    document.getElementById("raw").textContent = raw;
 });
 
-// KEYDOWN
 document.addEventListener("keydown", e => {
-    log("keydown", "key=" + e.key);
+    document.getElementById("b4").textContent += "\nkey=" + e.key;
 });
 
-// KEYUP
 document.addEventListener("keyup", e => {
-    log("keyup", "key=" + e.key);
-
-    if (e.key === "Enter") {
-        log("raw", "=== FINAL RAW === " + buffer);
-    }
+    document.getElementById("b5").textContent += "\nkey=" + e.key;
+    if (e.key === "Enter") raw += "\n[ENTER]\n";
+    document.getElementById("raw").textContent = raw;
 });
 </script>
 
