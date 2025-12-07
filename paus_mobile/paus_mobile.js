@@ -1,15 +1,14 @@
 let activeInput = null;
 let currentColor = "red";
 let scanBuffer = "";
-let scanTimeout = null;
 
 /* ============================
    DEVICE DETECTION
 ============================ */
 const ua = navigator.userAgent.toLowerCase();
-const sw = window.screen.width;
-const sh = window.screen.height;
-const dpr = window.devicePixelRatio;
+const sw = screen.width;
+const sh = screen.height;
+const dpr = devicePixelRatio;
 
 const isTC21 = ua.includes("android") && sw === 360 && sh === 640;
 const isTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
@@ -17,19 +16,23 @@ const isZebra = isTC21 || isTC22 || ua.includes("zebra");
 const isMobile = /android|iphone|ipad|ipod/i.test(ua);
 const isPC = !isZebra && !isMobile;
 
-/* ============================
-   UI ELEMENTE
-============================ */
-const kommission = document.getElementById("kommission");
-const lieferdatum = document.getElementById("lieferdatum");
+/* CSS class for PC */
+if (isPC) document.body.classList.add("pc-device");
 
-const openKeyboardBtn = document.getElementById("openKeyboardBtn");
-const keyboardPopup = document.getElementById("keyboardPopup");
-const keyboardInput = document.getElementById("keyboardInput");
-const keyboardKeys = document.getElementById("keyboardKeys");
-const keyboardOK = document.getElementById("keyboardOK");
-const keyboardDelete = document.getElementById("keyboardDelete");
-const keyboardClose = document.getElementById("keyboardClose");
+/* ============================
+   BUILD + DEVICE INFO
+============================ */
+function buildNumber() {
+    const d = new Date(document.lastModified);
+    const s =
+        d.getFullYear() + "-" +
+        String(d.getMonth()+1).padStart(2,"0") + "-" +
+        String(d.getDate()).padStart(2,"0") + "." +
+        String(d.getHours()).padStart(2,"0") +
+        String(d.getMinutes()).padStart(2,"0");
+
+    document.getElementById("buildInfo").textContent = "Build " + s;
+}
 
 document.getElementById("deviceInfo").textContent =
     isTC22 ? "Gerät: Zebra TC22" :
@@ -38,7 +41,21 @@ document.getElementById("deviceInfo").textContent =
     isMobile ? "Gerät: Mobil" : "Gerät: PC";
 
 /* ============================
-   START
+   ELEMENTE
+============================ */
+const kommission = document.getElementById("kommission");
+const lieferdatum = document.getElementById("lieferdatum");
+
+const keyboardPopup = document.getElementById("keyboardPopup");
+const openKeyboardBtn = document.getElementById("openKeyboardBtn");
+const keyboardInput = document.getElementById("keyboardInput");
+const keyboardKeys = document.getElementById("keyboardKeys");
+const keyboardOK = document.getElementById("keyboardOK");
+const keyboardDelete = document.getElementById("keyboardDelete");
+const keyboardClose = document.getElementById("keyboardClose");
+
+/* ============================
+   START BEHAVIOR
 ============================ */
 window.onload = () => {
 
@@ -54,42 +71,30 @@ window.onload = () => {
         return;
     }
 
-    // Zebra darf NICHT schreiben → Popup only
     kommission.readOnly = true;
     lieferdatum.readOnly = true;
-    keyboardInput.readOnly = true;
 
     if (isZebra) kommission.focus();
 };
 
 /* ============================
-   BUILD INFO
-============================ */
-function buildNumber() {
-    const d = new Date(document.lastModified);
-    const stamp =
-        d.getFullYear() + "-" +
-        String(d.getMonth()+1).padStart(2,"0") + "-" +
-        String(d.getDate()).padStart(2,"0") + "." +
-        String(d.getHours()).padStart(2,"0") +
-        String(d.getMinutes()).padStart(2,"0");
-
-    document.getElementById("buildInfo").textContent = "Build " + stamp;
-}
-
-/* ============================
-   FARBAUSWAHL FIX
+   COLOR SELECTION
 ============================ */
 document.querySelectorAll(".color-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-        document.querySelectorAll(".color-btn").forEach(b => b.classList.remove("active"));
+    btn.addEventListener("click", e => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        document.querySelectorAll(".color-btn")
+            .forEach(b => b.classList.remove("active"));
+
         btn.classList.add("active");
         currentColor = btn.dataset.color;
     });
 });
 
 /* ============================
-   POPUP TASTATUR
+   POPUP KEYBOARD (Beschichtung Style)
 ============================ */
 const NUMBER_KEYS = ["1","2","3","4","5","6","7","8","9","0"];
 
@@ -98,7 +103,6 @@ function renderKeyboard() {
     NUMBER_KEYS.forEach(k => {
         const b = document.createElement("button");
         b.textContent = k;
-        b.className = "kb-btn";
         b.onclick = () => keyboardInput.value += k;
         keyboardKeys.appendChild(b);
     });
@@ -109,6 +113,8 @@ function openKeyboard(id) {
     activeInput = document.getElementById(id);
     keyboardInput.value = activeInput.value;
     keyboardPopup.style.display = "flex";
+
+    setTimeout(() => keyboardInput.focus(), 30);
 }
 
 openKeyboardBtn.onclick = () => openKeyboard("kommission");
@@ -138,69 +144,55 @@ keyboardClose.onclick = () =>
     keyboardPopup.style.display = "none";
 
 /* ============================
-   SCANNER – ROBUSTER UNIVERSAL-MODUS
+   SCANNER (Zebra DataWedge)
 ============================ */
-
-// 1) ALLE Zeichen einfangen: keypress, keydown & input
-function collectScan(char) {
-    scanBuffer += char;
-
-    // Neustarten
-    if (scanTimeout) clearTimeout(scanTimeout);
-
-    // 50–80 ms Pause → Scan fertig
-    scanTimeout = setTimeout(processScan, 70);
-}
-
 document.addEventListener("keypress", e => {
-    if (isZebra) collectScan(e.key);
+    if (isZebra) scanBuffer += e.key;
 });
+
 document.addEventListener("keydown", e => {
-    if (isZebra && e.key.length === 1) collectScan(e.key);
+    if (!isZebra) return;
+
+    if (e.key === "Enter") {
+        const text = scanBuffer.trim();
+        scanBuffer = "";
+
+        const kom = text.match(/K:(.*?);/);
+        const dat = text.match(/D:(.*)/);
+
+        if (!kom || !dat) return;
+
+        kommission.value = kom[1];
+
+        let raw = dat[1].replace(/\D/g,"");
+        if (raw.length === 3) raw = "0" + raw;
+        if (raw.length >= 4) raw = raw.slice(0,2) + "." + raw.slice(2,4);
+
+        lieferdatum.value = raw;
+    }
 });
-document.addEventListener("input", e => {
-    if (isZebra && e.data) collectScan(e.data);
-});
-
-function processScan() {
-    const text = scanBuffer.trim();
-    scanBuffer = "";
-
-    const m = text.match(/K:([^;]+);D:(\d{3,4})/);
-    if (!m) return;
-
-    const kom = m[1];
-    let raw = m[2];
-
-    if (raw.length === 3) raw = "0" + raw;
-    const dat = raw.substring(0,2) + "." + raw.substring(2,4);
-
-    kommission.value = kom;
-    lieferdatum.value = dat;
-}
 
 /* ============================
    DRUCKEN
 ============================ */
-document.getElementById("druckenBtn").onclick = () => {
+druckenBtn.onclick = () => {
 
     if (!kommission.value.trim()) return alert("Bitte Kommissionsnummer eingeben!");
     if (!lieferdatum.value.trim()) return alert("Bitte Lieferdatum eingeben!");
 
     const data = {
-        kommission: kommission.value.trim(),
-        lieferdatum: lieferdatum.value.trim(),
-        vorgezogen: document.getElementById("chkVorgezogen").checked,
+        kommission: kommission.value,
+        lieferdatum: lieferdatum.value,
+        vorgezogen: chkVorgezogen.checked,
         farbe: currentColor
     };
 
     const json = JSON.stringify(data);
 
-    if (window.Android && typeof Android.printPaus === "function") {
+    if (window.Android && Android.printPaus)
         Android.printPaus(json);
-    } else {
-        window.location.href = "paus_druck.html?data=" + encodeURIComponent(json);
-    }
+    else
+        location.href = "paus_druck.html?data=" + encodeURIComponent(json);
 };
 
-document.getElementById("backBtn").onclick = () => history.back();
+backBtn.onclick = () => history.back();
