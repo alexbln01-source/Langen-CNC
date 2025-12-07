@@ -2,8 +2,7 @@
 //  GLOBALE VARIABLEN
 // ============================================================
 let activeInput = null;
-let scanString  = "";
-let scanStarted = false;
+
 
 // ============================================================
 //  DEVICE DETECTION
