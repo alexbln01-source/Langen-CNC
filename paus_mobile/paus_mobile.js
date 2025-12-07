@@ -1,11 +1,10 @@
 /* ============================================================
-   ZEBRA SCANNER – 100% zuverlässig (TC21/TC22)
+   ZEBRA SCANNER – 100 % zuverlässig (TC21/TC22)
 ============================================================ */
 
 let scanString = "";
 let scanStarted = false;
 
-// BEFOREINPUT → DataWedge blockweise
 document.addEventListener("beforeinput", e => {
     if (e.inputType === "insertText") {
         scanStarted = true;
@@ -13,13 +12,11 @@ document.addEventListener("beforeinput", e => {
     }
 });
 
-// KEYPRESS → fallback
 document.addEventListener("keypress", e => {
     scanStarted = true;
     scanString += e.key;
 });
 
-// ENTER = Scan abgeschlossen → auswerten
 document.addEventListener("keydown", e => {
 
     if (e.key !== "Enter" || !scanStarted) return;
@@ -52,14 +49,14 @@ document.addEventListener("keydown", e => {
    DEVICE DETECTION
 ============================================================ */
 const ua = navigator.userAgent.toLowerCase();
-const sw = window.screen.width;
-const sh = window.screen.height;
-const dpr = window.devicePixelRatio;
+const sw = screen.width;
+const sh = screen.height;
+const dpr = devicePixelRatio;
 
 const isTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
 const isTC21 = ua.includes("android") && sw === 360 && sh === 640;
 const isZebra = isTC22 || isTC21 || ua.includes("zebra");
-const isMobile = /android|iphone|ipad|ipod/i.test(ua);
+const isMobile = /android|iphone|ipad|ipod/.test(ua);
 const isPC = !isZebra && !isMobile;
 
 if (isPC) document.body.classList.add("pc-device");
@@ -72,16 +69,17 @@ document.getElementById("deviceInfo").textContent =
 
 
 /* ============================================================
-   DOM ELEMENTE
+   ELEMENTE
 ============================================================ */
 const kommission = document.getElementById("kommission");
 const lieferdatum = document.getElementById("lieferdatum");
 const openKeyboardBtn = document.getElementById("openKeyboardBtn");
+
 const keyboardPopup = document.getElementById("keyboardPopup");
 const keyboardInput = document.getElementById("keyboardInput");
-const keyboardKeys = document.getElementById("keyboardKeys");
-const keyboardOK = document.getElementById("keyboardOK");
-const keyboardDelete = document.getElementById("keyboardDelete");
+const keyboardKeys  = document.getElementById("keyboardKeys");
+const keyboardOK    = document.getElementById("keyboardOK");
+const keyboardDelete= document.getElementById("keyboardDelete");
 const keyboardClose = document.getElementById("keyboardClose");
 
 let activeInput = null;
@@ -95,8 +93,9 @@ window.onload = () => {
     kommission.value = "";
     lieferdatum.value = "";
 
+    buildNumber();
+
     if (!isPC) {
-        // Android Tastatur deaktivieren
         [kommission, lieferdatum, keyboardInput].forEach(inp => {
             inp.setAttribute("inputmode", "none");
             inp.setAttribute("autocomplete", "off");
@@ -114,7 +113,23 @@ window.onload = () => {
 
 
 /* ============================================================
-   FARBBUTTONS
+   BUILD INFO
+============================================================ */
+function buildNumber() {
+    const d = new Date(document.lastModified);
+    const t =
+        d.getFullYear() + "-" +
+        String(d.getMonth()+1).padStart(2,"0") + "-" +
+        String(d.getDate()).padStart(2,"0") + "." +
+        String(d.getHours()).padStart(2,"0") +
+        String(d.getMinutes()).padStart(2,"0");
+
+    document.getElementById("buildInfo").textContent = "Build " + t;
+}
+
+
+/* ============================================================
+   FARBAUSWAHL
 ============================================================ */
 document.querySelectorAll(".color-btn").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -166,7 +181,7 @@ keyboardOK.onclick = () => {
 };
 
 keyboardDelete.onclick = () =>
-    keyboardInput.value = keyboardInput.value.slice(0, -1);
+    keyboardInput.value = keyboardInput.value.slice(0,-1);
 
 keyboardClose.onclick = () =>
     keyboardPopup.style.display = "none";
