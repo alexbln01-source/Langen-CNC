@@ -71,8 +71,21 @@ window.onload = () => {
         return;
     }
 
-    kommission.readOnly = true;
-    lieferdatum.readOnly = true;
+    if (isZebra) {
+    kommission.readOnly = false;
+    lieferdatum.readOnly = false;
+
+    // Android-Tastatur unterdrücken
+    [kommission, lieferdatum].forEach(inp => {
+        inp.setAttribute("inputmode", "none");
+        inp.setAttribute("autocorrect", "off");
+        inp.setAttribute("autocomplete", "off");
+        inp.setAttribute("autocapitalize", "off");
+        inp.setAttribute("spellcheck", "false");
+    });
+
+    kommission.focus();
+}
 
     if (isZebra) kommission.focus();
 };
