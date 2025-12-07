@@ -75,7 +75,7 @@ html, body {
     width: 100%;
     padding: 0 12px;
     display: grid;
-    grid-template-columns: repeat(3, 300px);
+      grid-template-columns: repeat(3, 1fr);
     gap: 12px;
     justify-items: stretch;
     justify-content: center;
