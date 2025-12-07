@@ -1,177 +1,190 @@
-/* ============================================================
-   ZEBRA SCANNER – beforeinput = 100% zuverlässig auf TC21/TC22
-============================================================ */
-let scan = "";
-let scanRunning = false;
+/* ===== RESET ===== */
+* { box-sizing: border-box; }
 
-document.addEventListener("beforeinput", e => {
-    if (e.inputType === "insertText") {
-        scanRunning = true;
-        scan += e.data ?? "";
-    }
-});
-
-document.addEventListener("keydown", e => {
-
-    // ENTER = Scan abgeschlossen
-    if (e.key === "Enter" && scanRunning) {
-        const txt = scan.trim();
-        scan = "";
-        scanRunning = false;
-
-        // Prüfen ob korrektes Format
-        if (!txt.includes("K:") || !txt.includes("D:")) return;
-
-        const kom = txt.match(/K:(.*?);/)[1];
-        let dat = txt.match(/D:(.*)/)[1].replace(/\D/g, "");
-
-        // Datum formatieren
-        if (dat.length === 3) dat = "0" + dat;
-        if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4);
-
-        // Füllen
-        document.getElementById("kommission").value = kom;
-        document.getElementById("lieferdatum").value = dat;
-
-        // Visueller Blink-Effekt
-        focusField("lieferdatum");
-        return;
-    }
-});
-
-/* ============================================================
-   DEVICE DETECTION
-============================================================ */
-const ua = navigator.userAgent.toLowerCase();
-const sw = screen.width;
-const sh = screen.height;
-const dpr = devicePixelRatio;
-
-const isTC21 = ua.includes("android") && sw === 360 && sh === 640;
-const isTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
-const isZebra = isTC21 || isTC22 || ua.includes("zebra");
-const isMobile = /android|iphone|ipad|ipod/i.test(ua);
-const isPC = !isZebra && !isMobile;
-
-if (isPC) document.body.classList.add("pc-device");
-
-/* ============================================================
-   STARTVERHALTEN
-============================================================ */
-window.onload = () => {
-
-    kommission.value = "";
-    lieferdatum.value = "";
-
-    buildNumber();
-
-    // PC → normale Eingabe
-    if (isPC) {
-        kommission.removeAttribute("readonly");
-        lieferdatum.removeAttribute("readonly");
-        openKeyboardBtn.style.display = "none";
-        return;
-    }
-
-    // Android-Tastatur ausschalten vollständig
-    [kommission, lieferdatum].forEach(inp => {
-        inp.setAttribute("inputmode", "none");
-        inp.setAttribute("autocomplete", "off");
-        inp.setAttribute("autocorrect", "off");
-        inp.setAttribute("autocapitalize", "off");
-        inp.setAttribute("spellcheck", "false");
-        inp.readOnly = false; // wichtig: zebra muss reinschreiben können
-    });
-
-    kommission.focus();
-    focusField("kommission");
-};
-
-/* ============================================================
-   BLINK-EFFEKT
-============================================================ */
-function focusField(id) {
-    kommission.classList.remove("input-blink");
-    lieferdatum.classList.remove("input-blink");
-
-    document.getElementById(id).classList.add("input-blink");
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #eef1f4;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* ============================================================
-   POPUP KEYBOARD (funktioniert ohne Android-Tastatur)
-============================================================ */
-const NUMBER_KEYS = ["1","2","3","4","5","6","7","8","9","0"];
-let activeInput = null;
-
-function renderKeyboard() {
-    keyboardKeys.innerHTML = "";
-    NUMBER_KEYS.forEach(k => {
-        const b = document.createElement("button");
-        b.textContent = k;
-        b.onclick = () => keyboardInput.value += k;
-        keyboardKeys.appendChild(b);
-    });
-}
-renderKeyboard();
-
-function openKeyboard(id) {
-    activeInput = document.getElementById(id);
-    keyboardInput.value = activeInput.value;
-
-    keyboardPopup.style.display = "flex";
-
-    // FÜR POPUP → readonly MUSS drin bleiben!
-    setTimeout(() => keyboardInput.focus(), 50);
+/* ===== DEVICE INFO + BUILD ===== */
+.device-info {
+    position: fixed;
+    top: 6px;
+    left: 10px;
+    font-size: 12px;
+    color: #003a73;
 }
 
-openKeyboardBtn.onclick = () => openKeyboard("kommission");
+.build-info {
+    position: fixed;
+    bottom: 6px;
+    right: 10px;
+    font-size: 12px;
+    color: #003a73;
+}
 
-keyboardOK.onclick = () => {
+/* ===== PAGE FRAME ===== */
+.page {
+    width: 100%;
+    max-width: 600px;
+    padding: 10px;
+    text-align: center;
+}
 
-    let v = keyboardInput.value;
+/* ===== TITLE ===== */
+.title {
+    font-size: 26px;
+    font-weight: 900;
+    color: #003a73;
+    margin-bottom: 12px;
+}
 
-    if (activeInput.id === "lieferdatum") {
-        v = v.replace(/\D/g, "");
-        if (v.length === 3) v = "0" + v;
-        if (v.length >= 4) v = v.slice(0,2) + "." + v.slice(2,4);
-        activeInput.value = v;
-        keyboardPopup.style.display = "none";
-        focusField("lieferdatum");
-        return;
-    }
+/* ===== FARBBUTTONS ===== */
+.color-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 10px 0 16px 0;
+}
 
-    activeInput.value = v;
-    openKeyboard("lieferdatum");
-    focusField("lieferdatum");
-};
+.color-btn {
+    flex: 1;
+    padding: 12px 0;
+    font-size: 18px;
+    border-radius: 14px;
+    border: none;
+    font-weight: bold;
+    color: white;
+    background: #555;
+}
 
-keyboardDelete.onclick = () =>
-    keyboardInput.value = keyboardInput.value.slice(0, -1);
+.color-btn[data-color="red"] { background: #c62828; }
+.color-btn[data-color="blue"] { background: #1565c0; }
+.color-btn[data-color="black"] { background: #333; }
 
-keyboardClose.onclick = () =>
-    keyboardPopup.style.display = "none";
+.color-btn.active {
+    outline: 3px solid #1a73e8;
+}
 
-/* ============================================================
-   DRUCKEN
-============================================================ */
-druckenBtn.onclick = () => {
+/* ===== CHECKBOX ===== */
+.vorgezogen-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    margin-bottom: 14px;
+}
 
-    if (!kommission.value.trim()) return alert("Bitte Kommissionsnummer eingeben!");
-    if (!lieferdatum.value.trim()) return alert("Bitte Lieferdatum eingeben!");
+/* ===== INPUTS ===== */
+.input-field {
+    width: 100%;
+    padding: 14px;
+    font-size: 18px;
+    margin-bottom: 12px;
+    border: 1px solid #777;
+    border-radius: 14px;
+    text-align: center;
+    background: white;
+}
 
-    const data = {
-        kommission: kommission.value,
-        lieferdatum: lieferdatum.value,
-        vorgezogen: chkVorgezogen.checked,
-        farbe: currentColor
-    };
+/* Cursor sichtbar auch ohne Android-Tastatur */
+input[inputmode="none"] {
+    caret-color: black !important;
+}
 
-    const json = JSON.stringify(data);
+/* ===== Tastatur öffnen (nur Zebra sichtbar) ===== */
+.keyboard-open-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    border: none;
+    background: #ddd;
+    color: #0055cc;
+}
 
-    if (window.Android && Android.printPaus)
-        Android.printPaus(json);
-    else
-        location.href = "paus_druck.html?data=" + encodeURIComponent(json);
-};
+body.pc-device .keyboard-open-btn {
+    display: none !important;
+}
 
-backBtn.onclick = () => history.back();
+/* ===== POPUP ===== */
+.keyboard-popup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.keyboard-content {
+    width: 90%;
+    max-width: 360px;
+    background: white;
+    padding: 16px;
+    border-radius: 14px;
+    text-align: center;
+}
+
+.keyboard-input {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 12px;
+    font-size: 18px;
+    border: 1px solid #777;
+    border-radius: 12px;
+}
+
+.keyboard-keys {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
+
+.keyboard-keys button {
+    padding: 12px 0;
+    font-size: 18px;
+    border-radius: 10px;
+    border: 1px solid #aaa;
+    background: #f2f2f2;
+}
+
+.keyboard-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.key-delete { flex: 1; background: #c62828; color: white; padding: 10px; border-radius: 10px; border: none; }
+.key-ok     { flex: 1; background: #00963d; color: white; padding: 10px; border-radius: 10px; border: none; }
+.key-close  { flex: 1; background: #555;    color: white; padding: 10px; border-radius: 10px; border: none; }
+
+/* ===== BUTTONS ===== */
+.bottom-row {
+    width: 100%;
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.back-btn, .primary-btn {
+    flex: 1;
+    padding: 14px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 14px;
+    border: none;
+    color: white;
+}
+
+.back-btn { background: #333; }
+.primary-btn { background: #00963d; }
