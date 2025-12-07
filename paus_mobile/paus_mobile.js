@@ -1,65 +1,61 @@
 let activeInput = null;
 let currentColor = "red";
 
-/* =========================================
+/* ============================
    DEVICE DETECTION
-========================================= */
+============================ */
 const ua = navigator.userAgent.toLowerCase();
 const sw = screen.width;
 const sh = screen.height;
 const dpr = devicePixelRatio;
 
-// Zebra-Modelle
 const isTC21 = ua.includes("android") && sw === 360 && sh === 640;
 const isTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
-
 const isZebra = isTC21 || isTC22 || ua.includes("zebra");
 const isMobile = /android|iphone|ipad|ipod/i.test(ua);
 const isPC = !isZebra && !isMobile;
 
-// PC Layout
+/* CSS class for PC */
 if (isPC) document.body.classList.add("pc-device");
 
-/* =========================================
-   ELEMENTE
-========================================= */
-const kommission = document.getElementById("kommission");
-const lieferdatum = document.getElementById("lieferdatum");
-
-const keyboardPopup = document.getElementById("keyboardPopup");
-const keyboardInput = document.getElementById("keyboardInput");
-const keyboardKeys = document.getElementById("keyboardKeys");
-const keyboardOK = document.getElementById("keyboardOK");
-const keyboardDelete = document.getElementById("keyboardDelete");
-const keyboardClose = document.getElementById("keyboardClose");
-const openKeyboardBtn = document.getElementById("openKeyboardBtn");
-
-const buildInfo = document.getElementById("buildInfo");
-const deviceInfo = document.getElementById("deviceInfo");
-
-/* =========================================
-   DEVICE INFO + BUILD
-========================================= */
+/* ============================
+   BUILD + DEVICE INFO
+============================ */
 function buildNumber() {
     const d = new Date(document.lastModified);
-    const stamp =
+    const s =
         d.getFullYear() + "-" +
         String(d.getMonth()+1).padStart(2,"0") + "-" +
         String(d.getDate()).padStart(2,"0") + "." +
-        String(d.getHours()).padStart(2,"0") + 
+        String(d.getHours()).padStart(2,"0") +
         String(d.getMinutes()).padStart(2,"0");
-    buildInfo.textContent = "Build " + stamp;
+
+    document.getElementById("buildInfo").textContent = "Build " + s;
 }
 
-deviceInfo.textContent =
+document.getElementById("deviceInfo").textContent =
     isTC22 ? "Gerät: Zebra TC22" :
     isTC21 ? "Gerät: Zebra TC21" :
     isZebra ? "Gerät: Zebra" :
     isMobile ? "Gerät: Mobil" : "Gerät: PC";
 
-/* =========================================
-   INITIAL START
-========================================= */
+/* ============================
+   ELEMENTE
+============================ */
+const kommission = document.getElementById("kommission");
+const lieferdatum = document.getElementById("lieferdatum");
+
+const keyboardPopup = document.getElementById("keyboardPopup");
+const openKeyboardBtn = document.getElementById("openKeyboardBtn");
+const keyboardInput = document.getElementById("keyboardInput");
+const keyboardKeys = document.getElementById("keyboardKeys");
+const keyboardOK = document.getElementById("keyboardOK");
+const keyboardDelete = document.getElementById("keyboardDelete");
+const keyboardClose = document.getElementById("keyboardClose");
+
+/* ============================
+   START BEHAVIOR
+============================ */
 window.onload = () => {
 
     kommission.value = "";
@@ -68,32 +64,37 @@ window.onload = () => {
     buildNumber();
 
     if (isPC) {
-        // PC darf tippen
+        // PC: normale Eingabe
         kommission.removeAttribute("readonly");
         lieferdatum.removeAttribute("readonly");
         openKeyboardBtn.style.display = "none";
         return;
     }
 
-    // Zebra → Android-Tastatur unterdrücken
-    [kommission, lieferdatum].forEach(inp => {
-        inp.readOnly = true;
-        inp.setAttribute("inputmode", "none");
-        inp.setAttribute("autocomplete", "off");
-        inp.setAttribute("autocorrect", "off");
-        inp.setAttribute("autocapitalize", "off");
-        inp.setAttribute("spellcheck", "false");
-    });
+    // Zebra / Handy → wir lassen Eingabe zu (für Scanner),
+    // versuchen aber die Soft-Tastatur zu bremsen
+    if (isZebra) {
+        kommission.readOnly = false;
+        lieferdatum.readOnly = false;
 
-    // Scanner startet immer hier
-    kommission.focus();
+        [kommission, lieferdatum].forEach(inp => {
+            inp.setAttribute("inputmode", "none");
+            inp.setAttribute("autocorrect", "off");
+            inp.setAttribute("autocomplete", "off");
+            inp.setAttribute("autocapitalize", "off");
+            inp.setAttribute("spellcheck", "false");
+        });
+
+        kommission.focus();
+    }
 };
 
-/* =========================================
-   COLOR BUTTONS
-========================================= */
+/* ============================
+   COLOR SELECTION
+============================ */
 document.querySelectorAll(".color-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", e => {
+        e.preventDefault();
 
         document.querySelectorAll(".color-btn")
             .forEach(b => b.classList.remove("active"));
@@ -103,9 +104,9 @@ document.querySelectorAll(".color-btn").forEach(btn => {
     });
 });
 
-/* =========================================
+/* ============================
    POPUP NUMERIC KEYBOARD
-========================================= */
+============================ */
 const NUMBER_KEYS = ["1","2","3","4","5","6","7","8","9","0"];
 
 function renderKeyboard() {
@@ -129,8 +130,8 @@ function openKeyboard(id) {
 
 openKeyboardBtn.onclick = () => openKeyboard("kommission");
 
-/* OK Taste */
 keyboardOK.onclick = () => {
+    if (!activeInput) return;
 
     let val = keyboardInput.value;
 
@@ -154,65 +155,58 @@ keyboardDelete.onclick = () =>
 keyboardClose.onclick = () =>
     keyboardPopup.style.display = "none";
 
-/* =========================================
-   ZEBRA SCAN ENGINE – 100% zuverlässig
-========================================= */
-
-let scanBuffer = "";
-let scanning = false;
-
-// DataWedge liefert Zeichen als keypress
-document.addEventListener("keypress", e => {
-    if (!isZebra) return;
-    scanBuffer += e.key;
-    scanning = true;
-});
-
-// ENTER beendet Scanvorgang
+/* ============================
+   ZEBRA SCANNER – EINFACHE VARIANTE
+   Wir werten einfach das Kommissionsfeld aus,
+   sobald Enter gedrückt wird.
+============================ */
 document.addEventListener("keydown", e => {
 
     if (!isZebra) return;
+    if (e.key !== "Enter") return;
 
-    if (e.key === "Enter" && scanning) {
+    // Standard-Enter-Verhalten verhindern
+    e.preventDefault();
 
-        scanning = false;
-        const text = scanBuffer.trim();
-        scanBuffer = "";
+    // Text aus dem Kommissionsfeld nehmen (z.B. "K:9876543;D:2412")
+    let text = kommission.value.trim();
+    if (!text) return;
 
-        console.log("SCAN:", text);
-
-        // Erwartetes Format
-        if (!text.includes("K:") || !text.includes("D:")) return;
-
-        const komMatch = text.match(/K:(.*?);/);
-        const dMatch   = text.match(/D:(.*)/);
-
-        if (!komMatch || !dMatch) return;
-
-        const kom = komMatch[1];
-        let raw   = dMatch[1].replace(/\D/g, "");
-
-        if (raw.length === 3) raw = "0" + raw;
-        if (raw.length >= 4) raw = raw.slice(0,2) + "." + raw.slice(2,4);
-
-        kommission.value = kom;
-        lieferdatum.value = raw;
-
-        // Wieder bereit für nächsten Scan
-        kommission.focus();
+    if (!text.includes("K:") || !text.includes("D:")) {
+        // kein Barcode-Format → nichts tun
+        return;
     }
+
+    const komMatch = text.match(/K:([^;]+)/);
+    const dMatch   = text.match(/D:(\d+)/);
+
+    if (!komMatch || !dMatch) return;
+
+    const kom = komMatch[1];     // z.B. "9876543"
+    let raw   = dMatch[1];       // z.B. "2412"
+
+    // Datum in TT.MM
+    if (raw.length === 3) raw = "0" + raw;
+    let dat = raw;
+    if (raw.length >= 4) {
+        dat = raw.slice(0,2) + "." + raw.slice(2,4);   // 2412 → 24.12
+    }
+
+    // Felder sauber setzen
+    kommission.value = kom;
+    lieferdatum.value = dat;
+
+    // Fokus wieder auf Kommission für nächsten Scan
+    kommission.focus();
 });
 
-/* =========================================
+/* ============================
    DRUCKEN
-========================================= */
+============================ */
 druckenBtn.onclick = () => {
 
-    if (!kommission.value.trim())
-        return alert("Bitte Kommissionsnummer eingeben!");
-
-    if (!lieferdatum.value.trim())
-        return alert("Bitte Lieferdatum eingeben!");
+    if (!kommission.value.trim()) return alert("Bitte Kommissionsnummer eingeben!");
+    if (!lieferdatum.value.trim()) return alert("Bitte Lieferdatum eingeben!");
 
     const data = {
         kommission: kommission.value,
