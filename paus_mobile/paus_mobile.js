@@ -179,48 +179,57 @@ keyboardClose.onclick = () =>
 
 
 /* ============================================================
-   ZEBRA SCANNER – K:/D: auf Felder verteilen
+   ZEBRA SCANNER – FIXED VERSION (trennt IMMER K und D)
 ============================================================ */
 
-// BEFOREINPUT → DataWedge gibt oft ganze Blöcke
+let scanString = "";
+let scanStarted = false;
+
+// beforeinput -> DataWedge liefert Textblöcke
 document.addEventListener("beforeinput", e => {
-    if (!isZebra) return;
     if (e.inputType === "insertText") {
         scanStarted = true;
         scanString += e.data ?? "";
     }
 });
 
-// KEYPRESS → Fallback
+// keypress -> fallback
 document.addEventListener("keypress", e => {
-    if (!isZebra) return;
     scanStarted = true;
     scanString += e.key;
 });
 
-// ENTER → Scan fertig
+// ENTER = Scan fertig
 document.addEventListener("keydown", e => {
-    if (!isZebra) return;
+
     if (e.key !== "Enter" || !scanStarted) return;
 
     scanStarted = false;
-    const text = scanString.trim();
+    let text = scanString.trim();
     scanString = "";
 
     console.log("SCAN:", text);
 
-    const k = text.match(/K:([^;]+)/);
-    const d = text.match(/D:(\d+)/);
+    // --- EXAKTE Muster extrahieren ---
+    const komMatch = text.match(/K:([^;]+)/i);
+    const datMatch = text.match(/D:([0-9]+)/i);
 
-    if (!k || !d) return;
+    if (!komMatch || !datMatch) {
+        console.warn("Scan konnte nicht geparst werden:", text);
+        return;
+    }
 
-    const kom = k[1];
-    let dat = d[1];
+    let kom = komMatch[1];     // z.B. 2148416
+    let dat = datMatch[1];     // z.B. 1212
 
+    // Datum TT.MM formatieren
     if (dat.length === 3) dat = "0" + dat;
     if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4);
 
-    kommission.value  = kom;
-    lieferdatum.value = dat;
-    kommission.focus();
+    // Felder korrekt befüllen
+    document.getElementById("kommission").value = kom;
+    document.getElementById("lieferdatum").value = dat;
+
+    // FOKUS wieder auf Kommission
+    document.getElementById("kommission").focus();
 });
