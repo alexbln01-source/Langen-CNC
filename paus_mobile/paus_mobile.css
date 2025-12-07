@@ -72,14 +72,22 @@ html, body {
     outline: 3px solid #1a73e8;
 }
 
-/* ===== CHECKBOX ===== */
-.vorgezogen-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    font-size: 16px;
-    margin-bottom: 14px;
+/* ===== VORGEZOGEN BUTTON ===== */
+.vorgezogen-btn {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0 20px 0;
+    background: #777;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 14px;
+    border: none;
+}
+
+.vorgezogen-btn.active {
+    outline: 3px solid #1a73e8;
+    background: #00963d;
 }
 
 /* ===== INPUTS ===== */
@@ -188,23 +196,3 @@ body.pc-device .keyboard-open-btn {
 
 .back-btn { background: #333; }
 .primary-btn { background: #00963d; }
-
-/* ============================================================
-   NEU: VORGEZOGEN BUTTON (GANZE BREITE)
-============================================================ */
-.vorgezogen-btn {
-    width: 100%;
-    padding: 14px;
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 14px;
-    border: none;
-    color: white;
-    background: #666;
-    margin-bottom: 16px;
-}
-
-.vorgezogen-btn.active {
-    outline: 3px solid #1a73e8;
-    background: #00963d;
-}
