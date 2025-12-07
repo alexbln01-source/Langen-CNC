@@ -94,12 +94,12 @@ html, body {
     background: white;
 }
 
-/* Cursor sichtbar auch ohne Android-Tastatur */
+/* Cursor sichtbar */
 input[inputmode="none"] {
     caret-color: black !important;
 }
 
-/* ===== Tastatur öffnen (nur Zebra sichtbar) ===== */
+/* ===== Tastatur öffnen ===== */
 .keyboard-open-btn {
     width: 100%;
     padding: 12px;
