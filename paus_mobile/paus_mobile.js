@@ -1,6 +1,3 @@
-let scanString = "";
-let scanStarted = false;
-let activeInput = null;
 
 /* ============================================================
    DEVICE DETECTION
