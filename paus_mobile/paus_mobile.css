@@ -11,57 +11,64 @@ html, body {
     justify-content: center;
     align-items: center;
 }
-
-/* ===== DEVICE INFO + BUILD ===== */
+/* ===== DEVICE INFO ===== */
 .device-info {
     position: fixed;
     top: 6px;
-    left: 10px;
-    font-size: 12px;
-    color: #003a73;
+    left: 8px;
+    font-size: 14px;
+    color: #003b73;
+    font-weight: bold;
+    z-index: 1000;
 }
 
+/* ===== BUILD INFO ===== */
 .build-info {
     position: fixed;
+    right: 8px;
     bottom: 6px;
-    right: 10px;
-    font-size: 12px;
-    color: #003a73;
+    font-size: 14px;
+    color: #888;
+    font-weight: bold;
 }
 
-/* ===== PAGE FRAME (wie Beschichtung max 600px) ===== */
-.page {
-    width: 100%;
-    max-width: 600px;
-    padding: 10px;
+/* ===== ALLGEMEIN ===== */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #ececec;
     text-align: center;
 }
 
-/* ===== TITLE ===== */
 .title {
-    font-size: 26px;
-    font-weight: 900;
-    color: #003a73;
-    margin-bottom: 12px;
+    margin-top: 35px;
+    font-size: 34px;
+    font-weight: bold;
+    color: #003b73;
 }
 
 /* ===== FARBBUTTONS ===== */
 .color-row {
     display: flex;
     justify-content: center;
-    gap: 12px;
-    margin: 10px 0 16px 0;
+    gap: 14px;
+    margin-top: 10px;
+    margin-bottom: 18px;
+    position: relative;
+    z-index: 20;
 }
 
 .color-btn {
-    flex: 1;
-    padding: 12px 0;
-    font-size: 18px;
-    border-radius: 14px;
-    border: none;
+    width: 27%;
+    padding: 16px 0;
+    font-size: 26px;
     font-weight: bold;
     color: white;
-    background: #555;
+    border: none;
+    border-radius: 16px;
+    pointer-events: auto !important;
+    z-index: 30;
 }
 
 .color-btn[data-color="red"] { background: #c62828; }
@@ -69,117 +76,141 @@ html, body {
 .color-btn[data-color="black"] { background: #333; }
 
 .color-btn.active {
-    outline: 3px solid #1a73e8;
+    outline: 4px solid #4d7cff;
 }
 
-/* ===== CHECKBOX ===== */
+/* ===== VORGEZOGEN ===== */
 .vorgezogen-row {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
-    font-size: 16px;
-    margin-bottom: 14px;
+    font-size: 22px;
+    gap: 10px;
+    margin-bottom: 18px;
 }
 
-/* ===== INPUTS ===== */
+/* ===== EINGABEFELDER ===== */
+.input-area {
+    width: 88%;
+    margin: 0 auto;
+}
+
 .input-field {
     width: 100%;
-    padding: 14px;
-    font-size: 18px;
-    margin-bottom: 12px;
-    border: 1px solid #777;
+    padding: 16px;
+    margin: 10px 0;
     border-radius: 14px;
+    border: 2px solid #cfcfcf;
+    background: #ffffff;
+    font-size: 24px;
     text-align: center;
 }
 
-/* ===== Tastatur öffnen (nur Zebra sichtbar) ===== */
+/* ===== Tastatur öffnen ===== */
 .keyboard-open-btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    border-radius: 14px;
-    margin-bottom: 20px;
+    width: 88%;
+    padding: 18px;
+    font-size: 24px;
+    border-radius: 18px;
     border: none;
-    background: #ddd;
     color: #0055cc;
+    background: #d9d9d9;
 }
 
-/* Nur auf PC ausblenden */
-body.pc-device .keyboard-open-btn {
-    display: none !important;
-}
-
-/* ===== POPUP ===== */
+/* ===== POPUP TASTATUR ===== */
 .keyboard-popup {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.45);
+    background: rgba(0,0,0,0.4);
     justify-content: center;
     align-items: center;
-    z-index: 999;
+    z-index: 900;
 }
 
 .keyboard-content {
     width: 90%;
-    max-width: 360px;
+    max-width: 420px;
     background: white;
-    padding: 16px;
-    border-radius: 14px;
-    text-align: center;
+    border-radius: 16px;
+    padding: 20px;
 }
 
-.keyboard-input {
+#keyboardInput {
     width: 90%;
-    padding: 10px;
-    margin-bottom: 12px;
-    font-size: 18px;
-    border: 1px solid #777;
+    padding: 14px;
     border-radius: 12px;
+    border: 1px solid gray;
+    font-size: 22px;
+    text-align: center;
+    margin-bottom: 10px;
 }
 
 .keyboard-keys {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
+    gap: 10px;
 }
 
 .keyboard-keys button {
-    padding: 12px 0;
-    font-size: 18px;
-    border-radius: 10px;
+    padding: 16px 0;
+    font-size: 22px;
+    border-radius: 12px;
     border: 1px solid #aaa;
     background: #f2f2f2;
 }
 
 .keyboard-actions {
     display: flex;
-    gap: 8px;
-    margin-top: 12px;
+    gap: 10px;
+    margin-top: 14px;
 }
 
-.key-delete { flex: 1; background: #c62828; color: white; padding: 10px; border-radius: 10px; border: none; }
-.key-ok     { flex: 1; background: #00963d; color: white; padding: 10px; border-radius: 10px; border: none; }
-.key-close  { flex: 1; background: #555;    color: white; padding: 10px; border-radius: 10px; border: none; }
-
-/* ===== BOTTOM BUTTONS ===== */
-.bottom-row {
-    width: 100%;
-    display: flex;
-    gap: 12px;
-    margin-top: 20px;
-}
-
-.back-btn, .primary-btn {
+.key-delete {
     flex: 1;
+    background: #c62828;
+    color: white;
     padding: 14px;
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 14px;
+    border-radius: 12px;
     border: none;
+}
+
+.key-ok {
+    flex: 1;
+    background: #00963d;
+    color: white;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+}
+
+.key-close {
+    flex: 1;
+    background: #555;
+    color: white;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+}
+
+/* ===== UNTERE BUTTONS ===== */
+.bottom-row {
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 22px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn {
+    width: 47%;
+    padding: 18px 0;
+    border-radius: 16px;
+    border: none;
+    font-size: 26px;
+    font-weight: bold;
     color: white;
 }
 
 .back-btn { background: #333; }
-.primary-btn { background: #00963d; }
+.print-btn { background: #00963d; }
