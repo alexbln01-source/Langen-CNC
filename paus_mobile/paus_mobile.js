@@ -1,3 +1,46 @@
+/* ============================================================
+   ZEBRA SCANNER – 100% zuverlässig
+============================================================ */
+
+let scanString = "";
+let scanStarted = false;
+
+document.addEventListener("beforeinput", e => {
+    if (e.inputType === "insertText") {
+        scanStarted = true;
+        scanString += e.data ?? "";
+    }
+});
+
+document.addEventListener("keypress", e => {
+    scanStarted = true;
+    scanString += e.key;
+});
+
+document.addEventListener("keydown", e => {
+
+    if (e.key !== "Enter" || !scanStarted) return;
+
+    scanStarted = false;
+    const text = scanString.trim();
+    scanString = "";
+
+    const k = text.match(/K:([^;]+)/);
+    const d = text.match(/D:(\d+)/);
+
+    if (!k || !d) return;
+
+    const kom = k[1];
+    let dat = d[1];
+
+    if (dat.length === 3) dat = "0" + dat;
+    if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4);
+
+    kommission.value = kom;
+    lieferdatum.value = dat;
+
+    kommission.focus();
+});
 
 /* ============================================================
    DEVICE DETECTION
@@ -14,13 +57,6 @@ const isMobile = /android|iphone|ipad|ipod/.test(ua);
 const isPC = !isZebra && !isMobile;
 
 if (isPC) document.body.classList.add("pc-device");
-
-document.getElementById("deviceInfo").textContent =
-    isTC22 ? "Gerät: Zebra TC22" :
-    isTC21 ? "Gerät: Zebra TC21" :
-    isZebra ? "Gerät: Zebra" :
-    isMobile ? "Gerät: Mobil" : "Gerät: PC";
-
 
 /* ============================================================
    ELEMENTE
@@ -41,9 +77,8 @@ const backBtn = document.getElementById("backBtn");
 
 let activeInput = null;
 
-
 /* ============================================================
-   START
+   STARTVERHALTEN
 ============================================================ */
 window.onload = () => {
 
@@ -53,21 +88,21 @@ window.onload = () => {
     buildNumber();
 
     if (!isPC) {
-        [kommission, lieferdatum, keyboardInput].forEach(inp => {
+        [kommission, lieferdatum].forEach(inp => {
             inp.setAttribute("inputmode", "none");
             inp.setAttribute("autocomplete", "off");
             inp.setAttribute("autocorrect", "off");
             inp.setAttribute("autocapitalize", "off");
             inp.setAttribute("spellcheck", "false");
         });
-    } else {
-        kommission.removeAttribute("readonly");
-        lieferdatum.removeAttribute("readonly");
     }
 
-    if (isZebra) kommission.focus();
+    if (isZebra) {
+        kommission.focus();
+        setTimeout(() => kommission.focus(), 50);
+        setTimeout(() => kommission.focus(), 250);
+    }
 
-    /* BUTTON EVENTS */
     backBtn.onclick = () => history.back();
 
     druckenBtn.onclick = () => {
@@ -91,22 +126,20 @@ window.onload = () => {
     };
 };
 
-
 /* ============================================================
    BUILD INFO
 ============================================================ */
 function buildNumber() {
     const d = new Date(document.lastModified);
-    const stamp =
+    const t =
         d.getFullYear() + "-" +
         String(d.getMonth()+1).padStart(2,"0") + "-" +
         String(d.getDate()).padStart(2,"0") + "." +
         String(d.getHours()).padStart(2,"0") +
         String(d.getMinutes()).padStart(2,"0");
 
-    document.getElementById("buildInfo").textContent = "Build " + stamp;
+    document.getElementById("buildInfo").textContent = "Build " + t;
 }
-
 
 /* ============================================================
    FARBWAHL
@@ -117,7 +150,6 @@ document.querySelectorAll(".color-btn").forEach(btn => {
         btn.classList.add("active");
     });
 });
-
 
 /* ============================================================
    POPUP TASTATUR
@@ -164,46 +196,3 @@ keyboardDelete.onclick = () =>
 
 keyboardClose.onclick = () =>
     keyboardPopup.style.display = "none";
-/* ============================================================
-   ZEBRA SCANNER – 100 % zuverlässig (TC21/TC22)
-============================================================ */
-
-let scanString = "";
-let scanStarted = false;
-
-document.addEventListener("beforeinput", e => {
-    if (e.inputType === "insertText") {
-        scanStarted = true;
-        scanString += e.data ?? "";
-    }
-});
-
-document.addEventListener("keypress", e => {
-    scanStarted = true;
-    scanString += e.key;
-});
-
-document.addEventListener("keydown", e => {
-
-    if (e.key !== "Enter" || !scanStarted) return;
-
-    scanStarted = false;
-    const text = scanString.trim();
-    scanString = "";
-
-    const k = text.match(/K:([^;]+)/);
-    const d = text.match(/D:(\d+)/);
-
-    if (!k || !d) return;
-
-    const kom = k[1];
-    let dat = d[1];
-
-    if (dat.length === 3) dat = "0" + dat;
-    if (dat.length >= 4) dat = dat.slice(0,2) + "." + dat.slice(2,4);
-
-    kommission.value = kom;
-    lieferdatum.value = dat;
-
-    kommission.focus();
-});
