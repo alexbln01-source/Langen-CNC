@@ -57,7 +57,7 @@ window.onload = () => {
 
     buildNumber();
 
-    // Android-Tastatur entfernen
+    // Android Tastatur aus (aber Cursor sichtbar!)
     if (!isPC) {
         [kommission, lieferdatum, keyboardInput].forEach(inp => {
             inp.setAttribute("inputmode", "none");
@@ -66,19 +66,14 @@ window.onload = () => {
             inp.setAttribute("autocapitalize", "off");
             inp.setAttribute("spellcheck", "false");
         });
-    } else {
-        kommission.removeAttribute("readonly");
-        lieferdatum.removeAttribute("readonly");
     }
 
     if (isZebra) kommission.focus();
 
-    // Buttons
     backBtn.onclick = () => history.back();
 
     druckenBtn.onclick = () => {
 
-        // sicherstellen, dass getrennt wurde
         parseKommissionField();
 
         if (!kommission.value.trim())
@@ -141,7 +136,6 @@ function renderKeyboard() {
     NUM_KEYS.forEach(k => {
         const b = document.createElement("button");
         b.textContent = k;
-        b.type = "button";
         b.onclick = () => keyboardInput.value += k;
         keyboardKeys.appendChild(b);
     });
@@ -182,6 +176,7 @@ keyboardDelete.onclick = () =>
 keyboardClose.onclick = () =>
     keyboardPopup.style.display = "none";
 
+
 // ============================================================
 //  K:xxx;D:xxxx AUTOMATISCH TRENNEN
 // ============================================================
@@ -196,9 +191,10 @@ function parseKommissionField() {
     // --- Kommission ---
     let startK = text.indexOf("K:") + 2;
     let endK   = text.indexOf(";", startK);
-    if (endK === -1 || endK > text.indexOf("D:"))
-        endK = text.indexOf("D:");
-    if (endK === -1) endK = text.length;
+    const idxD = text.indexOf("D:");
+
+    if (endK === -1 || (idxD !== -1 && endK > idxD))
+        endK = idxD === -1 ? text.length : idxD;
 
     let kom = text.substring(startK, endK).trim();
 
@@ -213,11 +209,21 @@ function parseKommissionField() {
     lieferdatum.value = dat;
 }
 
-// Sobald Zebra ENTER sendet → sofort K/D trennen
+// Beim Verlassen des Feldes (TAB vom Scanner) → trennen
+kommission.addEventListener("blur", parseKommissionField);
+
+// Zebra sendet TAB / ENTER / UNIDENTIFIED → trennen
 document.addEventListener("keydown", e => {
+
     if (!isZebra) return;
-    if (e.key === "Enter") {
-        parseKommissionField();
-        kommission.focus();
+
+    if (document.activeElement !== kommission) return;
+
+    if (e.key === "Tab" || e.key === "Enter" || e.key === "Unidentified") {
+
+        setTimeout(() => {
+            parseKommissionField();
+            kommission.focus();
+        }, 10);
     }
 });
