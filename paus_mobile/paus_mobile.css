@@ -33,6 +33,7 @@ html, body {
 .page {
     width: 100%;
     max-width: 600px;
+    padding: 10px;
     text-align: center;
 }
 
@@ -41,24 +42,26 @@ html, body {
     font-size: 26px;
     font-weight: 900;
     color: #003a73;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
 }
 
-/* ===== COLOR BUTTONS ===== */
+/* ===== FARBBUTTONS ===== */
 .color-row {
     display: flex;
+    justify-content: center;
     gap: 12px;
-    margin-bottom: 16px;
+    margin: 10px 0 16px 0;
 }
 
 .color-btn {
     flex: 1;
     padding: 12px 0;
-    color: white;
     font-size: 18px;
     border-radius: 14px;
     border: none;
     font-weight: bold;
+    color: white;
+    background: #555;
 }
 
 .color-btn[data-color="red"] { background: #c62828; }
@@ -69,31 +72,50 @@ html, body {
     outline: 3px solid #1a73e8;
 }
 
+/* ===== CHECKBOX ===== */
+.vorgezogen-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    margin-bottom: 14px;
+}
+
 /* ===== INPUTS ===== */
 .input-field {
     width: 100%;
     padding: 14px;
+    font-size: 18px;
     margin-bottom: 12px;
     border: 1px solid #777;
     border-radius: 14px;
-    font-size: 18px;
-    background: white;
     text-align: center;
+    background: white;
 }
 
-/* ===== BLINK BORDER ===== */
-.input-blink {
-    border: 2px solid #1a73e8 !important;
-    animation: blink 1s infinite;
+/* Cursor sichtbar auch ohne Android-Tastatur */
+input[inputmode="none"] {
+    caret-color: black !important;
 }
 
-@keyframes blink {
-    0% { border-color: #1a73e8; }
-    50% { border-color: transparent; }
-    100% { border-color: #1a73e8; }
+/* ===== Tastatur öffnen (nur Zebra sichtbar) ===== */
+.keyboard-open-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    border: none;
+    background: #ddd;
+    color: #0055cc;
 }
 
-/* ===== POPUP KEYBOARD ===== */
+body.pc-device .keyboard-open-btn {
+    display: none !important;
+}
+
+/* ===== POPUP ===== */
 .keyboard-popup {
     display: none;
     position: fixed;
@@ -101,7 +123,7 @@ html, body {
     background: rgba(0,0,0,0.45);
     justify-content: center;
     align-items: center;
-    z-index: 900;
+    z-index: 999;
 }
 
 .keyboard-content {
@@ -109,7 +131,8 @@ html, body {
     max-width: 360px;
     background: white;
     padding: 16px;
-    border-radius: 16px;
+    border-radius: 14px;
+    text-align: center;
 }
 
 .keyboard-input {
@@ -117,8 +140,8 @@ html, body {
     padding: 10px;
     margin-bottom: 12px;
     font-size: 18px;
-    border-radius: 10px;
     border: 1px solid #777;
+    border-radius: 12px;
 }
 
 .keyboard-keys {
@@ -128,9 +151,9 @@ html, body {
 }
 
 .keyboard-keys button {
-    padding: 12px;
+    padding: 12px 0;
     font-size: 18px;
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid #aaa;
     background: #f2f2f2;
 }
@@ -138,9 +161,30 @@ html, body {
 .keyboard-actions {
     display: flex;
     gap: 8px;
-    margin-top: 10px;
+    margin-top: 12px;
 }
 
-.key-delete { flex: 1; background: #c62828; color: white; border-radius: 10px; border: none; padding: 10px; }
-.key-ok     { flex: 1; background: #00963d; color: white; border-radius: 10px; border: none; padding: 10px; }
-.key-close  { flex: 1; background: #444; color: white; border-radius: 10px; border: none; padding: 10px; }
+.key-delete { flex: 1; background: #c62828; color: white; padding: 10px; border-radius: 10px; border: none; }
+.key-ok     { flex: 1; background: #00963d; color: white; padding: 10px; border-radius: 10px; border: none; }
+.key-close  { flex: 1; background: #555;    color: white; padding: 10px; border-radius: 10px; border: none; }
+
+/* ===== BUTTONS ===== */
+.bottom-row {
+    width: 100%;
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.back-btn, .primary-btn {
+    flex: 1;
+    padding: 14px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 14px;
+    border: none;
+    color: white;
+}
+
+.back-btn { background: #333; }
+.primary-btn { background: #00963d; }
