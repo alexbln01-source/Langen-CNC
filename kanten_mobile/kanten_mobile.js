@@ -1,66 +1,96 @@
+/************************************************************
+ *  KANTEN – MOBILE VERSION (modernes Layout, alte Logik)
+ ************************************************************/
+
 let selectedCustomer = "";
-let customCustomer   = "";
+let customCustomer = "";
 
-/* =====================================
-   KUNDEN-LAYOUTS (Zeilensystem)
-===================================== */
+/* ============================================================
+   DEVICE-ERKENNUNG (wie Beschichtung)
+============================================================ */
+(function detectDevice() {
+    const ua = navigator.userAgent.toLowerCase();
+    const body = document.body;
 
+    const isZebra = ua.includes("zebra");
+    const isTC21 = isZebra && (ua.includes("tc21") || ua.includes("tc26"));
+    const isTC22 = isZebra && (ua.includes("tc22") || ua.includes("tc27"));
+    const isMobile = /android|iphone|ipad/.test(ua);
+
+    if (isTC21) body.classList.add("zebra-tc21");
+    if (isTC22) body.classList.add("zebra-tc22");
+    if (!isMobile && !isZebra) body.classList.add("pc-device");
+
+    const info = document.getElementById("deviceInfo");
+    if (info) {
+        if (isTC21) info.textContent = "Gerät: Zebra TC21";
+        else if (isTC22) info.textContent = "Gerät: Zebra TC22";
+        else if (isMobile) info.textContent = "Gerät: Mobilgerät";
+        else info.textContent = "Gerät: PC";
+    }
+
+    const buildInfo = document.getElementById("buildInfo");
+    if (buildInfo) {
+        const now = new Date();
+        const build = now.getFullYear().toString() +
+                      (now.getMonth() + 1).toString().padStart(2, "0") +
+                      now.getDate().toString().padStart(2, "0") + "." +
+                      now.getHours().toString().padStart(2, "0") +
+                      now.getMinutes().toString().padStart(2, "0");
+
+        buildInfo.textContent = "Build " + build;
+    }
+})();
+
+/* ============================================================
+   KUNDEN-LAYOUTS (unverändert)
+============================================================ */
 const kundenLayouts = {
-
     "Bergmann M-H": [
         { text: "<kunde>", size: "48pt", marginTop: "1mm" },
         { text: "Kanten", size: "48pt", marginTop: "2mm" },
         { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" },
         { text: "Palettennummer: ________", size: "28pt", marginTop: "12mm" }
     ],
-
     "Bücker": [
         { text: "<kunde>", size: "48pt", marginTop: "1mm" },
         { text: "Kanten", size: "48pt", marginTop: "2mm" },
         { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" },
         { text: "Palettennummer: ________", size: "28pt", marginTop: "12mm" }
     ],
-
     "Grimme": [
         { text: "<kunde>", size: "48pt", marginTop: "1mm" },
         { text: "Kanten", size: "48pt", marginTop: "2mm" },
         { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" },
         { text: "Palettennummer: ________", size: "28pt", marginTop: "12mm" }
     ],
-
     "Janzen": [
         { text: "<kunde>", size: "48pt", marginTop: "1mm" },
         { text: "Kanten", size: "48pt", marginTop: "2mm" },
         { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" },
         { text: "Palettennummer: ________", size: "28pt", marginTop: "12mm" }
     ],
-
     "Krone Spelle": [
         { text: "<kunde>", size: "48pt", marginTop: "1mm" },
         { text: "Kanten", size: "48pt", marginTop: "2mm" },
         { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" },
         { text: "Palettennummer: ________", size: "28pt", marginTop: "12mm" }
     ],
-
     "L.Bergmann": [
         { text: "<kunde>", size: "48pt", marginTop: "1mm" },
         { text: "Kanten", size: "48pt", marginTop: "2mm" },
         { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" },
         { text: "Palettennummer: ________", size: "28pt", marginTop: "12mm" }
     ],
-
     "PAUS": [
         { text: "<kunde>", size: "48pt", marginTop: "14mm" },
         { text: "Kanten", size: "48pt", marginTop: "2mm" },
         { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" }
-        
     ],
-
     "TOS": [
         { text: "<kunde>", size: "48pt", marginTop: "18mm" },
         { text: "Kanten", size: "48pt", marginTop: "2mm" }
-],
-
+    ],
     "SONSTIGE": [
         { text: "<kundeneingabe>", size: "48pt", marginTop: "1mm" },
         { text: "Kanten", size: "48pt", marginTop: "2mm" },
@@ -69,90 +99,75 @@ const kundenLayouts = {
     ]
 };
 
-/* =============================
-   Kunden-Auswahl
-============================= */
-
-const kundenButtons = document.querySelectorAll(".kunde-btn");
-
-kundenButtons.forEach(btn => {
+/* ============================================================
+   KUNDEN-AUSWAHL
+============================================================ */
+document.querySelectorAll(".kunde-btn").forEach(btn => {
     btn.addEventListener("click", () => {
 
-        kundenButtons.forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".kunde-btn")
+            .forEach(b => b.classList.remove("active"));
+
         btn.classList.add("active");
 
         const kunde = btn.dataset.kunde;
 
         if (kunde === "SONSTIGE") {
             openKeyboard();
-        } else {
-            selectedCustomer = kunde;
+            return;
         }
+
+        selectedCustomer = kunde;
     });
 });
 
-/* =============================
-   Popup Tastatur (neu, schön)
-============================= */
+/* ============================================================
+   POPUP FÜR „SONSTIGE KUNDEN“
+============================================================ */
+const kbPopup   = document.getElementById("keyboardPopup");
+const kbOverlay = document.getElementById("keyboardOverlay");
+const kbInput   = document.getElementById("kbInput");
 
-const kbPopup = document.getElementById("keyboardPopup");
-const kbInput = document.getElementById("keyboardInput");
-const kbGrid  = document.getElementById("keyboardGrid");
+document.getElementById("kbCloseBtn").onclick = () => closeKeyboard();
+document.getElementById("kbClearBtn").onclick = () => kbInput.value = "";
+
+document.getElementById("kbOkBtn").onclick = () => {
+    const val = kbInput.value.trim();
+    if (!val) {
+        alert("Bitte Kundenname eingeben.");
+        return;
+    }
+
+    customCustomer = val;
+    selectedCustomer = "SONSTIGE";
+
+    closeKeyboard();
+};
 
 function openKeyboard() {
     kbInput.value = customCustomer;
     kbPopup.style.display = "flex";
+    kbOverlay.style.display = "block";
     kbInput.focus();
-    buildKeyboard();
 }
 
 function closeKeyboard() {
     kbPopup.style.display = "none";
+    kbOverlay.style.display = "none";
 }
 
-function buildKeyboard() {
-
-    kbGrid.innerHTML = "";
-
-    const chars = "Q W E R T Z U I O P Ü A S D F G H J K L Ö Ä Y X C V B N M".split(" ");
-
-    chars.forEach(ch => {
-        const key = document.createElement("button");
-        key.textContent = ch;
-        key.onclick = () => { kbInput.value += ch; };
-        kbGrid.appendChild(key);
-    });
-}
-
-document.getElementById("kbDel").onclick = () => {
-    kbInput.value = kbInput.value.slice(0, -1);
-};
-
-document.getElementById("kbOk").onclick = () => {
-    const val = kbInput.value.trim();
-    if (!val) return alert("Bitte Kundenname eingeben.");
-
-    customCustomer = val;
-    selectedCustomer = "SONSTIGE";
-    closeKeyboard();
-};
-
-document.getElementById("kbClose").onclick = closeKeyboard;
-
-/* =============================
-   Navigation
-============================= */
-
+/* ============================================================
+   NAVIGATION
+============================================================ */
 document.getElementById("backBtn").onclick = () => history.back();
 
-/* =============================
-   DRUCK
-============================= */
-
-document.getElementById("printBtn").onclick = () => {
+/* ============================================================
+   DRUCKEN
+============================================================ */
+document.getElementById("druckBtn").onclick = () => {
 
     if (!selectedCustomer) {
-        alert("Bitte Kunde auswählen!");
+        alert("Bitte Kunde wählen!");
         return;
     }
 

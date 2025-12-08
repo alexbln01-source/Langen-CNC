@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Etikett Kanten</title>
-
-    <link rel="stylesheet" href="kanten_mobile.css">
-    <script defer src="kanten_mobile.js"></script>
+<meta charset="UTF-8">
+<title>Etikett Kanten</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="kanten_mobile.css">
 </head>
+
 <body>
 
+<!-- GERÄTE-INFO OBEN LINKS -->
+<div class="device-info" id="deviceInfo">Gerät …</div>
+
+<!-- HAUPTKARTE -->
 <div class="page">
 
     <h1 class="title">Etikett Kanten</h1>
@@ -23,39 +25,45 @@
         <button class="kunde-btn" data-kunde="Bücker">Bücker</button>
         <button class="kunde-btn" data-kunde="Grimme">Grimme</button>
         <button class="kunde-btn" data-kunde="Janzen">Janzen</button>
+
         <button class="kunde-btn" data-kunde="Krone Spelle">Krone Spelle</button>
         <button class="kunde-btn" data-kunde="L.Bergmann">L.Bergmann</button>
         <button class="kunde-btn" data-kunde="PAUS">PAUS</button>
         <button class="kunde-btn" data-kunde="TOS">TOS</button>
-        <button class="kunde-btn" id="sonstigeBtn" data-kunde="SONSTIGE">
-            Sonstige Kunden
-        </button>
 
+        <button class="kunde-btn" id="sonstigeBtn" data-kunde="SONSTIGE">Sonstige Kunden</button>
     </div>
 
     <div class="bottom-row">
-        <button id="backBtn"    class="back-btn">◀ Zurück</button>
-        <button id="printBtn"   class="primary-btn">Drucken</button>
+        <button id="backBtn" class="back-btn">◀ Zurück</button>
+        <button id="druckBtn" class="primary-btn">Drucken</button>
     </div>
 
 </div>
 
-<!-- Popup-Tastatur NUR für "Sonstige Kunden" -->
-<div id="keyboardPopup">
-    <div id="keyboardBox">
-        <h2>Kundenname eingeben</h2>
+<!-- BUILD-INFO UNTEN RECHTS -->
+<div class="build-info" id="buildInfo"></div>
 
-        <input type="text" id="keyboardInput" autocomplete="off">
+<!-- POPUP TASTATUR -->
+<div id="keyboardOverlay" class="kb-overlay"></div>
 
-        <div id="keyboardGrid"></div>
+<div id="keyboardPopup" class="kb-popup">
+    <div class="kb-popup-inner">
+        <div class="kb-popup-header">
+            <span>Kundenname eingeben</span>
+            <button id="kbCloseBtn" class="kb-close-btn">✕</button>
+        </div>
 
-        <div id="kbActions">
-            <button id="kbDel">Löschen</button>
-            <button id="kbOk">OK</button>
-            <button id="kbClose">Abbrechen</button>
+        <input type="text" id="kbInput" class="kb-input" placeholder="Kundenname">
+
+        <div class="kb-actions">
+            <button id="kbClearBtn" class="kb-secondary">Löschen</button>
+            <button id="kbOkBtn" class="kb-primary">OK</button>
         </div>
     </div>
 </div>
+
+<script src="kanten_mobile.js"></script>
 
 </body>
 </html>
