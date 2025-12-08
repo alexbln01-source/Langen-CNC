@@ -264,14 +264,18 @@ window.onload = () => {
         printContent.classList.add("offset-normal");
     }
 
-    /* Buttons */
     printBtn.onclick = () => {
     window.print();
 
-    // kleine Verzögerung, damit der Druckdialog vollständig schließen kann
+    // 1️⃣ Sofort zurück zur paus_mobile.html
     setTimeout(() => {
         window.location.href = "paus_mobile.html";
-    }, 500);
+    }, 500); // kleine Verzögerung, damit der Druckdialog schließen kann
+
+    // 2️⃣ Nach 5 Minuten zurück zur index.html (eine Ebene höher)
+    setTimeout(() => {
+        window.location.href = "../index.html";
+    }, 5 * 60 * 1000);
 };
     backBtn.onclick = () => history.back();
 };
