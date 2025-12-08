@@ -265,7 +265,14 @@ window.onload = () => {
     }
 
     /* Buttons */
-    printBtn.onclick = () => window.print();
+    printBtn.onclick = () => {
+    window.print();
+
+    // kleine Verzögerung, damit der Druckdialog vollständig schließen kann
+    setTimeout(() => {
+        window.location.href = "paus_mobile.html";
+    }, 500);
+};
     backBtn.onclick = () => history.back();
 };
 </script>
