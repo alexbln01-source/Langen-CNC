@@ -235,11 +235,19 @@ window.onload = () => {
     previewContent.innerHTML = html;
     printContent.innerHTML   = html;
 
-    /* 🔶 Drucken */
-    printBtn.onclick = () => {
-        window.print();   // KEIN redirect mehr!
-    };
+   printBtn.onclick = () => {
+    window.print();
 
+    // 1️⃣ Sofort zurück zur paus_mobile.html
+    setTimeout(() => {
+        window.location.href = "beschichtung_mobile.html";
+    }, 500); // kleine Verzögerung, damit der Druckdialog schließen kann
+
+    // 2️⃣ Nach 5 Minuten zurück zur index.html (eine Ebene höher)
+    setTimeout(() => {
+        window.location.href = "../index.html";
+    }, 5 * 60 * 1000);
+};
     /* 🔶 Zurück */
     backBtn.onclick = () => {
         history.back();
