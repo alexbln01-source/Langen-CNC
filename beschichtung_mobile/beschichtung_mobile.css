@@ -216,7 +216,7 @@ body.pc-device .page {
 }
 
 body.pc-device .kunden-grid {
-    grid-template-columns: repeat(3, 220px);  /* statt 300px */
+    grid-template-columns: repeat(3, 317px);  /* statt 315px */
     gap: 10px;
 }
 
