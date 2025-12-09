@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Kanten – Druck</title>
+<title>Druck – Kanten / Schweißen</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
@@ -15,86 +15,61 @@ html, body {
     overflow: hidden;
 }
 
-/* Vorschau */
+/* VORSCHAU */
 .preview-wrapper {
     width: 100%;
-    height: calc(100% - 150px);
+    height: calc(100% - 140px);
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
 }
 
 .preview-area {
     width: 148mm;
     height: 105mm;
-    background: white;
-    box-shadow: 0 0 15px rgba(0,0,0,0.25);
-    transform-origin: center;
+    background: #fff;
+    border: 1px solid #bbb;
+    box-shadow: 0 0 12px rgba(0,0,0,0.35);
+    transform-origin: top center;
 }
 
-@media (max-width: 900px) {
-    .preview-area { transform: scale(0.60); }
-}
-@media (min-width: 901px) {
-    .preview-area { transform: scale(0.75); }
-}
+@media (min-width: 1200px) { .preview-area { transform: scale(0.85); } }
+@media (max-width: 1199px) { .preview-area { transform: scale(0.55); } }
 
-/* Etikett */
 .etikett {
     width: 148mm;
     height: 105mm;
     padding: 8mm;
-    box-sizing: border-box;
     text-align: center;
-    font-weight: bold;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    box-sizing: border-box;
 }
 
-.z {
-    font-weight: inherit;
-}
+.etikett div { font-weight: bold; }
 
-/* Buttons unten */
+/* BUTTONS */
 .bottom-bar {
-    height: 60px;
+    height: 70px;
     display: flex;
     gap: 16px;
-    padding: 0 20px;
-    margin-top: 20px;
+    padding: 10px 18px;
 }
 
 .btn {
     flex: 1;
     border: none;
     border-radius: 14px;
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 20px;
     color: white;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 .back-btn { background: #444; }
-.print-btn { background: #00963d; }
+.print-btn { background: #15803d; }
 
-/* Print */
 @media print {
-    .preview-wrapper, .bottom-bar { display:none !important; }
-
-    html, body {
-        width: 148mm !important;
-        height: 105mm !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    #printArea {
-        display: block !important;
-        width: 148mm !important;
-        height: 105mm !important;
-    }
-
+    .preview-wrapper, .bottom-bar { display: none !important; }
+    #printArea { display: block !important; }
     @page { size: A6 landscape; margin: 0; }
 }
 </style>
@@ -102,72 +77,153 @@ html, body {
 
 <body>
 
+<!-- VORSCHAU -->
 <div class="preview-wrapper">
     <div class="preview-area">
         <div id="previewContent" class="etikett"></div>
     </div>
 </div>
 
+<!-- DRUCKBEREICH -->
 <div id="printArea" class="etikett" style="display:none;">
     <div id="printContent"></div>
 </div>
 
+<!-- BUTTONS -->
 <div class="bottom-bar">
-    <button class="btn back-btn" id="backBtn">◀ Zurück</button>
-    <button class="btn print-btn" id="printBtn">Drucken</button>
+    <button class="btn back-btn">◀ Zurück</button>
+    <button class="btn print-btn">Drucken</button>
 </div>
 
+
 <script>
-function escapeHtml(str) {
-    return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
+/* PARAMETER */
+const qs     = new URLSearchParams(location.search);
+const kunde  = qs.get("kunde") || "Sonstige Kunden";
+const art    = qs.get("art") || "kanten";
+
+/* KANTEN LAYOUTS */
+const kantenLayouts = {
+    "Grimme": [
+        { text: "<kunde>", size: "38pt", marginTop: "4mm" },
+        { text: "Kanten", size: "32pt", marginTop: "8mm" },
+        { text: "K-Termin: ________", size: "22pt", marginTop: "16mm" },
+        { text: "Palettennummer: ________", size: "22pt", marginTop: "10mm" }
+    ],
+    "Bücker": [
+        { text: "<kunde>", size: "38pt", marginTop: "4mm" },
+        { text: "Kanten", size: "32pt", marginTop: "6mm" },
+        { text: "K-Termin: ________", size: "22pt", marginTop: "14mm" }
+    ],
+    "Sonstige Kunden": [
+        { text: "<kunde>", size: "38pt", marginTop: "4mm" },
+        { text: "Kanten", size: "32pt", marginTop: "8mm" },
+        { text: "K-Termin: ________", size: "22pt", marginTop: "14mm" },
+        { text: "Palettennummer: ________", size: "22pt", marginTop: "10mm" }
+    ]
+};
+
+/* SCHWEIßEN-LAYOUTS */
+const schweissenLayouts = {
+
+    "Bergmann M-H": [
+        { text: "<kunde>", size: "38pt", marginTop: "6mm" },
+        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
+        { text: "Auftr.-NR: ________", size: "22pt", marginTop: "14mm" },
+        { text: "Pos.: ________", size: "22pt", marginTop: "8mm" },
+        { text: "SW-Termin: ________", size: "22pt", marginTop: "8mm" }
+    ],
+
+    "Bücker": [
+        { text: "<kunde>", size: "38pt", marginTop: "6mm" },
+        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
+        { text: "SW-Termin: ________", size: "22pt", marginTop: "20mm" }
+    ],
+
+    "Grimme": [
+        { text: "<kunde>", size: "38pt", marginTop: "6mm" },
+        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
+        { text: "SW-Termin: ________", size: "22pt", marginTop: "20mm" }
+    ],
+
+    "Janzen": [
+        { text: "<kunde>", size: "38pt", marginTop: "6mm" },
+        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
+        { text: "SW-Termin: ________", size: "22pt", marginTop: "16mm" }
+    ],
+
+    "L.Bergmann": [
+        { text: "<kunde>", size: "38pt", marginTop: "6mm" },
+        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
+        { text: "SW-Termin: ________", size: "22pt", marginTop: "16mm" }
+    ],
+
+    "Krone Spelle": [
+        { text: "<kunde>", size: "34pt", marginTop: "6mm" },
+        { text: "Auftr.-NR: ________", size: "22pt", marginTop: "10mm" },
+        { text: "Bezeichnung: ________", size: "22pt", marginTop: "8mm" },
+        { text: "Stückzahl: ________", size: "22pt", marginTop: "8mm" },
+        { text: "Liefertermin: ________", size: "22pt", marginTop: "8mm" }
+    ],
+
+    "PAUS": [
+        { text: "<kunde>", size: "38pt", marginTop: "10mm" },
+        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
+        { text: "Prod.-NR: ________", size: "22pt", marginTop: "12mm" },
+        { text: "SW-Termin: ________", size: "22pt", marginTop: "10mm" }
+    ],
+
+    "TOS": [
+        { text: "<kunde>", size: "38pt", marginTop: "12mm" },
+        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
+        { text: "Liefertermin: ________", size: "22pt", marginTop: "16mm" }
+    ],
+
+    "Sonstige Kunden": [
+        { text: "<kunde>", size: "38pt", marginTop: "6mm" },
+        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
+        { text: "SW-Termin: ________", size: "22pt", marginTop: "16mm" }
+    ]
+};
+
+/* LAYOUT wählen */
+const layout = (art === "schweissen") ? schweissenLayouts : kantenLayouts;
+let chosen = layout[kunde] ?? layout["Sonstige Kunden"];
+
+/* RENDERING */
+function render(rows, name) {
+    return rows.map(r => `
+        <div style="font-size:${r.size}; margin-top:${r.marginTop};">
+            ${r.text.replace("<kunde>", name)}
+        </div>
+    `).join("");
 }
 
-window.onload = () => {
+const html = render(chosen, kunde);
+document.getElementById("previewContent").innerHTML = html;
+document.getElementById("printContent").innerHTML = html;
 
-    const qs   = new URLSearchParams(location.search);
-    const raw  = qs.get("data");
-    if (!raw) {
-        document.getElementById("previewContent").textContent = "Keine Daten";
-        return;
-    }
 
-    const data   = JSON.parse(raw);
-    const kunde  = data.kunde || "";
-    const custom = data.custom || "";
-    let layout   = data.layout || [];
+/* ============================================================
+   ⭐ DRUCK & RÜCKSPRUNG LOGIK ⭐
+============================================================ */
+document.querySelector(".print-btn").onclick = () => {
+    window.print();
 
-    // Platzhalter ersetzen
-    layout = layout.map(line => {
-        let text = line.text || "";
-        if (text === "<kunde>") text = kunde;
-        if (text === "<kundeneingabe>") text = custom || kunde;
-        return {
-            text: text,
-            size: line.size || "32pt",
-            marginTop: line.marginTop || "4mm"
-        };
-    });
+    // 1️⃣ Nach dem Drucken zurück zu PAUS
+    setTimeout(() => {
+        window.location.href = "paus_mobile.html";
+    }, 500);
 
-    let html = "";
-    layout.forEach(line => {
-        html += `<div class="z" style="
-            font-size:${line.size};
-            margin-top:${line.marginTop};
-        ">${escapeHtml(line.text)}</div>`;
-    });
+    // 2️⃣ Nach 5 Minuten zur Startseite
+    setTimeout(() => {
+        window.location.href = "../index.html";
+    }, 5 * 60 * 1000);
+};
 
-    document.getElementById("previewContent").innerHTML = html;
-    document.getElementById("printContent").innerHTML   = html;
-
-    printBtn.onclick = () => {
-        window.print();
-        setTimeout(() => history.back(), 300);
-    };
-
-    backBtn.onclick = () => history.back();
+/*  ⬅⬅⬅  HIER: Zurück geht SOFORT zur Hauptseite */
+document.querySelector(".back-btn").onclick = () => {
+    window.location.href = "../index.html";
 };
 </script>
 

@@ -1,110 +1,95 @@
-/************************************************************
- *  KANTEN – MOBILE VERSION (modernes Layout, alte Logik)
- ************************************************************/
-
 let selectedCustomer = "";
 let customCustomer = "";
+let selectedArt = "kanten";
 
-/* ============================================================
-   DEVICE-ERKENNUNG (wie Beschichtung)
-============================================================ */
-(function detectDevice() {
+/* ===========================================
+   GERÄTEINFO + BUILDINFO
+=========================================== */
+(function () {
     const ua = navigator.userAgent.toLowerCase();
     const body = document.body;
 
-    const isZebra = ua.includes("zebra");
-    const isTC21 = isZebra && (ua.includes("tc21") || ua.includes("tc26"));
-    const isTC22 = isZebra && (ua.includes("tc22") || ua.includes("tc27"));
-    const isMobile = /android|iphone|ipad/.test(ua);
+    let device = "Unbekanntes Gerät";
 
-    if (isTC21) body.classList.add("zebra-tc21");
-    if (isTC22) body.classList.add("zebra-tc22");
-    if (!isMobile && !isZebra) body.classList.add("pc-device");
-
-    const info = document.getElementById("deviceInfo");
-    if (info) {
-        if (isTC21) info.textContent = "Gerät: Zebra TC21";
-        else if (isTC22) info.textContent = "Gerät: Zebra TC22";
-        else if (isMobile) info.textContent = "Gerät: Mobilgerät";
-        else info.textContent = "Gerät: PC";
+    if (ua.includes("zebra")) {
+        if (ua.includes("tc21")) device = "Zebra TC21";
+        else if (ua.includes("tc22")) device = "Zebra TC22";
+        else if (ua.includes("tc26")) device = "Zebra TC26";
+        else if (ua.includes("tc27")) device = "Zebra TC27";
+        else device = "Zebra Scanner";
+    } else if (ua.includes("android")) {
+        device = "Android Gerät";
+    } else if (ua.includes("iphone") || ua.includes("ipad")) {
+        device = "iOS Gerät";
+    } else {
+        device = "PC";
+        body.classList.add("pc-device");
     }
 
-    const buildInfo = document.getElementById("buildInfo");
-    if (buildInfo) {
-        const now = new Date();
-        const build = now.getFullYear().toString() +
-                      (now.getMonth() + 1).toString().padStart(2, "0") +
-                      now.getDate().toString().padStart(2, "0") + "." +
-                      now.getHours().toString().padStart(2, "0") +
-                      now.getMinutes().toString().padStart(2, "0");
+    document.getElementById("deviceInfo").textContent = "Gerät: " + device;
 
-        buildInfo.textContent = "Build " + build;
-    }
+    // Build erzeugen
+    const now = new Date();
+    const build =
+        now.getFullYear().toString() +
+        (now.getMonth()+1).toString().padStart(2, "0") +
+        now.getDate().toString().padStart(2, "0") + "." +
+        now.getHours().toString().padStart(2, "0") +
+        now.getMinutes().toString().padStart(2, "0");
+
+    document.getElementById("buildInfo").textContent = "Build " + build;
 })();
+    
 
-/* ============================================================
-   KUNDEN-LAYOUTS (unverändert)
-============================================================ */
-const kundenLayouts = {
-    "Bergmann M-H": [
-        { text: "<kunde>", size: "48pt", marginTop: "1mm" },
-        { text: "Kanten", size: "48pt", marginTop: "2mm" },
-        { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" },
-        { text: "Palettennummer: ________", size: "28pt", marginTop: "12mm" }
-    ],
-    "Bücker": [
-        { text: "<kunde>", size: "48pt", marginTop: "1mm" },
-        { text: "Kanten", size: "48pt", marginTop: "2mm" },
-        { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" },
-        { text: "Palettennummer: ________", size: "28pt", marginTop: "12mm" }
-    ],
-    "Grimme": [
-        { text: "<kunde>", size: "48pt", marginTop: "1mm" },
-        { text: "Kanten", size: "48pt", marginTop: "2mm" },
-        { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" },
-        { text: "Palettennummer: ________", size: "28pt", marginTop: "12mm" }
-    ],
-    "Janzen": [
-        { text: "<kunde>", size: "48pt", marginTop: "1mm" },
-        { text: "Kanten", size: "48pt", marginTop: "2mm" },
-        { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" },
-        { text: "Palettennummer: ________", size: "28pt", marginTop: "12mm" }
-    ],
-    "Krone Spelle": [
-        { text: "<kunde>", size: "48pt", marginTop: "1mm" },
-        { text: "Kanten", size: "48pt", marginTop: "2mm" },
-        { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" },
-        { text: "Palettennummer: ________", size: "28pt", marginTop: "12mm" }
-    ],
-    "L.Bergmann": [
-        { text: "<kunde>", size: "48pt", marginTop: "1mm" },
-        { text: "Kanten", size: "48pt", marginTop: "2mm" },
-        { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" },
-        { text: "Palettennummer: ________", size: "28pt", marginTop: "12mm" }
-    ],
-    "PAUS": [
-        { text: "<kunde>", size: "48pt", marginTop: "14mm" },
-        { text: "Kanten", size: "48pt", marginTop: "2mm" },
-        { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" }
-    ],
-    "TOS": [
-        { text: "<kunde>", size: "48pt", marginTop: "18mm" },
-        { text: "Kanten", size: "48pt", marginTop: "2mm" }
-    ],
-    "SONSTIGE": [
-        { text: "<kundeneingabe>", size: "48pt", marginTop: "1mm" },
-        { text: "Kanten", size: "48pt", marginTop: "2mm" },
-        { text: "K-Termin: ________", size: "28pt", marginTop: "12mm" },
-        { text: "Palettennummer: ________", size: "28pt", marginTop: "12mm" }
-    ]
+/* ===========================================
+   POPUP – Sonstige Kunden
+=========================================== */
+const popupOverlay = document.getElementById("popupOverlay");
+const popupInput = document.getElementById("popupInput");
+const popupOk = document.getElementById("popupOk");
+const popupCancel = document.getElementById("popupCancel");
+const sonstigeBtn = document.getElementById("sonstigeBtn");
+
+function openPopup() {
+    popupOverlay.style.display = "flex";
+    popupInput.value = "";
+    popupInput.focus();
+}
+
+function closePopup() {
+    popupOverlay.style.display = "none";
+}
+
+// Enter speichern
+popupInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") popupOk.click();
+});
+
+// Popup OK
+popupOk.onclick = () => {
+    const name = popupInput.value.trim();
+    if (!name) return;
+
+    customCustomer = name;
+    selectedCustomer = "SONSTIGE";
+
+    sonstigeBtn.textContent = name;
+
+    closePopup();
 };
 
-/* ============================================================
-   KUNDEN-AUSWAHL
-============================================================ */
-document.querySelectorAll(".kunde-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
+// Popup abbrechen
+popupCancel.onclick = () => {
+    closePopup();
+};
 
+
+/* ===========================================
+   KUNDENAUSWAHL
+=========================================== */
+document.querySelectorAll(".kunde-btn").forEach(btn => {
+    btn.onclick = () => {
+        // Active entfernen
         document.querySelectorAll(".kunde-btn")
             .forEach(b => b.classList.remove("active"));
 
@@ -113,70 +98,71 @@ document.querySelectorAll(".kunde-btn").forEach(btn => {
         const kunde = btn.dataset.kunde;
 
         if (kunde === "SONSTIGE") {
-            openKeyboard();
+            openPopup();
             return;
         }
 
+        // Normaler Kunde
         selectedCustomer = kunde;
-    });
+
+        // Button zurücksetzen!
+        sonstigeBtn.textContent = "Sonstige Kunden";
+
+        customCustomer = "";
+    };
 });
 
-/* ============================================================
-   POPUP FÜR „SONSTIGE KUNDEN“
-============================================================ */
-const kbPopup   = document.getElementById("keyboardPopup");
-const kbOverlay = document.getElementById("keyboardOverlay");
-const kbInput   = document.getElementById("kbInput");
 
-document.getElementById("kbCloseBtn").onclick = () => closeKeyboard();
-document.getElementById("kbClearBtn").onclick = () => kbInput.value = "";
+/* ===========================================
+   DRUCKART
+=========================================== */
+const btnKanten = document.getElementById("btnKanten");
+const btnSchweissen = document.getElementById("btnSchweissen");
 
-document.getElementById("kbOkBtn").onclick = () => {
-    const val = kbInput.value.trim();
-    if (!val) {
-        alert("Bitte Kundenname eingeben.");
-        return;
-    }
-
-    customCustomer = val;
-    selectedCustomer = "SONSTIGE";
-
-    closeKeyboard();
+btnKanten.onclick = () => {
+    selectedArt = "kanten";
+    btnKanten.classList.add("active");
+    btnSchweissen.classList.remove("active");
 };
 
-function openKeyboard() {
-    kbInput.value = customCustomer;
-    kbPopup.style.display = "flex";
-    kbOverlay.style.display = "block";
-    kbInput.focus();
-}
+btnSchweissen.onclick = () => {
+    selectedArt = "schweissen";
+    btnSchweissen.classList.add("active");
+    btnKanten.classList.remove("active");
+};
 
-function closeKeyboard() {
-    kbPopup.style.display = "none";
-    kbOverlay.style.display = "none";
-}
 
-/* ============================================================
-   NAVIGATION
-============================================================ */
-document.getElementById("backBtn").onclick = () => history.back();
-
-/* ============================================================
+/* ===========================================
    DRUCKEN
-============================================================ */
+=========================================== */
 document.getElementById("druckBtn").onclick = () => {
 
     if (!selectedCustomer) {
-        alert("Bitte Kunde wählen!");
+        alert("Bitte einen Kunden auswählen!");
         return;
     }
 
-    const data = {
-        kunde: selectedCustomer,
-        custom: customCustomer,
-        layout: kundenLayouts[selectedCustomer]
-    };
+    // korrekter Name für Übergabe
+    let kundeName =
+        selectedCustomer === "SONSTIGE"
+            ? customCustomer
+            : selectedCustomer;
 
-    window.location.href =
-        "druck_kanten.html?data=" + encodeURIComponent(JSON.stringify(data));
+    if (!kundeName || kundeName.trim() === "") {
+        alert("Bitte Kundennamen eingeben!");
+        return;
+    }
+
+    const url =
+        "druck_kanten.html?kunde=" +
+        encodeURIComponent(kundeName) +
+        "&art=" + encodeURIComponent(selectedArt);
+
+    window.location.href = url;
 };
+
+
+/* ===========================================
+   ZURÜCK BUTTON
+=========================================== */
+document.getElementById("backBtn").onclick = () => history.back();

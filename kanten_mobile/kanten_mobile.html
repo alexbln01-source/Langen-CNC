@@ -2,68 +2,57 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Etikett Kanten</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kanten / Schweißen</title>
 <link rel="stylesheet" href="kanten_mobile.css">
 </head>
 
 <body>
 
-<!-- GERÄTE-INFO OBEN LINKS -->
-<div class="device-info" id="deviceInfo">Gerät …</div>
+<div class="device-info" id="deviceInfo">Gerät:</div>
+<div class="build-info" id="buildInfo">Build</div>
 
-<!-- HAUPTKARTE -->
 <div class="page">
 
-    <h1 class="title">Etikett Kanten</h1>
+    <div class="title">Kanten / Schweißen</div>
 
-    <div class="grid-label">Kunde wählen:</div>
+    <div class="grid-label">Kunde auswählen</div>
 
     <div class="kunden-grid">
-
         <button class="kunde-btn" data-kunde="Bergmann M-H">Bergmann M-H</button>
         <button class="kunde-btn" data-kunde="Bücker">Bücker</button>
         <button class="kunde-btn" data-kunde="Grimme">Grimme</button>
         <button class="kunde-btn" data-kunde="Janzen">Janzen</button>
-
         <button class="kunde-btn" data-kunde="Krone Spelle">Krone Spelle</button>
         <button class="kunde-btn" data-kunde="L.Bergmann">L.Bergmann</button>
         <button class="kunde-btn" data-kunde="PAUS">PAUS</button>
         <button class="kunde-btn" data-kunde="TOS">TOS</button>
+        <button class="kunde-btn" data-kunde="SONSTIGE" id="sonstigeBtn">Sonstige Kunden</button>
+    </div>
 
-        <button class="kunde-btn" id="sonstigeBtn" data-kunde="SONSTIGE">Sonstige Kunden</button>
+    <div class="druckart-row">
+        <button class="druckart-btn active" data-art="kanten" id="btnKanten">Kanten</button>
+        <button class="druckart-btn" data-art="schweissen" id="btnSchweissen">Schweißen</button>
     </div>
 
     <div class="bottom-row">
-        <button id="backBtn" class="back-btn">◀ Zurück</button>
-        <button id="druckBtn" class="primary-btn">Drucken</button>
+        <button class="back-btn" id="backBtn">◀ Zurück</button>
+        <button class="primary-btn" id="druckBtn">🖨️ Drucken</button>
     </div>
-
 </div>
 
-<!-- BUILD-INFO UNTEN RECHTS -->
-<div class="build-info" id="buildInfo"></div>
+<!-- ======================================
+     POPUP – Sonstige Kunden
+====================================== -->
+<div class="popup-overlay" id="popupOverlay">
+    <div class="popup">
+        <h3>Kundenname eingeben</h3>
+        <input id="popupInput" type="text" placeholder="Kundenname eingeben…" autofocus>
 
-<!-- POPUP TASTATUR -->
-<div id="keyboardOverlay" class="kb-overlay"></div>
-
-<div id="keyboardPopup" class="kb-popup">
-    <div class="kb-popup-inner">
-        <div class="kb-popup-header">
-            <span>Kundenname eingeben</span>
-            <button id="kbCloseBtn" class="kb-close-btn">✕</button>
-        </div>
-
-        <input type="text" id="kbInput" class="kb-input" placeholder="Kundenname">
-
-        <div class="kb-actions">
-            <button id="kbClearBtn" class="kb-secondary">Löschen</button>
-            <button id="kbOkBtn" class="kb-primary">OK</button>
-        </div>
+        <button class="ok-btn" id="popupOk">OK</button>
+        <button class="cancel-btn" id="popupCancel">Abbrechen</button>
     </div>
 </div>
 
 <script src="kanten_mobile.js"></script>
-
 </body>
 </html>
