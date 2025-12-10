@@ -3,7 +3,7 @@
 }
 
 /* ============================================================
-   Grundlayout – identisch zu Beschichtung
+   Grundlayout – wie Beschichtung
 ============================================================ */
 html, body {
     margin: 0;
@@ -18,21 +18,47 @@ html, body {
     align-items: center;
     overflow: hidden;
 }
+/* Gerät oben links */
+.device-info {
+    position: fixed;
+    top: 10px;
+    left: 14px;
+    background: rgba(0,0,0,0.08);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    z-index: 9999;
+    pointer-events: none;
+}
 
+/* Build unten rechts */
+.build-info {
+    position: fixed;
+    bottom: 10px;
+    right: 14px;
+    font-size: 12px;
+    color: #666;
+    z-index: 9999;
+    pointer-events: none;
+}
 /* ============================================================
-   FEHLENDER BLOCK – jetzt eingefügt!
-   Dieser Block macht das Layout identisch zu Beschichtung.
+   Seite – identisch zu Beschichtung
 ============================================================ */
 .page {
     width: 94vw;
     height: 92vh;
+
     display: flex;
     flex-direction: column;
     align-items: center;
+
     padding: 10px;
-   transform: scale(1.15);        /* 🔥 gleiche Skalierung wie Beschichtung */
-    transform-origin: top center;  /* wichtig für iOS */
+
+    /* Wichtig: iOS / iPhone Skalierung wie Beschichtung */
+    transform: scale(1.15);
+    transform-origin: top center;
 }
+
 /* ============================================================
    Titel
 ============================================================ */
@@ -55,7 +81,7 @@ html, body {
 }
 
 /* ============================================================
-   Kundenauswahl-Grid – identisch zu Beschichtung
+   Grid
 ============================================================ */
 .kunden-grid {
     width: 100%;
@@ -71,10 +97,9 @@ html, body {
    TC21 Layout
 ============================================================ */
 body.zebra-tc21 .kunden-grid {
-    padding: 0 6px;
     grid-template-columns: repeat(3, 100px);
+    padding: 0 6px;
     gap: 8px;
-    justify-content: center;
 }
 
 body.zebra-tc21 .kunde-btn {
@@ -127,30 +152,34 @@ body.zebra-tc22 .kunde-btn {
 }
 
 /* ============================================================
-   Druckart-Buttons
+   Auswahl: Kanten / Schweißen
 ============================================================ */
 .druckart-row {
     width: 90%;
-    margin-top: 14px;
     display: flex;
-    gap: 12px;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 20px;
 }
 
 .druckart-btn {
     flex: 1;
     padding: 14px;
-    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #003a73;
+    background: #e8eef5;
     border: none;
-    background: #777;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
+    border-radius: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+
+    transition: background 0.15s, color 0.15s;
 }
 
 .druckart-btn.active {
-    background: #003a73;
+    background: #007bff;
+    color: white;
 }
-
 /* ============================================================
    Untere Buttons
 ============================================================ */
@@ -183,7 +212,6 @@ body.zebra-tc22 .kunde-btn {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.5);
-
     display: none;
     justify-content: center;
     align-items: center;
@@ -223,13 +251,16 @@ body.zebra-tc22 .kunde-btn {
 .cancel-btn { background: #a00; }
 
 /* ============================================================
-   PC Layout (wie Beschichtung)
+   PC Layout
 ============================================================ */
 body.pc-device .page {
     width: 80vw;
     height: auto;
     max-width: 1100px;
     padding-top: 20px;
+
+    /* scale entfernen bei PC */
+    transform: none;
 }
 
 body.pc-device .kunden-grid {
