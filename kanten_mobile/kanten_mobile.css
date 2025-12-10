@@ -230,7 +230,13 @@ body.zebra-tc21 .kunde-btn {
     padding: 4px;
     font-size: 12px;
 }
-
+/* =============================
+   Mobile Fokus
+============================= */
+.mobile-focus {
+    outline: 4px solid #1a73e8 !important;
+    border-radius: 14px;
+}
 /* =========================================
    TC22 – mittleres Gerät
 ========================================= */
