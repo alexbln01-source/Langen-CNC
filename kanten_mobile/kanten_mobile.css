@@ -12,19 +12,20 @@
 html, body {
     margin: 0;
     padding: 0;
-    width: 100%;
     height: 100%;
+    width: 100%;
     background: #eef1f4;
     font-family: Arial, sans-serif;
 
     display: flex;
-    justify-content: flex-start;    /* Elemente starten oben */
-    align-items: flex-start;        /* NICHT mittig */
+    justify-content: flex-start;
+    align-items: flex-start;
+
     overflow-x: hidden;
 }
 
 /* ============================================================
-   DEVICE INFO & BUILD
+   DEVICE INFO & BUILD INFO
 ============================================================ */
 .device-info {
     position: fixed;
@@ -33,8 +34,8 @@ html, body {
     padding: 4px 8px;
     border-radius: 6px;
     font-size: 12px;
+    background: rgba(0,0,0,0.1);
     color: #003a73;
-    background: rgba(0,0,0,0.08);
     z-index: 9999;
 }
 
@@ -48,11 +49,10 @@ html, body {
 }
 
 /* ============================================================
-   PAGE – EXAKT WIE PAUS
+   PAGE – exakt wie PAUS (inkl. ZOOM!)
 ============================================================ */
 .page {
     width: 94vw;
-    height: auto;
     min-height: 92vh;
 
     display: flex;
@@ -60,6 +60,10 @@ html, body {
     align-items: center;
 
     padding: 10px;
+
+    /* ⭐ WICHTIG: Der Grund, warum PAUS groß aussieht */
+    transform: scale(1.18);
+    transform-origin: top center;
 }
 
 /* ============================================================
@@ -68,55 +72,54 @@ html, body {
 .title {
     font-size: 26px;
     font-weight: 900;
-    color: #003a73;
-    margin-top: 10px;
-    margin-bottom: 14px;
     text-align: center;
+    color: #003a73;
+    margin-bottom: 12px;
 }
 
 /* ============================================================
-   GRID LABEL
+   GRID-LABEL
 ============================================================ */
 .grid-label {
     font-size: 18px;
     font-weight: 900;
     color: #003a73;
-    text-align: center;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 /* ============================================================
-   KUNDEN GRID – wie PAUS
+   KUNDEN-GRID – also wie PAUS: groß & luftig
 ============================================================ */
 .kunden-grid {
     width: 100%;
     padding: 0 8px;
+
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 14px;
 }
 
 /* ============================================================
-   KUNDEN BUTTONS – GROSS wie PAUS
+   KUNDEN BUTTONS – groß wie PAUS
 ============================================================ */
 .kunde-btn {
     width: 100%;
-    min-height: 90px;                /* PAUS Größe */
-    padding: 10px;
+    min-height: 90px;
+
+    background: #fff;
+    border: none;
+    border-radius: 14px;
 
     display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
 
-    border-radius: 14px;
-    border: none;
-
-    font-size: 18px;                 /* PAUS Größe */
+    font-size: 18px;
     font-weight: 700;
     color: #003a73;
 
-    background: white;
+    text-align: center;
+
     box-shadow: 0 1px 4px rgba(0,0,0,0.25);
 }
 
@@ -126,42 +129,50 @@ html, body {
 }
 
 /* ============================================================
-   KANTEN / SCHWEISSEN Buttons – angepasst wie PAUS
+   TC21 – kompakter
+============================================================ */
+body.zebra-tc21 .kunde-btn {
+    min-height: 70px;
+    font-size: 14px;
+}
+
+/* ============================================================
+   DRUCKART BUTTONS (Kanten / Schweißen)
 ============================================================ */
 .druckart-row {
     width: 100%;
+    padding: 0 8px;
     display: flex;
     justify-content: center;
     gap: 16px;
-    margin: 20px 0;
+    margin-top: 20px;
 }
 
 .druckart-btn {
     flex: 1;
     max-width: 200px;
-
     padding: 14px 0;
+
     font-size: 18px;
     font-weight: 700;
+    border: none;
+    border-radius: 14px;
 
     background: #e3e9f2;
     color: #003a73;
 
-    border-radius: 14px;
-    border: none;
-
     box-shadow: 0 1px 4px rgba(0,0,0,0.25);
 
-    transition: 0.2s ease;
+    transition: 0.2s;
 }
 
 .druckart-btn.active {
     background: #007bff;
-    color: white;
+    color: #fff;
 }
 
 /* ============================================================
-   UNTERE BUTTONS – wie PAUS
+   UNTERE BUTTONS – identisch zu PAUS
 ============================================================ */
 .bottom-row {
     width: 100%;
@@ -175,10 +186,12 @@ html, body {
 .primary-btn {
     flex: 1;
     padding: 16px;
+
     border-radius: 14px;
     border: none;
+
     font-size: 20px;
-    font-weight: bold;
+    font-weight: 900;
     color: white;
 }
 
@@ -191,7 +204,7 @@ html, body {
 }
 
 /* ============================================================
-   POPUP – SONSTIGE Kunden
+   POPUP – Sonstige Kunden
 ============================================================ */
 .popup-overlay {
     position: fixed;
@@ -201,7 +214,6 @@ html, body {
     display: none;
     justify-content: center;
     align-items: center;
-
     z-index: 9000;
 }
 
@@ -209,7 +221,6 @@ html, body {
     width: 90%;
     max-width: 360px;
     padding: 20px;
-
     background: white;
     border-radius: 14px;
     text-align: center;
@@ -220,8 +231,10 @@ html, body {
 .popup input {
     width: 100%;
     padding: 12px;
+
     border-radius: 10px;
     border: 1px solid #777;
+
     margin-bottom: 14px;
     font-size: 16px;
 }
@@ -231,8 +244,10 @@ html, body {
     width: 100%;
     padding: 14px;
     margin-top: 10px;
+
     border-radius: 14px;
     border: none;
+
     font-size: 18px;
     font-weight: 700;
     color: white;
@@ -247,12 +262,14 @@ html, body {
 }
 
 /* ============================================================
-   PC LAYOUT – bleibt sauber
+   PC Layout – bleibt sauber & größer
 ============================================================ */
 body.pc-device .page {
+    transform: none;
     max-width: 1100px;
 }
 
 body.pc-device .kunden-grid {
     grid-template-columns: repeat(3, 260px);
+    gap: 20px;
 }
