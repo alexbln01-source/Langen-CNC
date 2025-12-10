@@ -1,5 +1,10 @@
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
+/* ============================================================
+   Grundlayout – identisch zu Beschichtung
+============================================================ */
 html, body {
     margin: 0;
     padding: 0;
@@ -13,6 +18,11 @@ html, body {
     align-items: center;
     overflow: hidden;
 }
+
+/* ============================================================
+   FEHLENDER BLOCK – jetzt eingefügt!
+   Dieser Block macht das Layout identisch zu Beschichtung.
+============================================================ */
 .page {
     width: 94vw;
     height: 92vh;
@@ -21,72 +31,76 @@ html, body {
     align-items: center;
     padding: 10px;
 }
-/* Gerät oben links */
-.device-info {
-    position: fixed;
-    top: 10px;
-    left: 14px;
-    background: rgba(0,0,0,0.08);
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: 12px;
-    z-index: 9999;
-    pointer-events: none;
-}
 
-/* Build unten rechts */
-.build-info {
-    position: fixed;
-    bottom: 10px;
-    right: 14px;
-    font-size: 12px;
-    color: #666;
-    z-index: 9999;
-    pointer-events: none;
-}
-
-/* =========================================
-   Seite mittig ausrichten (oben+unten)
-========================================= */
-.page {
-    width: 94vw;
-    height: 92vh;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;   /* <- Ober-/Unterabstand automatisch */
-    align-items: center;
-
-    padding: 10px;
-}
-
+/* ============================================================
+   Titel
+============================================================ */
 .title {
     font-size: 24px;
     font-weight: 900;
     color: #003a73;
-     margin-bottom: 10px;
+    margin-bottom: 10px;
 }
+
+/* ============================================================
+   Grid-Label
+============================================================ */
 .grid-label {
     font-size: 18px;
     font-weight: 900;
     color: #003a73;
     text-align: center;
-        margin: 10px 0 6px 0;
+    margin: 10px 0 6px 0;
 }
 
-/* =========================================
-   Kunden-GRID — endlich wirklich zentriert
-========================================= */
+/* ============================================================
+   Kundenauswahl-Grid – identisch zu Beschichtung
+============================================================ */
 .kunden-grid {
     width: 100%;
-    max-width: 1100px;          /* <- Grid begrenzt wie die Buttons */
-    margin: 0 auto;             /* <- ZENTRIERT */
+    padding: 0 12px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-    justify-items: center;      /* <- Buttons mittig */
+    gap: 12px;
+    justify-items: stretch;
+    justify-content: center;
 }
 
+/* ============================================================
+   TC21 Layout
+============================================================ */
+body.zebra-tc21 .kunden-grid {
+    padding: 0 6px;
+    grid-template-columns: repeat(3, 100px);
+    gap: 8px;
+    justify-content: center;
+}
+
+body.zebra-tc21 .kunde-btn {
+    width: 100px;
+    min-height: 60px;
+    font-size: 12px;
+    padding: 4px;
+}
+
+/* ============================================================
+   TC22 Layout
+============================================================ */
+body.zebra-tc22 .kunden-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+body.zebra-tc22 .kunde-btn {
+    min-height: 62px;
+    padding: 4px;
+    font-size: 14px;
+    line-height: 1.2;
+}
+
+/* ============================================================
+   Kundenbuttons
+============================================================ */
 .kunde-btn {
     width: 100%;
     min-height: 75px;
@@ -111,77 +125,67 @@ html, body {
     color: white;
 }
 
-/* =========================================
-   Druckart
-========================================= */
+/* ============================================================
+   Druckart-Buttons
+============================================================ */
 .druckart-row {
+    width: 90%;
+    margin-top: 14px;
     display: flex;
-    justify-content: center;
     gap: 12px;
-    background: #e3e7ee;
-    padding: 6px;
-    border-radius: 999px;
-    margin-top: 20px;
 }
 
 .druckart-btn {
-    padding: 6px 20px;
-    border-radius: 999px;
+    flex: 1;
+    padding: 14px;
+    border-radius: 14px;
     border: none;
-    font-weight: 600;
-    background: transparent;
-    cursor: pointer;
+    background: #777;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .druckart-btn.active {
-    background: #007bff;
-    color: white;
+    background: #003a73;
 }
 
-/* =========================================
-   Untere Buttons – ganze Zeile, zentriert
-========================================= */
+/* ============================================================
+   Untere Buttons
+============================================================ */
 .bottom-row {
-    width: 100%;             /* <- volle Breite */
-    max-width: 1100px;       /* <- sauber wie das Grid */
-    margin: 0 auto;
+    width: 90%;
     display: flex;
-    justify-content: center;
     gap: 12px;
-    margin-bottom: 10px;
+    margin-top: auto;
+    padding-bottom: 10px;
 }
 
-.back-btn, .primary-btn {
-    flex: 1;                 /* <- beide gleich breit */
-    min-width: 0;
-    padding: 16px;
+.back-btn,
+.primary-btn {
+    flex: 1;
+    padding: 14px;
     border-radius: 14px;
     border: none;
     font-size: 20px;
     font-weight: bold;
     color: white;
-    text-align: center;
 }
 
-.back-btn {
-    background: #444;
-}
+.back-btn { background: #444; }
+.primary-btn { background: #00963d; }
 
-.primary-btn {
-    background: #00963d;
-}
-
-/* =========================================
-   POPUP
-========================================= */
+/* ============================================================
+   Popup
+============================================================ */
 .popup-overlay {
     position: fixed;
     inset: 0;
+    background: rgba(0,0,0,0.5);
+
     display: none;
     justify-content: center;
     align-items: center;
-    background: rgba(0,0,0,0.45);
-    z-index: 9000;
 }
 
 .popup {
@@ -189,89 +193,49 @@ html, body {
     padding: 20px;
     border-radius: 14px;
     width: 90%;
-    max-width: 360px;
+    max-width: 300px;
     text-align: center;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.3);
 }
 
 .popup input {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
+    margin: 12px 0;
+    font-size: 18px;
     border-radius: 10px;
-    border: 1px solid #aaa;
-    font-size: 16px;
-    margin-bottom: 12px;
+    border: 1px solid #777;
 }
 
-.ok-btn {
-    background: #00963d;
+.ok-btn,
+.cancel-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 8px;
+    border-radius: 14px;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
     color: white;
 }
 
-.cancel-btn {
-    background: #ccc;
-}
+.ok-btn { background: #003a73; }
+.cancel-btn { background: #a00; }
 
-.popup button {
-    padding: 10px 14px;
-    border: none;
-    border-radius: 10px;
-    margin: 0 5px;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-/* =========================================
-   TC21 – kleines Gerät
-========================================= */
-body.zebra-tc21 .kunden-grid {
-    grid-template-columns: repeat(3, 100px);
-    gap: 8px;
-    justify-content: center;
-}
-
-body.zebra-tc21 .kunde-btn {
-    width: 100px;
-    max-width: 100px;
-    min-height: 58px;
-    padding: 4px;
-    font-size: 12px;
-}
-/* =============================
-   Mobile Fokus
-============================= */
-.mobile-focus {
-    outline: 4px solid #1a73e8 !important;
-    border-radius: 14px;
-}
-/* =========================================
-   TC22 – mittleres Gerät
-========================================= */
-body.zebra-tc22 .kunden-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-}
-
-body.zebra-tc22 .kunde-btn {
-    min-height: 62px;
-    padding: 6px;
-    font-size: 15px;
-}
-
-/* =========================================
-   PC – großes Display
-========================================= */
+/* ============================================================
+   PC Layout (wie Beschichtung)
+============================================================ */
 body.pc-device .page {
     width: 80vw;
+    height: auto;
     max-width: 1100px;
-    height: 92vh;
+    padding-top: 20px;
 }
 
 body.pc-device .kunden-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(3, 317px);
+    gap: 10px;
 }
 
 body.pc-device .bottom-row {
-    max-width: 1030px;
+    margin-top: 40px;
 }
