@@ -12,15 +12,40 @@ let selectedArt = "kanten";
     let device = "Unbekanntes Gerät";
 
     if (ua.includes("zebra")) {
-        if (ua.includes("tc21")) device = "Zebra TC21";
-        else if (ua.includes("tc22")) device = "Zebra TC22";
-        else if (ua.includes("tc26")) device = "Zebra TC26";
-        else if (ua.includes("tc27")) device = "Zebra TC27";
-        else device = "Zebra Scanner";
+
+        if (ua.includes("tc21")) {
+            device = "Zebra TC21";
+            body.classList.add("zebra-tc21");
+        }
+
+        else if (ua.includes("tc22")) {
+            device = "Zebra TC22";
+            body.classList.add("zebra-tc22");
+        }
+
+        else if (ua.includes("tc26")) {
+            device = "Zebra TC26";
+            body.classList.add("zebra-tc22"); // gleiche Klasse wie TC22
+        }
+
+        else if (ua.includes("tc27")) {
+            device = "Zebra TC27";
+            body.classList.add("zebra-tc22");
+        }
+
+        else {
+            device = "Zebra Scanner";
+            body.classList.add("zebra-tc22");
+        }
+
     } else if (ua.includes("android")) {
         device = "Android Gerät";
+        body.classList.add("mobile-device");
+
     } else if (ua.includes("iphone") || ua.includes("ipad")) {
         device = "iOS Gerät";
+        body.classList.add("mobile-device");
+
     } else {
         device = "PC";
         body.classList.add("pc-device");
@@ -38,8 +63,7 @@ let selectedArt = "kanten";
         now.getMinutes().toString().padStart(2, "0");
 
     document.getElementById("buildInfo").textContent = "Build " + build;
-})();
-    
+})();    
 
 /* ===========================================
    POPUP – Sonstige Kunden
