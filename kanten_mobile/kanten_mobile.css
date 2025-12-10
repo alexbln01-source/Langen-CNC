@@ -1,9 +1,7 @@
-/* ============================================================
+/* ============================================
    GLOBAL
-============================================================ */
-* {
-    box-sizing: border-box;
-}
+============================================ */
+* { box-sizing: border-box; }
 
 html, body {
     margin: 0;
@@ -15,184 +13,167 @@ html, body {
 
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-
-    overflow-x: hidden;
+    align-items: center;
 }
 
-/* ============================================================
-   DEVICE INFO (oben links)
-============================================================ */
+/* ============================================
+   DEVICE + BUILD INFO
+============================================ */
 .device-info {
     position: fixed;
     top: 6px;
-    left: 10px;
-    font-size: 14px;
-    font-weight: bold;
+    left: 6px;
+    font-size: 12px;
     color: #003a73;
-    z-index: 1000;
 }
 
-/* ============================================================
-   BUILD INFO (unten rechts)
-============================================================ */
 .build-info {
     position: fixed;
-    bottom: 8px;
-    right: 10px;
-    font-size: 14px;
-    font-weight: bold;
+    bottom: 6px;
+    right: 6px;
+    font-size: 12px;
     color: #003a73;
-    z-index: 1000;
 }
 
-/* ============================================================
-   PAGE (Hauptlayout)
-============================================================ */
+/* ============================================
+   PAGE CONTAINER (wie PAUS)
+============================================ */
 .page {
     width: 94vw;
+    height: 92vh;
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 15px;
-}
+    padding: 10px;
 
-/* ============================================================
-   MOBILE → GROSSE VERSION (wie PAUS)
-============================================================ */
-body.mobile-device .page {
-    transform: scale(1.50);
+    /* MOBILE → vergrößert wie PAUS */
+    transform: scale(1.15);
     transform-origin: top center;
 }
 
-/* ============================================================
-   TITEL
-============================================================ */
+/* PC — KEINE Vergrößerung */
+body.pc-device .page {
+    transform: none;
+    width: 80vw;
+    height: auto;
+    max-width: 1100px;
+}
+
+/* ============================================
+   TITLE & LABEL
+============================================ */
 .title {
     font-size: 26px;
     font-weight: 900;
     color: #003a73;
-    margin-bottom: 12px;
-    text-align: center;
+    margin-top: 10px;
 }
 
-/* ============================================================
-   GRID LABEL
-============================================================ */
 .grid-label {
     font-size: 18px;
-    font-weight: 900;
+    font-weight: bold;
     color: #003a73;
     margin: 10px 0 6px 0;
-    text-align: center;
 }
 
-/* ============================================================
-   KUNDENGRID
-============================================================ */
+/* ============================================
+   GRID
+============================================ */
 .kunden-grid {
     width: 100%;
-    padding: 0 10px;
+    padding: 0 12px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
+    justify-items: stretch;
 }
 
-/* Buttons */
+/* BUTTONS */
 .kunde-btn {
-    width: 100%;
-    min-height: 70px;
-    padding: 6px;
-
-    background: white;
-    color: #003a73;
-    border: none;
+    min-height: 75px;
     border-radius: 14px;
+    border: none;
+    padding: 6px;
     font-size: 15px;
     font-weight: bold;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-
+    color: #003a73;
+    background: #ffffff;
     box-shadow: 0 1px 4px rgba(0,0,0,0.25);
 }
 
 .kunde-btn.active {
-    background: #0065ff;
-    color: white;
+    background: #007bff;
+    color: #fff;
 }
 
-/* ============================================================
-   DRUCKART BUTTONS (Kanten/Schweißen)
-============================================================ */
+/* ============================================
+   DRUCKART BUTTONS
+============================================ */
 .druckart-row {
     width: 90%;
-    margin-top: 16px;
     display: flex;
+    margin-top: 16px;
     gap: 12px;
 }
 
 .druckart-btn {
     flex: 1;
     padding: 14px;
+    font-size: 18px;
+    background: #d9e3f1;
     border-radius: 14px;
     border: none;
-    background: #c8d4e0;
+    font-weight: bold;
     color: #003a73;
-    font-size: 18px;
-    font-weight: 900;
 }
 
 .druckart-btn.active {
-    background: #0065ff;
+    background: #0067f5;
     color: #fff;
 }
 
-/* ============================================================
-   UNTEN: BACK + DRUCKEN
-============================================================ */
+/* ============================================
+   BOTTOM BUTTONS
+============================================ */
 .bottom-row {
     width: 90%;
-    margin-top: 26px;
     display: flex;
     gap: 12px;
+    margin-top: auto;
+    padding-bottom: 10px;
 }
 
-.back-btn,
-.primary-btn {
+.back-btn, .primary-btn {
     flex: 1;
     padding: 14px;
     border-radius: 14px;
-    border: none;
     font-size: 20px;
     font-weight: bold;
-    color: white;
+    border: none;
+    color: #fff;
 }
 
 .back-btn { background: #444; }
 .primary-btn { background: #00963d; }
 
-/* ============================================================
-   POPUP – SONSTIGE KUNDEN (1:1 wie PAUS)
-============================================================ */
+/* ============================================
+   POPUP — WIE PAUS
+============================================ */
 .popup-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.55);
+    background: rgba(0,0,0,0.5);
 
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 5000;
 }
 
 .popup {
-    width: 85%;
+    background: #fff;
+    width: 90%;
     max-width: 300px;
-    background: white;
     padding: 20px;
     border-radius: 14px;
     text-align: center;
@@ -201,62 +182,22 @@ body.mobile-device .page {
 .popup input {
     width: 100%;
     padding: 12px;
+    margin: 12px 0;
     font-size: 18px;
-    border-radius: 12px;
     border: 1px solid #777;
-    margin: 10px 0 16px 0;
+    border-radius: 10px;
 }
 
-.ok-btn,
-.cancel-btn {
+.ok-btn, .cancel-btn {
     width: 100%;
     padding: 14px;
-    margin-top: 10px;
-    border-radius: 14px;
-    border: none;
     font-size: 18px;
     font-weight: bold;
-    color: white;
+    border: none;
+    border-radius: 14px;
+    color: #fff;
+    margin-top: 8px;
 }
 
 .ok-btn { background: #003a73; }
-.cancel-btn { background: #b00000; }
-
-/* ============================================================
-   PC LAYOUT → NICHT SKALIERT
-============================================================ */
-body.pc-device .page {
-    width: 80vw;
-    max-width: 1100px;
-    transform: none !important;
-}
-
-body.pc-device .kunden-grid {
-    grid-template-columns: repeat(3, 317px);
-}
-
-/* ============================================================
-   ZEBRA TC21 / TC22
-   NICHT SKALIERT (1:1 wie Beschichtung)
-============================================================ */
-body.zebra-tc21 .page,
-body.zebra-tc22 .page {
-    transform: none !important;
-}
-
-body.zebra-tc21 .kunden-grid {
-    grid-template-columns: repeat(3, 100px);
-    gap: 8px;
-}
-
-body.zebra-tc21 .kunde-btn {
-    width: 100px;
-    min-height: 60px;
-    font-size: 12px;
-}
-
-body.zebra-tc22 .kunde-btn {
-    min-height: 62px;
-    padding: 4px;
-    font-size: 14px;
-}
+.cancel-btn { background: #a00; }
