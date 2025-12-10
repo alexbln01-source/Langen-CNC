@@ -2,6 +2,9 @@
     box-sizing: border-box;
 }
 
+/* ============================================================
+   GRUNDLAYOUT – wie bei PAUS
+============================================================ */
 html, body {
     margin: 0;
     padding: 0;
@@ -12,13 +15,12 @@ html, body {
 
     display: flex;
     justify-content: center;
-    align-items: center;
-    overflow: hidden;
+    align-items: flex-start;   /* wichtig für Skalierung */
 }
 
-/* ============================================
-   PAGE — zentrale Skalierung wie bei PAUS
-============================================ */
+/* ============================================================
+   PAGE – exakte Skalierung wie PAUS
+============================================================ */
 .page {
     width: 94vw;
     height: 92vh;
@@ -29,15 +31,14 @@ html, body {
 
     padding: 10px;
 
-    /* 🔥 macht die Buttons groß wie bei PAUS */
+    /* 🔥 genau wie PAUS – alles größer! */
     transform: scale(1.18);
     transform-origin: top center;
 }
 
-
-/* ============================================
-   TITEL
-============================================ */
+/* ============================================================
+   Titel
+============================================================ */
 .title {
     font-size: 26px;
     font-weight: 900;
@@ -45,24 +46,22 @@ html, body {
     margin-bottom: 10px;
 }
 
-
-/* ============================================
-   GRID LABEL
-============================================ */
+/* ============================================================
+   Grid-Label
+============================================================ */
 .grid-label {
     font-size: 18px;
     font-weight: 900;
     color: #003a73;
-    margin-bottom: 10px;
+    margin: 10px 0 6px 0;
 }
 
-
-/* ============================================
-   GRID — Standard (iPhone/Mobile/PC/Android)
-============================================ */
+/* ============================================================
+   Kundenauswahl
+============================================================ */
 .kunden-grid {
     width: 100%;
-    padding: 0 10px;
+    padding: 0 12px;
 
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -72,10 +71,6 @@ html, body {
     justify-content: center;
 }
 
-
-/* ============================================
-   BUTTONS — Kunde
-============================================ */
 .kunde-btn {
     width: 100%;
     min-height: 75px;
@@ -88,11 +83,12 @@ html, body {
     border-radius: 14px;
     border: none;
 
+    background: white;
+    color: #003a73;
     font-size: 15px;
     font-weight: 700;
-    color: #003a73;
-    background: white;
 
+    text-align: center;
     box-shadow: 0 1px 4px rgba(0,0,0,0.25);
 }
 
@@ -101,74 +97,62 @@ html, body {
     color: white;
 }
 
-
-/* ============================================
-   DRUCKART (Kanten / Schweißen)
-============================================ */
+/* ============================================================
+   DRUCKART-BUTTONS – exakt wie PAUS-Style
+============================================================ */
 .druckart-row {
     width: 90%;
-    margin-top: 18px;
     display: flex;
-    gap: 16px;
+    gap: 12px;
+    margin-top: 14px;
 }
 
 .druckart-btn {
     flex: 1;
     padding: 14px;
-
-    background: #dfe7f2;
-
     border-radius: 14px;
-    border: 2px solid transparent;
+    border: none;
 
     font-size: 18px;
     font-weight: bold;
-    color: #003a73;
 
-    transition: 0.2s;
+    background: #dfe7f2;
+    color: #003a73;
 }
 
 .druckart-btn.active {
-    background: #1062ff;
+    background: #0066ff;
     color: white;
 }
 
-
-/* ============================================
-   BOTTOM BUTTONS
-============================================ */
+/* ============================================================
+   UNTERE BUTTONS – exakt PAUS-Style
+============================================================ */
 .bottom-row {
     width: 90%;
     display: flex;
-    gap: 16px;
-    margin-top: 30px;
+    gap: 12px;
+    margin-top: auto;
+    padding-bottom: 10px;
 }
 
 .back-btn,
 .primary-btn {
     flex: 1;
     padding: 14px;
-
-    font-size: 20px;
-    font-weight: bold;
-
     border-radius: 14px;
     border: none;
+    font-size: 20px;
+    font-weight: bold;
     color: white;
 }
 
-.back-btn {
-    background: #333;
-}
+.back-btn { background: #444; }
+.primary-btn { background: #00963d; }
 
-.primary-btn {
-    background: #00963d;
-}
-
-
-/* ============================================
-   POPUP
-============================================ */
+/* ============================================================
+   POPUP – Sonstige Kunden (wie PAUS-Keyboard Popup)
+============================================================ */
 .popup-overlay {
     position: fixed;
     inset: 0;
@@ -182,17 +166,17 @@ html, body {
 .popup {
     background: white;
     padding: 20px;
+    border-radius: 14px;
+
     width: 90%;
     max-width: 300px;
-
-    border-radius: 14px;
     text-align: center;
 }
 
 .popup input {
     width: 100%;
     padding: 12px;
-    margin: 14px 0;
+    margin: 12px 0;
     font-size: 18px;
     border-radius: 10px;
     border: 1px solid #777;
@@ -202,84 +186,34 @@ html, body {
 .cancel-btn {
     width: 100%;
     padding: 14px;
-    margin-top: 10px;
-
-    font-size: 18px;
-    font-weight: bold;
+    margin-top: 8px;
 
     border: none;
     border-radius: 14px;
+
+    font-size: 18px;
+    font-weight: bold;
     color: white;
 }
 
 .ok-btn { background: #003a73; }
-.cancel-btn { background: #b00000; }
+.cancel-btn { background: #a00; }
 
-
-/* ============================================
-   BUILD INFO + DEVICE INFO
-============================================ */
-.device-info {
-    position: absolute;
-    top: 8px;
-    left: 12px;
-    font-size: 12px;
-    color: #003a73;
-}
-
-.build-info {
-    position: absolute;
-    bottom: 10px;
-    right: 14px;
-    font-size: 12px;
-    color: #003a73;
-}
-
-
-/* ============================================
-   ZEBRA TC21
-============================================ */
-body.zebra-tc21 .page {
-    transform: scale(1.05);
-}
-
-body.zebra-tc21 .kunde-btn {
-    min-height: 60px;
-    font-size: 13px;
-}
-
-
-/* ============================================
-   ZEBRA TC22
-============================================ */
-body.zebra-tc22 .page {
-    transform: scale(1.12);
-}
-
-body.zebra-tc22 .kunde-btn {
-    min-height: 62px;
-    font-size: 14px;
-}
-
-
-/* ============================================
-   PC LAYOUT
-============================================ */
+/* ============================================================
+   PC LAYOUT – ebenfalls wie PAUS größer
+============================================================ */
 body.pc-device .page {
-    transform: scale(1);      /* keine Skalierung */
-    width: 75vw;
+    width: 80vw;
     height: auto;
-    max-width: 1200px;
-    padding-top: 30px;
+    max-width: 1100px;
+    padding-top: 20px;
+
+    transform: scale(1);   /* PC NICHT skalieren */
 }
 
 body.pc-device .kunden-grid {
-    grid-template-columns: repeat(3, 330px);
-    gap: 16px;
-}
-
-body.pc-device .druckart-row {
-    margin-top: 20px;
+    grid-template-columns: repeat(3, 317px);
+    gap: 10px;
 }
 
 body.pc-device .bottom-row {
