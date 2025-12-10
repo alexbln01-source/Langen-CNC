@@ -1,203 +1,201 @@
 /* ============================================
-   GLOBAL
+   Grundlayout – wie Beschichtung
 ============================================ */
-* { box-sizing: border-box; }
-
-html, body {
+body {
     margin: 0;
     padding: 0;
-    width: 100%;
-    height: 100%;
-    background: #eef1f4;
     font-family: Arial, sans-serif;
+    background: #e6ebef;
+    text-align: center;
+}
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* Zentriert alles wie bei Beschichtung */
+.page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
 /* ============================================
-   DEVICE + BUILD INFO
+   Device-Info + Build
 ============================================ */
+.device-info,
+.build-info {
+    font-size: 13px;
+    color: #333;
+    position: absolute;
+    top: 10px;
+}
+
 .device-info {
-    position: fixed;
-    top: 6px;
-    left: 6px;
-    font-size: 12px;
-    color: #003a73;
+    left: 10px;
 }
 
 .build-info {
-    position: fixed;
-    bottom: 6px;
-    right: 6px;
-    font-size: 12px;
-    color: #003a73;
+    right: 10px;
 }
 
 /* ============================================
-   PAGE CONTAINER (wie PAUS)
-============================================ */
-.page {
-    width: 94vw;
-    height: 92vh;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-
-    /* MOBILE → vergrößert wie PAUS */
-    transform: scale(1.15);
-    transform-origin: top center;
-}
-
-/* PC — KEINE Vergrößerung */
-body.pc-device .page {
-    transform: none;
-    width: 80vw;
-    height: auto;
-    max-width: 1100px;
-}
-
-/* ============================================
-   TITLE & LABEL
+   Titel
 ============================================ */
 .title {
-    font-size: 26px;
-    font-weight: 900;
-    color: #003a73;
-    margin-top: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #003c73;
+    margin-top: 40px;
+    margin-bottom: 10px;
 }
 
+/* ============================================
+   Kunden-Auswahl
+============================================ */
 .grid-label {
     font-size: 18px;
     font-weight: bold;
-    color: #003a73;
-    margin: 10px 0 6px 0;
+    margin-bottom: 10px;
+    color: #003c73;
 }
 
-/* ============================================
-   GRID
-============================================ */
 .kunden-grid {
-    width: 100%;
-    padding: 0 12px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    justify-items: stretch;
+    gap: 14px;
+    margin-bottom: 25px;
 }
 
-/* BUTTONS */
+/* Buttons wie bei Beschichtung */
 .kunde-btn {
-    min-height: 75px;
-    border-radius: 14px;
-    border: none;
-    padding: 6px;
-    font-size: 15px;
+    padding: 18px 10px;
+    font-size: 18px;
     font-weight: bold;
-    color: #003a73;
     background: #ffffff;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    border: 1px solid #cfd7df;
+    border-radius: 14px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .kunde-btn.active {
-    background: #007bff;
-    color: #fff;
+    background: #15803d;
+    color: white;
+    border-color: #15803d;
 }
 
 /* ============================================
-   DRUCKART BUTTONS
+   Druckart (Kanten / Schweißen)
 ============================================ */
 .druckart-row {
-    width: 90%;
     display: flex;
-    margin-top: 16px;
-    gap: 12px;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 30px;
 }
 
 .druckart-btn {
     flex: 1;
-    padding: 14px;
+    padding: 16px 10px;
     font-size: 18px;
-    background: #d9e3f1;
     border-radius: 14px;
-    border: none;
+    border: 1px solid #cfd7df;
+    background: #e6ebf3;
     font-weight: bold;
-    color: #003a73;
+    cursor: pointer;
 }
 
 .druckart-btn.active {
-    background: #0067f5;
-    color: #fff;
+    background: #0066ff;
+    border-color: #0066ff;
+    color: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 /* ============================================
-   BOTTOM BUTTONS
+   Bottom Buttons (Zurück / Drucken)
 ============================================ */
 .bottom-row {
-    width: 90%;
     display: flex;
-    gap: 12px;
-    margin-top: auto;
-    padding-bottom: 10px;
+    gap: 16px;
+    margin-top: 30px;
 }
 
-.back-btn, .primary-btn {
+.back-btn,
+.primary-btn {
     flex: 1;
-    padding: 14px;
-    border-radius: 14px;
+    padding: 18px;
     font-size: 20px;
     font-weight: bold;
+    border-radius: 14px;
+    color: white;
     border: none;
-    color: #fff;
+    cursor: pointer;
 }
 
-.back-btn { background: #444; }
-.primary-btn { background: #00963d; }
+.back-btn {
+    background: #333;
+}
+
+.primary-btn {
+    background: #15803d;
+}
 
 /* ============================================
-   POPUP — WIE PAUS
+   Popup (Sonstige Kunden)
 ============================================ */
 .popup-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-
     display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(2px);
+    background: rgba(0,0,0,0.35);
     justify-content: center;
     align-items: center;
 }
 
 .popup {
-    background: #fff;
-    width: 90%;
-    max-width: 300px;
-    padding: 20px;
-    border-radius: 14px;
+    background: white;
+    padding: 25px;
+    width: 80%;
+    max-width: 350px;
+    border-radius: 16px;
     text-align: center;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+
+.popup h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
 }
 
 .popup input {
     width: 100%;
-    padding: 12px;
-    margin: 12px 0;
+    padding: 14px;
     font-size: 18px;
-    border: 1px solid #777;
+    border: 1px solid #bbb;
     border-radius: 10px;
+    margin-bottom: 18px;
 }
 
-.ok-btn, .cancel-btn {
+.ok-btn,
+.cancel-btn {
     width: 100%;
     padding: 14px;
     font-size: 18px;
-    font-weight: bold;
+    margin-top: 10px;
+    border-radius: 12px;
     border: none;
-    border-radius: 14px;
-    color: #fff;
-    margin-top: 8px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.ok-btn { background: #003a73; }
-.cancel-btn { background: #a00; }
+.ok-btn {
+    background: #15803d;
+    color: white;
+}
+
+.cancel-btn {
+    background: #555;
+    color: white;
+}
