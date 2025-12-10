@@ -204,38 +204,51 @@ html, body {
     color: white;
 }
 
-
 /* ============================================================
-   MOBILE SCALING — WIE PAUS & BESCHICHTUNG
+   MOBILE ZOOM – WIE PAUS UND BESCHICHTUNG
 ============================================================ */
+
 @media (max-width: 820px) {
+
     body {
-        transform: scale(1.28);      /* perfektes Format */
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+
+        transform: scale(1.32);   /* ← DAS macht alles größer */
         transform-origin: top center;
+
+        background: #eef1f4;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .page {
+        width: 100%;
+        max-width: 480px;
+        margin-top: 40px;
     }
 
     .title {
-        font-size: 28px;
-        margin-top: 45px;
+        font-size: 30px;
     }
 
     .kunden-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
     }
 
     .kunde-btn {
-        font-size: 20px;
-        min-height: 85px;
+        font-size: 22px;
+        min-height: 95px;   /* wirkt viel größer */
     }
 
     .druckart-btn {
-        font-size: 22px;
-        padding: 20px;
+        font-size: 24px;
+        padding: 22px;
     }
 
     .bottom-row button {
-        font-size: 22px;
+        font-size: 24px;
         padding: 22px;
     }
 }
