@@ -180,9 +180,20 @@ kundenButtons.forEach((btn, index) => {
 });
 
 /* ============================================================
-   PRINT
+   PRINT — mit korrekter EILT-Logik!
 ============================================================ */
 druckenBtn.onclick = () => {
+
+    /* --- EILT-Logik MUSS vor dem Erstellen von data ausgeführt werden --- */
+    if (isEilt) {
+        switch (selectedType) {
+            case "LP":       selectedType = "LPEILT"; break;
+            case "SCHUETTE": selectedType = "SCHUETTEEILT"; break;
+            case "KLEY":     selectedType = "KLEYEILT"; break;
+            case "KALEY":    selectedType = "KALEYEILT"; break;
+        }
+    }
+
     const data = {
         beistell: beistell.value.trim(),
         selectedType: selectedType,
