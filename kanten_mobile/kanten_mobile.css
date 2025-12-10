@@ -13,7 +13,14 @@ html, body {
     align-items: center;
     overflow: hidden;
 }
-
+.page {
+    width: 94vw;
+    height: 92vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
 /* Gerät oben links */
 .device-info {
     position: fixed;
