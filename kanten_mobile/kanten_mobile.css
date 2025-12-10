@@ -2,106 +2,95 @@
     box-sizing: border-box;
 }
 
-/* ============================================================
-   Grundlayout – wie Beschichtung
-============================================================ */
 html, body {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
-
     background: #eef1f4;
     font-family: Arial, sans-serif;
 
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    overflow-x: hidden;
 }
 
+/* =============================
+   Hauptseite
+============================= */
 .page {
-    width: 94vw;
-    height: 92vh;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    padding: 10px;
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+    text-align: center;
 }
 
-/* ============================================================
-   Device + Build Info Position
-============================================================ */
-.device-info {
-    position: fixed;
-    top: 6px;
-    left: 10px;
-    font-size: 16px;
-    color: #444;
-    z-index: 10;
-}
-
-.build-info {
-    position: fixed;
-    top: 6px;
-    right: 10px;
-    font-size: 16px;
-    color: #444;
-    z-index: 10;
-}
-
-/* ============================================================
-   TITEL
-============================================================ */
+/* =============================
+   Titel
+============================= */
 .title {
-    font-size: 30px;
+    font-size: 32px;
     font-weight: 900;
     color: #003a73;
     margin-bottom: 10px;
 }
 
-/* ============================================================
-   Kunden Label
-============================================================ */
-.grid-label {
-    font-size: 20px;
-    font-weight: 900;
-    color: #003a73;
-    margin: 10px 0 12px 0;
+/* =============================
+   Info-Anzeigen
+============================= */
+.device-info {
+    position: absolute;
+    top: 6px;
+    left: 10px;
+    font-size: 16px;
+    color: #444;
 }
 
-/* ============================================================
-   Kunden Grid (Standard)
-============================================================ */
-.kunden-grid {
-    width: 100%;
-    padding: 0 12px;
+.build-info {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    font-size: 16px;
+    color: #444;
+}
 
+/* =============================
+   Label
+============================= */
+.grid-label {
+    font-size: 22px;
+    font-weight: bold;
+    color: #003a73;
+    margin-bottom: 16px;
+}
+
+/* =============================
+   Kunden-Grid (wie Beschichtung)
+============================= */
+.kunden-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-
-    justify-items: stretch;
+    gap: 16px;
+    padding: 0 10px;
+    margin-bottom: 25px;
 }
 
 .kunde-btn {
     width: 100%;
-    min-height: 75px;
-    padding: 10px;
+    min-height: 90px;
+    padding: 12px;
 
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
 
     background: white;
-    border-radius: 14px;
-    border: none;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-
-    font-size: 18px;
-    font-weight: 700;
     color: #003a73;
+    border-radius: 16px;
+    border: 2px solid #d0d7e2;
+    font-size: 20px;
+    font-weight: 700;
 }
 
 .kunde-btn.active {
@@ -109,167 +98,143 @@ html, body {
     color: white;
 }
 
-/* ============================================================
-   DRUCKART BUTTONS
-============================================================ */
+/* =============================
+   Druckart
+============================= */
 .druckart-row {
-    width: 90%;
     display: flex;
-    gap: 12px;
-    margin-top: 14px;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 30px;
 }
 
 .druckart-btn {
     flex: 1;
-    padding: 16px;
-    border-radius: 14px;
-    border: none;
-
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
-
-    background: #e6ecf2;
-    color: #003a73;
+    padding: 20px;
+    border-radius: 16px;
+    border: 2px solid #cfd6df;
+    background: #e5ecf5;
+    color: #083766;
 }
 
 .druckart-btn.active {
-    background: #007bff;
+    background: #0066ff;
     color: white;
 }
 
-/* ============================================================
+/* =============================
    Bottom Buttons
-============================================================ */
+============================= */
 .bottom-row {
-    width: 90%;
     display: flex;
-    gap: 12px;
-    margin-top: auto;
-    padding-bottom: 10px;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 40px;
 }
 
 .back-btn,
 .primary-btn {
     flex: 1;
-    padding: 16px;
-
-    border-radius: 14px;
-    border: none;
-
-    font-size: 20px;
+    padding: 22px;
+    font-size: 24px;
     font-weight: bold;
+    border-radius: 16px;
+    border: none;
     color: white;
 }
 
 .back-btn {
-    background: #444;
+    background: #333;
 }
 
 .primary-btn {
-    background: #00963d;
+    background: #0c8a34;
 }
 
-/* ============================================================
-   POPUP Sonstige Kunden
-============================================================ */
+/* =============================
+   Popup – identisch Beschichtung
+============================= */
 .popup-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.55);
     display: none;
-
     justify-content: center;
     align-items: center;
-    z-index: 100;
+    z-index: 999;
 }
 
 .popup {
     background: white;
+    padding: 25px;
     width: 90%;
-    max-width: 380px;
-
-    padding: 22px;
-    border-radius: 16px;
-
+    max-width: 420px;
+    border-radius: 18px;
     text-align: center;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
 }
 
 .popup input {
     width: 100%;
-    padding: 14px;
+    padding: 16px;
     font-size: 20px;
-
-    border-radius: 10px;
+    border-radius: 14px;
     border: 2px solid #ccd3db;
-    margin-top: 10px;
+    margin: 12px 0;
 }
 
-.ok-btn, .cancel-btn {
+.ok-btn,
+.cancel-btn {
     width: 100%;
-    padding: 14px;
+    padding: 16px;
     font-size: 20px;
     font-weight: bold;
-
-    border-radius: 10px;
+    border-radius: 14px;
+    margin-top: 10px;
     border: none;
-    margin-top: 12px;
 }
 
 .ok-btn {
-    background: #0066ff;
+    background: #1e6bff;
     color: white;
 }
 
 .cancel-btn {
-    background: #777;
+    background: #888;
     color: white;
 }
 
-/* ============================================================
-   📌 Gerätespezifisches Scaling
-============================================================ */
+/* =============================
+   Mobile Optimiert (wie Beschichtung)
+============================= */
+@media (max-width: 820px) {
 
-/* ---------- iPhone / Android ---------- */
-body.mobile-device .page {
-    width: 96vw;
-    height: 94vh;
-}
+    .title {
+        font-size: 30px;
+    }
 
-body.mobile-device .kunde-btn {
-    min-height: 85px;
-    font-size: 20px;
-}
+    .grid-label {
+        font-size: 20px;
+    }
 
-/* ---------- PC groß ---------- */
-body.pc-device .page {
-    width: 80vw;
-    max-width: 1100px;
-}
+    .kunden-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
 
-body.pc-device .kunden-grid {
-    grid-template-columns: repeat(3, 300px);
-}
+    .kunde-btn {
+        min-height: 100px;
+        font-size: 22px;
+    }
 
-/* ---------- Zebra TC21 ---------- */
-body.zebra-tc21 .kunden-grid {
-    grid-template-columns: repeat(3, 100px);
-    gap: 8px;
-}
+    .druckart-btn {
+        font-size: 22px;
+        padding: 22px;
+    }
 
-body.zebra-tc21 .kunde-btn {
-    width: 100px;
-    min-height: 60px;
-    font-size: 12px;
-    padding: 4px;
-}
-
-/* ---------- Zebra TC22 / TC26 / TC27 ---------- */
-body.zebra-tc22 .kunden-grid {
-    grid-template-columns: repeat(3, 1fr);
-}
-
-body.zebra-tc22 .kunde-btn {
-    min-height: 70px;
-    font-size: 16px;
+    .bottom-row button {
+        font-size: 24px;
+        padding: 24px;
+    }
 }
