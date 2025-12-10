@@ -25,7 +25,7 @@ let selectedArt = "kanten";
 
         else if (ua.includes("tc26")) {
             device = "Zebra TC26";
-            body.classList.add("zebra-tc22"); // gleiche Klasse wie TC22
+            body.classList.add("zebra-tc22");
         }
 
         else if (ua.includes("tc27")) {
@@ -38,15 +38,16 @@ let selectedArt = "kanten";
             body.classList.add("zebra-tc22");
         }
 
-    } else if (ua.includes("android")) {
+    } 
+    else if (ua.includes("android")) {
         device = "Android Gerät";
-        body.classList.add("mobile-device");
-
-    } else if (ua.includes("iphone") || ua.includes("ipad")) {
+        // WICHTIG: KEIN mobile-device mehr!
+    } 
+    else if (ua.includes("iphone") || ua.includes("ipad")) {
         device = "iOS Gerät";
-        body.classList.add("mobile-device");
-
-    } else {
+        // WICHTIG: KEIN mobile-device mehr!
+    } 
+    else {
         device = "PC";
         body.classList.add("pc-device");
     }
@@ -64,6 +65,8 @@ let selectedArt = "kanten";
 
     document.getElementById("buildInfo").textContent = "Build " + build;
 })();    
+
+
 
 /* ===========================================
    POPUP – Sonstige Kunden
@@ -84,12 +87,12 @@ function closePopup() {
     popupOverlay.style.display = "none";
 }
 
-// Enter speichern
+// Enter = OK
 popupInput.addEventListener("keydown", e => {
     if (e.key === "Enter") popupOk.click();
 });
 
-// Popup OK
+// OK klicken
 popupOk.onclick = () => {
     const name = popupInput.value.trim();
     if (!name) return;
@@ -98,14 +101,14 @@ popupOk.onclick = () => {
     selectedCustomer = "SONSTIGE";
 
     sonstigeBtn.textContent = name;
-
     closePopup();
 };
 
-// Popup abbrechen
+// Abbrechen
 popupCancel.onclick = () => {
     closePopup();
 };
+
 
 
 /* ===========================================
@@ -113,7 +116,7 @@ popupCancel.onclick = () => {
 =========================================== */
 document.querySelectorAll(".kunde-btn").forEach(btn => {
     btn.onclick = () => {
-        // Active entfernen
+
         document.querySelectorAll(".kunde-btn")
             .forEach(b => b.classList.remove("active"));
 
@@ -126,15 +129,14 @@ document.querySelectorAll(".kunde-btn").forEach(btn => {
             return;
         }
 
-        // Normaler Kunde
         selectedCustomer = kunde;
 
-        // Button zurücksetzen!
-        sonstigeBtn.textContent = "Sonstige Kunden";
-
+        // Sonstige zurücksetzen
         customCustomer = "";
+        sonstigeBtn.textContent = "Sonstige Kunden";
     };
 });
+
 
 
 /* ===========================================
@@ -156,6 +158,7 @@ btnSchweissen.onclick = () => {
 };
 
 
+
 /* ===========================================
    DRUCKEN
 =========================================== */
@@ -166,7 +169,7 @@ document.getElementById("druckBtn").onclick = () => {
         return;
     }
 
-    // korrekter Name für Übergabe
+    // korrekter Name
     let kundeName =
         selectedCustomer === "SONSTIGE"
             ? customCustomer
@@ -184,6 +187,7 @@ document.getElementById("druckBtn").onclick = () => {
 
     window.location.href = url;
 };
+
 
 
 /* ===========================================
