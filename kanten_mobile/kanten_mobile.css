@@ -20,7 +20,28 @@ html, body {
 }
 
 /* ============================================================
-   PAGE – kompakt & perfekt zentriert
+   DEVICE INFO
+============================================================ */
+.device-info {
+    position: fixed;
+    top: 6px;
+    left: 10px;
+    font-size: 16px;
+    color: #444;
+    z-index: 20;
+}
+
+.build-info {
+    position: fixed;
+    bottom: 6px;
+    right: 10px;
+    font-size: 14px;
+    color: #444;
+    z-index: 20;
+}
+
+/* ============================================================
+   PAGE
 ============================================================ */
 .page {
     width: 94vw;
@@ -28,54 +49,53 @@ html, body {
 
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
 
-    justify-content: space-between;  /* verteilt alles sauber */
     padding-top: 15px;
 }
 
 /* ============================================================
-   TITEL
+   TITLE
 ============================================================ */
 .title {
-    font-size: 26px;
+    font-size: 28px;
     font-weight: 900;
     color: #003a73;
     text-align: center;
-    margin-bottom: 6px;
 }
 
 /* ============================================================
    LABEL
 ============================================================ */
 .grid-label {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 900;
-    text-align: center;
     color: #003a73;
+    text-align: center;
     margin-bottom: 12px;
 }
 
 /* ============================================================
-   GRID – 2 SPALTEN wie alte Version (große Buttons)
+   GRID – jetzt 3 SPALTEN wie Beschichtung
 ============================================================ */
 .kunden-grid {
     width: 100%;
     padding: 0 12px;
 
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* groß & sauber */
+    grid-template-columns: repeat(3, 1fr); /* <-- WICHTIG */
     gap: 16px;
 
     justify-items: stretch;
-    margin-top: 12px;
+    margin-top: 10px;
 }
 
 /* ============================================================
-   BUTTONS – groß, kompakt, sauber
+   BUTTONS – groß wie Beschichtung
 ============================================================ */
 .kunde-btn {
     width: 100%;
-    min-height: 95px;
+    min-height: 95px;        /* gleiche Höhe wie Beschichtung */
     padding: 14px;
 
     display: flex;
@@ -88,10 +108,10 @@ html, body {
 
     background: #ffffff;
     color: #003a73;
-    font-size: 18px;
+    font-size: 20px;         /* gleiche Schrift wie Beschichtung */
     font-weight: 800;
 
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
 
 .kunde-btn.active {
@@ -100,25 +120,23 @@ html, body {
 }
 
 /* ============================================================
-   DRUCKART BUTTONS – angepasst an Beschichtung
+   DRUCKART – optisch passend
 ============================================================ */
 .druckart-row {
     width: 90%;
     display: flex;
     gap: 14px;
     margin-top: 8px;
-    margin-bottom: 10px;
 }
 
 .druckart-btn {
     flex: 1;
     padding: 16px;
-    border-radius: 14px;
-    border: none;
-
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
 
+    border-radius: 14px;
+    border: none;
     background: #e7ecf5;
     color: #003a73;
 }
@@ -129,7 +147,7 @@ html, body {
 }
 
 /* ============================================================
-   POPUP – Sonstige Kunden
+   POPUP
 ============================================================ */
 .popup-overlay {
     position: fixed;
@@ -148,20 +166,10 @@ html, body {
     max-width: 420px;
     border-radius: 16px;
     text-align: center;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-}
-
-.popup input {
-    width: 100%;
-    padding: 16px;
-    font-size: 20px;
-    border-radius: 12px;
-    border: 2px solid #ccd3db;
-    margin-bottom: 16px;
 }
 
 /* ============================================================
-   UNTERE BUTTONS
+   UNTERE BUTTONS – wie Beschichtung
 ============================================================ */
 .bottom-row {
     width: 90%;
@@ -173,10 +181,11 @@ html, body {
 .back-btn,
 .primary-btn {
     flex: 1;
-    padding: 18px;
+    padding: 20px;
     border-radius: 16px;
+
     border: none;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
     color: white;
 }
@@ -185,31 +194,19 @@ html, body {
 .primary-btn { background: #00963d; }
 
 /* ============================================================
-   FOKUS
-============================================================ */
-button:focus {
-    outline: 4px solid #1a73e8;
-}
-
-/* ============================================================
-   TC22 – automatische Balance
+   TC22 – NICHT mehr verkleinern
 ============================================================ */
 body.zebra-tc22 .kunde-btn {
-    min-height: 100px;
-    font-size: 19px;
-}
-
-body.zebra-tc22 .page {
-    transform: scale(0.90);           /* optimierte Mitte */
-    transform-origin: top center;
+    min-height: 95px !important;
+    padding: 14px !important;
+    font-size: 20px !important;
 }
 
 /* ============================================================
-   iPhone Optimierung (schmal, hoch)
+   iPhone – perfekte Balance
 ============================================================ */
 @media screen and (max-width: 430px) {
     .page {
-        transform: scale(0.92);
-        transform-origin: top center;
+        padding-top: 10px;
     }
 }
