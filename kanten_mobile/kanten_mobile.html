@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
 
-    <!-- verhindert Zoom + öffnet richtige Tastatur -->
+    <!-- Kein Zoom, perfekte Darstellung für TC22 / iPhone -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>Kanten / Schweißen</title>
@@ -32,11 +32,6 @@
         <button class="kundeBtn" id="sonstigeBtn" data-kunde="SONSTIGE">Sonstige Kunden</button>
     </div>
 
-    <!-- Eingabefeld für Sonstige (unsichtbar) -->
-    <div id="sonstigeInputRow" style="display:none; margin-top:15px; width:100%; text-align:center;">
-        <input id="sonstigeInput" type="text" placeholder="Kundenname eingeben…" autocomplete="off">
-    </div>
-
     <!-- Art-Auswahl -->
     <div class="art-btn-row">
         <button id="btnKanten" class="artBtn active">Kanten</button>
@@ -47,6 +42,38 @@
     <div id="actionButtons">
         <button id="btnBack">◀ Zurück</button>
         <button id="btnDrucken">Drucken</button>
+    </div>
+</div>
+
+<!-- Popup QWERTZ Tastatur -->
+<div id="keyboardPopup">
+    <div id="keyboardBox">
+
+        <input id="keyboardInput" type="text" placeholder="Kundenname…" readonly>
+
+        <div class="kb-row">
+            <button class="kb">Q</button><button class="kb">W</button><button class="kb">E</button><button class="kb">R</button><button class="kb">T</button>
+            <button class="kb">Z</button><button class="kb">U</button><button class="kb">I</button><button class="kb">O</button><button class="kb">P</button>
+        </div>
+
+        <div class="kb-row">
+            <button class="kb">A</button><button class="kb">S</button><button class="kb">D</button><button class="kb">F</button><button class="kb">G</button>
+            <button class="kb">H</button><button class="kb">J</button><button class="kb">K</button><button class="kb">L</button>
+        </div>
+
+        <div class="kb-row">
+            <button class="kb">Y</button><button class="kb">X</button><button class="kb">C</button><button class="kb">V</button>
+            <button class="kb">B</button><button class="kb">N</button><button class="kb">M</button>
+        </div>
+
+        <div class="kb-row bottom">
+            <button id="kbDelete" class="kb special red">Löschen</button>
+            <button id="kbSpace" class="kb space">Leerzeichen</button>
+            <button id="kbOk" class="kb special green">OK</button>
+        </div>
+
+        <button id="kbCancel" class="cancel">Abbrechen</button>
+
     </div>
 </div>
 
