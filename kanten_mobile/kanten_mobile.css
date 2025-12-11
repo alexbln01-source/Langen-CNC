@@ -1,7 +1,4 @@
-/* GLOBAL */
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html, body {
     margin: 0;
@@ -13,15 +10,14 @@ html, body {
 
     display: flex;
     justify-content: center;
-    align-items: center; /* vertikal zentriert */
+    align-items: center;
     overflow: hidden;
 }
 
-/* PAGE */
+/* Hauptcontainer */
 #card {
     width: 94%;
     max-width: 900px;
-    background: transparent;
 }
 
 /* Titel */
@@ -33,54 +29,42 @@ h1 {
     margin-bottom: 12px;
 }
 
-/* Label */
+/* Kundenlabel */
 .grid-label {
     font-size: 18px;
     font-weight: 900;
     text-align: center;
-    color: #003a73;
     margin-bottom: 10px;
+    color: #003a73;
 }
 
-/* Kunden – 3 SPALTEN */
+/* 3-Spalten-Grid */
 #kundenArea {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3,1fr);
     gap: 14px;
     width: 100%;
     padding: 0 10px;
 }
 
-/* Kundenbuttons */
 .kundeBtn {
     width: 100%;
-    padding: 18px 0;
+    padding: 20px 0;
     font-size: 18px;
-    font-weight: bold;
     border-radius: 14px;
     border: none;
-
-    background: white;
+    background: #fff;
     color: #003a73;
+    font-weight: bold;
     box-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
 
 .kundeBtn.active {
     background: #007bff;
-    color: white;
+    color: #fff;
 }
 
-/* Eingabefeld Sonstige */
-#sonstigeInput {
-    width: 90%;
-    padding: 16px;
-    font-size: 20px;
-    border-radius: 14px;
-    border: 2px solid #003a73;
-    background: white;
-}
-
-/* Art-Auswahl */
+/* Art Auswahl */
 .art-btn-row {
     margin-top: 20px;
     display: flex;
@@ -90,20 +74,20 @@ h1 {
 .artBtn {
     flex: 1;
     padding: 14px 0;
+    border-radius: 14px;
     font-size: 20px;
     font-weight: bold;
-    border-radius: 14px;
-    border: none;
     background: #e7ecf5;
     color: #003a73;
+    border: none;
 }
 
 .artBtn.active {
     background: #007bff;
-    color: white;
+    color: #fff;
 }
 
-/* Action Buttons */
+/* Unten Buttons */
 #actionButtons {
     display: flex;
     justify-content: space-between;
@@ -113,29 +97,97 @@ h1 {
 #btnBack, #btnDrucken {
     width: 48%;
     padding: 18px 0;
+    border: none;
+    border-radius: 14px;
+    color: #fff;
     font-size: 22px;
     font-weight: bold;
-    color: white;
-    border-radius: 14px;
-    border: none;
 }
 
 #btnBack { background: #444; }
 #btnDrucken { background: #00963d; }
 
-/* TC21 */
-body.zebra-tc21 .kundeBtn {
-    font-size: 14px;
-    padding: 12px 0;
+/* =======================
+   POPUP + QWERTZ Keyboard
+======================== */
+
+#keyboardPopup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
 }
+
+#keyboardBox {
+    width: 90%;
+    max-width: 500px;
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+#keyboardInput {
+    width: 100%;
+    padding: 16px;
+    font-size: 24px;
+    border-radius: 14px;
+    border: 2px solid #004a90;
+    margin-bottom: 10px;
+}
+
+.kb-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.kb {
+    flex: 1;
+    padding: 14px 0;
+    font-size: 20px;
+    border-radius: 12px;
+    border: none;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+}
+
+.kb.space {
+    flex: 4;
+}
+
+.kb.special {
+    flex: 2;
+}
+
+.kb.special.green {
+    background: #00963d;
+    color: white;
+    font-weight: bold;
+}
+
+.kb.special.red {
+    background: #c80000;
+    color: white;
+    font-weight: bold;
+}
+
+.cancel {
+    width: 100%;
+    margin-top: 12px;
+    padding: 14px 0;
+    background: #666;
+    border: none;
+    color: white;
+    border-radius: 12px;
+    font-size: 20px;
+}
+
+/* TC21 */
+body.zebra-tc21 .kundeBtn { font-size: 14px; padding: 14px 0; }
 
 /* TC22 */
-body.zebra-tc22 .kundeBtn {
-    font-size: 17px;
-    padding: 16px 0;
-}
-
-/* PC */
-body.pc-device #card {
-    width: 80%;
-}
+body.zebra-tc22 .kundeBtn { font-size: 17px; padding: 16px 0; }
