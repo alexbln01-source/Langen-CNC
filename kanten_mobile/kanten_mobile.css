@@ -251,3 +251,18 @@ html, body {
         max-width: 400px;
     }
 }
+/* ==========================================
+   TC22 Layout – identisch zu Beschichtung
+========================================== */
+
+body.zebra-tc22 .kunden-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+body.zebra-tc22 .kunde-btn {
+    min-height: 62px;
+    padding: 4px;
+    font-size: 14px;
+    line-height: 1.2;
+}
