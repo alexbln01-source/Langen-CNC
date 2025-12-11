@@ -1,6 +1,4 @@
-/* ============================================================
-   GLOBAL
-============================================================ */
+/* GLOBAL */
 * {
     box-sizing: border-box;
 }
@@ -15,62 +13,27 @@ html, body {
 
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;   /* vertikal mittig */
     overflow: hidden;
 }
 
-/* ============================================================
-   PAGE (kein weißes Card mehr)
-============================================================ */
+/* PAGE */
 #card {
     width: 94%;
-    margin-top: 20px;
+    max-width: 900px;
     background: transparent;
-    padding-bottom: 20px;
 }
 
-/* ============================================================
-   TITEL
-============================================================ */
+/* Titel */
 h1 {
     text-align: center;
     color: #003a73;
     font-size: 32px;
-    margin-bottom: 10px;
     font-weight: 900;
+    margin-bottom: 12px;
 }
 
-/* ============================================================
-   Kanten / Schweißen Buttons
-============================================================ */
-.art-btn-row {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    width: 100%;
-    margin-bottom: 18px;
-}
-
-.artBtn {
-    flex: 1;
-    padding: 14px 0;
-    font-size: 20px;
-    font-weight: bold;
-    background: #e7ecf5;
-    color: #003a73;
-    border: none;
-    border-radius: 14px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-}
-
-.artBtn.active {
-    background: #007bff;
-    color: #fff;
-}
-
-/* ============================================================
-   GRID LABEL
-============================================================ */
+/* Label */
 .grid-label {
     font-size: 18px;
     font-weight: 900;
@@ -79,69 +42,83 @@ h1 {
     margin-bottom: 10px;
 }
 
-/* ============================================================
-   KUNDEN GRID – 3 SPALTEN!
-============================================================ */
+/* Kunden – 3 SPALTEN */
 #kundenArea {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* ← 3 NEBENAN! */
+    grid-template-columns: repeat(3, 1fr);
     gap: 14px;
     width: 100%;
     padding: 0 10px;
 }
 
-/* ============================================================
-   KUNDEN BUTTONS
-============================================================ */
+/* Kundenbuttons */
 .kundeBtn {
     width: 100%;
     padding: 18px 0;
-
     font-size: 18px;
     font-weight: bold;
+    border-radius: 14px;
+    border: none;
 
     background: white;
     color: #003a73;
-
-    border: none;
-    border-radius: 14px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-
-    text-align: center;
 }
 
 .kundeBtn.active {
     background: #007bff;
     color: white;
-    transform: scale(0.98);
 }
 
-/* ============================================================
-   UNTERE BUTTONS
-============================================================ */
+/* ART-Auswahl */
+.art-btn-row {
+    margin-top: 20px;
+    display: flex;
+    gap: 12px;
+}
+
+.artBtn {
+    flex: 1;
+    padding: 14px 0;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 14px;
+    border: none;
+    background: #e7ecf5;
+    color: #003a73;
+}
+
+.artBtn.active {
+    background: #007bff;
+    color: white;
+}
+
+/* Unten: Zurück / Drucken */
 #actionButtons {
     display: flex;
     justify-content: space-between;
     margin-top: 25px;
 }
 
-#btnBack,
-#btnDrucken {
+#btnBack, #btnDrucken {
     width: 48%;
     padding: 18px 0;
     font-size: 22px;
     font-weight: bold;
-    border-radius: 16px;
-    border: none;
     color: white;
+    border-radius: 14px;
+    border: none;
 }
 
-#btnBack { background: #444; }
-#btnDrucken { background: #00963d; }
+#btnBack {
+    background: #444;
+}
 
-/* ============================================================
-   POPUP (Sonstige)
-============================================================ */
+#btnDrucken {
+    background: #00963d;
+}
+
+/* POPUP */
 #keyboardPopup {
     display: none;
     position: fixed;
@@ -169,9 +146,6 @@ h1 {
     margin-bottom: 12px;
 }
 
-/* ============================================================
-   TASTATUR
-============================================================ */
 #keyboardGrid {
     display: flex;
     flex-wrap: wrap;
@@ -199,31 +173,19 @@ h1 {
     border-radius: 10px;
 }
 
-/* ============================================================
-   TC21 / TC22 Anpassungen
-============================================================ */
+/* TC21 */
 body.zebra-tc21 .kundeBtn {
     font-size: 14px;
     padding: 12px 0;
 }
 
+/* TC22 */
 body.zebra-tc22 .kundeBtn {
     font-size: 17px;
     padding: 16px 0;
 }
 
-/* ============================================================
-   PC Layout
-============================================================ */
+/* PC */
 body.pc-device #card {
     width: 80%;
-    margin-top: 40px;
-}
-
-body.pc-device #kundenArea {
-    max-width: 900px;
-}
-
-body.pc-device .kundeBtn {
-    font-size: 20px;
 }
