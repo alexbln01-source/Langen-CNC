@@ -1,6 +1,6 @@
 let selectedCustomer = "";
 let customCustomer = "";
-let selectedArt = "kanten";
+let selectedArt = "";   // ⚠️ NICHTS vorausgewählt!
 
 /* ==========================
    Geräte-Erkennung
@@ -28,7 +28,6 @@ document.querySelectorAll(".kundeBtn").forEach(btn => {
             .forEach(b => b.classList.remove("active"));
 
         btn.classList.add("active");
-
         const kunde = btn.dataset.kunde;
 
         if (kunde === "SONSTIGE") {
@@ -42,16 +41,18 @@ document.querySelectorAll(".kundeBtn").forEach(btn => {
 });
 
 /* ==========================
-   Art Auswahl
+   Art Auswahl (Kanten / Schweißen)
 ========================== */
 btnKanten.onclick = () => {
     selectedArt = "kanten";
+
     btnKanten.classList.add("active");
     btnSchweissen.classList.remove("active");
 };
 
 btnSchweissen.onclick = () => {
     selectedArt = "schweissen";
+
     btnSchweissen.classList.add("active");
     btnKanten.classList.remove("active");
 };
@@ -60,6 +61,16 @@ btnSchweissen.onclick = () => {
    Drucken
 ========================== */
 btnDrucken.onclick = () => {
+
+    if (!selectedCustomer) {
+        alert("Bitte einen Kunden auswählen!");
+        return;
+    }
+
+    if (!selectedArt) {
+        alert("Bitte Kanten oder Schweißen auswählen!");
+        return;
+    }
 
     let kundeName = "";
 
@@ -84,7 +95,7 @@ btnDrucken.onclick = () => {
 btnBack.onclick = () => history.back();
 
 /* ==========================
-   Popup Tastatur
+   Popup QWERTZ Tastatur
 ========================== */
 const popup = document.getElementById("keyboardPopup");
 const inputField = document.getElementById("keyboardInput");
@@ -95,9 +106,8 @@ function openKeyboard() {
     inputField.focus();
 }
 
-/* Zeichen anhängen */
+/* Zeichen hinzufügen */
 document.querySelectorAll(".kb").forEach(key => {
-
     key.onclick = () => {
 
         if (key.id === "kbDelete") return;
@@ -117,6 +127,7 @@ document.getElementById("kbSpace").onclick = () => {
 };
 
 document.getElementById("kbOk").onclick = () => {
+
     customCustomer = inputField.value.trim();
     if (!customCustomer) return;
 
