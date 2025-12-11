@@ -182,9 +182,9 @@ body.zebra-tc22 .kunden-grid {
 }
 
 body.zebra-tc22 .kunde-btn {
-    min-height: 62px;
-    padding: 4px;
-    font-size: 14px;
+    min-height: 100;
+    padding: 14px;
+    font-size: 22px;
 }
 
 /* MOBILE Anpassungen */
