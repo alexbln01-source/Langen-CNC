@@ -13,7 +13,7 @@ html, body {
 
     display: flex;
     justify-content: center;
-    align-items: center;   /* vertikal mittig */
+    align-items: center; /* vertikal zentriert */
     overflow: hidden;
 }
 
@@ -70,7 +70,17 @@ h1 {
     color: white;
 }
 
-/* ART-Auswahl */
+/* Eingabefeld Sonstige */
+#sonstigeInput {
+    width: 90%;
+    padding: 16px;
+    font-size: 20px;
+    border-radius: 14px;
+    border: 2px solid #003a73;
+    background: white;
+}
+
+/* Art-Auswahl */
 .art-btn-row {
     margin-top: 20px;
     display: flex;
@@ -93,7 +103,7 @@ h1 {
     color: white;
 }
 
-/* Unten: Zurück / Drucken */
+/* Action Buttons */
 #actionButtons {
     display: flex;
     justify-content: space-between;
@@ -110,68 +120,8 @@ h1 {
     border: none;
 }
 
-#btnBack {
-    background: #444;
-}
-
-#btnDrucken {
-    background: #00963d;
-}
-
-/* POPUP */
-#keyboardPopup {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
-    justify-content: center;
-    align-items: center;
-    z-index: 9000;
-}
-
-#keyboardBox {
-    background: white;
-    padding: 25px;
-    border-radius: 20px;
-    width: 90%;
-    max-width: 380px;
-}
-
-#keyboardInput {
-    width: 100%;
-    padding: 14px;
-    font-size: 22px;
-    border: 2px solid #004a87;
-    border-radius: 10px;
-    margin-bottom: 12px;
-}
-
-#keyboardGrid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-#keyboardGrid button {
-    width: 18%;
-    margin: 4px;
-    padding: 14px 0;
-    font-size: 20px;
-    border-radius: 10px;
-}
-
-#kbActions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-}
-
-#kbActions button {
-    width: 32%;
-    padding: 14px 0;
-    font-size: 18px;
-    border-radius: 10px;
-}
+#btnBack { background: #444; }
+#btnDrucken { background: #00963d; }
 
 /* TC21 */
 body.zebra-tc21 .kundeBtn {
