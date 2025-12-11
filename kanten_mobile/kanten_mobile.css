@@ -20,28 +20,7 @@ html, body {
 }
 
 /* ============================================================
-   DEVICE INFO
-============================================================ */
-.device-info {
-    position: fixed;
-    top: 6px;
-    left: 10px;
-    font-size: 16px;
-    color: #444;
-    z-index: 20;
-}
-
-.build-info {
-    position: fixed;
-    bottom: 6px;
-    right: 10px;
-    font-size: 14px;
-    color: #444;
-    z-index: 20;
-}
-
-/* ============================================================
-   PAGE
+   HAUPTSEITE
 ============================================================ */
 .page {
     width: 94vw;
@@ -49,105 +28,187 @@ html, body {
 
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    align-items: center;
 
-    padding-top: 15px;
+    padding: 10px;
 }
 
 /* ============================================================
-   TITLE
+   TITEL
 ============================================================ */
 .title {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 900;
     color: #003a73;
-    text-align: center;
+    margin-bottom: 10px;
 }
 
 /* ============================================================
-   LABEL
+   Art-Auswahl: Kanten / Schweißen
 ============================================================ */
-.grid-label {
-    font-size: 20px;
-    font-weight: 900;
-    color: #003a73;
-    text-align: center;
-    margin-bottom: 12px;
-}
-
-/* ============================================================
-   GRID – jetzt 3 SPALTEN wie Beschichtung
-============================================================ */
-.kunden-grid {
-    width: 100%;
-    padding: 0 12px;
-
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* <-- WICHTIG */
-    gap: 16px;
-
-    justify-items: stretch;
-    margin-top: 10px;
-}
-
-/* ============================================================
-   BUTTONS – groß wie Beschichtung
-============================================================ */
-.kunde-btn {
-    width: 100%;
-    min-height: 95px;        /* gleiche Höhe wie Beschichtung */
-    padding: 14px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-
-    border: none;
-    border-radius: 18px;
-
-    background: #ffffff;
-    color: #003a73;
-    font-size: 20px;         /* gleiche Schrift wie Beschichtung */
-    font-weight: 800;
-
-    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-}
-
-.kunde-btn.active {
-    background: #007bff;
-    color: white;
-}
-
-/* ============================================================
-   DRUCKART – optisch passend
-============================================================ */
-.druckart-row {
+.art-btn-row {
     width: 90%;
     display: flex;
+    justify-content: center;
     gap: 14px;
-    margin-top: 8px;
+    margin: 8px auto 16px auto;
 }
 
-.druckart-btn {
+.artBtn {
     flex: 1;
-    padding: 16px;
-    font-size: 20px;
+    padding: 14px 0;
+    font-size: 18px;
     font-weight: bold;
 
-    border-radius: 14px;
     border: none;
+    border-radius: 14px;
+
     background: #e7ecf5;
     color: #003a73;
+
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
 }
 
-.druckart-btn.active {
+.artBtn.active {
     background: #007bff;
     color: #fff;
 }
 
 /* ============================================================
-   POPUP
+   GRID-LABEL
+============================================================ */
+.grid-label {
+    font-size: 18px;
+    font-weight: 900;
+    color: #003a73;
+    text-align: center;
+    margin: 10px 0 6px 0;
+}
+
+/* ============================================================
+   GRID Standard
+============================================================ */
+.kunden-grid {
+    width: 100%;
+    padding: 0 12px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+
+    justify-items: stretch;
+    justify-content: center;
+}
+
+/* ============================================================
+   TC21 Layout
+============================================================ */
+body.zebra-tc21 .kunden-grid {
+    padding: 0 6px;
+    grid-template-columns: repeat(3, 100px);
+    gap: 8px;
+    justify-content: center;
+}
+
+body.zebra-tc21 .kundeBtn {
+    width: 100px;
+    min-height: 60px;
+    font-size: 12px;
+    padding: 4px;
+}
+
+body.zebra-tc21 #eiltBtn {
+    margin-top: 14px;
+    margin-bottom: 18px;
+}
+
+/* ============================================================
+   TC22 Layout
+============================================================ */
+body.zebra-tc22 .kunden-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+body.zebra-tc22 .kundeBtn {
+    min-height: 62px;
+    padding: 4px;
+    font-size: 14px;
+    line-height: 1.2;
+}
+
+/* ============================================================
+   Kundenbuttons Standard
+============================================================ */
+.kundeBtn {
+    width: 100%;
+    min-height: 75px;
+    padding: 6px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    border-radius: 14px;
+    border: none;
+    font-size: 14px;
+    font-weight: 700;
+    color: #003a73;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+}
+
+.kundeBtn.active {
+    background: #007bff;
+    color: white;
+}
+
+/* ============================================================
+   EILT Button (falls verwendet)
+============================================================ */
+#eiltBtn {
+    margin-top: 14px;
+    width: 90%;
+    padding: 14px;
+    font-size: 20px;
+    border-radius: 14px;
+    border: none;
+    background: #777;
+    color: white;
+    font-weight: bold;
+}
+
+#eiltBtn.on {
+    background: #c80000;
+}
+
+/* ============================================================
+   UNTERE BUTTONS
+============================================================ */
+.bottom-row {
+    width: 90%;
+    display: flex;
+    gap: 12px;
+    margin-top: auto;
+    padding-bottom: 10px;
+}
+
+.back-btn,
+.primary-btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+}
+
+.back-btn { background: #444; }
+.primary-btn { background: #00963d; }
+
+/* ============================================================
+   POPUP / SONSTIGE
 ============================================================ */
 .popup-overlay {
     position: fixed;
@@ -166,47 +227,45 @@ html, body {
     max-width: 420px;
     border-radius: 16px;
     text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.popup input {
+    width: 100%;
+    padding: 16px;
+    font-size: 20px;
+    border-radius: 12px;
+    border: 2px solid #ccd3db;
+    margin-bottom: 16px;
 }
 
 /* ============================================================
-   UNTERE BUTTONS – wie Beschichtung
+   FOKUS
 ============================================================ */
-.bottom-row {
-    width: 90%;
-    display: flex;
-    gap: 14px;
-    margin-bottom: 10px;
+button:focus {
+    outline: 4px solid #1a73e8;
 }
 
-.back-btn,
-.primary-btn {
-    flex: 1;
-    padding: 20px;
-    border-radius: 16px;
-
-    border: none;
-    font-size: 22px;
-    font-weight: bold;
-    color: white;
-}
-
-.back-btn { background: #444; }
-.primary-btn { background: #00963d; }
-
-/* ============================================================
-   TC22 – NICHT mehr verkleinern
-============================================================ */
-body.zebra-tc22 .kunde-btn {
-    min-height: 95px !important;
-    padding: 14px !important;
-    font-size: 20px !important;
+.mobile-focus {
+    outline: 4px solid #1a73e8 !important;
+    border-radius: 14px;
 }
 
 /* ============================================================
-   iPhone – perfekte Balance
+   PC Layout
 ============================================================ */
-@media screen and (max-width: 430px) {
-    .page {
-        padding-top: 10px;
-    }
+body.pc-device .page {
+    width: 80vw;
+    height: auto;
+    max-width: 1100px;
+    padding-top: 20px;
+}
+
+body.pc-device .kunden-grid {
+    grid-template-columns: repeat(3, 317px);
+    gap: 10px;
+}
+
+body.pc-device .bottom-row {
+    margin-top: 40px;
 }
