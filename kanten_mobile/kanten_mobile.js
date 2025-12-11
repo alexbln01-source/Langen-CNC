@@ -92,14 +92,18 @@ const inputField = document.getElementById("keyboardInput");
 function openKeyboard() {
     popup.style.display = "flex";
     inputField.value = "";
+    inputField.focus();
 }
 
 /* Zeichen anhängen */
 document.querySelectorAll(".kb").forEach(key => {
+
     key.onclick = () => {
+
         if (key.id === "kbDelete") return;
         if (key.id === "kbSpace") return;
         if (key.id === "kbOk") return;
+
         inputField.value += key.textContent;
     };
 });
@@ -123,3 +127,13 @@ document.getElementById("kbOk").onclick = () => {
 document.getElementById("kbCancel").onclick = () => {
     popup.style.display = "none";
 };
+
+/* ==========================
+   ENTER / RETURN am PC
+========================== */
+inputField.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+        e.preventDefault();
+        document.getElementById("kbOk").click();
+    }
+});
