@@ -15,9 +15,7 @@ html, body {
     align-items: center;
 }
 
-/* ==========================================
-   PAGE CONTAINER – zentriert wie PAUS
-========================================== */
+/* PAGE */
 .page {
     width: 94vw;
     max-width: 900px;
@@ -32,9 +30,7 @@ html, body {
     text-align: center;
 }
 
-/* ==========================================
-   DEVICE / BUILD INFO
-========================================== */
+/* DEVICE INFO */
 .device-info {
     position: fixed;
     top: 6px;
@@ -53,9 +49,7 @@ html, body {
     z-index: 20;
 }
 
-/* ==========================================
-   TITEL
-========================================== */
+/* TITEL */
 .title {
     font-size: 34px;
     font-weight: 900;
@@ -63,9 +57,7 @@ html, body {
     margin-bottom: 14px;
 }
 
-/* ==========================================
-   GRID LABEL
-========================================== */
+/* GRID LABEL */
 .grid-label {
     font-size: 22px;
     font-weight: 700;
@@ -73,9 +65,7 @@ html, body {
     margin-bottom: 18px;
 }
 
-/* ==========================================
-   KUNDEN GRID
-========================================== */
+/* GRID identisch zu Beschichtung */
 .kunden-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -85,6 +75,7 @@ html, body {
     justify-items: stretch;
 }
 
+/* BUTTONS identisch zu Beschichtung */
 .kunde-btn {
     width: 100%;
     min-height: 100px;
@@ -106,9 +97,7 @@ html, body {
     color: white;
 }
 
-/* ==========================================
-   DRUCKART
-========================================== */
+/* DRUCKART */
 .druckart-row {
     display: flex;
     justify-content: center;
@@ -133,9 +122,7 @@ html, body {
     color: white;
 }
 
-/* ==========================================
-   UNTERE BUTTONS
-========================================== */
+/* BOTTOM BUTTONS */
 .bottom-row {
     display: flex;
     justify-content: center;
@@ -158,9 +145,7 @@ html, body {
 .back-btn { background: #333; }
 .primary-btn { background: #0c8a34; }
 
-/* ==========================================
-   POPUP – komplett zentriert
-========================================== */
+/* POPUP */
 .popup-overlay {
     position: fixed;
     inset: 0;
@@ -181,12 +166,6 @@ html, body {
     box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
-.popup h3 {
-    font-size: 24px;
-    color: #003a73;
-    margin-bottom: 12px;
-}
-
 .popup input {
     width: 100%;
     padding: 16px;
@@ -196,23 +175,7 @@ html, body {
     margin-bottom: 16px;
 }
 
-.ok-btn, .cancel-btn {
-    width: 100%;
-    padding: 16px;
-    font-size: 20px;
-    font-weight: bold;
-    border-radius: 12px;
-    border: none;
-    margin-top: 8px;
-}
-
-.ok-btn { background: #007bff; color: white; }
-.cancel-btn { background: #666; color: white; }
-
-
-/* =============================
-   TC22 Layout
-============================= */
+/* TC22 identisch */
 body.zebra-tc22 .kunden-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
@@ -222,28 +185,30 @@ body.zebra-tc22 .kunde-btn {
     min-height: 62px;
     padding: 4px;
     font-size: 14px;
-    line-height: 1.2;
-}
-/* =============================
-   PC – kompakteres Layout
-   (Zebra / Mobile bleiben unverändert)
-============================= */
-body.pc-device .page {
-    width: 80vw;          /* weniger Breite */
-    height: auto;         /* nicht auf Vollbild stretchen */
-    max-width: 1100px;    /* schöner Desktop-Rahmen */
-    padding-top: 20px;
 }
 
-body.pc-device .kunden-grid {
-    grid-template-columns: repeat(3, 317px);  /* statt 315px */
-    gap: 10px;
-}
+/* MOBILE Anpassungen */
+@media (max-width: 820px) {
+    .page {
+        width: 95vw;
+        padding: 10px;
+    }
 
-body.pc-device #eiltBtn {
-    margin-top: 12px;
-}
+    .title {
+        font-size: 32px;
+    }
 
-body.pc-device .bottom-row {
-    margin-top: 40px;  /* statt margin-top: auto */
+    .grid-label {
+        font-size: 20px;
+    }
+
+    .kunden-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .kunde-btn {
+        min-height: 110px;
+        font-size: 22px;
+    }
 }
