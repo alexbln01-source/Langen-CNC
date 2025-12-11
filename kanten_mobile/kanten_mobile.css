@@ -1,271 +1,161 @@
-/* ============================================================
-   GLOBAL
-============================================================ */
-* {
-    box-sizing: border-box;
+body {
+  margin:0;
+  padding:0;
+  background:#dde3ea;
+  font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
 }
 
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    background: #eef1f4;
-    font-family: Arial, sans-serif;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+#card {
+  width:92%;
+  margin-top:35px;
+  background:white;
+  border-radius:26px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.25);
+  padding:25px 15px 35px;
 }
 
-/* ============================================================
-   HAUPTSEITE
-============================================================ */
-.page {
-    width: 94vw;
-    height: 92vh;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    padding: 10px;
+h1 {
+  text-align:center;
+  color:#004a87;
+  font-size:32px;
+  margin-bottom:10px;
+  font-weight:900;
 }
 
-/* ============================================================
-   TITEL
-============================================================ */
-.title {
-    font-size: 24px;
-    font-weight: 900;
-    color: #003a73;
-    margin-bottom: 10px;
-}
-
-/* ============================================================
-   Art-Auswahl: Kanten / Schweißen
-============================================================ */
+/* Kanten / Schweißen Auswahl */
 .art-btn-row {
-    width: 90%;
-    display: flex;
-    justify-content: center;
-    gap: 14px;
-    margin: 8px auto 16px auto;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  width:100%;
+  margin-bottom:20px;
 }
 
 .artBtn {
-    flex: 1;
-    padding: 14px 0;
-    font-size: 18px;
-    font-weight: bold;
-
-    border: none;
-    border-radius: 14px;
-
-    background: #e7ecf5;
-    color: #003a73;
-
-    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  flex:1;
+  padding:14px 0;
+  font-size:20px;
+  font-weight:bold;
+  background:#e6e9ee;
+  border:none;
+  border-radius:14px;
+  color:#003a73;
 }
 
 .artBtn.active {
-    background: #007bff;
-    color: #fff;
+  background:#007bff;
+  color:white;
 }
 
-/* ============================================================
-   GRID-LABEL
-============================================================ */
 .grid-label {
-    font-size: 18px;
-    font-weight: 900;
-    color: #003a73;
-    text-align: center;
-    margin: 10px 0 6px 0;
+  font-size:18px;
+  font-weight:900;
+  text-align:center;
+  color:#003a73;
+  margin-bottom:10px;
 }
 
-/* ============================================================
-   GRID Standard
-============================================================ */
-.kunden-grid {
-    width: 100%;
-    padding: 0 12px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-
-    justify-items: stretch;
-    justify-content: center;
+/* Kunden Grid */
+#kundenArea {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
 }
 
-/* ============================================================
-   TC21 Layout
-============================================================ */
-body.zebra-tc21 .kunden-grid {
-    padding: 0 6px;
-    grid-template-columns: repeat(3, 100px);
-    gap: 8px;
-    justify-content: center;
-}
-
-body.zebra-tc21 .kundeBtn {
-    width: 100px;
-    min-height: 60px;
-    font-size: 12px;
-    padding: 4px;
-}
-
-body.zebra-tc21 #eiltBtn {
-    margin-top: 14px;
-    margin-bottom: 18px;
-}
-
-/* ============================================================
-   TC22 Layout
-============================================================ */
-body.zebra-tc22 .kunden-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-}
-
-body.zebra-tc22 .kundeBtn {
-    min-height: 62px;
-    padding: 4px;
-    font-size: 14px;
-    line-height: 1.2;
-}
-
-/* ============================================================
-   Kundenbuttons Standard
-============================================================ */
 .kundeBtn {
-    width: 100%;
-    min-height: 75px;
-    padding: 6px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-
-    border-radius: 14px;
-    border: none;
-    font-size: 14px;
-    font-weight: 700;
-    color: #003a73;
-    background: white;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  width:46%;
+  margin:6px;
+  padding:18px 0;
+  font-size:20px;
+  font-weight:bold;
+  border-radius:16px;
+  border:1px solid #bfc7d3;
+  background:linear-gradient(#ffffff,#e6e9ee);
+  color:#0053a6;
+  box-shadow:0 4px 10px rgba(0,0,0,0.15);
 }
 
 .kundeBtn.active {
-    background: #007bff;
-    color: white;
+  background:linear-gradient(#007bff,#0056b3);
+  color:white;
+  border-color:#003a73;
+  transform:scale(0.98);
 }
 
-/* ============================================================
-   EILT Button (falls verwendet)
-============================================================ */
-#eiltBtn {
-    margin-top: 14px;
-    width: 90%;
-    padding: 14px;
-    font-size: 20px;
-    border-radius: 14px;
-    border: none;
-    background: #777;
-    color: white;
-    font-weight: bold;
+/* Action Buttons */
+#actionButtons {
+  display:flex;
+  justify-content:space-between;
+  margin-top:25px;
 }
 
-#eiltBtn.on {
-    background: #c80000;
+#btnBack, #btnDrucken {
+  width:48%;
+  padding:18px 0;
+  font-size:22px;
+  font-weight:bold;
+  border-radius:16px;
+  color:white;
 }
 
-/* ============================================================
-   UNTERE BUTTONS
-============================================================ */
-.bottom-row {
-    width: 90%;
-    display: flex;
-    gap: 12px;
-    margin-top: auto;
-    padding-bottom: 10px;
+#btnBack { background:#3a3f44; }
+#btnDrucken { background:#00963d; }
+
+/* Popup */
+#keyboardPopup {
+  display:none;
+  position:fixed;
+  left:0; top:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.45);
+  justify-content:center;
+  align-items:center;
+  z-index:9000;
 }
 
-.back-btn,
-.primary-btn {
-    flex: 1;
-    padding: 14px;
-    border-radius: 14px;
-    border: none;
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
+#keyboardBox {
+  background:white;
+  padding:25px;
+  border-radius:20px;
+  width:90%;
+  max-width:380px;
 }
 
-.back-btn { background: #444; }
-.primary-btn { background: #00963d; }
-
-/* ============================================================
-   POPUP / SONSTIGE
-============================================================ */
-.popup-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.55);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
+#keyboardInput {
+  width:100%;
+  padding:14px;
+  font-size:22px;
+  border:2px solid #004a87;
+  border-radius:10px;
+  margin-bottom:12px;
 }
 
-.popup {
-    background: white;
-    padding: 30px;
-    width: 90%;
-    max-width: 420px;
-    border-radius: 16px;
-    text-align: center;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+#keyboardGrid {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
 }
 
-.popup input {
-    width: 100%;
-    padding: 16px;
-    font-size: 20px;
-    border-radius: 12px;
-    border: 2px solid #ccd3db;
-    margin-bottom: 16px;
+#keyboardGrid button {
+  width:18%;
+  margin:4px;
+  padding:14px 0;
+  font-size:20px;
+  border-radius:10px;
 }
 
-/* ============================================================
-   FOKUS
-============================================================ */
-button:focus {
-    outline: 4px solid #1a73e8;
+#kbActions {
+  display:flex;
+  justify-content:space-between;
+  margin-top:15px;
 }
 
-.mobile-focus {
-    outline: 4px solid #1a73e8 !important;
-    border-radius: 14px;
-}
-
-/* ============================================================
-   PC Layout
-============================================================ */
-body.pc-device .page {
-    width: 80vw;
-    height: auto;
-    max-width: 1100px;
-    padding-top: 20px;
-}
-
-body.pc-device .kunden-grid {
-    grid-template-columns: repeat(3, 317px);
-    gap: 10px;
-}
-
-body.pc-device .bottom-row {
-    margin-top: 40px;
+#kbActions button {
+  width:32%;
+  padding:14px 0;
+  font-size:18px;
+  border-radius:10px;
 }
