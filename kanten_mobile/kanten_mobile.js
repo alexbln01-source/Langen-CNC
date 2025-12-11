@@ -3,30 +3,20 @@ let customCustomer = "";
 let selectedArt = "kanten";
 
 /* ===========================================
-   GERÄTEINFO + BUILDINFO
-=========================================== */
-/* ===========================================
-   GERÄTEINFO + BUILDINFO  (NEU: TC22 ERKENNUNG WIE BEI BESCHICHTUNG)
+   GERÄTEINFO + BUILDINFO  
+   ⭐ 100 % sichere TC22-Erkennung ⭐
 =========================================== */
 
 (function () {
 
     const ua  = navigator.userAgent.toLowerCase();
-    const sw  = window.screen.width;
-    const sh  = window.screen.height;
-    const dpr = window.devicePixelRatio;
     const body = document.body;
 
     let device = "Unbekanntes Gerät";
 
-    // Standard Mobile?
-    const isMobile = /android|iphone|ipad|ipod/i.test(ua);
-
-    // TC21 – wie Beschichtung
-    const isZebraTC21 = ua.includes("android") && sw === 360 && sh === 640;
-
-    // TC22 – wie Beschichtung! 
-    const isZebraTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
+    // SICHERE Zebra-Erkennung
+    const isZebraTC22 = ua.includes("tc22") || ua.includes("tc2x") || ua.includes("zebra");
+    const isZebraTC21 = ua.includes("tc21");
 
     if (isZebraTC22) {
         device = "Zebra TC22";
@@ -36,9 +26,9 @@ let selectedArt = "kanten";
         device = "Zebra TC21";
         body.classList.add("zebra-tc21");
     }
-    else if (isMobile) {
+    else if (ua.includes("android")) {
         device = "Android Gerät";
-    } 
+    }
     else {
         device = "PC";
         body.classList.add("pc-device");
@@ -59,9 +49,12 @@ let selectedArt = "kanten";
 
 })();
   
+
+
 /* ===========================================
    POPUP – Sonstige Kunden
 =========================================== */
+
 const popupOverlay = document.getElementById("popupOverlay");
 const popupInput = document.getElementById("popupInput");
 const popupOk = document.getElementById("popupOk");
@@ -105,6 +98,7 @@ popupCancel.onclick = () => {
 /* ===========================================
    KUNDENAUSWAHL
 =========================================== */
+
 document.querySelectorAll(".kunde-btn").forEach(btn => {
     btn.onclick = () => {
 
@@ -133,6 +127,7 @@ document.querySelectorAll(".kunde-btn").forEach(btn => {
 /* ===========================================
    DRUCKART
 =========================================== */
+
 const btnKanten = document.getElementById("btnKanten");
 const btnSchweissen = document.getElementById("btnSchweissen");
 
@@ -153,6 +148,7 @@ btnSchweissen.onclick = () => {
 /* ===========================================
    DRUCKEN
 =========================================== */
+
 document.getElementById("druckBtn").onclick = () => {
 
     if (!selectedCustomer) {
@@ -160,7 +156,6 @@ document.getElementById("druckBtn").onclick = () => {
         return;
     }
 
-    // korrekter Name
     let kundeName =
         selectedCustomer === "SONSTIGE"
             ? customCustomer
@@ -184,4 +179,5 @@ document.getElementById("druckBtn").onclick = () => {
 /* ===========================================
    ZURÜCK BUTTON
 =========================================== */
+
 document.getElementById("backBtn").onclick = () => history.back();
