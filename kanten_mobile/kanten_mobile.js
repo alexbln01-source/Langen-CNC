@@ -36,7 +36,21 @@ if (deviceInfo) {
     else if (isMobile) deviceInfo.textContent = "Gerät: Android / iOS";
     else deviceInfo.textContent = "Gerät: PC";
 }
+/* ============================================================
+   BUILD INFO
+============================================================ */
+document.addEventListener("DOMContentLoaded", () => {
+    const lastMod = new Date(document.lastModified);
+    const build =
+        lastMod.getFullYear().toString() +
+        String(lastMod.getMonth() + 1).padStart(2, "0") +
+        String(lastMod.getDate()).padStart(2, "0") + "." +
+        String(lastMod.getHours()).padStart(2, "0") +
+        String(lastMod.getMinutes()).padStart(2, "0");
 
+    const el = document.getElementById("buildInfo");
+    if (el) el.textContent = "Build " + build;
+});
 /* ===========================================
    POPUP – Sonstige Kunden
 =========================================== */
