@@ -2,54 +2,40 @@ let selectedCustomer = "";
 let customCustomer = "";
 let selectedArt = "kanten";
 
-/* ===========================================
-   GERÄTEINFO + BUILDINFO  
-   ⭐ 100 % sichere TC22-Erkennung ⭐
-=========================================== */
+/* ============================================================
+   GERÄTEERKENNUNG
+============================================================ */
+const ua  = navigator.userAgent.toLowerCase();
+const sw  = window.screen.width;
+const sh  = window.screen.height;
+const dpr = window.devicePixelRatio;
 
-(function () {
+// generell mobile?
+const isMobile = /android|iphone|ipad|ipod/i.test(ua);
 
-    const ua  = navigator.userAgent.toLowerCase();
-    const body = document.body;
+// TC21 (optional)
+const isZebraTC21 = ua.includes("android") && sw === 360 && sh === 640;
 
-    let device = "Unbekanntes Gerät";
+// TC22 (dein Gerät)
+const isZebraTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
 
-    // SICHERE Zebra-Erkennung
-    const isZebraTC22 = ua.includes("tc22") || ua.includes("tc2x") || ua.includes("zebra");
-    const isZebraTC21 = ua.includes("tc21");
+// Klassen setzen
+if (isZebraTC21) document.body.classList.add("zebra-tc21");
+if (isZebraTC22) document.body.classList.add("zebra-tc22");
 
-    if (isZebraTC22) {
-        device = "Zebra TC22";
-        body.classList.add("zebra-tc22");
-    }
-    else if (isZebraTC21) {
-        device = "Zebra TC21";
-        body.classList.add("zebra-tc21");
-    }
-    else if (ua.includes("android")) {
-        device = "Android Gerät";
-    }
-    else {
-        device = "PC";
-        body.classList.add("pc-device");
-    }
+// PC erkennen (NICHT mobil + kein Zebra)
+if (!isMobile && !isZebraTC21 && !isZebraTC22) {
+    document.body.classList.add("pc-device");
+}
 
-    document.getElementById("deviceInfo").textContent = "Gerät: " + device;
-
-    // Build erzeugen
-    const now = new Date();
-    const build =
-        now.getFullYear().toString() +
-        (now.getMonth()+1).toString().padStart(2,"0") +
-        now.getDate().toString().padStart(2,"0") + "." +
-        now.getHours().toString().padStart(2,"0") +
-        now.getMinutes().toString().padStart(2,"0");
-
-    document.getElementById("buildInfo").textContent = "Build " + build;
-
-})();
-  
-
+/* Debug-Ausgabe */
+const deviceInfo = document.getElementById("deviceInfo");
+if (deviceInfo) {
+    if (isZebraTC22) deviceInfo.textContent = "Gerät: Zebra TC22";
+    else if (isZebraTC21) deviceInfo.textContent = "Gerät: Zebra TC21";
+    else if (isMobile) deviceInfo.textContent = "Gerät: Android / iOS";
+    else deviceInfo.textContent = "Gerät: PC";
+}
 
 /* ===========================================
    POPUP – Sonstige Kunden
