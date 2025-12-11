@@ -2,54 +2,48 @@ let selectedCustomer = "";
 let customCustomer = "";
 let selectedArt = "kanten";
 
-/* ========== GERÄTE-ERKENNUNG ========== */
+/* ==========================
+   Geräte-Erkennung
+========================== */
 const ua = navigator.userAgent.toLowerCase();
-const sw = window.screen.width;
-const sh = window.screen.height;
-const dpr = window.devicePixelRatio;
+const sw = screen.width;
+const sh = screen.height;
+const dpr = devicePixelRatio;
 
 const isMobile = /android|iphone|ipad|ipod/i.test(ua);
-const isZebraTC21 = ua.includes("android") && sw === 360 && sh === 640;
-const isZebraTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
+const isTC21 = ua.includes("android") && sw === 360 && sh === 640;
+const isTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
 
-if (isZebraTC21) document.body.classList.add("zebra-tc21");
-if (isZebraTC22) document.body.classList.add("zebra-tc22");
-if (!isMobile && !isZebraTC21 && !isZebraTC22) document.body.classList.add("pc-device");
+if (isTC21) document.body.classList.add("zebra-tc21");
+if (isTC22) document.body.classList.add("zebra-tc22");
+if (!isMobile && !isTC21 && !isTC22) document.body.classList.add("pc-device");
 
-/* ========== KUNDEN-AUSWAHL ========== */
+/* ==========================
+   Kunden-Auswahl
+========================== */
 document.querySelectorAll(".kundeBtn").forEach(btn => {
     btn.onclick = () => {
 
         document.querySelectorAll(".kundeBtn")
             .forEach(b => b.classList.remove("active"));
+
         btn.classList.add("active");
 
         const kunde = btn.dataset.kunde;
 
-        // SONSTIGE
         if (kunde === "SONSTIGE") {
             selectedCustomer = "SONSTIGE";
-            const row = document.getElementById("sonstigeInputRow");
-            const input = document.getElementById("sonstigeInput");
-
-            row.style.display = "block";
-            input.value = "";
-            input.focus();  // → öffnet Android Tastatur
+            openKeyboard();
             return;
         }
 
-        // normale Kunden
         selectedCustomer = kunde;
-
-        // Eingabefeld ausblenden falls vorher sichtbar
-        document.getElementById("sonstigeInputRow").style.display = "none";
     };
 });
 
-/* ========== ART-AUSWAHL ========== */
-const btnKanten = document.getElementById("btnKanten");
-const btnSchweissen = document.getElementById("btnSchweissen");
-
+/* ==========================
+   Art Auswahl
+========================== */
 btnKanten.onclick = () => {
     selectedArt = "kanten";
     btnKanten.classList.add("active");
@@ -62,13 +56,15 @@ btnSchweissen.onclick = () => {
     btnKanten.classList.remove("active");
 };
 
-/* ========== DRUCKEN ========== */
-document.getElementById("btnDrucken").onclick = () => {
+/* ==========================
+   Drucken
+========================== */
+btnDrucken.onclick = () => {
 
     let kundeName = "";
 
     if (selectedCustomer === "SONSTIGE") {
-        kundeName = document.getElementById("sonstigeInput").value.trim();
+        kundeName = keyboardInput.value.trim();
         if (!kundeName) {
             alert("Bitte Kundennamen eingeben!");
             return;
@@ -82,5 +78,48 @@ document.getElementById("btnDrucken").onclick = () => {
         "&art=" + encodeURIComponent(selectedArt);
 };
 
-/* ========== ZURÜCK ========== */
-document.getElementById("btnBack").onclick = () => history.back();
+/* ==========================
+   Zurück
+========================== */
+btnBack.onclick = () => history.back();
+
+/* ==========================
+   Popup Tastatur
+========================== */
+const popup = document.getElementById("keyboardPopup");
+const inputField = document.getElementById("keyboardInput");
+
+function openKeyboard() {
+    popup.style.display = "flex";
+    inputField.value = "";
+}
+
+/* Zeichen anhängen */
+document.querySelectorAll(".kb").forEach(key => {
+    key.onclick = () => {
+        if (key.id === "kbDelete") return;
+        if (key.id === "kbSpace") return;
+        if (key.id === "kbOk") return;
+        inputField.value += key.textContent;
+    };
+});
+
+document.getElementById("kbDelete").onclick = () => {
+    inputField.value = inputField.value.slice(0, -1);
+};
+
+document.getElementById("kbSpace").onclick = () => {
+    inputField.value += " ";
+};
+
+document.getElementById("kbOk").onclick = () => {
+    customCustomer = inputField.value.trim();
+    if (!customCustomer) return;
+
+    document.getElementById("sonstigeBtn").textContent = customCustomer;
+    popup.style.display = "none";
+};
+
+document.getElementById("kbCancel").onclick = () => {
+    popup.style.display = "none";
+};
