@@ -38,15 +38,16 @@ h1 {
     color: #003a73;
 }
 
-/* 3-Spalten-Grid */
+/* 3-Spalten Kunden-Grid */
 #kundenArea {
     display: grid;
-    grid-template-columns: repeat(2,1fr);
+    grid-template-columns: repeat(3,1fr);
     gap: 14px;
     width: 100%;
     padding: 0 10px;
 }
 
+/* Kundenbutton */
 .kundeBtn {
     width: 100%;
     padding: 20px 0;
@@ -64,22 +65,29 @@ h1 {
     color: #fff;
 }
 
-/* Art Auswahl */
+/* Art Auswahl: ebenfalls 3 Spalten */
 .art-btn-row {
     margin-top: 20px;
-    display: flex;
-    gap: 12px;
+    width: 100%;
+    padding: 0 10px;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
 }
 
 .artBtn {
-    flex: 1;
-    padding: 14px 0;
+    width: 100%;
+    padding: 20px 0;
     border-radius: 14px;
-    font-size: 20px;
-    font-weight: bold;
-    background: #e7ecf5;
-    color: #003a73;
     border: none;
+
+    font-size: 18px;
+    font-weight: bold;
+    background: #fff;
+    color: #003a73;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
 
 .artBtn.active {
@@ -87,21 +95,26 @@ h1 {
     color: #fff;
 }
 
-/* Unten Buttons */
+/* Action Buttons — gleiche Breite wie Kunden-Buttons */
 #actionButtons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 25px;
+    margin-top: 20px;
+    width: 100%;
+    padding: 0 10px;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
 }
 
 #btnBack, #btnDrucken {
-    width: 48%;
-    padding: 14px;
-    border: none;
+    width: 100%;
+    padding: 20px 0;
     border-radius: 14px;
-    color: #fff;
-    font-size: 20px;
+    border: none;
+    font-size: 18px;
     font-weight: bold;
+    color: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
 
 #btnBack { background: #444; }
@@ -110,7 +123,6 @@ h1 {
 /* =======================
    POPUP + QWERTZ Keyboard
 ======================== */
-
 #keyboardPopup {
     position: fixed;
     inset: 0;
@@ -187,7 +199,11 @@ h1 {
 }
 
 /* TC21 */
-body.zebra-tc21 .kundeBtn { font-size: 14px; padding: 14px 0; }
+body.zebra-tc21 .kundeBtn { font-size: 14px; padding: 16px 0; }
+body.zebra-tc21 .artBtn { font-size: 14px; padding: 16px 0; }
+body.zebra-tc21 #btnBack, body.zebra-tc21 #btnDrucken { font-size: 14px; padding: 16px 0; }
 
 /* TC22 */
-body.zebra-tc22 .kundeBtn { font-size: 17px; padding: 16px 0; }
+body.zebra-tc22 .kundeBtn { font-size: 17px; padding: 18px 0; }
+body.zebra-tc22 .artBtn { font-size: 17px; padding: 18px 0; }
+body.zebra-tc22 #btnBack, body.zebra-tc22 #btnDrucken { font-size: 17px; padding: 18px 0; }
