@@ -2,27 +2,24 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Kein Zoom möglich, perfekt für TC22 / iPhone -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <title>Kanten / Schweißen</title>
     <link rel="stylesheet" href="kanten_mobile.css">
 </head>
-
 <body>
+
+<div id="deviceInfo"></div>
 
 <div id="card">
 
     <h1>Kanten / Schweißen</h1>
 
-    <!-- Auswahl: Kanten / Schweißen -->
-    <div class="art-btn-row">
-        <button id="btnKanten" class="artBtn active">Kanten</button>
-        <button id="btnSchweissen" class="artBtn">Schweißen</button>
-    </div>
-
-    <!-- Label -->
+    <!-- Kunden -->
     <div class="grid-label">Kunde auswählen</div>
 
-    <!-- Kundenbuttons -->
     <div id="kundenArea">
         <button class="kundeBtn" data-kunde="Bergmann M-H">Bergmann M-H</button>
         <button class="kundeBtn" data-kunde="Bücker">Bücker</button>
@@ -32,21 +29,26 @@
         <button class="kundeBtn" data-kunde="L.Bergmann">L.Bergmann</button>
         <button class="kundeBtn" data-kunde="PAUS">PAUS</button>
         <button class="kundeBtn" data-kunde="TOS">TOS</button>
-        <button class="kundeBtn" id="sonstigeBtn" data-kunde="SONSTIGE">Sonstige Kunden</button>
+        <button id="sonstigeBtn" class="kundeBtn" data-kunde="SONSTIGE">Sonstige Kunden</button>
     </div>
 
-    <!-- Action Buttons -->
+    <!-- Auswahl ART (neu UNTER Kunden) -->
+    <div class="art-btn-row">
+        <button id="btnKanten" class="artBtn active">Kanten</button>
+        <button id="btnSchweissen" class="artBtn">Schweißen</button>
+    </div>
+
+    <!-- Action Buttons unten -->
     <div id="actionButtons">
         <button id="btnBack">◀ Zurück</button>
-        <button id="btnDrucken">🖨️ Drucken</button>
+        <button id="btnDrucken">Drucken</button>
     </div>
 </div>
 
-<!-- Popup für sonstige Kunden -->
+<!-- Popup für Sonstige Kunden -->
 <div id="keyboardPopup">
     <div id="keyboardBox">
         <input type="text" id="keyboardInput" placeholder="Kundenname…">
-
         <div id="keyboardGrid"></div>
 
         <div id="kbActions">
