@@ -17,7 +17,7 @@ html, body {
 }
 
 /* =============================
-   DEVICE INFO (oben links)
+   DEVICE INFO
 ============================= */
 .device-info {
     position: fixed;
@@ -38,7 +38,7 @@ html, body {
 }
 
 /* =============================
-   PAGE
+   PAGE – perfekt zentralisieren
 ============================= */
 .page {
     width: 94vw;
@@ -46,8 +46,10 @@ html, body {
 
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 10px;
+
+    /* Perfektes visuelles Layout */
+    justify-content: space-between;
+    padding-top: 20px;
 }
 
 /* =============================
@@ -57,8 +59,8 @@ html, body {
     font-size: 28px;
     font-weight: 900;
     color: #003a73;
-    margin-top: 20px;
-    margin-bottom: 15px;
+    text-align: center;
+    margin-bottom: 6px;
 }
 
 /* =============================
@@ -69,11 +71,12 @@ html, body {
     font-weight: 900;
     color: #003a73;
     text-align: center;
-    margin: 10px 0 15px 0;
+    margin-top: 5px;
+    margin-bottom: 15px;
 }
 
 /* =============================
-   GRID – VERGRÖSSERT & ZENTRIERT
+   GRID – perfekt positioniert
 ============================= */
 .kunden-grid {
     width: 100%;
@@ -86,26 +89,27 @@ html, body {
     justify-items: stretch;
     justify-content: center;
 
-    margin-top: 40px; /* nach unten verschieben → mittiger */
+    /* Buttons nach oben holen */
+    margin-top: 10px;
 }
 
 /* =============================
-   BUTTONS – VERGRÖSSERT
+   BUTTONS – groß & sauber
 ============================= */
 .kunde-btn {
     width: 100%;
-    min-height: 110px;  /* vorher 75px */
-    padding: 18px;      /* vorher 6px */
+    min-height: 110px;
+    padding: 18px;
 
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
 
-    border-radius: 18px; /* etwas runder */
+    border-radius: 18px;
     border: none;
 
-    font-size: 20px;    /* vorher 14px */
+    font-size: 20px;
     font-weight: 800;
     color: #003a73;
 
@@ -119,31 +123,32 @@ html, body {
 }
 
 /* =============================
-   TC22 OVERRIDE – NICHT MEHR KLEIN
+   TC22 – NICHT mehr verkleinern
 ============================= */
 body.zebra-tc22 .kunde-btn {
-    min-height: 95px !important;
-    padding: 14px !important;
-    font-size: 18px !important;
+    min-height: 100px !important;
+    padding: 16px !important;
+    font-size: 19px !important;
 }
 
 /* =============================
-   DRUCKART – VERGRÖSSERT
+   DRUCKART
 ============================= */
 .druckart-row {
     width: 90%;
     display: flex;
     gap: 14px;
-    margin-top: 30px;
-    margin-bottom: 20px;
+
+    margin-top: 10px;
+    margin-bottom: 15px;
 }
 
 .druckart-btn {
     flex: 1;
     padding: 20px;
+    font-size: 20px;
     border-radius: 16px;
     border: none;
-    font-size: 20px;
     font-weight: bold;
 
     background: #e7ecf5;
@@ -152,11 +157,11 @@ body.zebra-tc22 .kunde-btn {
 
 .druckart-btn.active {
     background: #007bff;
-    color: #fff;
+    color: white;
 }
 
 /* =============================
-   POPUP – SONSTIGE KUNDEN
+   POPUP
 ============================= */
 .popup-overlay {
     position: fixed;
@@ -207,13 +212,14 @@ body.zebra-tc22 .kunde-btn {
 .cancel-btn { background: #666; color: white; }
 
 /* =============================
-   UNTERE BUTTONS – VERGRÖSSERT
+   UNTERE BUTTONS – gut sichtbar
 ============================= */
 .bottom-row {
     width: 90%;
     display: flex;
     gap: 14px;
-    margin-top: 40px;
+
+    margin-bottom: 10px; /* Buttons hochholen */
 }
 
 .back-btn,
