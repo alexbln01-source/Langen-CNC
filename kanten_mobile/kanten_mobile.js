@@ -19,28 +19,44 @@ if (!isMobile && !isZebraTC21 && !isZebraTC22) document.body.classList.add("pc-d
 /* ========== KUNDEN-AUSWAHL ========== */
 document.querySelectorAll(".kundeBtn").forEach(btn => {
     btn.onclick = () => {
-        document.querySelectorAll(".kundeBtn").forEach(b => b.classList.remove("active"));
+
+        document.querySelectorAll(".kundeBtn")
+            .forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
 
         const kunde = btn.dataset.kunde;
 
+        // SONSTIGE
         if (kunde === "SONSTIGE") {
-            openKeyboard();
+            selectedCustomer = "SONSTIGE";
+            const row = document.getElementById("sonstigeInputRow");
+            const input = document.getElementById("sonstigeInput");
+
+            row.style.display = "block";
+            input.value = "";
+            input.focus();  // → öffnet Android Tastatur
             return;
         }
 
+        // normale Kunden
         selectedCustomer = kunde;
+
+        // Eingabefeld ausblenden falls vorher sichtbar
+        document.getElementById("sonstigeInputRow").style.display = "none";
     };
 });
 
 /* ========== ART-AUSWAHL ========== */
-document.getElementById("btnKanten").onclick = () => {
+const btnKanten = document.getElementById("btnKanten");
+const btnSchweissen = document.getElementById("btnSchweissen");
+
+btnKanten.onclick = () => {
     selectedArt = "kanten";
     btnKanten.classList.add("active");
     btnSchweissen.classList.remove("active");
 };
 
-document.getElementById("btnSchweissen").onclick = () => {
+btnSchweissen.onclick = () => {
     selectedArt = "schweissen";
     btnSchweissen.classList.add("active");
     btnKanten.classList.remove("active");
@@ -48,12 +64,18 @@ document.getElementById("btnSchweissen").onclick = () => {
 
 /* ========== DRUCKEN ========== */
 document.getElementById("btnDrucken").onclick = () => {
-    if (!selectedCustomer) {
-        alert("Bitte einen Kunden auswählen!");
-        return;
-    }
 
-    const kundeName = selectedCustomer === "SONSTIGE" ? customCustomer : selectedCustomer;
+    let kundeName = "";
+
+    if (selectedCustomer === "SONSTIGE") {
+        kundeName = document.getElementById("sonstigeInput").value.trim();
+        if (!kundeName) {
+            alert("Bitte Kundennamen eingeben!");
+            return;
+        }
+    } else {
+        kundeName = selectedCustomer;
+    }
 
     window.location.href =
         "druck_kanten.html?kunde=" + encodeURIComponent(kundeName) +
@@ -62,38 +84,3 @@ document.getElementById("btnDrucken").onclick = () => {
 
 /* ========== ZURÜCK ========== */
 document.getElementById("btnBack").onclick = () => history.back();
-
-/* ========== POPUP ========== */
-const popup = document.getElementById("keyboardPopup");
-const kbInput = document.getElementById("keyboardInput");
-
-function openKeyboard() {
-    popup.style.display = "flex";
-    kbInput.value = "";
-    kbInput.focus();
-}
-
-document.getElementById("kbCancel").onclick = () => popup.style.display = "none";
-document.getElementById("kbClear").onclick = () => kbInput.value = "";
-document.getElementById("kbOk").onclick = () => {
-    const name = kbInput.value.trim();
-    if (!name) return;
-
-    customCustomer = name;
-    selectedCustomer = "SONSTIGE";
-    document.getElementById("sonstigeBtn").textContent = name;
-
-    popup.style.display = "none";
-};
-
-/* ========== TASTATUR ========== */
-const keyboardGrid = document.getElementById("keyboardGrid");
-const keys = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-
-keyboardGrid.innerHTML = "";
-keys.forEach(k => {
-    const btn = document.createElement("button");
-    btn.textContent = k;
-    btn.onclick = () => kbInput.value += k;
-    keyboardGrid.appendChild(btn);
-});
