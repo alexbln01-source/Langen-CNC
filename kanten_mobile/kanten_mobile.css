@@ -107,7 +107,7 @@ html, body {
 }
 
 /* ==========================================
-   DRUCKART
+   DRUCKART – identisch zu Beschichtung
 ========================================== */
 .druckart-row {
     display: flex;
@@ -134,7 +134,7 @@ html, body {
 }
 
 /* ==========================================
-   UNTERE BUTTONS
+   UNTERE BUTTONS – identisch zu Beschichtung
 ========================================== */
 .bottom-row {
     display: flex;
@@ -249,5 +249,20 @@ body.zebra-tc22 .kunde-btn {
     .kunde-btn {
         min-height: 110px;
         font-size: 22px;
+    }
+
+    .druckart-btn {
+        font-size: 22px;
+        padding: 22px;
+    }
+
+    .bottom-row button {
+        font-size: 24px;
+        padding: 24px;
+    }
+
+    .popup {
+        width: 88%;
+        max-width: 400px;
     }
 }
