@@ -5,47 +5,39 @@ let selectedArt = "kanten";
 /* ===========================================
    GERÄTEINFO + BUILDINFO
 =========================================== */
+/* ===========================================
+   GERÄTEINFO + BUILDINFO  (NEU: TC22 ERKENNUNG WIE BEI BESCHICHTUNG)
+=========================================== */
+
 (function () {
-    const ua = navigator.userAgent.toLowerCase();
+
+    const ua  = navigator.userAgent.toLowerCase();
+    const sw  = window.screen.width;
+    const sh  = window.screen.height;
+    const dpr = window.devicePixelRatio;
     const body = document.body;
 
     let device = "Unbekanntes Gerät";
 
-    if (ua.includes("zebra")) {
+    // Standard Mobile?
+    const isMobile = /android|iphone|ipad|ipod/i.test(ua);
 
-        if (ua.includes("tc21")) {
-            device = "Zebra TC21";
-            body.classList.add("zebra-tc21");
-        }
+    // TC21 – wie Beschichtung
+    const isZebraTC21 = ua.includes("android") && sw === 360 && sh === 640;
 
-        else if (ua.includes("tc22")) {
-            device = "Zebra TC22";
-            body.classList.add("zebra-tc22");
-        }
+    // TC22 – wie Beschichtung! 
+    const isZebraTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
 
-        else if (ua.includes("tc26")) {
-            device = "Zebra TC26";
-            body.classList.add("zebra-tc22");
-        }
-
-        else if (ua.includes("tc27")) {
-            device = "Zebra TC27";
-            body.classList.add("zebra-tc22");
-        }
-
-        else {
-            device = "Zebra Scanner";
-            body.classList.add("zebra-tc22");
-        }
-
-    } 
-    else if (ua.includes("android")) {
+    if (isZebraTC22) {
+        device = "Zebra TC22";
+        body.classList.add("zebra-tc22");
+    }
+    else if (isZebraTC21) {
+        device = "Zebra TC21";
+        body.classList.add("zebra-tc21");
+    }
+    else if (isMobile) {
         device = "Android Gerät";
-        // WICHTIG: KEIN mobile-device mehr!
-    } 
-    else if (ua.includes("iphone") || ua.includes("ipad")) {
-        device = "iOS Gerät";
-        // WICHTIG: KEIN mobile-device mehr!
     } 
     else {
         device = "PC";
@@ -58,16 +50,15 @@ let selectedArt = "kanten";
     const now = new Date();
     const build =
         now.getFullYear().toString() +
-        (now.getMonth()+1).toString().padStart(2, "0") +
-        now.getDate().toString().padStart(2, "0") + "." +
-        now.getHours().toString().padStart(2, "0") +
-        now.getMinutes().toString().padStart(2, "0");
+        (now.getMonth()+1).toString().padStart(2,"0") +
+        now.getDate().toString().padStart(2,"0") + "." +
+        now.getHours().toString().padStart(2,"0") +
+        now.getMinutes().toString().padStart(2,"0");
 
     document.getElementById("buildInfo").textContent = "Build " + build;
-})();    
 
-
-
+})();
+  
 /* ===========================================
    POPUP – Sonstige Kunden
 =========================================== */
