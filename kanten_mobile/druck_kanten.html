@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Druck – Kanten / Schweißen</title>
+<title>Druck – Kanten / Schweißen / Bohrwerk</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
@@ -15,7 +15,9 @@ html, body {
     overflow: hidden;
 }
 
-/* VORSCHAU */
+/* =====================
+   VORSCHAU
+===================== */
 .preview-wrapper {
     width: 100%;
     height: calc(100% - 140px);
@@ -30,11 +32,7 @@ html, body {
     background: #fff;
     border: 1px solid #bbb;
     box-shadow: 0 0 12px rgba(0,0,0,0.35);
-    transform-origin: top center;
 }
-
-@media (min-width: 1200px) { .preview-area { transform: scale(0.85); } }
-@media (max-width: 1199px) { .preview-area { transform: scale(0.55); } }
 
 .etikett {
     width: 148mm;
@@ -44,9 +42,13 @@ html, body {
     box-sizing: border-box;
 }
 
-.etikett div { font-weight: bold; }
+.etikett div {
+    font-weight: bold;
+}
 
-/* BUTTONS */
+/* =====================
+   BUTTONS
+===================== */
 .bottom-bar {
     height: 70px;
     display: flex;
@@ -60,7 +62,6 @@ html, body {
     border-radius: 14px;
     font-size: 20px;
     color: white;
-    cursor: pointer;
     font-weight: bold;
 }
 
@@ -77,32 +78,41 @@ html, body {
 
 <body>
 
-<!-- VORSCHAU -->
 <div class="preview-wrapper">
     <div class="preview-area">
         <div id="previewContent" class="etikett"></div>
     </div>
 </div>
 
-<!-- DRUCKBEREICH -->
 <div id="printArea" class="etikett" style="display:none;">
     <div id="printContent"></div>
 </div>
 
-<!-- BUTTONS -->
 <div class="bottom-bar">
-    <button class="btn back-btn">◀ Zurück</button>
-    <button class="btn print-btn">Drucken</button>
+    <button class="btn back-btn" onclick="history.back()">◀ Zurück</button>
+    <button class="btn print-btn" onclick="window.print()">Drucken</button>
 </div>
 
-
 <script>
-/* PARAMETER */
-const qs     = new URLSearchParams(location.search);
-const kunde  = qs.get("kunde") || "Sonstige Kunden";
-const art    = qs.get("art") || "kanten";
+/* =========================
+   PARAMETER
+========================= */
+const qs = new URLSearchParams(location.search);
+const kunde = qs.get("kunde") || "Sonstige Kunden";
+const art   = qs.get("art")   || "kanten";
 
-/* KANTEN LAYOUTS */
+/* =========================
+   ⭐ BOHRWERK EINSTELLUNGEN ⭐
+========================= */
+const BW_KUNDE_SIZE = "38pt";   // Schriftgröße Kunde
+const BW_KUNDE_TOP  = "6mm";    // Abstand oben
+const BW_ABSTAND    = 12;       // Abstand Kunde → Kreis (mm)
+const BW_SIZE       = 40;       // Kreisdurchmesser (mm)
+/* ========================= */
+
+/* =========================
+   KANTEN LAYOUTS
+========================= */
 const kantenLayouts = {
     "Grimme": [
         { text: "<kunde>", size: "38pt", marginTop: "4mm" },
@@ -123,7 +133,9 @@ const kantenLayouts = {
     ]
 };
 
-/* SCHWEIßEN-LAYOUTS */
+/* =========================
+   SCHWEISSEN LAYOUTS
+========================= */
 const schweissenLayouts = {
 
     "Bergmann M-H": [
@@ -186,11 +198,9 @@ const schweissenLayouts = {
     ]
 };
 
-/* LAYOUT wählen */
-const layout = (art === "schweissen") ? schweissenLayouts : kantenLayouts;
-let chosen = layout[kunde] ?? layout["Sonstige Kunden"];
-
-/* RENDERING */
+/* =========================
+   RENDER FUNKTION
+========================= */
 function render(rows, name) {
     return rows.map(r => `
         <div style="font-size:${r.size}; margin-top:${r.marginTop};">
@@ -199,32 +209,42 @@ function render(rows, name) {
     `).join("");
 }
 
-const html = render(chosen, kunde);
+/* =========================
+   AUSGABE
+========================= */
+let html = "";
+
+if (art === "bohrwerk") {
+
+    html = `
+        <div style="font-size:${BW_KUNDE_SIZE}; margin-top:${BW_KUNDE_TOP};">
+            ${kunde}
+        </div>
+
+        <div style="
+            margin:${BW_ABSTAND}mm auto 0;
+            width:${BW_SIZE}mm;
+            height:${BW_SIZE}mm;
+            border:4px solid black;
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:${BW_SIZE / 2}mm;
+        ">
+            BW
+        </div>
+    `;
+
+} else {
+
+    const layouts = (art === "schweissen") ? schweissenLayouts : kantenLayouts;
+    const chosen  = layouts[kunde] ?? layouts["Sonstige Kunden"];
+    html = render(chosen, kunde);
+}
+
 document.getElementById("previewContent").innerHTML = html;
 document.getElementById("printContent").innerHTML = html;
-
-
-/* ============================================================
-   ⭐ DRUCK & RÜCKSPRUNG LOGIK ⭐
-============================================================ */
-document.querySelector(".print-btn").onclick = () => {
-    window.print();
-
-    // 1️⃣ Nach dem Drucken zurück zu PAUS
-    setTimeout(() => {
-        window.location.href = "paus_mobile.html";
-    }, 500);
-
-    // 2️⃣ Nach 5 Minuten zur Startseite
-    setTimeout(() => {
-        window.location.href = "../index.html";
-    }, 5 * 60 * 1000);
-};
-
-/*  ⬅⬅⬅  HIER: Zurück geht SOFORT zur Hauptseite */
-document.querySelector(".back-btn").onclick = () => {
-    window.location.href = "../index.html";
-};
 </script>
 
 </body>

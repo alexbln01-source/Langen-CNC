@@ -11,50 +11,57 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
 }
 
-/* Hauptcontainer */
+/* =====================
+   CARD
+===================== */
 #card {
     width: 94%;
     max-width: 900px;
 }
 
-/* Titel */
+/* =====================
+   TITEL
+===================== */
 h1 {
     text-align: center;
     color: #003a73;
-    font-size: 32px;
+    font-size: 30px;
     font-weight: 900;
     margin-bottom: 12px;
 }
 
-/* Kundenlabel */
+/* =====================
+   LABELS
+===================== */
 .grid-label {
     font-size: 18px;
     font-weight: 900;
     text-align: center;
-    margin-bottom: 10px;
+    margin: 12px 0 10px;
     color: #003a73;
 }
 
-/* 3-Spalten Kunden-Grid */
+.spacer-top {
+    margin-top: 26px;
+}
+
+/* =====================
+   KUNDEN
+===================== */
 #kundenArea {
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 14px;
-    width: 100%;
     padding: 0 10px;
 }
 
-/* Kundenbutton */
 .kundeBtn {
-    width: 100%;
-    padding: 6px 0;
-    font-size: 14px;
+    min-height: 62px;
     border-radius: 14px;
     border: none;
-    background: #fff;
+    background: white;
     color: #003a73;
     font-weight: bold;
     box-shadow: 0 1px 4px rgba(0,0,0,0.25);
@@ -62,97 +69,99 @@ h1 {
 
 .kundeBtn.active {
     background: #007bff;
-    color: #fff;
+    color: white;
 }
 
-/* Art Auswahl: ebenfalls 3 Spalten */
+/* =====================
+   ART
+===================== */
 .art-btn-row {
-    margin-top: 20px;
-    width: 100%;
-    padding: 0 10px;
-
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 14px;
+    padding: 0 10px;
 }
 
 .artBtn {
-    width: 100%;
     padding: 20px 0;
     border-radius: 14px;
     border: none;
-
     font-size: 18px;
     font-weight: bold;
-    background: #fff;
+    background: white;
     color: #003a73;
-
     box-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
 
 .artBtn.active {
     background: #007bff;
-    color: #fff;
+    color: white;
 }
 
-/* Action Buttons — gleiche Breite wie Kunden-Buttons */
+/* =====================
+   ACTION BUTTONS
+===================== */
 #actionButtons {
-    margin-top: 20px;
-    width: 100%;
+    margin-top: 24px;
     padding: 0 10px;
-
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr 1fr;
     gap: 14px;
 }
 
-#btnBack, #btnDrucken {
-    width: 100%;
+#btnBack,
+#btnDrucken {
     padding: 20px 0;
     border-radius: 14px;
     border: none;
     font-size: 18px;
     font-weight: bold;
     color: white;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
 
 #btnBack { background: #444; }
 #btnDrucken { background: #00963d; }
 
-/* =======================
-   POPUP + QWERTZ Keyboard
-======================== */
+/* =====================
+   POPUP TASTATUR (NEU)
+===================== */
 #keyboardPopup {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.45);
+    background: rgba(0,0,0,0.55);
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 50;
+    z-index: 100;
 }
 
 #keyboardBox {
-    width: 90%;
-    max-width: 500px;
+    width: 92%;
+    max-width: 520px;
     background: white;
-    padding: 20px;
+    padding: 22px;
     border-radius: 20px;
+}
+
+.keyboard-title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: #003a73;
 }
 
 #keyboardInput {
     width: 100%;
-    padding: 16px;
-    font-size: 24px;
+    padding: 14px;
+    font-size: 22px;
     border-radius: 14px;
     border: 2px solid #004a90;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .kb-row {
     display: flex;
-    justify-content: center;
     gap: 8px;
     margin-bottom: 10px;
 }
@@ -160,50 +169,32 @@ h1 {
 .kb {
     flex: 1;
     padding: 14px 0;
-    font-size: 20px;
+    font-size: 18px;
     border-radius: 12px;
     border: none;
-    background: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    background: #f7f7f7;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
 }
 
-.kb.space {
-    flex: 4;
-}
-
-.kb.special {
-    flex: 2;
-}
+.kb.space { flex: 4; }
 
 .kb.special.green {
     background: #00963d;
     color: white;
-    font-weight: bold;
 }
 
 .kb.special.red {
     background: #c80000;
     color: white;
-    font-weight: bold;
 }
 
 .cancel {
     width: 100%;
     margin-top: 12px;
-    padding: 14px 0;
+    padding: 14px;
     background: #666;
+    border-radius: 12px;
     border: none;
     color: white;
-    border-radius: 12px;
-    font-size: 20px;
+    font-size: 18px;
 }
-
-/* TC21 */
-body.zebra-tc21 .kundeBtn { font-size: 14px; padding: 16px 0; }
-body.zebra-tc21 .artBtn { font-size: 14px; padding: 16px 0; }
-body.zebra-tc21 #btnBack, body.zebra-tc21 #btnDrucken { font-size: 14px; padding: 16px 0; }
-
-/* TC22 */
-body.zebra-tc22 .kundeBtn { font-size: 17px; padding: 18px 0; }
-body.zebra-tc22 .artBtn { font-size: 17px; padding: 18px 0; }
-body.zebra-tc22 #btnBack, body.zebra-tc22 #btnDrucken { font-size: 17px; padding: 18px 0; }

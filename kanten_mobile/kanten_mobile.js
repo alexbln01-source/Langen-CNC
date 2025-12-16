@@ -1,26 +1,9 @@
 let selectedCustomer = "";
-let customCustomer = "";
-let selectedArt = "";   // ⚠️ NICHTS vorausgewählt!
+let selectedArt = "";
 
-/* ==========================
-   Geräte-Erkennung
-========================== */
-const ua = navigator.userAgent.toLowerCase();
-const sw = screen.width;
-const sh = screen.height;
-const dpr = devicePixelRatio;
-
-const isMobile = /android|iphone|ipad|ipod/i.test(ua);
-const isTC21 = ua.includes("android") && sw === 360 && sh === 640;
-const isTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
-
-if (isTC21) document.body.classList.add("zebra-tc21");
-if (isTC22) document.body.classList.add("zebra-tc22");
-if (!isMobile && !isTC21 && !isTC22) document.body.classList.add("pc-device");
-
-/* ==========================
-   Kunden-Auswahl
-========================== */
+/* =========================
+   KUNDEN BUTTONS
+========================= */
 document.querySelectorAll(".kundeBtn").forEach(btn => {
     btn.onclick = () => {
 
@@ -28,51 +11,53 @@ document.querySelectorAll(".kundeBtn").forEach(btn => {
             .forEach(b => b.classList.remove("active"));
 
         btn.classList.add("active");
+
         const kunde = btn.dataset.kunde;
 
+        // ⬇️ TASTATUR NUR BEI SONSTIGE
         if (kunde === "SONSTIGE") {
             selectedCustomer = "SONSTIGE";
             openKeyboard();
-            return;
+        } else {
+            selectedCustomer = kunde;
+            closeKeyboard();
         }
-
-        selectedCustomer = kunde;
     };
 });
 
-/* ==========================
-   Art Auswahl (Kanten / Schweißen)
-========================== */
-btnKanten.onclick = () => {
-    selectedArt = "kanten";
+/* =========================
+   ART BUTTONS
+========================= */
+const btnKanten = document.getElementById("btnKanten");
+const btnSchweissen = document.getElementById("btnSchweissen");
+const btnBohrwerk = document.getElementById("btnBohrwerk");
 
-    btnKanten.classList.add("active");
-    btnSchweissen.classList.remove("active");
-};
+btnKanten.onclick = () => setArt("kanten", btnKanten);
+btnSchweissen.onclick = () => setArt("schweissen", btnSchweissen);
+btnBohrwerk.onclick = () => setArt("bohrwerk", btnBohrwerk);
 
-btnSchweissen.onclick = () => {
-    selectedArt = "schweissen";
+function setArt(art, btn) {
+    selectedArt = art;
+    document.querySelectorAll(".artBtn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+}
 
-    btnSchweissen.classList.add("active");
-    btnKanten.classList.remove("active");
-};
-
-/* ==========================
-   Drucken
-========================== */
-btnDrucken.onclick = () => {
+/* =========================
+   DRUCKEN
+========================= */
+document.getElementById("btnDrucken").onclick = () => {
 
     if (!selectedCustomer) {
-        alert("Bitte einen Kunden auswählen!");
+        alert("Bitte Kunden auswählen!");
         return;
     }
 
     if (!selectedArt) {
-        alert("Bitte Kanten oder Schweißen auswählen!");
+        alert("Bitte Art auswählen!");
         return;
     }
 
-    let kundeName = "";
+    let kundeName = selectedCustomer;
 
     if (selectedCustomer === "SONSTIGE") {
         kundeName = keyboardInput.value.trim();
@@ -80,71 +65,71 @@ btnDrucken.onclick = () => {
             alert("Bitte Kundennamen eingeben!");
             return;
         }
-    } else {
-        kundeName = selectedCustomer;
     }
 
-    window.location.href =
+    location.href =
         "druck_kanten.html?kunde=" + encodeURIComponent(kundeName) +
         "&art=" + encodeURIComponent(selectedArt);
 };
 
-/* ==========================
-   Zurück
-========================== */
-btnBack.onclick = () => history.back();
+/* =========================
+   ZURÜCK
+========================= */
+document.getElementById("btnBack").onclick = () => history.back();
 
-/* ==========================
-   Popup QWERTZ Tastatur
-========================== */
+/* =========================
+   TASTATUR
+========================= */
 const popup = document.getElementById("keyboardPopup");
-const inputField = document.getElementById("keyboardInput");
+const keyboardInput = document.getElementById("keyboardInput");
+const sonstigeBtn = document.getElementById("sonstigeBtn");
 
 function openKeyboard() {
     popup.style.display = "flex";
-    inputField.value = "";
-    inputField.focus();
+    keyboardInput.value = "";
+    keyboardInput.focus();
 }
 
-/* Zeichen hinzufügen */
-document.querySelectorAll(".kb").forEach(key => {
-    key.onclick = () => {
+function closeKeyboard() {
+    popup.style.display = "none";
+}
 
-        if (key.id === "kbDelete") return;
-        if (key.id === "kbSpace") return;
-        if (key.id === "kbOk") return;
-
-        inputField.value += key.textContent;
+/* Buchstaben */
+document.querySelectorAll(".kb").forEach(k => {
+    k.onclick = () => {
+        if (k.id === "kbDelete") return;
+        if (k.id === "kbSpace") return;
+        if (k.id === "kbOk") return;
+        keyboardInput.value += k.textContent;
     };
 });
 
-document.getElementById("kbDelete").onclick = () => {
-    inputField.value = inputField.value.slice(0, -1);
+/* Sondertasten */
+kbDelete.onclick = () => {
+    keyboardInput.value = keyboardInput.value.slice(0, -1);
 };
 
-document.getElementById("kbSpace").onclick = () => {
-    inputField.value += " ";
+kbSpace.onclick = () => {
+    keyboardInput.value += " ";
 };
 
-document.getElementById("kbOk").onclick = () => {
+kbOk.onclick = () => {
+    const name = keyboardInput.value.trim();
+    if (!name) return;
 
-    customCustomer = inputField.value.trim();
-    if (!customCustomer) return;
-
-    document.getElementById("sonstigeBtn").textContent = customCustomer;
-    popup.style.display = "none";
+    sonstigeBtn.textContent = name;
+    selectedCustomer = name;
+    closeKeyboard();
 };
 
-document.getElementById("kbCancel").onclick = () => {
-    popup.style.display = "none";
-};
+kbCancel.onclick = closeKeyboard;
 
-/* ==========================
-   ENTER / RETURN am PC
-========================== */
-inputField.addEventListener("keydown", e => {
+/* =========================
+   ✅ ENTER / RETURN AM PC
+========================= */
+keyboardInput.addEventListener("keydown", e => {
     if (e.key === "Enter") {
         e.preventDefault();
-        document.getElementById("kbOk").click();
+        kbOk.click();
     }
 });
