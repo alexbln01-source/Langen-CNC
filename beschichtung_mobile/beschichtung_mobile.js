@@ -191,6 +191,9 @@ druckenBtn.onclick = () => {
             case "SCHUETTE": selectedType = "SCHUETTEEILT"; break;
             case "KLEY":     selectedType = "KLEYEILT"; break;
             case "KALEY":    selectedType = "KALEYEILT"; break;
+
+            // ✅ NEU: WOB eigenständig
+            case "WOB":      selectedType = "WOBEILT"; break;
         }
     }
 

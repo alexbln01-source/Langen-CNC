@@ -115,6 +115,11 @@
     .kunde-coatinc { font-size: 70pt; margin-bottom: 8mm; }
     .sub-coatinc { font-size: 32pt; margin-bottom: 6mm; }
 
+    /* ✅ NEU: WOB – optisch wie Kleymann, aber eigene Klassen */
+    .kunde-wob { font-size: 70pt; margin-bottom: 8mm; }
+    .kunde-wob-eilt { font-size: 70pt; margin-bottom: 8mm; }
+    .sub-wob-eilt { font-size: 60pt; margin-bottom: 6mm; }
+
     .print-beistell {
         font-size: 60pt;
         margin-bottom: 12mm;
@@ -228,9 +233,13 @@ window.onload = () => {
         case "PENTZ": html += `<div class="kunde-pentz">Pentz & Gerdes</div><div class="sub-pentz">„ZN8“</div>`; break;
         case "RCS": html += `<div class="kunde-rcs">RCS</div><div class="sub-rcs">„Schweißen“</div>`; break;
         case "COATINC": html += `<div class="kunde-coatinc">Coatinc 24</div><div class="sub-coatinc">„Verzinken“</div>`; break;
+
+        /* ✅ NEU: WOB */
+        case "WOB": html += `<div class="kunde-wob">WOB</div>`; break;
+        case "WOBEILT": html += `<div class="kunde-wob-eilt">WOB</div><div class="sub-wob-eilt">„EILT SEHR“</div>`; break;
     }
 
-    const noNameTypes = ["LP","LPEILT","SCHUETTE","SCHUETTEEILT","KLEY","KLEYEILT"];
+    const noNameTypes = ["LP","LPEILT","SCHUETTE","SCHUETTEEILT","KLEY","KLEYEILT", "WOB", "WOBEILT"];
     if (kunde && !noNameTypes.includes(type)) {
         html += `<div class="print-name">(${kunde})</div>`;
     }
