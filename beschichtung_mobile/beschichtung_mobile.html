@@ -2,85 +2,107 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Warenanhänger</title>
-<link rel="stylesheet" href="kanten_mobile.css">
+<title>Etikett Beschichtung</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="beschichtung_mobile.css">
+
+<style>
+/* ===========================
+  MINI-KEYBOARD – CLEAN & MODERN
+=========================== */
+.kb-mini {
+position: fixed;
+bottom: 8px;
+left: 50%;
+transform: translateX(-50%);
+background: rgba(255,255,255,0.93);
+backdrop-filter: blur(10px);
+padding: 10px 14px;
+border-radius: 16px;
+box-shadow: 0 4px 25px rgba(0,0,0,0.22);
+z-index: 9999;
+width: 92%;
+max-width: 420px;
+}
+
+.kbm-row {
+display: flex;
+justify-content: center;
+margin: 5px 0;
+}
+
+.kbm-key {
+flex: 1;
+margin: 4px;
+padding: 11px 0;
+font-size: 17px;
+font-weight: 600;
+border-radius: 12px;
+border: none;
+color: #003a73;
+background: #ffffff;
+box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+transition: transform 0.07s ease, background 0.1s;
+}
+
+.kbm-key:active {
+transform: scale(0.92);
+background: #dfe7f1;
+}
+
+.kbm-del {
+color: #b00020 !important;
+}
+
+/* OK-Taste: grün wie "Drucken" */
+.kbm-ok {
+background: #00963d !important;
+color: white !important;
+font-weight: 700;
+}
+</style>
 </head>
 <body>
 
-<div id="deviceInfo" class="device-info"></div>
-
-<div id="card">
-
-    <div class="grid-label spacer-top">ART AUSWÄHLEN</div>
-    <div class="section">
-        <div class="art-btn-row">
-            <button id="btnKanten" class="artBtn">Kanten</button>
-            <button id="btnSchweissen" class="artBtn">Schweißen</button>
-            <button id="btnBohrwerk" class="artBtn">Bohrwerk</button>
-        </div>
-    </div>
-
-    <div class="grid-label">KUNDE AUSWÄHLEN</div>
-    <div class="section">
-        <div id="kundenArea" class="disabled">
-            <button class="kundeBtn" data-kunde="Bergmann M-H">Bergmann M-H</button>
-            <button class="kundeBtn" data-kunde="Bücker">Bücker</button>
-            <button class="kundeBtn" data-kunde="Grimme">Grimme</button>
-            <button class="kundeBtn" data-kunde="Janzen">Janzen</button>
-            <button class="kundeBtn" data-kunde="Krone Spelle">Krone Spelle</button>
-            <button class="kundeBtn" data-kunde="L.Bergmann">L.Bergmann</button>
-            <button class="kundeBtn" data-kunde="PAUS">PAUS</button>
-            <button class="kundeBtn" data-kunde="TOS">TOS</button>
-            <button class="kundeBtn" id="sonstigeBtn" data-kunde="SONSTIGE">
-                Sonstige Kunden
-            </button>
-        </div>
-    </div>
-
-    <div id="actionButtons">
-        <button id="btnBack">◀ Zurück</button>
-        <button id="btnDrucken">🖨️ Drucken</button>
-    </div>
+<!-- Debug / Geräteanzeige -->
+<div id="deviceInfo" style="
+   position: fixed;
+   top: 5px;
+   left: 5px;
+   background: rgba(0,0,0,0.12);
+   padding: 4px 10px;
+   font-size: 12px;
+   color: #000;
+   border-radius: 6px;
+   z-index: 999999;">
+Gerät lädt…
 </div>
 
-<!-- POPUP TASTATUR -->
-<div id="keyboardPopup" style="display:none;">
-    <div id="keyboardBox">
+<div class="page">
 
-        <div class="keyboard-title">Kundenname eingeben</div>
-        <input id="keyboardInput" type="text" placeholder="Kundenname…">
+<h1 class="title">Etikett Beschichtung</h1>
 
-        <div class="kb-row">
-            <button class="kb">Q</button><button class="kb">W</button><button class="kb">E</button>
-            <button class="kb">R</button><button class="kb">T</button><button class="kb">Z</button>
-            <button class="kb">U</button><button class="kb">I</button><button class="kb">O</button><button class="kb">P</button>
-        </div>
+<input id="beistellInput" type="text" placeholder="Beistellnummer" readonly>
+<input id="kundeInput" type="text" placeholder="Kundenname (optional)" readonly>
 
-        <div class="kb-row">
-            <button class="kb">A</button><button class="kb">S</button><button class="kb">D</button>
-            <button class="kb">F</button><button class="kb">G</button><button class="kb">H</button>
-            <button class="kb">J</button><button class="kb">K</button><button class="kb">L</button>
-        </div>
+<div class="grid-label">Beschichter wählen:</div>
 
-        <div class="kb-row">
-            <button class="kb">Y</button><button class="kb">X</button><button class="kb">C</button>
-            <button class="kb">V</button><button class="kb">B</button><button class="kb">N</button><button class="kb">M</button>
-        </div>
+<div class="kunden-grid">
 
-        <div class="kb-row bottom">
-            <button id="kbDelete" class="kb special red">Löschen</button>
-            <button id="kbSpace" class="kb space">Leerzeichen</button>
-            <button id="kbOk" class="kb special green">OK</button>
-        </div>
+<button class="kunde-btn" data-type="LP">L&P</button>
+<button class="kunde-btn" data-type="SCHUETTE">Schütte</button>
+<button class="kunde-btn" data-type="KLEY">Kleymann</button>
 
-        <button id="kbCancel" class="cancel">Abbrechen</button>
-    </div>
+        <!-- ✅ NEU: WOB direkt neben Kleymann -->
+        <button class="kunde-btn" data-type="WOB">WOB</button>
+
+<button class="kunde-btn" data-type="KALEY">Kaley</button>
+
+<button class="kunde-btn" data-type="COMTEZN8">Comte ZN8</button>
+@@ -215,4 +219,4 @@
 </div>
 
-<div id="buildInfo" class="build-info"></div>
-
-<script src="kanten_mobile.js"></script>
 </body>
+</html>
 </html>
