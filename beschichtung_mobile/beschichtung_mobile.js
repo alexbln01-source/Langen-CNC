@@ -1,163 +1,198 @@
-let selectedCustomer = "";
-let selectedArt = "";
+let selectedType = null;
+let isEilt = false;
 
-/* =========================
-   DOM
-========================= */
-const popup = document.getElementById("keyboardPopup");
-const keyboardInput = document.getElementById("keyboardInput");
-const sonstigeBtn = document.getElementById("sonstigeBtn");
-const kundenArea = document.getElementById("kundenArea");
+/* ============================================================
+  GRUNDREFERENZEN
+============================================================ */
+const beistell   = document.getElementById("beistellInput");
+const kundenname = document.getElementById("kundeInput");
+const numKb      = document.getElementById("numKeyboard");
+const alphaKb    = document.getElementById("alphaKeyboard");
 
-/* Startzustand */
-popup.style.display = "none";
-kundenArea.classList.add("disabled");
+const backBtn    = document.getElementById("backBtn");
+const druckenBtn = document.getElementById("druckenBtn");
+const eiltBtn    = document.getElementById("eiltBtn");
 
-/* =========================
-   KUNDEN BUTTONS
-========================= */
-document.querySelectorAll(".kundeBtn").forEach(btn => {
-    btn.onclick = () => {
+const kundenButtons = Array.from(document.querySelectorAll(".kunde-btn"));
 
-        document.querySelectorAll(".kundeBtn")
-            .forEach(b => b.classList.remove("active"));
+let activeInput       = null;
+let lastCustomerIndex = 0;
 
-        btn.classList.add("active");
+/* ============================================================
+  GERÄTEERKENNUNG
+============================================================ */
+const ua  = navigator.userAgent.toLowerCase();
+const sw  = window.screen.width;
+const sh  = window.screen.height;
+const dpr = window.devicePixelRatio;
 
-        const kunde = btn.dataset.kunde;
-
-        if (kunde === "SONSTIGE") {
-            selectedCustomer = "SONSTIGE";
-            openKeyboard();
-        } else {
-            selectedCustomer = kunde;
-            closeKeyboard();
-        }
-    };
-});
-
-/* =========================
-   ART BUTTONS
-========================= */
-const btnKanten = document.getElementById("btnKanten");
-const btnSchweissen = document.getElementById("btnSchweissen");
-const btnBohrwerk = document.getElementById("btnBohrwerk");
-
-btnKanten.onclick = () => setArt("kanten", btnKanten);
-btnSchweissen.onclick = () => setArt("schweissen", btnSchweissen);
-btnBohrwerk.onclick = () => setArt("bohrwerk", btnBohrwerk);
-
-function setArt(art, btn) {
-    selectedArt = art;
-    document.querySelectorAll(".artBtn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    kundenArea.classList.remove("disabled");
-}
-
-/* =========================
-   DRUCKEN
-========================= */
-document.getElementById("btnDrucken").onclick = () => {
-
-    if (!selectedArt) {
-        alert("Bitte Art auswählen!");
-        return;
-    }
-
-    if (!selectedCustomer) {
-        alert("Bitte Kunden auswählen!");
-        return;
-    }
-
-    let kundeName = selectedCustomer;
-
-    if (selectedCustomer === "SONSTIGE") {
-        kundeName = keyboardInput.value.trim();
-        if (!kundeName) {
-            alert("Bitte Kundennamen eingeben!");
-            return;
-        }
-    }
-
-    location.href =
-        "druck_kanten.html?kunde=" + encodeURIComponent(kundeName) +
-        "&art=" + encodeURIComponent(selectedArt);
-};
-
-/* =========================
-   ZURÜCK
-========================= */
-document.getElementById("btnBack").onclick = () => history.back();
-
-/* =========================
-   TASTATUR
-========================= */
-function openKeyboard() {
-    popup.style.display = "flex";
-    keyboardInput.value = "";
-    keyboardInput.focus();
-}
-
-function closeKeyboard() {
-    popup.style.display = "none";
-}
-
-document.querySelectorAll(".kb").forEach(k => {
-    k.onclick = () => {
-        if (["kbDelete","kbSpace","kbOk"].includes(k.id)) return;
-        keyboardInput.value += k.textContent;
-    };
-});
-
-kbDelete.onclick = () => keyboardInput.value = keyboardInput.value.slice(0, -1);
-kbSpace.onclick  = () => keyboardInput.value += " ";
-
-kbOk.onclick = () => {
-    const name = keyboardInput.value.trim();
-    if (!name) return;
-
-    sonstigeBtn.textContent = name;
-    selectedCustomer = name;
-    closeKeyboard();
-};
-
-kbCancel.onclick = closeKeyboard;
-
-keyboardInput.addEventListener("keydown", e => {
-    if (e.key === "Enter") {
-        e.preventDefault();
-        kbOk.click();
-    }
-});
-
-/* =========================
-   GERÄT
-========================= */
-const ua = navigator.userAgent.toLowerCase();
-const sw = screen.width, sh = screen.height, dpr = devicePixelRatio;
-
+// generell mobile?
 const isMobile = /android|iphone|ipad|ipod/i.test(ua);
-const isTC21 = ua.includes("android") && sw === 360 && sh === 640;
-const isTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
 
-if (isTC21) document.body.classList.add("zebra-tc21");
-if (isTC22) document.body.classList.add("zebra-tc22");
-if (!isMobile && !isTC21 && !isTC22) document.body.classList.add("pc-device");
+// TC21 (optional)
+const isZebraTC21 = ua.includes("android") && sw === 360 && sh === 640;
 
-document.getElementById("deviceInfo").textContent =
-    isTC22 ? "Gerät: Zebra TC22" :
-    isTC21 ? "Gerät: Zebra TC21" :
-    isMobile ? "Gerät: Mobile" :
-    "Gerät: PC";
+// TC22 (dein Gerät)
+const isZebraTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
 
-/* =========================
-   BUILD
-========================= */
-const lm = new Date(document.lastModified);
-document.getElementById("buildInfo").textContent =
-    "Build " +
-    lm.getFullYear() +
-    String(lm.getMonth()+1).padStart(2,"0") +
-    String(lm.getDate()).padStart(2,"0") + "." +
-    String(lm.getHours()).padStart(2,"0") +
-    String(lm.getMinutes()).padStart(2,"0");
+// Klassen setzen
+if (isZebraTC21) document.body.classList.add("zebra-tc21");
+if (isZebraTC22) document.body.classList.add("zebra-tc22");
+
+// PC erkennen (NICHT mobil + kein Zebra)
+if (!isMobile && !isZebraTC21 && !isZebraTC22) {
+document.body.classList.add("pc-device");
+}
+
+/* Debug-Ausgabe */
+const deviceInfo = document.getElementById("deviceInfo");
+if (deviceInfo) {
+if (isZebraTC22) deviceInfo.textContent = "Gerät: Zebra TC22";
+else if (isZebraTC21) deviceInfo.textContent = "Gerät: Zebra TC21";
+else if (isMobile) deviceInfo.textContent = "Gerät: Android / iOS";
+else deviceInfo.textContent = "Gerät: PC";
+}
+
+/* ============================================================
+  MOBIL: POPUP-TASTATUREN
+============================================================ */
+if (isMobile) {
+
+beistell.readOnly   = true;
+kundenname.readOnly = true;
+
+beistell.addEventListener("click", () => {
+activeInput = beistell;
+beistell.classList.add("mobile-focus");
+kundenname.classList.remove("mobile-focus");
+numKb.style.display = "block";
+alphaKb.style.display = "none";
+});
+
+kundenname.addEventListener("click", () => {
+activeInput = kundenname;
+kundenname.classList.add("mobile-focus");
+beistell.classList.remove("mobile-focus");
+numKb.style.display = "none";
+alphaKb.style.display = "block";
+});
+
+document.querySelectorAll("#numKeyboard .kbm-key").forEach(key => {
+key.addEventListener("click", () => {
+if (!activeInput) return;
+
+if (key.id === "numDel") {
+activeInput.value = activeInput.value.slice(0, -1);
+return;
+}
+
+if (key.id === "numOk") {
+numKb.style.display = "none";
+activeInput = kundenname;
+kundenname.classList.add("mobile-focus");
+alphaKb.style.display = "block";
+return;
+}
+
+activeInput.value += key.textContent;
+});
+});
+
+document.querySelectorAll("#alphaKeyboard .kbm-key").forEach(key => {
+key.addEventListener("click", () => {
+
+if (!activeInput) return;
+
+if (key.id === "alphaDel") {
+activeInput.value = activeInput.value.slice(0, -1);
+return;
+}
+
+if (key.id === "alphaSpace") {
+activeInput.value += " ";
+return;
+}
+
+if (key.id === "alphaOk") {
+alphaKb.style.display = "none";
+activeInput = null;
+return;
+}
+
+activeInput.value += key.textContent;
+});
+});
+
+} else {
+
+/* ============================================================
+      PC MODUS
+============================================================ */
+numKb.style.display   = "none";
+alphaKb.style.display = "none";
+
+beistell.readOnly   = false;
+kundenname.readOnly = false;
+}
+
+/* ============================================================
+  EILT BUTTON
+============================================================ */
+eiltBtn.onclick = () => {
+isEilt = !isEilt;
+if (isEilt) {
+eiltBtn.textContent = "EILT SEHR: AN";
+eiltBtn.classList.add("on");
+} else {
+eiltBtn.textContent = "EILT SEHR: AUS";
+eiltBtn.classList.remove("on");
+}
+};
+
+/* ============================================================
+  KUNDENBUTTON AUSWAHL + Tastatur schließen
+============================================================ */
+kundenButtons.forEach((btn, index) => {
+
+const selectCustomer = () => {
+kundenButtons.forEach(b => b.classList.remove("active"));
+btn.classList.add("active");
+selectedType = btn.dataset.type;
+eiltBtn.focus();
+};
+
+btn.onclick = () => {
+
+// Eingaben beenden
+beistell.blur();
+kundenname.blur();
+activeInput = null;
+
+// Tastaturen schließen
+numKb.style.display = "none";
+alphaKb.style.display = "none";
+
+beistell.classList.remove("mobile-focus");
+kundenname.classList.remove("mobile-focus");
+
+selectCustomer();
+};
+});
+
+/* ============================================================
+  PRINT — mit korrekter EILT-Logik!
+============================================================ */
+druckenBtn.onclick = () => {
+
+/* --- EILT-Logik MUSS vor dem Erstellen von data ausgeführt werden --- */
+if (isEilt) {
+switch (selectedType) {
+case "LP":       selectedType = "LPEILT"; break;
+case "SCHUETTE": selectedType = "SCHUETTEEILT"; break;
+case "KLEY":     selectedType = "KLEYEILT"; break;
+case "KALEY":    selectedType = "KALEYEILT"; break;
+
+            // ✅ NEU: WOB eigenständig
+            case "WOB":      selectedType = "WOBEILT"; break;
+}
+}
