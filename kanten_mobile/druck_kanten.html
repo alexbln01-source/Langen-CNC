@@ -89,8 +89,8 @@ html, body {
 </div>
 
 <div class="bottom-bar">
-    <button class="btn back-btn" onclick="history.back()">◀ Zurück</button>
-    <button class="btn print-btn" onclick="window.print()">Drucken</button>
+    <button class="btn back-btn" id="backBtn">◀ Zurück</button>
+    <button class="btn print-btn" id="printBtn">Drucken</button>
 </div>
 
 <script>
@@ -108,7 +108,6 @@ const BW_KUNDE_SIZE = "38pt";   // Schriftgröße Kunde
 const BW_KUNDE_TOP  = "6mm";    // Abstand oben
 const BW_ABSTAND    = 12;       // Abstand Kunde → Kreis (mm)
 const BW_SIZE       = 40;       // Kreisdurchmesser (mm)
-/* ========================= */
 
 /* =========================
    KANTEN LAYOUTS
@@ -245,6 +244,27 @@ if (art === "bohrwerk") {
 
 document.getElementById("previewContent").innerHTML = html;
 document.getElementById("printContent").innerHTML = html;
+
+/* =========================
+   🖨 DRUCK / NAVIGATION
+========================= */
+const printBtn = document.getElementById("printBtn");
+const backBtn  = document.getElementById("backBtn");
+
+/* 🖨 Drucken */
+printBtn.onclick = () => {
+    window.print();
+};
+
+/* ✅ Nach Druck sofort zur index.html */
+window.onafterprint = () => {
+    window.location.replace("../index.html");
+};
+
+/* 🔙 Zurück → sofort zur index.html */
+backBtn.onclick = () => {
+    window.location.replace("../index.html");
+};
 </script>
 
 </body>
