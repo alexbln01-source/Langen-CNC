@@ -71,9 +71,9 @@ html, body {
 }
 
 .artBtn.active {
-    background: #003a73;
+    background: #007bff;     /* gleiches Blau wie Kunden */
     color: white;
-    border-color: #001f3f;
+    border-color: #0056b3;
 }
 
 /* =====================
@@ -131,11 +131,85 @@ html, body {
 #btnDrucken { background: #00963d; }
 
 /* =====================
-   FOKUS (ZEBRA!)
+   FOKUS (ZEBRA)
 ===================== */
 button:focus {
     outline: 3px solid #ff9800;
     outline-offset: 2px;
+}
+
+/* =====================
+   POPUP TASTATUR (WICHTIG!)
+===================== */
+#keyboardPopup {
+    position: fixed;          /* 🔑 löst es vom body-flex */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    background: rgba(0,0,0,0.55);
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
+}
+
+#keyboardBox {
+    width: 92%;
+    max-width: 520px;
+    background: white;
+    padding: 22px;
+    border-radius: 20px;
+}
+
+.keyboard-title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: #003a73;
+}
+
+#keyboardInput {
+    width: 100%;
+    padding: 14px;
+    font-size: 22px;
+    border-radius: 14px;
+    border: 2px solid #004a90;
+    margin-bottom: 12px;
+}
+
+.kb-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.kb {
+    flex: 1;
+    padding: 14px 0;
+    font-size: 18px;
+    border-radius: 12px;
+    border: none;
+    background: #f7f7f7;
+}
+
+.kb.space { flex: 4; }
+.kb.special.green { background: #00963d; color: white; }
+.kb.special.red { background: #c80000; color: white; }
+
+.cancel {
+    width: 100%;
+    margin-top: 12px;
+    padding: 14px;
+    background: #666;
+    border-radius: 12px;
+    border: none;
+    color: white;
+    font-size: 18px;
 }
 
 /* =====================
@@ -163,32 +237,12 @@ button:focus {
 }
 
 /* =====================
-   🦓 ZEBRA TC21
+   ZEBRA / PC
 ===================== */
-body.zebra-tc21 .artBtn {
-    min-height: 58px;
-    font-size: 18px;
-}
+body.zebra-tc21 .artBtn { min-height: 58px; font-size: 18px; }
+body.zebra-tc21 .kundeBtn { min-height: 50px; font-size: 13px; }
 
-body.zebra-tc21 .kundeBtn {
-    min-height: 50px;
-    font-size: 13px;
-}
+body.zebra-tc22 .artBtn { min-height: 62px; }
+body.zebra-tc22 .kundeBtn { min-height: 54px; }
 
-/* =====================
-   🦓 ZEBRA TC22
-===================== */
-body.zebra-tc22 .artBtn {
-    min-height: 62px;
-}
-
-body.zebra-tc22 .kundeBtn {
-    min-height: 54px;
-}
-
-/* =====================
-   🖥️ PC
-===================== */
-body.pc-device #card {
-    max-width: 1100px;
-}
+body.pc-device #card { max-width: 1100px; }
