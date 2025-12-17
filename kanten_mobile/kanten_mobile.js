@@ -14,7 +14,6 @@ document.querySelectorAll(".kundeBtn").forEach(btn => {
 
         const kunde = btn.dataset.kunde;
 
-        // ⬇️ TASTATUR NUR BEI SONSTIGE
         if (kunde === "SONSTIGE") {
             selectedCustomer = "SONSTIGE";
             openKeyboard();
@@ -31,6 +30,7 @@ document.querySelectorAll(".kundeBtn").forEach(btn => {
 const btnKanten = document.getElementById("btnKanten");
 const btnSchweissen = document.getElementById("btnSchweissen");
 const btnBohrwerk = document.getElementById("btnBohrwerk");
+const kundenArea = document.getElementById("kundenArea");
 
 btnKanten.onclick = () => setArt("kanten", btnKanten);
 btnSchweissen.onclick = () => setArt("schweissen", btnSchweissen);
@@ -40,6 +40,7 @@ function setArt(art, btn) {
     selectedArt = art;
     document.querySelectorAll(".artBtn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
+    kundenArea.classList.remove("disabled");
 }
 
 /* =========================
@@ -124,9 +125,7 @@ kbOk.onclick = () => {
 
 kbCancel.onclick = closeKeyboard;
 
-/* =========================
-   ✅ ENTER / RETURN AM PC
-========================= */
+/* ENTER auf PC */
 keyboardInput.addEventListener("keydown", e => {
     if (e.key === "Enter") {
         e.preventDefault();
@@ -134,37 +133,36 @@ keyboardInput.addEventListener("keydown", e => {
     }
 });
 
-/* ============================================================
+/* =========================
    GERÄTEERKENNUNG
-============================================================ */
+========================= */
 const ua  = navigator.userAgent.toLowerCase();
-const sw  = window.screen.width;
-const sh  = window.screen.height;
-const dpr = window.devicePixelRatio;
+const sw  = screen.width;
+const sh  = screen.height;
+const dpr = devicePixelRatio;
 
 const isMobile = /android|iphone|ipad|ipod/i.test(ua);
-const isZebraTC21 = ua.includes("android") && sw === 360 && sh === 640;
-const isZebraTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
+const isTC21 = ua.includes("android") && sw === 360 && sh === 640;
+const isTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
 
-// Klassen setzen
-if (isZebraTC21) document.body.classList.add("zebra-tc21");
-if (isZebraTC22) document.body.classList.add("zebra-tc22");
-if (!isMobile && !isZebraTC21 && !isZebraTC22) {
+if (isTC21) document.body.classList.add("zebra-tc21");
+if (isTC22) document.body.classList.add("zebra-tc22");
+if (!isMobile && !isTC21 && !isTC22) {
     document.body.classList.add("pc-device");
 }
 
-// Anzeige oben
 const deviceInfo = document.getElementById("deviceInfo");
 if (deviceInfo) {
-    if (isZebraTC22) deviceInfo.textContent = "Gerät: Zebra TC22";
-    else if (isZebraTC21) deviceInfo.textContent = "Gerät: Zebra TC21";
-    else if (isMobile) deviceInfo.textContent = "Gerät: Mobile";
-    else deviceInfo.textContent = "Gerät: PC";
+    deviceInfo.textContent =
+        isTC22 ? "Gerät: Zebra TC22" :
+        isTC21 ? "Gerät: Zebra TC21" :
+        isMobile ? "Gerät: Mobile" :
+        "Gerät: PC";
 }
 
-/* ============================================================
+/* =========================
    BUILD INFO
-============================================================ */
+========================= */
 const lastMod = new Date(document.lastModified);
 const build =
     lastMod.getFullYear() +
