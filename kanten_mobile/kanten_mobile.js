@@ -133,3 +133,47 @@ keyboardInput.addEventListener("keydown", e => {
         kbOk.click();
     }
 });
+
+/* ============================================================
+   GERÄTEERKENNUNG
+============================================================ */
+const ua  = navigator.userAgent.toLowerCase();
+const sw  = window.screen.width;
+const sh  = window.screen.height;
+const dpr = window.devicePixelRatio;
+
+const isMobile = /android|iphone|ipad|ipod/i.test(ua);
+const isZebraTC21 = ua.includes("android") && sw === 360 && sh === 640;
+const isZebraTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
+
+// Klassen setzen
+if (isZebraTC21) document.body.classList.add("zebra-tc21");
+if (isZebraTC22) document.body.classList.add("zebra-tc22");
+if (!isMobile && !isZebraTC21 && !isZebraTC22) {
+    document.body.classList.add("pc-device");
+}
+
+// Anzeige oben
+const deviceInfo = document.getElementById("deviceInfo");
+if (deviceInfo) {
+    if (isZebraTC22) deviceInfo.textContent = "Gerät: Zebra TC22";
+    else if (isZebraTC21) deviceInfo.textContent = "Gerät: Zebra TC21";
+    else if (isMobile) deviceInfo.textContent = "Gerät: Mobile";
+    else deviceInfo.textContent = "Gerät: PC";
+}
+
+/* ============================================================
+   BUILD INFO
+============================================================ */
+const lastMod = new Date(document.lastModified);
+const build =
+    lastMod.getFullYear() +
+    String(lastMod.getMonth() + 1).padStart(2, "0") +
+    String(lastMod.getDate()).padStart(2, "0") + "." +
+    String(lastMod.getHours()).padStart(2, "0") +
+    String(lastMod.getMinutes()).padStart(2, "0");
+
+const buildInfo = document.getElementById("buildInfo");
+if (buildInfo) {
+    buildInfo.textContent = "Build " + build;
+}
