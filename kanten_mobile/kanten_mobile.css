@@ -24,18 +24,7 @@ html, body {
 }
 
 /* =====================
-   TITEL
-===================== */
-h1 {
-    text-align: center;
-    color: #003a73;
-    font-size: 30px;
-    font-weight: 900;
-    margin-bottom: 12px;
-}
-
-/* =====================
-   LABELS
+   TITEL / LABELS
 ===================== */
 .grid-label {
     font-size: 18px;
@@ -50,7 +39,7 @@ h1 {
 }
 
 /* =====================
-   KUNDEN GRID (Standard / Mobile)
+   KUNDEN
 ===================== */
 #kundenArea {
     display: grid;
@@ -175,20 +164,11 @@ h1 {
     border-radius: 12px;
     border: none;
     background: #f7f7f7;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
 }
 
 .kb.space { flex: 4; }
-
-.kb.special.green {
-    background: #00963d;
-    color: white;
-}
-
-.kb.special.red {
-    background: #c80000;
-    color: white;
-}
+.kb.special.green { background: #00963d; color: white; }
+.kb.special.red { background: #c80000; color: white; }
 
 .cancel {
     width: 100%;
@@ -201,80 +181,33 @@ h1 {
     font-size: 18px;
 }
 
-/* =========================================================
-   🦓 ZEBRA TC21 (klein & kompakt)
-========================================================= */
-body.zebra-tc21 #card {
-    max-width: 360px;
-}
-
-body.zebra-tc21 #kundenArea,
-body.zebra-tc21 .art-btn-row {
-    grid-template-columns: repeat(3, 100px);
-    gap: 8px;
-    justify-content: center;
-}
-
-body.zebra-tc21 .kundeBtn {
-    min-height: 50px;
-    font-size: 12px;
-}
-
-body.zebra-tc21 .artBtn {
-    padding: 14px 0;
+/* =====================
+   GERÄT & BUILD
+===================== */
+.device-info {
+    position: fixed;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
     font-size: 14px;
+    font-weight: bold;
+    color: #003a73;
+    opacity: 0.8;
 }
 
-body.zebra-tc21 #btnBack,
-body.zebra-tc21 #btnDrucken {
-    font-size: 16px;
-    padding: 16px 0;
+.build-info {
+    position: fixed;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px;
+    color: #333;
+    opacity: 0.7;
 }
 
-/* =========================================================
-   🦓 ZEBRA TC22 (etwas größer)
-========================================================= */
-body.zebra-tc22 #card {
-    max-width: 420px;
-}
-
-body.zebra-tc22 .kundeBtn {
-    min-height: 56px;
-    font-size: 14px;
-}
-
-body.zebra-tc22 .artBtn {
-    font-size: 16px;
-}
-
-/* =========================================================
-   🖥️ PC DEVICE
-========================================================= */
-body.pc-device #card {
-    max-width: 1100px;
-}
-
-body.pc-device #kundenArea {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-}
-
-body.pc-device .art-btn-row {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-}
-
-body.pc-device .kundeBtn {
-    min-height: 70px;
-    font-size: 16px;
-}
-
-body.pc-device .artBtn {
-    font-size: 18px;
-    padding: 22px 0;
-}
-
-body.pc-device #btnBack,
-body.pc-device #btnDrucken {
-    font-size: 20px;
-}
+/* =====================
+   ZEBRA / PC
+===================== */
+body.zebra-tc21 #card { max-width: 360px; }
+body.zebra-tc22 #card { max-width: 420px; }
+body.pc-device #card { max-width: 1100px; }
