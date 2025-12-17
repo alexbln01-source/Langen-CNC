@@ -1,4 +1,6 @@
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
 html, body {
     margin: 0;
@@ -48,7 +50,7 @@ h1 {
 }
 
 /* =====================
-   KUNDEN
+   KUNDEN GRID (Standard / Mobile)
 ===================== */
 #kundenArea {
     display: grid;
@@ -123,7 +125,7 @@ h1 {
 #btnDrucken { background: #00963d; }
 
 /* =====================
-   POPUP TASTATUR (NEU)
+   POPUP TASTATUR
 ===================== */
 #keyboardPopup {
     position: fixed;
@@ -197,4 +199,82 @@ h1 {
     border: none;
     color: white;
     font-size: 18px;
+}
+
+/* =========================================================
+   🦓 ZEBRA TC21 (klein & kompakt)
+========================================================= */
+body.zebra-tc21 #card {
+    max-width: 360px;
+}
+
+body.zebra-tc21 #kundenArea,
+body.zebra-tc21 .art-btn-row {
+    grid-template-columns: repeat(3, 100px);
+    gap: 8px;
+    justify-content: center;
+}
+
+body.zebra-tc21 .kundeBtn {
+    min-height: 50px;
+    font-size: 12px;
+}
+
+body.zebra-tc21 .artBtn {
+    padding: 14px 0;
+    font-size: 14px;
+}
+
+body.zebra-tc21 #btnBack,
+body.zebra-tc21 #btnDrucken {
+    font-size: 16px;
+    padding: 16px 0;
+}
+
+/* =========================================================
+   🦓 ZEBRA TC22 (etwas größer)
+========================================================= */
+body.zebra-tc22 #card {
+    max-width: 420px;
+}
+
+body.zebra-tc22 .kundeBtn {
+    min-height: 56px;
+    font-size: 14px;
+}
+
+body.zebra-tc22 .artBtn {
+    font-size: 16px;
+}
+
+/* =========================================================
+   🖥️ PC DEVICE
+========================================================= */
+body.pc-device #card {
+    max-width: 1100px;
+}
+
+body.pc-device #kundenArea {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+body.pc-device .art-btn-row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+body.pc-device .kundeBtn {
+    min-height: 70px;
+    font-size: 16px;
+}
+
+body.pc-device .artBtn {
+    font-size: 18px;
+    padding: 22px 0;
+}
+
+body.pc-device #btnBack,
+body.pc-device #btnDrucken {
+    font-size: 20px;
 }
