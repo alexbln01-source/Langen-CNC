@@ -2,6 +2,18 @@ let selectedCustomer = "";
 let selectedArt = "";
 
 /* =========================
+   DOM REFS
+========================= */
+const popup = document.getElementById("keyboardPopup");
+const keyboardInput = document.getElementById("keyboardInput");
+const sonstigeBtn = document.getElementById("sonstigeBtn");
+const kundenArea = document.getElementById("kundenArea");
+
+/* ✅ POPUP IMMER ZU BEIM START */
+popup.style.display = "none";
+kundenArea.classList.add("disabled");
+
+/* =========================
    KUNDEN BUTTONS
 ========================= */
 document.querySelectorAll(".kundeBtn").forEach(btn => {
@@ -16,7 +28,7 @@ document.querySelectorAll(".kundeBtn").forEach(btn => {
 
         if (kunde === "SONSTIGE") {
             selectedCustomer = "SONSTIGE";
-            openKeyboard();
+            openKeyboard();            // 👈 NUR HIER
         } else {
             selectedCustomer = kunde;
             closeKeyboard();
@@ -30,7 +42,6 @@ document.querySelectorAll(".kundeBtn").forEach(btn => {
 const btnKanten = document.getElementById("btnKanten");
 const btnSchweissen = document.getElementById("btnSchweissen");
 const btnBohrwerk = document.getElementById("btnBohrwerk");
-const kundenArea = document.getElementById("kundenArea");
 
 btnKanten.onclick = () => setArt("kanten", btnKanten);
 btnSchweissen.onclick = () => setArt("schweissen", btnSchweissen);
@@ -40,7 +51,8 @@ function setArt(art, btn) {
     selectedArt = art;
     document.querySelectorAll(".artBtn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
-    kundenArea.classList.remove("disabled");
+
+    kundenArea.classList.remove("disabled"); // 👈 Kunden erst jetzt aktiv
 }
 
 /* =========================
@@ -48,13 +60,13 @@ function setArt(art, btn) {
 ========================= */
 document.getElementById("btnDrucken").onclick = () => {
 
-    if (!selectedCustomer) {
-        alert("Bitte Kunden auswählen!");
+    if (!selectedArt) {
+        alert("Bitte Art auswählen!");
         return;
     }
 
-    if (!selectedArt) {
-        alert("Bitte Art auswählen!");
+    if (!selectedCustomer) {
+        alert("Bitte Kunden auswählen!");
         return;
     }
 
@@ -79,12 +91,8 @@ document.getElementById("btnDrucken").onclick = () => {
 document.getElementById("btnBack").onclick = () => history.back();
 
 /* =========================
-   TASTATUR
+   TASTATUR FUNKTIONEN
 ========================= */
-const popup = document.getElementById("keyboardPopup");
-const keyboardInput = document.getElementById("keyboardInput");
-const sonstigeBtn = document.getElementById("sonstigeBtn");
-
 function openKeyboard() {
     popup.style.display = "flex";
     keyboardInput.value = "";
