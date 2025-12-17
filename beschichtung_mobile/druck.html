@@ -6,129 +6,180 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-html, body {
-    margin: 0;
-    padding: 0;
-    background: #dcdcdc;
-    font-family: Arial, sans-serif;
-    height: 100%;
-    overflow: hidden;
-}
-
-/* ===== VORSCHAU ===== */
-.preview-wrapper {
-    width: 100%;
-    height: calc(100% - 150px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.preview-area {
-    width: 210mm;
-    height: 148mm;
-    background: white;
-    box-shadow: 0 0 15px rgba(0,0,0,0.25);
-    position: relative;
-    transform-origin: center;
-}
-
-/* Skalierung */
-@media (max-width: 900px) {
-    .preview-area { transform: scale(0.36); }
-}
-@media (min-width: 901px) {
-    .preview-area { transform: scale(0.45); }
-}
-
-/* ===== ETIKETT ===== */
-.etikett {
-    width: 210mm;
-    height: 148mm;
-    padding: 10mm;
-    box-sizing: border-box;
-    text-align: center;
-    position: relative;
-}
-
-.etikett * {
-    font-weight: bold !important;
-}
-
-.logo {
-    position: absolute;
-    right: 10mm;
-    bottom: 10mm;
-    width: 42mm;
-}
-
-.print-spacer { height: 16mm; }
-.print-beistell { font-size: 60pt; margin-bottom: 12mm; }
-.print-name { font-size: 32pt; margin-top: 4mm; }
-
-/* Kunden */
-.kunde-lp,
-.kunde-schuette,
-.kunde-kley,
-.kunde-wob,
-.kunde-kaley { font-size: 70pt; margin-bottom: 8mm; }
-
-.kunde-lp-eilt,
-.kunde-schuette-eilt,
-.kunde-kley-eilt,
-.kunde-wob-eilt { font-size: 70pt; margin-bottom: 8mm; }
-
-.sub-lp-eilt,
-.sub-schuette-eilt,
-.sub-kley-eilt,
-.sub-wob-eilt { font-size: 60pt; margin-bottom: 6mm; }
-
-/* Bottom Bar */
-.bottom-bar {
-    height: 60px;
-    display: flex;
-    gap: 16px;
-    padding: 0 20px;
-}
-
-.btn {
-    flex: 1;
-    border: none;
-    border-radius: 14px;
-    font-size: 18px;
-    font-weight: bold;
-    color: white;
-}
-
-.back-btn { background: #444; }
-.print-btn { background: #00963d; }
-
-/* ===== DRUCK ===== */
-@media print {
     html, body {
-        width: 210mm;
-        height: 148mm;
         margin: 0;
         padding: 0;
-        overflow: visible;
+        background: #dcdcdc;
+        font-family: Arial, sans-serif;
+        height: 100%;
+        overflow: hidden;
     }
 
-    .preview-wrapper,
-    .bottom-bar {
-        display: none !important;
+    /* ===== VORSCHAU IMMER QUERFORMAT ===== */
+    .preview-wrapper {
+        width: 100%;
+        height: calc(100% - 150px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
     }
 
-    #printArea {
-        display: block !important;
+    .preview-area {
         width: 210mm;
         height: 148mm;
+        background: white;
+        box-shadow: 0 0 15px rgba(0,0,0,0.25);
+        position: relative;
+        transform-origin: center;
     }
 
-    @page {
-        size: A5 landscape;
-        margin: 0;
+    /* HANDY SKALIERUNG */
+    @media (max-width: 900px) {
+        .preview-area {
+            transform: scale(0.36);
+        }
     }
-}
+
+    /* PC SKALIERUNG */
+    @media (min-width: 901px) {
+        .preview-area {
+            transform: scale(0.45);
+        }
+    }
+
+    /* ETIKETT */
+    .etikett {
+        width: 210mm;
+        height: 148mm;
+        padding: 10mm;
+        box-sizing: border-box;
+        text-align: center;
+        position: relative;
+    }
+
+    .logo {
+        position: absolute;
+        right: 10mm;
+        bottom: 10mm;
+        width: 42mm;
+    }
+
+    .print-spacer {
+        height: 16mm;
+        width: 100%;
+    }
+
+    /* ALLES AUF DEM ETIKETT FETT */
+    .etikett * {
+        font-weight: bold !important;
+    }
+
+    .kunde-lp { font-size: 70pt; margin-bottom: 8mm; }
+    .sub-lp { font-size: 70pt; margin-bottom: 8mm; }
+
+    .kunde-lp-eilt { font-size: 70pt; margin-bottom: 8mm; }
+    .sub-lp-eilt { font-size: 60pt; margin-bottom: 6mm; }
+
+    .kunde-schuette { font-size: 70pt; margin-bottom: 8mm; }
+    .kunde-schuette-eilt { font-size: 70pt; margin-bottom: 8mm; }
+    .sub-schuette-eilt { font-size: 60pt; margin-bottom: 6mm; }
+
+    .kunde-kley { font-size: 70pt; margin-bottom: 8mm; }
+    .kunde-kley-eilt { font-size: 70pt; margin-bottom: 8mm; }
+    .sub-kley-eilt { font-size: 60pt; margin-bottom: 6mm; }
+
+    .kunde-kaley { font-size: 70pt; margin-bottom: 8mm; }
+
+    .kunde-comte-zn8 { font-size: 70pt; margin-bottom: 6mm; }
+    .sub-comte-zn8 { font-size: 32pt; margin-bottom: 6mm; }
+
+    .kunde-comte-zni8 { font-size: 70pt; margin-bottom: 6mm; }
+    .sub-comte-zni8 { font-size: 32pt; margin-bottom: 6mm; }
+
+    .kunde-chemisch { font-size: 70pt; margin-bottom: 6mm; }
+    .sub-chemisch { font-size: 32pt; margin-bottom: 6mm; }
+
+    .kunde-dick { font-size: 70pt; margin-bottom: 6mm; }
+    .sub-dick { font-size: 32pt; margin-bottom: 6mm; }
+
+    .kunde-blau { font-size: 70pt; margin-bottom: 6mm; }
+    .sub-blau { font-size: 32pt; margin-bottom: 6mm; }
+
+    .kunde-pentz { font-size: 70pt; margin-bottom: 8mm; }
+    .sub-pentz { font-size: 32pt; margin-bottom: 6mm; }
+
+    .kunde-rcs { font-size: 70pt; margin-bottom: 8mm; }
+    .sub-rcs { font-size: 32pt; margin-bottom: 6mm; }
+
+    .kunde-coatinc { font-size: 70pt; margin-bottom: 8mm; }
+    .sub-coatinc { font-size: 32pt; margin-bottom: 6mm; }
+
+    /* ✅ NEU: WOB – optisch wie Kleymann, aber eigene Klassen */
+    .kunde-wob { font-size: 70pt; margin-bottom: 8mm; }
+    .kunde-wob-eilt { font-size: 70pt; margin-bottom: 8mm; }
+    .sub-wob-eilt { font-size: 60pt; margin-bottom: 6mm; }
+
+    .print-beistell {
+        font-size: 60pt;
+        margin-bottom: 12mm;
+    }
+
+    .print-name {
+        font-size: 32pt;
+        margin-top: 4mm;
+    }
+
+    .bottom-bar {
+        margin-top: 30px;
+        height: 60px;
+        display: flex;
+        gap: 16px;
+        padding: 0 20px;
+        background: none;
+    }
+
+    .btn {
+        flex: 1;
+        border: none;
+        border-radius: 14px;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .back-btn { background: #444; }
+    .print-btn { background: #00963d; }
+
+    @media print {
+
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 210mm !important;
+            height: 148mm !important;
+            overflow: visible !important;
+        }
+
+        .preview-wrapper,
+        .bottom-bar {
+            display: none !important;
+        }
+
+        #printArea {
+            display: block !important;
+            width: 210mm !important;
+            height: 148mm !important;
+        }
+
+        @page {
+            size: A5 landscape;
+            margin: 0;
+        }
+    }
 </style>
 </head>
 
@@ -155,9 +206,7 @@ html, body {
 window.onload = () => {
 
     const qs = new URLSearchParams(location.search);
-    const data = qs.has("data")
-        ? JSON.parse(decodeURIComponent(qs.get("data")))
-        : {};
+    const data = qs.has("data") ? JSON.parse(decodeURIComponent(qs.get("data"))) : {};
 
     const beistell = data.beistell || "";
     const type     = data.selectedType || "";
@@ -168,43 +217,29 @@ window.onload = () => {
         <div class="print-beistell">${beistell}</div>
     `;
 
-    switch (type) {
-        case "LP":
-            html += `<div class="kunde-lp">L&P</div>`;
-            break;
-        case "LPEILT":
-            html += `<div class="kunde-lp-eilt">L&P</div><div class="sub-lp-eilt">„EILT SEHR“</div>`;
-            break;
-        case "SCHUETTE":
-            html += `<div class="kunde-schuette">Schütte</div>`;
-            break;
-        case "SCHUETTEEILT":
-            html += `<div class="kunde-schuette-eilt">Schütte</div><div class="sub-schuette-eilt">„EILT SEHR“</div>`;
-            break;
-        case "KLEY":
-            html += `<div class="kunde-kley">Kleymann</div>`;
-            break;
-        case "KLEYEILT":
-            html += `<div class="kunde-kley-eilt">Kleymann</div><div class="sub-kley-eilt">„EILT SEHR“</div>`;
-            break;
-        case "KALEY":
-            html += `<div class="kunde-kaley">Kaley</div>`;
-            break;
-        case "WOB":
-            html += `<div class="kunde-wob">WOB</div>`;
-            break;
-        case "WOBEILT":
-            html += `<div class="kunde-wob-eilt">WOB</div><div class="sub-wob-eilt">„EILT SEHR“</div>`;
-            break;
+    switch(type) {
+        case "LP": html += `<div class="kunde-lp">L&P</div>`; break;
+        case "LPEILT": html += `<div class="kunde-lp-eilt">L&P</div><div class="sub-lp-eilt">„EILT SEHR“</div>`; break;
+        case "SCHUETTE": html += `<div class="kunde-schuette">Schütte</div>`; break;
+        case "SCHUETTEEILT": html += `<div class="kunde-schuette-eilt">Schütte</div><div class="sub-schuette-eilt">„EILT SEHR“</div>`; break;
+        case "KLEY": html += `<div class="kunde-kley">Kleymann</div>`; break;
+        case "KLEYEILT": html += `<div class="kunde-kley-eilt">Kleymann</div><div class="sub-kley-eilt">„EILT SEHR“</div>`; break;
+         case "KALEY": html += `<div class="kunde-kley">Kaley</div>`; break;
+        case "COMTEZN8": html += `<div class="kunde-comte-zn8">Comte</div><div class="sub-comte-zn8">„Zn8“</div>`; break;
+        case "COMTEZNI8": html += `<div class="kunde-comte-zni8">Comte</div><div class="sub-comte-zni8">„ZnI8“</div>`; break;
+        case "CHEMISCH": html += `<div class="kunde-chemisch">Comte</div><div class="sub-chemisch">„Chemisch Vernickeln“</div>`; break;
+        case "DICK": html += `<div class="kunde-dick">Comte</div><div class="sub-dick">„Dickschichtpassivierung“</div>`; break;
+        case "BLAU": html += `<div class="kunde-blau">Comte</div><div class="sub-blau">„Blau“</div>`; break;
+        case "PENTZ": html += `<div class="kunde-pentz">Pentz & Gerdes</div><div class="sub-pentz">„ZN8“</div>`; break;
+        case "RCS": html += `<div class="kunde-rcs">RCS</div><div class="sub-rcs">„Schweißen“</div>`; break;
+        case "COATINC": html += `<div class="kunde-coatinc">Coatinc 24</div><div class="sub-coatinc">„Verzinken“</div>`; break;
+
+        /* ✅ NEU: WOB */
+        case "WOB": html += `<div class="kunde-wob">WOB</div>`; break;
+        case "WOBEILT": html += `<div class="kunde-wob-eilt">WOB</div><div class="sub-wob-eilt">„EILT SEHR“</div>`; break;
     }
 
-    const noNameTypes = [
-        "LP","LPEILT",
-        "SCHUETTE","SCHUETTEEILT",
-        "KLEY","KLEYEILT",
-        "WOB","WOBEILT"
-    ];
-
+    const noNameTypes = ["LP","LPEILT","SCHUETTE","SCHUETTEEILT","KLEY","KLEYEILT", "WOB", "WOBEILT"];
     if (kunde && !noNameTypes.includes(type)) {
         html += `<div class="print-name">(${kunde})</div>`;
     }
@@ -212,17 +247,20 @@ window.onload = () => {
     previewContent.innerHTML = html;
     printContent.innerHTML   = html;
 
-    /* 🖨 Drucken */
-    printBtn.onclick = () => {
-        window.print();
-    };
+   printBtn.onclick = () => {
+    window.print();
 
-    /* ✅ Nach Druck sofort zur index.html */
-    window.onafterprint = () => {
-        window.location.replace("../index.html");
-    };
+    // 1️⃣ Sofort zurück zur paus_mobile.html
+    setTimeout(() => {
+        window.location.href = "beschichtung_mobile.html";
+    }, 500); // kleine Verzögerung, damit der Druckdialog schließen kann
 
-    /* 🔙 Zurück */
+    // 2️⃣ Nach 5 Minuten zurück zur index.html (eine Ebene höher)
+    setTimeout(() => {
+        window.location.href = "../index.html";
+    }, 5 * 60 * 1000);
+};
+    /* 🔶 Zurück */
     backBtn.onclick = () => {
         history.back();
     };
