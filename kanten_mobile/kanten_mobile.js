@@ -9,7 +9,7 @@ const keyboardInput = document.getElementById("keyboardInput");
 const sonstigeBtn = document.getElementById("sonstigeBtn");
 const kundenArea = document.getElementById("kundenArea");
 
-/* Sicherer Startzustand */
+/* Startzustand */
 popup.style.display = "none";
 kundenArea.classList.add("disabled");
 
@@ -28,7 +28,7 @@ document.querySelectorAll(".kundeBtn").forEach(btn => {
 
         if (kunde === "SONSTIGE") {
             selectedCustomer = "SONSTIGE";
-            openKeyboard();        // NUR HIER
+            openKeyboard();
         } else {
             selectedCustomer = kunde;
             closeKeyboard();
