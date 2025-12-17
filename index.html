@@ -52,13 +52,21 @@ h1 {
 
 button {
     margin: 18px auto;
-    display: block;
+
+    display: flex;                 /* WICHTIG */
+    align-items: center;           /* vertikal zentrieren */
+    justify-content: center;       /* horizontal zentrieren */
+
     border: none;
     border-radius: 18px;
     font-weight: bold;
     color: white;
     cursor: pointer;
     transition: 0.2s;
+
+    line-height: 1.2;              /* verhindert Höhen-Unterschiede */
+    text-align: center;
+    padding: 0 24px;               /* links / rechts gleich */
 }
 
 #btnBeschichtung { background: linear-gradient(#007bff,#0056b3); }
