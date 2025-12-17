@@ -16,24 +16,45 @@ html, body {
 }
 
 /* =====================
-   VORSCHAU
+   VORSCHAU WRAPPER
 ===================== */
 .preview-wrapper {
     width: 100%;
-    height: calc(100% - 140px);
+    height: calc(100% - 180px); /* WICHTIG: mehr Platz für Buttons */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+/* =====================
+   A6 VORSCHAU (ECHTES FORMAT)
+===================== */
 .preview-area {
     width: 148mm;
     height: 105mm;
     background: #fff;
     border: 1px solid #bbb;
     box-shadow: 0 0 12px rgba(0,0,0,0.35);
+    transform-origin: center;
 }
 
+/* 📱 Zebra / Handy */
+@media (max-width: 900px) {
+    .preview-area {
+        transform: scale(0.6);
+    }
+}
+
+/* 🖥️ PC */
+@media (min-width: 901px) {
+    .preview-area {
+        transform: scale(0.8);
+    }
+}
+
+/* =====================
+   ETIKETT
+===================== */
 .etikett {
     width: 148mm;
     height: 105mm;
@@ -68,10 +89,23 @@ html, body {
 .back-btn { background: #444; }
 .print-btn { background: #15803d; }
 
+/* =====================
+   DRUCK
+===================== */
 @media print {
-    .preview-wrapper, .bottom-bar { display: none !important; }
-    #printArea { display: block !important; }
-    @page { size: A6 landscape; margin: 0; }
+    .preview-wrapper,
+    .bottom-bar {
+        display: none !important;
+    }
+
+    #printArea {
+        display: block !important;
+    }
+
+    @page {
+        size: A6 landscape;
+        margin: 0;
+    }
 }
 </style>
 </head>
@@ -102,15 +136,15 @@ const kunde = qs.get("kunde") || "Sonstige Kunden";
 const art   = qs.get("art")   || "kanten";
 
 /* =========================
-   ⭐ BOHRWERK EINSTELLUNGEN ⭐
+   BOHRWERK
 ========================= */
-const BW_KUNDE_SIZE = "38pt";   // Schriftgröße Kunde
-const BW_KUNDE_TOP  = "6mm";    // Abstand oben
-const BW_ABSTAND    = 12;       // Abstand Kunde → Kreis (mm)
-const BW_SIZE       = 40;       // Kreisdurchmesser (mm)
+const BW_KUNDE_SIZE = "38pt";
+const BW_KUNDE_TOP  = "6mm";
+const BW_ABSTAND    = 12;
+const BW_SIZE       = 40;
 
 /* =========================
-   KANTEN LAYOUTS
+   LAYOUTS
 ========================= */
 const kantenLayouts = {
     "Grimme": [
@@ -132,64 +166,12 @@ const kantenLayouts = {
     ]
 };
 
-/* =========================
-   SCHWEISSEN LAYOUTS
-========================= */
 const schweissenLayouts = {
-
-    "Bergmann M-H": [
-        { text: "<kunde>", size: "38pt", marginTop: "6mm" },
-        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
-        { text: "Auftr.-NR: ________", size: "22pt", marginTop: "14mm" },
-        { text: "Pos.: ________", size: "22pt", marginTop: "8mm" },
-        { text: "SW-Termin: ________", size: "22pt", marginTop: "8mm" }
-    ],
-
-    "Bücker": [
-        { text: "<kunde>", size: "38pt", marginTop: "6mm" },
-        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
-        { text: "SW-Termin: ________", size: "22pt", marginTop: "20mm" }
-    ],
-
     "Grimme": [
         { text: "<kunde>", size: "38pt", marginTop: "6mm" },
         { text: "Schweißen", size: "32pt", marginTop: "6mm" },
         { text: "SW-Termin: ________", size: "22pt", marginTop: "20mm" }
     ],
-
-    "Janzen": [
-        { text: "<kunde>", size: "38pt", marginTop: "6mm" },
-        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
-        { text: "SW-Termin: ________", size: "22pt", marginTop: "16mm" }
-    ],
-
-    "L.Bergmann": [
-        { text: "<kunde>", size: "38pt", marginTop: "6mm" },
-        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
-        { text: "SW-Termin: ________", size: "22pt", marginTop: "16mm" }
-    ],
-
-    "Krone Spelle": [
-        { text: "<kunde>", size: "34pt", marginTop: "6mm" },
-        { text: "Auftr.-NR: ________", size: "22pt", marginTop: "10mm" },
-        { text: "Bezeichnung: ________", size: "22pt", marginTop: "8mm" },
-        { text: "Stückzahl: ________", size: "22pt", marginTop: "8mm" },
-        { text: "Liefertermin: ________", size: "22pt", marginTop: "8mm" }
-    ],
-
-    "PAUS": [
-        { text: "<kunde>", size: "38pt", marginTop: "10mm" },
-        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
-        { text: "Prod.-NR: ________", size: "22pt", marginTop: "12mm" },
-        { text: "SW-Termin: ________", size: "22pt", marginTop: "10mm" }
-    ],
-
-    "TOS": [
-        { text: "<kunde>", size: "38pt", marginTop: "12mm" },
-        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
-        { text: "Liefertermin: ________", size: "22pt", marginTop: "16mm" }
-    ],
-
     "Sonstige Kunden": [
         { text: "<kunde>", size: "38pt", marginTop: "6mm" },
         { text: "Schweißen", size: "32pt", marginTop: "6mm" },
@@ -198,7 +180,7 @@ const schweissenLayouts = {
 };
 
 /* =========================
-   RENDER FUNKTION
+   RENDER
 ========================= */
 function render(rows, name) {
     return rows.map(r => `
@@ -214,12 +196,10 @@ function render(rows, name) {
 let html = "";
 
 if (art === "bohrwerk") {
-
     html = `
         <div style="font-size:${BW_KUNDE_SIZE}; margin-top:${BW_KUNDE_TOP};">
             ${kunde}
         </div>
-
         <div style="
             margin:${BW_ABSTAND}mm auto 0;
             width:${BW_SIZE}mm;
@@ -230,41 +210,23 @@ if (art === "bohrwerk") {
             align-items:center;
             justify-content:center;
             font-size:${BW_SIZE / 2}mm;
-        ">
-            BW
-        </div>
+        ">BW</div>
     `;
-
 } else {
-
-    const layouts = (art === "schweissen") ? schweissenLayouts : kantenLayouts;
-    const chosen  = layouts[kunde] ?? layouts["Sonstige Kunden"];
+    const layouts = art === "schweissen" ? schweissenLayouts : kantenLayouts;
+    const chosen = layouts[kunde] ?? layouts["Sonstige Kunden"];
     html = render(chosen, kunde);
 }
 
-document.getElementById("previewContent").innerHTML = html;
-document.getElementById("printContent").innerHTML = html;
+previewContent.innerHTML = html;
+printContent.innerHTML   = html;
 
 /* =========================
-   🖨 DRUCK / NAVIGATION
+   DRUCK / NAVIGATION
 ========================= */
-const printBtn = document.getElementById("printBtn");
-const backBtn  = document.getElementById("backBtn");
-
-/* 🖨 Drucken */
-printBtn.onclick = () => {
-    window.print();
-};
-
-/* ✅ Nach Druck sofort zur index.html */
-window.onafterprint = () => {
-    window.location.replace("../index.html");
-};
-
-/* 🔙 Zurück → sofort zur index.html */
-backBtn.onclick = () => {
-    window.location.replace("../index.html");
-};
+printBtn.onclick = () => window.print();
+window.onafterprint = () => window.location.replace("../index.html");
+backBtn.onclick = () => window.location.replace("../index.html");
 </script>
 
 </body>
