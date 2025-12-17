@@ -13,218 +13,236 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
 }
 
-/* =============================
-   Hauptseite Basis
-============================= */
-.page {
-    width: 94vw;
-    height: 92vh;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    padding: 10px;
+/* =====================
+   CARD
+===================== */
+#card {
+    width: 94%;
+    max-width: 900px;
 }
 
-/* =============================
-   Titel
-============================= */
-.title {
-    font-size: 24px;
-    font-weight: 900;
-    color: #003a73;
-    margin-bottom: 10px;
-}
-
-/* =============================
-   Grid-Label
-============================= */
+/* =====================
+   LABELS
+===================== */
 .grid-label {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 900;
+    text-align: center;
+    margin: 12px 0 10px;
     color: #003a73;
-    text-align: center;
-    margin: 10px 0 6px 0;
+    letter-spacing: 0.5px;
 }
 
-/* =============================
-   Eingabefelder
-============================= */
-#beistellInput,
-#kundeInput {
-    width: 90%;
-    padding: 12px;
-    margin-bottom: 10px;
-    font-size: 18px;
-    border: 1px solid #777;
-    border-radius: 14px;
+.spacer-top {
+    margin-top: 22px;
 }
 
-#beistellInput::placeholder,
-#kundeInput::placeholder {
-    color: #999;
-}
-
-/* =============================
-   GRID Standard (fallback)
-============================= */
-.kunden-grid {
+/* =====================
+   SEKTIONEN
+===================== */
+.section {
     width: 100%;
-    padding: 0 12px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 14px 10px 16px;
+    margin-bottom: 16px;
+    border: 1px solid #d0d6de;
+}
+
+/* =====================
+   ART BUTTONS
+===================== */
+.art-btn-row {
     display: grid;
-      grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    justify-items: stretch;
-    justify-content: center;
-}
-
-/* =============================
-   TC21 Layout
-============================= */
-body.zebra-tc21 .kunden-grid {
-    padding: 0 6px;
-    grid-template-columns: repeat(3, 100px);
-    gap: 8px;
-    justify-content: center;
-}
-
-body.zebra-tc21 .kunde-btn {
-    width: 100px;
-    min-height: 60px;
-    font-size: 12px;
-    padding: 4px;
-}
-
-body.zebra-tc21 #eiltBtn {
-    margin-top: 14px;
-    margin-bottom: 18px;
-}
-
-/* =============================
-   TC22 Layout
-============================= */
-body.zebra-tc22 .kunden-grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 14px;
 }
 
-body.zebra-tc22 .kunde-btn {
-    min-height: 42px;
-    padding: 4px;
-    font-size: 14px;
-    line-height: 1.2;
+.artBtn {
+    min-height: 64px;
+    border-radius: 10px;
+    border: 2px solid #c7cdd6;
+    font-size: 20px;
+    font-weight: 900;
+    background: #e6ebf1;
+    color: #003a73;
 }
 
-/* =============================
-   Kundenbuttons Standard
-============================= */
-.kunde-btn {
-    width: 100%;
-    min-height: 62px;
-    padding: 6px;
+.artBtn.active {
+    background: #007bff;     /* gleiches Blau wie Kunden */
+    color: white;
+    border-color: #0056b3;
+}
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+/* =====================
+   KUNDEN
+===================== */
+#kundenArea {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
 
-    border-radius: 14px;
-    border: none;
+#kundenArea.disabled {
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+.kundeBtn {
+    min-height: 56px;
+    border-radius: 10px;
+    border: 2px solid #c7cdd6;
+    background: #f9fafb;
+    color: #003a73;
     font-size: 14px;
     font-weight: 700;
-    color: #003a73;
-    background: white;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
 }
 
-.kunde-btn.active {
+.kundeBtn.active {
     background: #007bff;
     color: white;
+    border-color: #0056b3;
 }
 
-/* =============================
-   EILT Button
-============================= */
-#eiltBtn {
-    margin-top: 14px;
-    width: 90%;
-    padding: 14px;
-    font-size: 20px;
+/* =====================
+   ACTION BUTTONS
+===================== */
+#actionButtons {
+    margin-top: 18px;
+    padding: 0 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+#btnBack,
+#btnDrucken {
+    padding: 20px 0;
     border-radius: 14px;
     border: none;
-    background: #777;
-    color: white;
-    font-weight: bold;
-}
-
-#eiltBtn.on {
-    background: #c80000;
-}
-
-/* =============================
-   Untere Buttons
-============================= */
-.bottom-row {
-    width: 90%;
-    display: flex;
-    gap: 12px;
-    margin-top: auto;
-    padding-bottom: 10px;
-}
-
-.back-btn,
-.primary-btn {
-    flex: 1;
-    padding: 14px;
-    border-radius: 14px;
-    border: none;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     color: white;
 }
 
-.back-btn { background: #444; }
-.primary-btn { background: #00963d; }
+#btnBack { background: #444; }
+#btnDrucken { background: #00963d; }
 
-/* =============================
-   Fokus / Cursor
-============================= */
+/* =====================
+   FOKUS (ZEBRA)
+===================== */
 button:focus {
-    outline: 4px solid #1a73e8;
+    outline: 3px solid #ff9800;
+    outline-offset: 2px;
 }
 
-/* =============================
-   Mobile Fokus
-============================= */
-.mobile-focus {
-    outline: 4px solid #1a73e8 !important;
+/* =====================
+   POPUP TASTATUR (WICHTIG!)
+===================== */
+#keyboardPopup {
+    position: fixed;          /* 🔑 löst es vom body-flex */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    background: rgba(0,0,0,0.55);
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
+}
+
+#keyboardBox {
+    width: 92%;
+    max-width: 520px;
+    background: white;
+    padding: 22px;
+    border-radius: 20px;
+}
+
+.keyboard-title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: #003a73;
+}
+
+#keyboardInput {
+    width: 100%;
+    padding: 14px;
+    font-size: 22px;
     border-radius: 14px;
+    border: 2px solid #004a90;
+    margin-bottom: 12px;
 }
 
-/* =============================
-   PC â€“ kompakteres Layout
-   (Zebra / Mobile bleiben unverÃ¤ndert)
-============================= */
-body.pc-device .page {
-    width: 80vw;          /* weniger Breite */
-    height: auto;         /* nicht auf Vollbild stretchen */
-    max-width: 1100px;    /* schÃ¶ner Desktop-Rahmen */
-    padding-top: 20px;
+.kb-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
 }
 
-body.pc-device .kunden-grid {
-    grid-template-columns: repeat(3, 317px);  /* statt 315px */
-    gap: 10px;
+.kb {
+    flex: 1;
+    padding: 14px 0;
+    font-size: 18px;
+    border-radius: 12px;
+    border: none;
+    background: #f7f7f7;
 }
 
-body.pc-device #eiltBtn {
+.kb.space { flex: 4; }
+.kb.special.green { background: #00963d; color: white; }
+.kb.special.red { background: #c80000; color: white; }
+
+.cancel {
+    width: 100%;
     margin-top: 12px;
+    padding: 14px;
+    background: #666;
+    border-radius: 12px;
+    border: none;
+    color: white;
+    font-size: 18px;
 }
 
-body.pc-device .bottom-row {
-    margin-top: 40px;  /* statt margin-top: auto */
+/* =====================
+   GERÄT / BUILD
+===================== */
+.device-info {
+    position: fixed;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    font-weight: bold;
+    color: #003a73;
+    opacity: 0.8;
 }
+
+.build-info {
+    position: fixed;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px;
+    color: #333;
+    opacity: 0.7;
+}
+
+/* =====================
+   ZEBRA / PC
+===================== */
+body.zebra-tc21 .artBtn { min-height: 58px; font-size: 18px; }
+body.zebra-tc21 .kundeBtn { min-height: 50px; font-size: 13px; }
+
+body.zebra-tc22 .artBtn { min-height: 62px; }
+body.zebra-tc22 .kundeBtn { min-height: 54px; }
+
+body.pc-device #card { max-width: 1100px; }
