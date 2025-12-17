@@ -2,14 +2,14 @@ let selectedCustomer = "";
 let selectedArt = "";
 
 /* =========================
-   DOM REFS
+   DOM
 ========================= */
 const popup = document.getElementById("keyboardPopup");
 const keyboardInput = document.getElementById("keyboardInput");
 const sonstigeBtn = document.getElementById("sonstigeBtn");
 const kundenArea = document.getElementById("kundenArea");
 
-/* ✅ POPUP IMMER ZU BEIM START */
+/* Sicherer Startzustand */
 popup.style.display = "none";
 kundenArea.classList.add("disabled");
 
@@ -28,7 +28,7 @@ document.querySelectorAll(".kundeBtn").forEach(btn => {
 
         if (kunde === "SONSTIGE") {
             selectedCustomer = "SONSTIGE";
-            openKeyboard();            // 👈 NUR HIER
+            openKeyboard();        // NUR HIER
         } else {
             selectedCustomer = kunde;
             closeKeyboard();
@@ -51,8 +51,7 @@ function setArt(art, btn) {
     selectedArt = art;
     document.querySelectorAll(".artBtn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
-
-    kundenArea.classList.remove("disabled"); // 👈 Kunden erst jetzt aktiv
+    kundenArea.classList.remove("disabled");
 }
 
 /* =========================
@@ -91,7 +90,7 @@ document.getElementById("btnDrucken").onclick = () => {
 document.getElementById("btnBack").onclick = () => history.back();
 
 /* =========================
-   TASTATUR FUNKTIONEN
+   TASTATUR
 ========================= */
 function openKeyboard() {
     popup.style.display = "flex";
@@ -103,24 +102,15 @@ function closeKeyboard() {
     popup.style.display = "none";
 }
 
-/* Buchstaben */
 document.querySelectorAll(".kb").forEach(k => {
     k.onclick = () => {
-        if (k.id === "kbDelete") return;
-        if (k.id === "kbSpace") return;
-        if (k.id === "kbOk") return;
+        if (["kbDelete","kbSpace","kbOk"].includes(k.id)) return;
         keyboardInput.value += k.textContent;
     };
 });
 
-/* Sondertasten */
-kbDelete.onclick = () => {
-    keyboardInput.value = keyboardInput.value.slice(0, -1);
-};
-
-kbSpace.onclick = () => {
-    keyboardInput.value += " ";
-};
+kbDelete.onclick = () => keyboardInput.value = keyboardInput.value.slice(0, -1);
+kbSpace.onclick  = () => keyboardInput.value += " ";
 
 kbOk.onclick = () => {
     const name = keyboardInput.value.trim();
@@ -133,7 +123,6 @@ kbOk.onclick = () => {
 
 kbCancel.onclick = closeKeyboard;
 
-/* ENTER auf PC */
 keyboardInput.addEventListener("keydown", e => {
     if (e.key === "Enter") {
         e.preventDefault();
@@ -142,12 +131,10 @@ keyboardInput.addEventListener("keydown", e => {
 });
 
 /* =========================
-   GERÄTEERKENNUNG
+   GERÄT
 ========================= */
-const ua  = navigator.userAgent.toLowerCase();
-const sw  = screen.width;
-const sh  = screen.height;
-const dpr = devicePixelRatio;
+const ua = navigator.userAgent.toLowerCase();
+const sw = screen.width, sh = screen.height, dpr = devicePixelRatio;
 
 const isMobile = /android|iphone|ipad|ipod/i.test(ua);
 const isTC21 = ua.includes("android") && sw === 360 && sh === 640;
@@ -155,31 +142,22 @@ const isTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
 
 if (isTC21) document.body.classList.add("zebra-tc21");
 if (isTC22) document.body.classList.add("zebra-tc22");
-if (!isMobile && !isTC21 && !isTC22) {
-    document.body.classList.add("pc-device");
-}
+if (!isMobile && !isTC21 && !isTC22) document.body.classList.add("pc-device");
 
-const deviceInfo = document.getElementById("deviceInfo");
-if (deviceInfo) {
-    deviceInfo.textContent =
-        isTC22 ? "Gerät: Zebra TC22" :
-        isTC21 ? "Gerät: Zebra TC21" :
-        isMobile ? "Gerät: Mobile" :
-        "Gerät: PC";
-}
+document.getElementById("deviceInfo").textContent =
+    isTC22 ? "Gerät: Zebra TC22" :
+    isTC21 ? "Gerät: Zebra TC21" :
+    isMobile ? "Gerät: Mobile" :
+    "Gerät: PC";
 
 /* =========================
-   BUILD INFO
+   BUILD
 ========================= */
-const lastMod = new Date(document.lastModified);
-const build =
-    lastMod.getFullYear() +
-    String(lastMod.getMonth() + 1).padStart(2, "0") +
-    String(lastMod.getDate()).padStart(2, "0") + "." +
-    String(lastMod.getHours()).padStart(2, "0") +
-    String(lastMod.getMinutes()).padStart(2, "0");
-
-const buildInfo = document.getElementById("buildInfo");
-if (buildInfo) {
-    buildInfo.textContent = "Build " + build;
-}
+const lm = new Date(document.lastModified);
+document.getElementById("buildInfo").textContent =
+    "Build " +
+    lm.getFullYear() +
+    String(lm.getMonth()+1).padStart(2,"0") +
+    String(lm.getDate()).padStart(2,"0") + "." +
+    String(lm.getHours()).padStart(2,"0") +
+    String(lm.getMinutes()).padStart(2,"0");
