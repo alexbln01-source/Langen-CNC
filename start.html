@@ -2,128 +2,59 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
+<title>Start</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-<title>Warenanhänger</title>
-
-<link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/png" sizes="192x192" href="icon192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="icon512.png">
-<link rel="apple-touch-icon" href="icon192.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
 
 <style>
-/* (dein vorhandenes CSS bleibt unverändert!) */
+/* Seite bleibt unsichtbar */
 html, body {
     margin: 0;
     padding: 0;
-    min-height: 100vh;
-    background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
-    font-family: "Segoe UI", Arial, sans-serif;
-}
-@media (min-width: 601px) { html, body { overflow: hidden; } }
-
-@media (max-width: 600px) {
-    html, body {
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-    }
-    #main { width: 100%; max-width: 380px; transform: scale(0.95); }
-    button { width: 260px; height: 85px; font-size: 24px; }
-}
-@media (min-width: 601px) {
-    #main { margin: 60px auto; width: 100%; max-width: 650px; padding: 20px 40px; }
-    button { width: 450px; height: 80px; font-size: 20px; }
-    h1 { font-size: 40px; }
-}
-
-#logo { width: 80%; max-width: 320px; margin: 0 auto 25px auto; display: block; }
-
-h1 {
-    margin: 0 0 30px 0;
-    font-size: 32px;
-    font-weight: 900;
-    color: #003a73;
-    text-align: center;
-}
-
-button {
-    margin: 18px auto;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: none;
-    border-radius: 18px;
-    font-weight: bold;
-    color: white;
-    cursor: pointer;
-    transition: 0.2s;
-
-    line-height: 1.2;
-    text-align: center;
-    padding: 0 24px;
-}
-
-#btnBeschichtung { background: linear-gradient(#007bff,#0056b3); }
-#btnKanten       { background: linear-gradient(#ff9800,#e67e00); }
-#btnLieferung    { background: linear-gradient(#6f42c1,#59339d); }
-#btnPaus         { background: linear-gradient(#28a745,#1d7f31); }
-
-footer {
-    margin-top: 40px;
-    font-size: 16px;
-    text-align: center;
-    color: #444;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    overflow: hidden;
 }
 </style>
 
 <script>
-/* ⭐ Beschichtung */
-function openBeschichtung() {
-    window.location.href = "start.html?bereich=beschichtung";
-}
+document.addEventListener("DOMContentLoaded", () => {
 
-/* ⭐ Bearbeitung (Kanten / Schweißen / Bohrwerk) */
-function openKanten() {
-    window.location.href = "start.html?bereich=kanten";
-}
+    // Bereich aus URL lesen (?bereich=...)
+    const params  = new URLSearchParams(location.search);
+    const bereich = params.get("bereich");
 
-/* ⭐ Lieferung → zuerst auf index2.html */
-function openLieferung() {
-    window.location.href = "index2.html";
-}
+    if (!bereich) {
+        // Kein Bereich → nichts tun (wichtig für PWA-Stabilität)
+        console.warn("Kein Bereich angegeben");
+        return;
+    }
 
-/* ⭐ PAUS Lieferung */
-function openPaus() {
-    window.location.href = "start.html?bereich=paus";
-}
+    /* ============================================
+       ROUTING
+    ============================================ */
+    const routes = {
+        beschichtung: "beschichtung_mobile/beschichtung_mobile.html",
+        kanten:       "kanten_mobile/kanten_mobile.html",
+        schweissen:   "baustelle.html",
+        paus:         "paus_mobile/paus_mobile.html"
+    };
+
+    const ziel = routes[bereich];
+
+    if (ziel) {
+        // replace = kein Zurück auf diese Seite
+        location.replace(ziel);
+    } else {
+        console.warn("Unbekannter Bereich:", bereich);
+    }
+});
 </script>
 
 </head>
 <body>
-
-<div id="main">
-
-    <img id="logo" src="langen.png" alt="Langen CNC Logo">
-
-    <h1>Warenanhänger</h1>
-
-    <button id="btnKanten" onclick="openKanten()">Bearbeitung (A6)</button>
-    <button id="btnBeschichtung" onclick="openBeschichtung()">Beschichtung (A5)</button>
-
-    <!-- NEUER BUTTON -->
-    <button id="btnLieferung" onclick="openLieferung()">Lieferung (A6)</button>
-
-    <button id="btnPaus" onclick="openPaus()">PAUS Lieferung (A6)</button>
-
-    <footer>Langen CNC Metalltechnik GmbH & Co. KG</footer>
-
-</div>
-
+<!-- bewusst leer -->
 </body>
 </html>

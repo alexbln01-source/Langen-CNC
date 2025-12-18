@@ -14,43 +14,17 @@
 <link rel="apple-touch-icon" href="icon192.png">
 
 <style>
+/* =====================
+   GRUNDLAYOUT
+===================== */
 html, body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    background: #ffffff;
+    background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
     font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* ================= SPLASH ================= */
-#splashScreen {
-    position: fixed;
-    inset: 0;
-    background: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10000;
-}
-
-.splash-content {
-    text-align: center;
-}
-
-#splashScreen img {
-    width: 60%;
-    max-width: 300px;
-    margin-bottom: 18px;
-}
-
-.splash-title {
-    font-size: 34px;
-    font-weight: 900;
-    color: #003a73;
-    letter-spacing: 1px;
-}
-
-/* ================= LAYOUT ================= */
 @media (min-width: 601px) { html, body { overflow: hidden; } }
 
 @media (max-width: 600px) {
@@ -91,12 +65,16 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
+
     border: none;
     border-radius: 18px;
     font-weight: bold;
     color: white;
     cursor: pointer;
     transition: 0.2s;
+
+    line-height: 1.2;
+    text-align: center;
     padding: 0 24px;
 }
 
@@ -114,7 +92,9 @@ footer {
 </style>
 
 <script>
-/* ================= NAVIGATION ================= */
+/* =====================
+   NAVIGATION
+===================== */
 function openBeschichtung() {
     location.href = "start.html?bereich=beschichtung";
 }
@@ -130,27 +110,10 @@ function openLieferung() {
 function openPaus() {
     location.href = "start.html?bereich=paus";
 }
-
-/* ================= SPLASH LOGIK =================
-   ⚠️ WICHTIG: DOMContentLoaded, NICHT load!
-================================================== */
-document.addEventListener("DOMContentLoaded", () => {
-    setTimeout(() => {
-        const splash = document.getElementById("splashScreen");
-        if (splash) splash.style.display = "none";
-    }, 2000);
-});
 </script>
 
 </head>
 <body>
-
-<div id="splashScreen">
-    <div class="splash-content">
-        <img src="icon512.png" alt="Langen CNC">
-        <div class="splash-title">Warenanhänger</div>
-    </div>
-</div>
 
 <div id="main">
 
