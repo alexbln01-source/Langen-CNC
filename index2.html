@@ -1,63 +1,108 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Achtung: Baustelle</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background: #e2e2e2;
-            color: #222;
-            text-align: center;
-            padding-top: 40px;
-        }
+<title>Achtung: Baustelle</title>
 
-        .logo {
-            width: 220px;
-            margin-bottom: 25px;
-        }
+<style>
+/* =====================================================
+   BASIS
+===================================================== */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
 
-        .baustelle-img {
-            width: 350px;
-            margin: 10px 0 20px 0;
-        }
+body {
+    font-family: Arial, sans-serif;
+    background: #e2e2e2;
+    color: #222;
 
-        h1 {
-            font-size: 40px;
-            margin: 10px 0;
-        }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
-        .blink {
-            font-size: 24px;
-            font-weight: bold;
-            animation: blink 1s steps(2, start) infinite;
-        }
+    text-align: center;
+}
 
-        @keyframes blink {
-            to { visibility: hidden; }
-        }
+/* =====================================================
+   INHALT
+===================================================== */
+.logo {
+    width: 60%;
+    max-width: 240px;
+    margin-bottom: 18px;
+}
 
-        /* Zurück-Button */
-        .back-btn {
-            display: inline-block;
-            margin-top: 30px;
-            padding: 10px 20px;
-            background: #333;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 18px;
-        }
-        .back-btn:hover {
-            background: #555;
-        }
-    </style>
+.baustelle-img {
+    width: 80%;
+    max-width: 360px;
+    margin: 10px 0 20px;
+}
+
+h1 {
+    font-size: 32px;
+    margin: 8px 0;
+}
+
+.blink {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 6px;
+    animation: blink 1.2s steps(2, start) infinite;
+}
+
+@keyframes blink {
+    to { visibility: hidden; }
+}
+
+/* =====================================================
+   ZURÜCK BUTTON (TOUCH)
+===================================================== */
+.back-btn {
+    margin-top: 28px;
+    padding: 18px 28px;
+
+    background: #333;
+    color: #fff;
+    text-decoration: none;
+
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: bold;
+
+    min-width: 220px;
+}
+
+.back-btn:active {
+    background: #555;
+}
+
+/* =====================================================
+   PC FEINSCHLIFF
+===================================================== */
+@media (min-width: 900px) {
+    h1 {
+        font-size: 40px;
+    }
+
+    .blink {
+        font-size: 24px;
+    }
+
+    .back-btn {
+        font-size: 18px;
+        padding: 14px 24px;
+    }
+}
+</style>
+
 </head>
-
 <body>
 
     <!-- Logo -->
@@ -67,9 +112,9 @@
     <img src="baustelle.png" alt="Baustelle" class="baustelle-img">
 
     <h1>⚠️ Achtung: Baustelle</h1>
-    <p class="blink">🔧 Bitte etwas Geduld.</p>
+    <div class="blink">🔧 Bitte etwas Geduld</div>
 
-    <!-- Zurück führt direkt zur Startseite -->
+    <!-- Zurück -->
     <a href="index.html" class="back-btn">← Zurück</a>
 
 </body>
