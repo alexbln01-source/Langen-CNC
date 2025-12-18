@@ -230,20 +230,20 @@ window.onload = () => {
     previewContent.innerHTML = html;
     printContent.innerHTML   = html;
 
-    /* 🖨 DRUCK */
-    printBtn.onclick = () => {
-        window.print();
-    };
+   /* 🖨 DRUCK */
+printBtn.onclick = () => {
+    window.print();
+};
 
-    /* ✅ NACH DRUCK → INDEX */
-    window.onafterprint = () => {
-        window.location.replace("../index.html");
-    };
+/* ✅ NACH DRUCK → INDEX (HARTE NEULADUNG) */
+window.onafterprint = () => {
+    window.location.href = "../index.html?reload=" + Date.now();
+};
 
-    /* 🔙 ZURÜCK → INDEX */
-    backBtn.onclick = () => {
-        window.location.replace("../index.html");
-    };
+/* 🔙 ZURÜCK → INDEX (HARTE NEULADUNG) */
+backBtn.onclick = () => {
+    window.location.href = "../index.html?reload=" + Date.now();
+};
 };
 </script>
 
