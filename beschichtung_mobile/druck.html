@@ -242,12 +242,7 @@ window.onafterprint = () => {
 
 /* 🔙 ZURÜCK → INDEX (WICHTIGER FIX) */
 backBtn.onclick = () => {
-
-    document.body.style.display = "none";
-
-    setTimeout(() => {
-        window.location.href = "../index.html?reload=" + Date.now();
-    }, 50);
+    window.location.href = "../start.html?bereich=home&reset=" + Date.now();
 };
 };
 </script>
