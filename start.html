@@ -4,58 +4,48 @@
 <meta charset="utf-8">
 <title>Start</title>
 
-<script>
-// Bereich aus URL lesen (?bereich=...)
-const params  = new URLSearchParams(location.search);
-const bereich = params.get("bereich");
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
 
-function route() {
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    overflow: hidden;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const params  = new URLSearchParams(location.search);
+    const bereich = params.get("bereich");
 
     if (!bereich) {
-        alert("Kein Bereich angegeben!");
+        // leise abbrechen, App bleibt stabil
         return;
     }
 
-    /* ============================================
-       ⭐ BESCHICHTUNG → immer mobile Version
-    ============================================ */
-    if (bereich === "beschichtung") {
-        window.location.href = "beschichtung_mobile/beschichtung_mobile.html";
-        return;
+    const routes = {
+        beschichtung: "beschichtung_mobile/beschichtung_mobile.html",
+        kanten:       "kanten_mobile/kanten_mobile.html",
+        schweissen:   "baustelle.html",
+        paus:         "paus_mobile/paus_mobile.html"
+    };
+
+    const ziel = routes[bereich];
+
+    if (ziel) {
+        location.replace(ziel);
     }
-
-    /* ============================================
-       ⭐ KANTEN → nur noch mobile Version!
-       ❌ kein kanten_pc mehr
-    ============================================ */
-    if (bereich === "kanten") {
-        window.location.href = "kanten_mobile/kanten_mobile.html";
-        return;
-    }
-
-    /* ============================================
-       ⭐ SCHWEISSEN → noch Baustelle
-    ============================================ */
-    if (bereich === "schweissen") {
-        window.location.href = "baustelle.html";
-        return;
-    }
-
-    /* ============================================
-   ⭐ PAUS → mobile Version starten
-============================================ */
-if (bereich === "paus") {
-    window.location.href = "paus_mobile/paus_mobile.html";
-    return;
-}
-    alert("Unbekannter Bereich: " + bereich);
-}
-
-route();
+});
 </script>
 
 </head>
 <body>
-<p>Lade passende Version...</p>
+<!-- bewusst leer -->
 </body>
 </html>
