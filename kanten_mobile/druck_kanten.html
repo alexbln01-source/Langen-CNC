@@ -2,10 +2,20 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+
+<!-- Druckansicht für Warenanhänger:
+     Kanten / Schweißen / Bohrwerk (Format A6 quer) -->
 <title>Druck – Kanten / Schweißen / Bohrwerk</title>
+
+<!-- Viewport für Touchgeräte und Terminals -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
+/* =====================================================
+   GRUNDLAYOUT
+   - neutrale Hintergrundfarbe
+   - feste Höhe, kein Scrollen
+===================================================== */
 html, body {
     margin: 0;
     padding: 0;
@@ -15,6 +25,11 @@ html, body {
     overflow: hidden;
 }
 
+/* =====================================================
+   VORSCHAU-BEREICH
+   - zentriert das Etikett auf dem Bildschirm
+   - reserviert Platz für die Bedien-Buttons unten
+===================================================== */
 .preview-wrapper {
     width: 100%;
     height: calc(100% - 180px);
@@ -23,6 +38,10 @@ html, body {
     align-items: center;
 }
 
+/* =====================================================
+   A6-ETIKETT (ECHTE ABMESSUNGEN)
+   - 148 × 105 mm (Querformat)
+===================================================== */
 .preview-area {
     width: 148mm;
     height: 105mm;
@@ -32,9 +51,21 @@ html, body {
     transform-origin: center;
 }
 
-@media (max-width: 900px) { .preview-area { transform: scale(0.6); } }
-@media (min-width: 901px) { .preview-area { transform: scale(0.8); } }
+/* Skalierung für kleinere Displays / Handhelds */
+@media (max-width: 900px) {
+    .preview-area { transform: scale(0.6); }
+}
 
+/* Skalierung für größere Bildschirme */
+@media (min-width: 901px) {
+    .preview-area { transform: scale(0.8); }
+}
+
+/* =====================================================
+   ETIKETT-INHALT
+   - feste Größe wie Druck
+   - Text zentriert
+===================================================== */
 .etikett {
     width: 148mm;
     height: 105mm;
@@ -42,8 +73,14 @@ html, body {
     text-align: center;
     box-sizing: border-box;
 }
+
+/* Etikettentext grundsätzlich fett */
 .etikett div { font-weight: bold; }
 
+/* =====================================================
+   UNTERE BEDIENLEISTE
+   - Navigation & Drucken
+===================================================== */
 .bottom-bar {
     height: 70px;
     display: flex;
@@ -51,6 +88,7 @@ html, body {
     padding: 10px 18px;
 }
 
+/* Allgemeiner Button-Stil */
 .btn {
     flex: 1;
     border: none;
@@ -59,51 +97,87 @@ html, body {
     color: white;
     font-weight: bold;
 }
-.back-btn { background: #444; }
+
+/* Farbgebung der Buttons */
+.back-btn  { background: #444; }
 .print-btn { background: #15803d; }
 
+/* =====================================================
+   DRUCKANSICHT
+   - Vorschau & Buttons ausblenden
+   - nur das Etikett drucken
+===================================================== */
 @media print {
     .preview-wrapper,
-    .bottom-bar { display: none !important; }
-    #printArea { display: block !important; }
-    @page { size: A6 landscape; margin: 0; }
+    .bottom-bar {
+        display: none !important;
+    }
+
+    #printArea {
+        display: block !important;
+    }
+
+    @page {
+        size: A6 landscape;
+        margin: 0;
+    }
 }
 </style>
 </head>
 
 <body>
 
+<!-- =========================
+     VORSCHAU (SCREEN)
+========================= -->
 <div class="preview-wrapper">
     <div class="preview-area">
         <div id="previewContent" class="etikett"></div>
     </div>
 </div>
 
+<!-- =========================
+     DRUCKBEREICH (NUR PRINT)
+========================= -->
 <div id="printArea" class="etikett" style="display:none;">
     <div id="printContent"></div>
 </div>
 
+<!-- =========================
+     BEDIENLEISTE
+========================= -->
 <div class="bottom-bar">
     <button class="btn back-btn" id="backBtn">◀ Zurück</button>
     <button class="btn print-btn" id="printBtn">Drucken</button>
 </div>
 
 <script>
+/* =====================================================
+   URL-PARAMETER
+   - kunde: Kundenname
+   - art: kanten | schweissen | bohrwerk
+===================================================== */
 const qs = new URLSearchParams(location.search);
 const kunde = qs.get("kunde") || "Sonstige Kunden";
 const art   = qs.get("art")   || "kanten";
 
-/* BOHRWERK */
-const BW_KUNDE_SIZE = "38pt";
-const BW_KUNDE_TOP  = "6mm";
-const BW_ABSTAND    = 12;
-const BW_SIZE       = 40;
+/* =====================================================
+   BOHRWERK-LAYOUT-PARAMETER
+   - separate Darstellung mit BW-Kreis
+===================================================== */
+const BW_KUNDE_SIZE = "38pt";   // Schriftgröße Kundenname
+const BW_KUNDE_TOP  = "6mm";    // Abstand von oben
+const BW_ABSTAND    = 12;       // Abstand Kunde → Kreis
+const BW_SIZE       = 40;       // Durchmesser BW-Kreis (mm)
 
-/* =========================
-   KANTEN – ALLE KUNDEN EINZELN
-========================= */
+/* =====================================================
+   KANTEN-LAYOUTS
+   - jeder Kunde einzeln definiert
+   - bewusst kein Automatismus
+===================================================== */
 const kantenLayouts = {
 
+    /* Standard-Kantenlayout */
     "Backhus": [
         { text: "<kunde>", size: "38pt", marginTop: "4mm" },
         { text: "Kanten", size: "32pt", marginTop: "8mm" },
@@ -116,6 +190,7 @@ const kantenLayouts = {
         { text: "K-Termin: ________", size: "22pt", marginTop: "14mm" }
     ],
 
+    /* Sonderlayout Bücker */
     "Bücker": [
         { text: "<kunde>", size: "38pt", marginTop: "4mm" },
         { text: "Kanten", size: "32pt", marginTop: "6mm" },
@@ -128,6 +203,7 @@ const kantenLayouts = {
         { text: "K-Termin: ________", size: "22pt", marginTop: "14mm" }
     ],
 
+    /* Sonderfall Grimme mit Palettennummer */
     "Grimme": [
         { text: "<kunde>", size: "38pt", marginTop: "4mm" },
         { text: "Kanten", size: "32pt", marginTop: "8mm" },
@@ -165,6 +241,7 @@ const kantenLayouts = {
         { text: "K-Termin: ________", size: "22pt", marginTop: "14mm" }
     ],
 
+    /* Fallback für unbekannte Kunden */
     "Sonstige Kunden": [
         { text: "<kunde>", size: "38pt", marginTop: "4mm" },
         { text: "Kanten", size: "32pt", marginTop: "8mm" },
@@ -172,9 +249,9 @@ const kantenLayouts = {
     ]
 };
 
-/* =========================
-   SCHWEISSEN – ALLE KUNDEN EINZELN
-========================= */
+/* =====================================================
+   SCHWEISSEN-LAYOUTS
+===================================================== */
 const schweissenLayouts = {
 
     "Backhus": [
@@ -201,6 +278,7 @@ const schweissenLayouts = {
         { text: "SW-Termin: ________", size: "22pt", marginTop: "16mm" }
     ],
 
+    /* Sonderlayout Grimme */
     "Grimme": [
         { text: "<kunde>", size: "38pt", marginTop: "6mm" },
         { text: "Schweißen", size: "32pt", marginTop: "6mm" },
@@ -237,6 +315,7 @@ const schweissenLayouts = {
         { text: "SW-Termin: ________", size: "22pt", marginTop: "16mm" }
     ],
 
+    /* Fallback */
     "Sonstige Kunden": [
         { text: "<kunde>", size: "38pt", marginTop: "6mm" },
         { text: "Schweißen", size: "32pt", marginTop: "6mm" },
@@ -244,9 +323,10 @@ const schweissenLayouts = {
     ]
 };
 
-/* =========================
-   RENDER
-========================= */
+/* =====================================================
+   RENDER-FUNKTION
+   - erzeugt HTML aus Layout-Definition
+===================================================== */
 function render(rows, name) {
     return rows.map(r => `
         <div style="font-size:${r.size}; margin-top:${r.marginTop};">
@@ -255,12 +335,15 @@ function render(rows, name) {
     `).join("");
 }
 
-/* =========================
-   AUSGABE
-========================= */
+/* =====================================================
+   AUSGABELOGIK
+   - entscheidet je nach "art"
+===================================================== */
 let html = "";
 
 if (art === "bohrwerk") {
+
+    /* Bohrwerk: Sonderdarstellung mit Kreis */
     html = `
         <div style="font-size:${BW_KUNDE_SIZE}; margin-top:${BW_KUNDE_TOP};">
             ${kunde}
@@ -277,15 +360,22 @@ if (art === "bohrwerk") {
             font-size:${BW_SIZE / 2}mm;
         ">BW</div>
     `;
+
 } else {
+
+    /* Kanten oder Schweißen */
     const layouts = art === "schweissen" ? schweissenLayouts : kantenLayouts;
-    const chosen = layouts[kunde] ?? layouts["Sonstige Kunden"];
+    const chosen  = layouts[kunde] ?? layouts["Sonstige Kunden"];
     html = render(chosen, kunde);
 }
 
+/* Vorschau und Druck erhalten identischen Inhalt */
 previewContent.innerHTML = html;
 printContent.innerHTML   = html;
 
+/* =====================================================
+   BEDIENUNG
+===================================================== */
 printBtn.onclick = () => window.print();
 window.onafterprint = () => window.location.replace("../index.html");
 backBtn.onclick = () => window.location.replace("../index.html");

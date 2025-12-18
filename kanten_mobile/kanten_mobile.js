@@ -1,9 +1,12 @@
+/* =====================================================
+   ZUSTAND
+===================================================== */
 let selectedCustomer = "";
 let selectedArt = "";
 
-/* =========================
+/* =====================================================
    DOM
-========================= */
+===================================================== */
 const popup = document.getElementById("keyboardPopup");
 const keyboardInput = document.getElementById("keyboardInput");
 const sonstigeBtn = document.getElementById("sonstigeBtn");
@@ -13,9 +16,9 @@ const kundenArea = document.getElementById("kundenArea");
 popup.style.display = "none";
 kundenArea.classList.add("disabled");
 
-/* =========================
+/* =====================================================
    KUNDEN BUTTONS
-========================= */
+===================================================== */
 document.querySelectorAll(".kundeBtn").forEach(btn => {
     btn.onclick = () => {
 
@@ -36,27 +39,30 @@ document.querySelectorAll(".kundeBtn").forEach(btn => {
     };
 });
 
-/* =========================
+/* =====================================================
    ART BUTTONS
-========================= */
+===================================================== */
 const btnKanten = document.getElementById("btnKanten");
 const btnSchweissen = document.getElementById("btnSchweissen");
 const btnBohrwerk = document.getElementById("btnBohrwerk");
 
-btnKanten.onclick = () => setArt("kanten", btnKanten);
+btnKanten.onclick     = () => setArt("kanten", btnKanten);
 btnSchweissen.onclick = () => setArt("schweissen", btnSchweissen);
-btnBohrwerk.onclick = () => setArt("bohrwerk", btnBohrwerk);
+btnBohrwerk.onclick   = () => setArt("bohrwerk", btnBohrwerk);
 
 function setArt(art, btn) {
     selectedArt = art;
-    document.querySelectorAll(".artBtn").forEach(b => b.classList.remove("active"));
+
+    document.querySelectorAll(".artBtn")
+        .forEach(b => b.classList.remove("active"));
+
     btn.classList.add("active");
     kundenArea.classList.remove("disabled");
 }
 
-/* =========================
+/* =====================================================
    DRUCKEN
-========================= */
+===================================================== */
 document.getElementById("btnDrucken").onclick = () => {
 
     if (!selectedArt) {
@@ -84,24 +90,37 @@ document.getElementById("btnDrucken").onclick = () => {
         "&art=" + encodeURIComponent(selectedArt);
 };
 
-/* =========================
+/* =====================================================
    ZURÜCK
-========================= */
+===================================================== */
 document.getElementById("btnBack").onclick = () => history.back();
 
-/* =========================
-   TASTATUR
-========================= */
+/* =====================================================
+   POPUP TASTATUR
+   - PC: normale Tastatureingabe erlaubt
+   - Android/Zebra: nur Popup-Tastatur
+===================================================== */
 function openKeyboard() {
     popup.style.display = "flex";
     keyboardInput.value = "";
-    keyboardInput.focus();
+
+    if (document.body.classList.contains("pc-device")) {
+        keyboardInput.removeAttribute("readonly");
+        keyboardInput.removeAttribute("tabindex");
+        keyboardInput.focus();
+    } else {
+        keyboardInput.setAttribute("readonly", "");
+        keyboardInput.setAttribute("tabindex", "-1");
+    }
 }
 
 function closeKeyboard() {
     popup.style.display = "none";
+    keyboardInput.setAttribute("readonly", "");
+    keyboardInput.setAttribute("tabindex", "-1");
 }
 
+/* Buchstabentasten */
 document.querySelectorAll(".kb").forEach(k => {
     k.onclick = () => {
         if (["kbDelete","kbSpace","kbOk"].includes(k.id)) return;
@@ -123,6 +142,7 @@ kbOk.onclick = () => {
 
 kbCancel.onclick = closeKeyboard;
 
+/* Enter-Taste (nur relevant am PC) */
 keyboardInput.addEventListener("keydown", e => {
     if (e.key === "Enter") {
         e.preventDefault();
@@ -130,11 +150,13 @@ keyboardInput.addEventListener("keydown", e => {
     }
 });
 
-/* =========================
-   GERÄT
-========================= */
+/* =====================================================
+   GERÄTEERKENNUNG
+===================================================== */
 const ua = navigator.userAgent.toLowerCase();
-const sw = screen.width, sh = screen.height, dpr = devicePixelRatio;
+const sw = screen.width;
+const sh = screen.height;
+const dpr = devicePixelRatio;
 
 const isMobile = /android|iphone|ipad|ipod/i.test(ua);
 const isTC21 = ua.includes("android") && sw === 360 && sh === 640;
@@ -142,7 +164,9 @@ const isTC22 = ua.includes("android") && sw === 360 && sh === 720 && dpr === 3;
 
 if (isTC21) document.body.classList.add("zebra-tc21");
 if (isTC22) document.body.classList.add("zebra-tc22");
-if (!isMobile && !isTC21 && !isTC22) document.body.classList.add("pc-device");
+if (!isMobile && !isTC21 && !isTC22) {
+    document.body.classList.add("pc-device");
+}
 
 document.getElementById("deviceInfo").textContent =
     isTC22 ? "Gerät: Zebra TC22" :
@@ -150,9 +174,9 @@ document.getElementById("deviceInfo").textContent =
     isMobile ? "Gerät: Mobile" :
     "Gerät: PC";
 
-/* =========================
+/* =====================================================
    BUILD
-========================= */
+===================================================== */
 const lm = new Date(document.lastModified);
 document.getElementById("buildInfo").textContent =
     "Build " +

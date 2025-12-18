@@ -2,7 +2,9 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>Warenanhänger</title>
 <link rel="stylesheet" href="kanten_mobile.css">
 </head>
@@ -50,15 +52,22 @@
     </div>
 </div>
 
-<!-- Tastatur -->
+<!-- ================= POPUP TASTATUR ================= -->
 <div id="keyboardPopup">
     <div id="keyboardBox">
+
         <div class="keyboard-title">Kundenname eingeben</div>
+
+        <!--
+          readonly + inputmode=none:
+          - Android/Zebra: keine Systemtastatur
+          - PC: wird per JS temporär freigegeben
+        -->
         <input id="keyboardInput"
-       type="text"
-       readonly
-       inputmode="none"
-       tabindex="-1">
+               type="text"
+               readonly
+               inputmode="none"
+               tabindex="-1">
 
         <div class="kb-row">
             <button class="kb">Q</button><button class="kb">W</button><button class="kb">E</button>
@@ -74,7 +83,8 @@
 
         <div class="kb-row">
             <button class="kb">Y</button><button class="kb">X</button><button class="kb">C</button>
-            <button class="kb">V</button><button class="kb">B</button><button class="kb">N</button><button class="kb">M</button>
+            <button class="kb">V</button><button class="kb">B</button><button class="kb">N</button>
+            <button class="kb">M</button>
         </div>
 
         <div class="kb-row bottom">
