@@ -2,8 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Warenanhänger</title>
 <link rel="stylesheet" href="kanten_mobile.css">
 </head>
@@ -14,6 +13,7 @@
 <div id="card">
 
     <div class="grid-label spacer-top">WARENANHÄNGER AUSWÄHLEN</div>
+
     <div class="section">
         <div class="art-btn-row">
             <button id="btnKanten" class="artBtn">Kanten</button>
@@ -23,16 +23,21 @@
     </div>
 
     <div class="grid-label">KUNDE AUSWÄHLEN</div>
+
     <div class="section">
         <div id="kundenArea" class="disabled">
+
+            <button class="kundeBtn" data-kunde="Backhus">Backhus</button>
             <button class="kundeBtn" data-kunde="Bergmann M-H">Bergmann M-H</button>
             <button class="kundeBtn" data-kunde="Bücker">Bücker</button>
+            <button class="kundeBtn" data-kunde="FVG">FVG</button>
             <button class="kundeBtn" data-kunde="Grimme">Grimme</button>
             <button class="kundeBtn" data-kunde="Janzen">Janzen</button>
             <button class="kundeBtn" data-kunde="Krone Spelle">Krone Spelle</button>
             <button class="kundeBtn" data-kunde="L.Bergmann">L.Bergmann</button>
             <button class="kundeBtn" data-kunde="PAUS">PAUS</button>
             <button class="kundeBtn" data-kunde="TOS">TOS</button>
+
             <button class="kundeBtn" id="sonstigeBtn" data-kunde="SONSTIGE">
                 Sonstige Kunden
             </button>
@@ -45,12 +50,11 @@
     </div>
 </div>
 
-<!-- POPUP TASTATUR -->
-<div id="keyboardPopup" style="display:none;">
+<!-- Tastatur -->
+<div id="keyboardPopup">
     <div id="keyboardBox">
-
         <div class="keyboard-title">Kundenname eingeben</div>
-        <input id="keyboardInput" type="text" placeholder="Kundenname…">
+        <input id="keyboardInput" type="text">
 
         <div class="kb-row">
             <button class="kb">Q</button><button class="kb">W</button><button class="kb">E</button>

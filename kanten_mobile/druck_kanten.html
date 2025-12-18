@@ -15,20 +15,14 @@ html, body {
     overflow: hidden;
 }
 
-/* =====================
-   VORSCHAU WRAPPER
-===================== */
 .preview-wrapper {
     width: 100%;
-    height: calc(100% - 180px); /* WICHTIG: mehr Platz für Buttons */
+    height: calc(100% - 180px);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* =====================
-   A6 VORSCHAU (ECHTES FORMAT)
-===================== */
 .preview-area {
     width: 148mm;
     height: 105mm;
@@ -38,23 +32,9 @@ html, body {
     transform-origin: center;
 }
 
-/* 📱 Zebra / Handy */
-@media (max-width: 900px) {
-    .preview-area {
-        transform: scale(0.6);
-    }
-}
+@media (max-width: 900px) { .preview-area { transform: scale(0.6); } }
+@media (min-width: 901px) { .preview-area { transform: scale(0.8); } }
 
-/* 🖥️ PC */
-@media (min-width: 901px) {
-    .preview-area {
-        transform: scale(0.8);
-    }
-}
-
-/* =====================
-   ETIKETT
-===================== */
 .etikett {
     width: 148mm;
     height: 105mm;
@@ -62,14 +42,8 @@ html, body {
     text-align: center;
     box-sizing: border-box;
 }
+.etikett div { font-weight: bold; }
 
-.etikett div {
-    font-weight: bold;
-}
-
-/* =====================
-   BUTTONS
-===================== */
 .bottom-bar {
     height: 70px;
     display: flex;
@@ -85,27 +59,14 @@ html, body {
     color: white;
     font-weight: bold;
 }
-
 .back-btn { background: #444; }
 .print-btn { background: #15803d; }
 
-/* =====================
-   DRUCK
-===================== */
 @media print {
     .preview-wrapper,
-    .bottom-bar {
-        display: none !important;
-    }
-
-    #printArea {
-        display: block !important;
-    }
-
-    @page {
-        size: A6 landscape;
-        margin: 0;
-    }
+    .bottom-bar { display: none !important; }
+    #printArea { display: block !important; }
+    @page { size: A6 landscape; margin: 0; }
 }
 </style>
 </head>
@@ -128,50 +89,154 @@ html, body {
 </div>
 
 <script>
-/* =========================
-   PARAMETER
-========================= */
 const qs = new URLSearchParams(location.search);
 const kunde = qs.get("kunde") || "Sonstige Kunden";
 const art   = qs.get("art")   || "kanten";
 
-/* =========================
-   BOHRWERK
-========================= */
+/* BOHRWERK */
 const BW_KUNDE_SIZE = "38pt";
 const BW_KUNDE_TOP  = "6mm";
 const BW_ABSTAND    = 12;
 const BW_SIZE       = 40;
 
 /* =========================
-   LAYOUTS
+   KANTEN – ALLE KUNDEN EINZELN
 ========================= */
 const kantenLayouts = {
+
+    "Backhus": [
+        { text: "<kunde>", size: "38pt", marginTop: "4mm" },
+        { text: "Kanten", size: "32pt", marginTop: "8mm" },
+        { text: "K-Termin: ________", size: "22pt", marginTop: "14mm" }
+    ],
+
+    "Bergmann M-H": [
+        { text: "<kunde>", size: "38pt", marginTop: "4mm" },
+        { text: "Kanten", size: "32pt", marginTop: "8mm" },
+        { text: "K-Termin: ________", size: "22pt", marginTop: "14mm" }
+    ],
+
+    "Bücker": [
+        { text: "<kunde>", size: "38pt", marginTop: "4mm" },
+        { text: "Kanten", size: "32pt", marginTop: "6mm" },
+        { text: "K-Termin: ________", size: "22pt", marginTop: "14mm" }
+    ],
+
+    "FVG": [
+        { text: "<kunde>", size: "38pt", marginTop: "4mm" },
+        { text: "Kanten", size: "32pt", marginTop: "8mm" },
+        { text: "K-Termin: ________", size: "22pt", marginTop: "14mm" }
+    ],
+
     "Grimme": [
         { text: "<kunde>", size: "38pt", marginTop: "4mm" },
         { text: "Kanten", size: "32pt", marginTop: "8mm" },
         { text: "K-Termin: ________", size: "22pt", marginTop: "16mm" },
         { text: "Palettennummer: ________", size: "22pt", marginTop: "10mm" }
     ],
-    "Bücker": [
+
+    "Janzen": [
         { text: "<kunde>", size: "38pt", marginTop: "4mm" },
-        { text: "Kanten", size: "32pt", marginTop: "6mm" },
+        { text: "Kanten", size: "32pt", marginTop: "8mm" },
         { text: "K-Termin: ________", size: "22pt", marginTop: "14mm" }
     ],
+
+    "Krone Spelle": [
+        { text: "<kunde>", size: "38pt", marginTop: "4mm" },
+        { text: "Kanten", size: "32pt", marginTop: "8mm" },
+        { text: "K-Termin: ________", size: "22pt", marginTop: "14mm" }
+    ],
+
+    "L.Bergmann": [
+        { text: "<kunde>", size: "38pt", marginTop: "4mm" },
+        { text: "Kanten", size: "32pt", marginTop: "8mm" },
+        { text: "K-Termin: ________", size: "22pt", marginTop: "14mm" }
+    ],
+
+    "PAUS": [
+        { text: "<kunde>", size: "38pt", marginTop: "4mm" },
+        { text: "Kanten", size: "32pt", marginTop: "8mm" },
+        { text: "K-Termin: ________", size: "22pt", marginTop: "14mm" }
+    ],
+
+    "TOS": [
+        { text: "<kunde>", size: "38pt", marginTop: "4mm" },
+        { text: "Kanten", size: "32pt", marginTop: "8mm" },
+        { text: "K-Termin: ________", size: "22pt", marginTop: "14mm" }
+    ],
+
     "Sonstige Kunden": [
         { text: "<kunde>", size: "38pt", marginTop: "4mm" },
         { text: "Kanten", size: "32pt", marginTop: "8mm" },
-        { text: "K-Termin: ________", size: "22pt", marginTop: "14mm" },
-        { text: "Palettennummer: ________", size: "22pt", marginTop: "10mm" }
+        { text: "K-Termin: ________", size: "22pt", marginTop: "14mm" }
     ]
 };
 
+/* =========================
+   SCHWEISSEN – ALLE KUNDEN EINZELN
+========================= */
 const schweissenLayouts = {
+
+    "Backhus": [
+        { text: "<kunde>", size: "38pt", marginTop: "6mm" },
+        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
+        { text: "SW-Termin: ________", size: "22pt", marginTop: "16mm" }
+    ],
+
+    "Bergmann M-H": [
+        { text: "<kunde>", size: "38pt", marginTop: "6mm" },
+        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
+        { text: "SW-Termin: ________", size: "22pt", marginTop: "16mm" }
+    ],
+
+    "Bücker": [
+        { text: "<kunde>", size: "38pt", marginTop: "6mm" },
+        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
+        { text: "SW-Termin: ________", size: "22pt", marginTop: "16mm" }
+    ],
+
+    "FVG": [
+        { text: "<kunde>", size: "38pt", marginTop: "6mm" },
+        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
+        { text: "SW-Termin: ________", size: "22pt", marginTop: "16mm" }
+    ],
+
     "Grimme": [
         { text: "<kunde>", size: "38pt", marginTop: "6mm" },
         { text: "Schweißen", size: "32pt", marginTop: "6mm" },
         { text: "SW-Termin: ________", size: "22pt", marginTop: "20mm" }
     ],
+
+    "Janzen": [
+        { text: "<kunde>", size: "38pt", marginTop: "6mm" },
+        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
+        { text: "SW-Termin: ________", size: "22pt", marginTop: "16mm" }
+    ],
+
+    "Krone Spelle": [
+        { text: "<kunde>", size: "38pt", marginTop: "6mm" },
+        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
+        { text: "SW-Termin: ________", size: "22pt", marginTop: "16mm" }
+    ],
+
+    "L.Bergmann": [
+        { text: "<kunde>", size: "38pt", marginTop: "6mm" },
+        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
+        { text: "SW-Termin: ________", size: "22pt", marginTop: "16mm" }
+    ],
+
+    "PAUS": [
+        { text: "<kunde>", size: "38pt", marginTop: "6mm" },
+        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
+        { text: "SW-Termin: ________", size: "22pt", marginTop: "16mm" }
+    ],
+
+    "TOS": [
+        { text: "<kunde>", size: "38pt", marginTop: "6mm" },
+        { text: "Schweißen", size: "32pt", marginTop: "6mm" },
+        { text: "SW-Termin: ________", size: "22pt", marginTop: "16mm" }
+    ],
+
     "Sonstige Kunden": [
         { text: "<kunde>", size: "38pt", marginTop: "6mm" },
         { text: "Schweißen", size: "32pt", marginTop: "6mm" },
@@ -221,9 +286,6 @@ if (art === "bohrwerk") {
 previewContent.innerHTML = html;
 printContent.innerHTML   = html;
 
-/* =========================
-   DRUCK / NAVIGATION
-========================= */
 printBtn.onclick = () => window.print();
 window.onafterprint = () => window.location.replace("../index.html");
 backBtn.onclick = () => window.location.replace("../index.html");
