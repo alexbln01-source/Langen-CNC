@@ -5,6 +5,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
+<!-- 🔑 Wichtig: gleicht System-Splash an -->
+<meta name="theme-color" content="#ffffff">
+
 <title>Warenanhänger</title>
 
 <link rel="manifest" href="manifest.json">
@@ -13,9 +16,16 @@
 <link rel="apple-touch-icon" href="icon192.png">
 
 <style>
-/* =====================
+/* =====================================================
+   GRUNDHINTERGRUND (gegen Flash beim Start)
+===================================================== */
+html, body {
+    background: #ffffff;
+}
+
+/* =====================================================
    SPLASH SCREEN
-===================== */
+===================================================== */
 #splashScreen {
     position: fixed;
     inset: 0;
@@ -53,9 +63,9 @@
     letter-spacing: 1px;
 }
 
-/* =====================
-   DEIN VORHANDENES CSS
-===================== */
+/* =====================================================
+   DEIN VORHANDENES DESIGN
+===================================================== */
 html, body {
     margin: 0;
     padding: 0;
@@ -63,6 +73,7 @@ html, body {
     background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
     font-family: "Segoe UI", Arial, sans-serif;
 }
+
 @media (min-width: 601px) { html, body { overflow: hidden; } }
 
 @media (max-width: 600px) {
@@ -76,13 +87,19 @@ html, body {
     #main { width: 100%; max-width: 380px; transform: scale(0.95); }
     button { width: 260px; height: 85px; font-size: 24px; }
 }
+
 @media (min-width: 601px) {
     #main { margin: 60px auto; width: 100%; max-width: 650px; padding: 20px 40px; }
     button { width: 450px; height: 80px; font-size: 20px; }
     h1 { font-size: 40px; }
 }
 
-#logo { width: 80%; max-width: 320px; margin: 0 auto 25px auto; display: block; }
+#logo {
+    width: 80%;
+    max-width: 320px;
+    margin: 0 auto 25px auto;
+    display: block;
+}
 
 h1 {
     margin: 0 0 30px 0;
@@ -94,18 +111,15 @@ h1 {
 
 button {
     margin: 18px auto;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     border: none;
     border-radius: 18px;
     font-weight: bold;
     color: white;
     cursor: pointer;
     transition: 0.2s;
-
     line-height: 1.2;
     text-align: center;
     padding: 0 24px;
@@ -125,9 +139,9 @@ footer {
 </style>
 
 <script>
-/* =====================
+/* =====================================================
    NAVIGATION
-===================== */
+===================================================== */
 function openBeschichtung() {
     window.location.href = "start.html?bereich=beschichtung";
 }
@@ -144,11 +158,11 @@ function openPaus() {
     window.location.href = "start.html?bereich=paus";
 }
 
-/* =====================
-   SPLASH SCREEN LOGIK
+/* =====================================================
+   SPLASH LOGIK
    - 2 Sekunden sichtbar
-   - sanfter Fade-out
-===================== */
+   - sanfter Fade-Out
+===================================================== */
 window.addEventListener("load", () => {
     setTimeout(() => {
         const splash = document.getElementById("splashScreen");
@@ -159,16 +173,16 @@ window.addEventListener("load", () => {
         setTimeout(() => {
             splash.style.display = "none";
         }, 700);
-    }, 2000); // ⏱️ 2 Sekunden
+    }, 2000);
 });
 </script>
 
 </head>
 <body>
 
-<!-- =====================
-     SPLASH SCREEN
-===================== -->
+<!-- =====================================================
+     SPLASH SCREEN (sofort sichtbar)
+===================================================== -->
 <div id="splashScreen">
     <div class="splash-content">
         <img src="icon512.png" alt="Langen CNC">
@@ -184,9 +198,7 @@ window.addEventListener("load", () => {
 
     <button id="btnKanten" onclick="openKanten()">Bearbeitung (A6)</button>
     <button id="btnBeschichtung" onclick="openBeschichtung()">Beschichtung (A5)</button>
-
     <button id="btnLieferung" onclick="openLieferung()">Lieferung (A6)</button>
-
     <button id="btnPaus" onclick="openPaus()">PAUS Lieferung (A6)</button>
 
     <footer>Langen CNC Metalltechnik GmbH & Co. KG</footer>
