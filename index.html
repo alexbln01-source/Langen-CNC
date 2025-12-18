@@ -14,6 +14,9 @@
 <link rel="apple-touch-icon" href="icon192.png">
 
 <style>
+/* =====================
+   GRUNDLAYOUT
+===================== */
 html, body {
     margin: 0;
     padding: 0;
@@ -22,7 +25,9 @@ html, body {
     font-family: "Segoe UI", Arial, sans-serif;
 }
 
-@media (min-width: 601px) { html, body { overflow: hidden; } }
+@media (min-width: 601px) {
+    html, body { overflow: hidden; }
+}
 
 @media (max-width: 600px) {
     html, body {
@@ -32,13 +37,30 @@ html, body {
         align-items: center;
         overflow: hidden;
     }
-    #main { width: 100%; max-width: 380px; transform: scale(0.95); }
-    button { width: 260px; height: 85px; font-size: 24px; }
+    #main {
+        width: 100%;
+        max-width: 380px;
+        transform: scale(0.95);
+    }
+    button {
+        width: 260px;
+        height: 85px;
+        font-size: 24px;
+    }
 }
 
 @media (min-width: 601px) {
-    #main { margin: 60px auto; width: 100%; max-width: 650px; padding: 20px 40px; }
-    button { width: 450px; height: 80px; font-size: 20px; }
+    #main {
+        margin: 60px auto;
+        width: 100%;
+        max-width: 650px;
+        padding: 20px 40px;
+    }
+    button {
+        width: 450px;
+        height: 80px;
+        font-size: 20px;
+    }
     h1 { font-size: 40px; }
 }
 
@@ -89,7 +111,9 @@ footer {
 </style>
 
 <script>
-/* Navigation */
+/* =====================
+   NAVIGATION
+===================== */
 function openBeschichtung() {
     location.href = "start.html?bereich=beschichtung";
 }
@@ -103,11 +127,40 @@ function openPaus() {
     location.href = "start.html?bereich=paus";
 }
 
-/* 🔑 ANDROID / ZEBRA PRINT-BUG FIX */
-window.addEventListener("pageshow", e => {
-    if (e.persisted) {
+/* =================================================
+   🔑 ZENTRIERUNG IMMER PRÜFEN
+   - load
+   - pageshow (Zurück / Cache / Print)
+   - Reload NUR wenn nötig
+   - Maximal 1× pro Session
+================================================= */
+function checkCenteredOnce() {
+    if (sessionStorage.getItem("index-layout-ok")) return;
+
+    const main = document.getElementById("main");
+    if (!main) return;
+
+    const rect = main.getBoundingClientRect();
+    const viewportCenter = window.innerWidth / 2;
+    const mainCenter = rect.left + rect.width / 2;
+    const diff = Math.abs(viewportCenter - mainCenter);
+
+    if (diff > 20) {
+        sessionStorage.setItem("index-layout-ok", "reloaded");
         location.reload();
+    } else {
+        sessionStorage.setItem("index-layout-ok", "ok");
     }
+}
+
+/* normaler Aufruf */
+window.addEventListener("load", () => {
+    setTimeout(checkCenteredOnce, 60);
+});
+
+/* Zurück / BFCache / Druck */
+window.addEventListener("pageshow", () => {
+    setTimeout(checkCenteredOnce, 60);
 });
 </script>
 
