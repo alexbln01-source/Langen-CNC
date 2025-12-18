@@ -114,8 +114,16 @@ h1 {
     <h1>⚠️ Achtung: Baustelle</h1>
     <div class="blink">🔧 Bitte etwas Geduld</div>
 
-    <!-- Zurück -->
-   backBtn.onclick = () => history.back();
+ 
+/* 🔙 ZURÜCK → INDEX (WICHTIGER FIX) */
+backBtn.onclick = () => {
+
+    document.body.style.display = "none";
+
+    setTimeout(() => {
+        window.location.href = "../index.html?reload=" + Date.now();
+    }, 50);
+};
 
 </body>
 </html>
