@@ -8,7 +8,6 @@
 <meta name="theme-color" content="#ffffff">
 
 <style>
-/* Seite bleibt unsichtbar */
 html, body {
     margin: 0;
     padding: 0;
@@ -27,8 +26,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const bereich = params.get("bereich");
 
     if (!bereich) {
-        // Kein Bereich → nichts tun (wichtig für PWA-Stabilität)
         console.warn("Kein Bereich angegeben");
+        return;
+    }
+
+    /* ============================================
+       HOME → Viewport-Reset
+    ============================================ */
+    if (bereich === "home") {
+        location.replace("index.html?fresh=" + Date.now());
         return;
     }
 
@@ -45,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const ziel = routes[bereich];
 
     if (ziel) {
-        // replace = kein Zurück auf diese Seite
         location.replace(ziel);
     } else {
         console.warn("Unbekannter Bereich:", bereich);
@@ -55,6 +60,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </head>
 <body>
-<!-- bewusst leer -->
 </body>
 </html>
