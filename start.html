@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="theme-color" content="#ffffff">
 
 <title>Warenanhänger</title>
 
@@ -14,52 +13,14 @@
 <link rel="apple-touch-icon" href="icon192.png">
 
 <style>
-/* =====================================================
-   GRUNDHINTERGRUND (gegen Start-Flash)
-===================================================== */
+/* (dein vorhandenes CSS bleibt unverändert!) */
 html, body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    background: #ffffff;
+    background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
     font-family: "Segoe UI", Arial, sans-serif;
 }
-
-/* =====================================================
-   SPLASH SCREEN (OHNE ANIMATION)
-===================================================== */
-#splashScreen {
-    position: fixed;
-    inset: 0;
-    background: #ffffff;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    z-index: 10000;
-}
-
-.splash-content {
-    text-align: center;
-}
-
-#splashScreen img {
-    width: 60%;
-    max-width: 300px;
-    margin-bottom: 18px;
-}
-
-.splash-title {
-    font-size: 34px;
-    font-weight: 900;
-    color: #003a73;
-    letter-spacing: 1px;
-}
-
-/* =====================================================
-   DEIN DESIGN
-===================================================== */
 @media (min-width: 601px) { html, body { overflow: hidden; } }
 
 @media (max-width: 600px) {
@@ -73,19 +34,13 @@ html, body {
     #main { width: 100%; max-width: 380px; transform: scale(0.95); }
     button { width: 260px; height: 85px; font-size: 24px; }
 }
-
 @media (min-width: 601px) {
     #main { margin: 60px auto; width: 100%; max-width: 650px; padding: 20px 40px; }
     button { width: 450px; height: 80px; font-size: 20px; }
     h1 { font-size: 40px; }
 }
 
-#logo {
-    width: 80%;
-    max-width: 320px;
-    margin: 0 auto 25px auto;
-    display: block;
-}
+#logo { width: 80%; max-width: 320px; margin: 0 auto 25px auto; display: block; }
 
 h1 {
     margin: 0 0 30px 0;
@@ -97,15 +52,18 @@ h1 {
 
 button {
     margin: 18px auto;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     border: none;
     border-radius: 18px;
     font-weight: bold;
     color: white;
     cursor: pointer;
     transition: 0.2s;
+
     line-height: 1.2;
     text-align: center;
     padding: 0 24px;
@@ -125,50 +83,29 @@ footer {
 </style>
 
 <script>
-/* =====================================================
-   NAVIGATION
-===================================================== */
+/* ⭐ Beschichtung */
 function openBeschichtung() {
-    location.href = "start.html?bereich=beschichtung";
+    window.location.href = "start.html?bereich=beschichtung";
 }
 
+/* ⭐ Bearbeitung (Kanten / Schweißen / Bohrwerk) */
 function openKanten() {
-    location.href = "start.html?bereich=kanten";
+    window.location.href = "start.html?bereich=kanten";
 }
 
+/* ⭐ Lieferung → zuerst auf index2.html */
 function openLieferung() {
-    location.href = "index2.html";
+    window.location.href = "index2.html";
 }
 
+/* ⭐ PAUS Lieferung */
 function openPaus() {
-    location.href = "start.html?bereich=paus";
+    window.location.href = "start.html?bereich=paus";
 }
-
-/* =====================================================
-   SPLASH LOGIK
-   - 2 Sekunden sichtbar
-   - KEINE Animation
-===================================================== */
-window.addEventListener("load", () => {
-    setTimeout(() => {
-        const splash = document.getElementById("splashScreen");
-        if (splash) splash.style.display = "none";
-    }, 2000);
-});
 </script>
 
 </head>
 <body>
-
-<!-- =====================================================
-     SPLASH SCREEN
-===================================================== -->
-<div id="splashScreen">
-    <div class="splash-content">
-        <img src="icon512.png" alt="Langen CNC">
-        <div class="splash-title">Warenanhänger</div>
-    </div>
-</div>
 
 <div id="main">
 
@@ -178,7 +115,10 @@ window.addEventListener("load", () => {
 
     <button id="btnKanten" onclick="openKanten()">Bearbeitung (A6)</button>
     <button id="btnBeschichtung" onclick="openBeschichtung()">Beschichtung (A5)</button>
+
+    <!-- NEUER BUTTON -->
     <button id="btnLieferung" onclick="openLieferung()">Lieferung (A6)</button>
+
     <button id="btnPaus" onclick="openPaus()">PAUS Lieferung (A6)</button>
 
     <footer>Langen CNC Metalltechnik GmbH & Co. KG</footer>
