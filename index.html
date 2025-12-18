@@ -13,7 +13,30 @@
 <link rel="apple-touch-icon" href="icon192.png">
 
 <style>
-/* (dein vorhandenes CSS bleibt unverändert!) */
+/* =====================
+   SPLASH SCREEN
+===================== */
+#splashScreen {
+    position: fixed;
+    inset: 0;
+    background: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 10000;
+}
+
+#splashScreen img {
+    width: 60%;
+    max-width: 320px;
+}
+
+/* =====================
+   DEIN VORHANDENES CSS
+   (unverändert)
+===================== */
 html, body {
     margin: 0;
     padding: 0;
@@ -83,29 +106,46 @@ footer {
 </style>
 
 <script>
-/* ⭐ Beschichtung */
+/* =====================
+   NAVIGATION
+===================== */
 function openBeschichtung() {
     window.location.href = "start.html?bereich=beschichtung";
 }
 
-/* ⭐ Bearbeitung (Kanten / Schweißen / Bohrwerk) */
 function openKanten() {
     window.location.href = "start.html?bereich=kanten";
 }
 
-/* ⭐ Lieferung → zuerst auf index2.html */
 function openLieferung() {
     window.location.href = "index2.html";
 }
 
-/* ⭐ PAUS Lieferung */
 function openPaus() {
     window.location.href = "start.html?bereich=paus";
 }
+
+/* =====================
+   SPLASH SCREEN LOGIK
+   - bleibt 5 Sekunden sichtbar
+===================== */
+window.addEventListener("load", () => {
+    setTimeout(() => {
+        const splash = document.getElementById("splashScreen");
+        if (splash) splash.style.display = "none";
+    }, 5000); // 5 Sekunden
+});
 </script>
 
 </head>
 <body>
+
+<!-- =====================
+     SPLASH SCREEN
+===================== -->
+<div id="splashScreen">
+    <img src="icon512.png" alt="Langen CNC">
+</div>
 
 <div id="main">
 
@@ -116,7 +156,6 @@ function openPaus() {
     <button id="btnKanten" onclick="openKanten()">Bearbeitung (A6)</button>
     <button id="btnBeschichtung" onclick="openBeschichtung()">Beschichtung (A5)</button>
 
-    <!-- NEUER BUTTON -->
     <button id="btnLieferung" onclick="openLieferung()">Lieferung (A6)</button>
 
     <button id="btnPaus" onclick="openPaus()">PAUS Lieferung (A6)</button>
