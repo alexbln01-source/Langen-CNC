@@ -4,8 +4,6 @@
 <meta charset="utf-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-<!-- 🔑 Wichtig: gleicht System-Splash an -->
 <meta name="theme-color" content="#ffffff">
 
 <title>Warenanhänger</title>
@@ -16,34 +14,23 @@
 <link rel="apple-touch-icon" href="icon192.png">
 
 <style>
-/* =====================================================
-   GRUNDHINTERGRUND (gegen Flash beim Start)
-===================================================== */
 html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
     background: #ffffff;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* =====================================================
-   SPLASH SCREEN
-===================================================== */
+/* ================= SPLASH ================= */
 #splashScreen {
     position: fixed;
     inset: 0;
     background: #ffffff;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     z-index: 10000;
-
-    opacity: 1;
-    transition: opacity 0.6s ease;
-}
-
-#splashScreen.hide {
-    opacity: 0;
-    pointer-events: none;
 }
 
 .splash-content {
@@ -63,17 +50,7 @@ html, body {
     letter-spacing: 1px;
 }
 
-/* =====================================================
-   DEIN VORHANDENES DESIGN
-===================================================== */
-html, body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    background: radial-gradient(circle at top, #f2f5f9 0%, #d8dee6 40%, #c3cad4 100%);
-    font-family: "Segoe UI", Arial, sans-serif;
-}
-
+/* ================= LAYOUT ================= */
 @media (min-width: 601px) { html, body { overflow: hidden; } }
 
 @media (max-width: 600px) {
@@ -120,8 +97,6 @@ button {
     color: white;
     cursor: pointer;
     transition: 0.2s;
-    line-height: 1.2;
-    text-align: center;
     padding: 0 24px;
 }
 
@@ -139,40 +114,30 @@ footer {
 </style>
 
 <script>
-/* =====================================================
-   NAVIGATION
-===================================================== */
+/* ================= NAVIGATION ================= */
 function openBeschichtung() {
-    window.location.href = "start.html?bereich=beschichtung";
+    location.href = "start.html?bereich=beschichtung";
 }
 
 function openKanten() {
-    window.location.href = "start.html?bereich=kanten";
+    location.href = "start.html?bereich=kanten";
 }
 
 function openLieferung() {
-    window.location.href = "index2.html";
+    location.href = "index2.html";
 }
 
 function openPaus() {
-    window.location.href = "start.html?bereich=paus";
+    location.href = "start.html?bereich=paus";
 }
 
-/* =====================================================
-   SPLASH LOGIK
-   - 2 Sekunden sichtbar
-   - sanfter Fade-Out
-===================================================== */
-window.addEventListener("load", () => {
+/* ================= SPLASH LOGIK =================
+   ⚠️ WICHTIG: DOMContentLoaded, NICHT load!
+================================================== */
+document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
         const splash = document.getElementById("splashScreen");
-        if (!splash) return;
-
-        splash.classList.add("hide");
-
-        setTimeout(() => {
-            splash.style.display = "none";
-        }, 700);
+        if (splash) splash.style.display = "none";
     }, 2000);
 });
 </script>
@@ -180,9 +145,6 @@ window.addEventListener("load", () => {
 </head>
 <body>
 
-<!-- =====================================================
-     SPLASH SCREEN (sofort sichtbar)
-===================================================== -->
 <div id="splashScreen">
     <div class="splash-content">
         <img src="icon512.png" alt="Langen CNC">
