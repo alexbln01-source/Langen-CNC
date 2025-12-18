@@ -14,9 +14,6 @@
 <link rel="apple-touch-icon" href="icon192.png">
 
 <style>
-/* =====================
-   GRUNDLAYOUT
-===================== */
 html, body {
     margin: 0;
     padding: 0;
@@ -92,24 +89,26 @@ footer {
 </style>
 
 <script>
-/* =====================
-   NAVIGATION
-===================== */
+/* Navigation */
 function openBeschichtung() {
     location.href = "start.html?bereich=beschichtung";
 }
-
 function openKanten() {
     location.href = "start.html?bereich=kanten";
 }
-
 function openLieferung() {
     location.href = "index2.html";
 }
-
 function openPaus() {
     location.href = "start.html?bereich=paus";
 }
+
+/* 🔑 ANDROID / ZEBRA PRINT-BUG FIX */
+window.addEventListener("pageshow", e => {
+    if (e.persisted) {
+        location.reload();
+    }
+});
 </script>
 
 </head>
