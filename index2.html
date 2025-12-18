@@ -7,9 +7,6 @@
 <title>Achtung: Baustelle</title>
 
 <style>
-/* =====================================================
-   BASIS
-===================================================== */
 html, body {
     margin: 0;
     padding: 0;
@@ -30,9 +27,7 @@ body {
     text-align: center;
 }
 
-/* =====================================================
-   INHALT
-===================================================== */
+/* ===== INHALT ===== */
 .logo {
     width: 60%;
     max-width: 240px;
@@ -61,21 +56,18 @@ h1 {
     to { visibility: hidden; }
 }
 
-/* =====================================================
-   ZURÜCK BUTTON (TOUCH)
-===================================================== */
+/* ===== ZURÜCK BUTTON ===== */
 .back-btn {
     margin-top: 28px;
     padding: 18px 28px;
 
     background: #333;
     color: #fff;
-    text-decoration: none;
-
+    border: none;
     border-radius: 12px;
+
     font-size: 20px;
     font-weight: bold;
-
     min-width: 220px;
 }
 
@@ -83,41 +75,30 @@ h1 {
     background: #555;
 }
 
-/* =====================================================
-   PC FEINSCHLIFF
-===================================================== */
+/* ===== PC ===== */
 @media (min-width: 900px) {
-    h1 {
-        font-size: 40px;
-    }
-
-    .blink {
-        font-size: 24px;
-    }
-
-    .back-btn {
-        font-size: 18px;
-        padding: 14px 24px;
-    }
+    h1 { font-size: 40px; }
+    .blink { font-size: 24px; }
+    .back-btn { font-size: 18px; padding: 14px 24px; }
 }
 </style>
-
 </head>
+
 <body>
 
-    <!-- Logo -->
-    <img src="langen.png" alt="Logo" class="logo">
+<img src="langen.png" alt="Logo" class="logo">
+<img src="baustelle.png" alt="Baustelle" class="baustelle-img">
 
-    <!-- Baustellenbild -->
-    <img src="baustelle.png" alt="Baustelle" class="baustelle-img">
+<h1>⚠️ Achtung: Baustelle</h1>
+<div class="blink">🔧 Bitte etwas Geduld</div>
 
-    <h1>⚠️ Achtung: Baustelle</h1>
-    <div class="blink">🔧 Bitte etwas Geduld</div>
+<button id="backBtn" class="back-btn">← Zurück</button>
 
- 
-backBtn.onclick = () => {
+<script>
+document.getElementById("backBtn").onclick = () => {
     window.location.href = "../start.html?bereich=home&reset=" + Date.now();
-
+};
+</script>
 
 </body>
 </html>
