@@ -26,16 +26,35 @@
     justify-content: center;
 
     z-index: 10000;
+
+    opacity: 1;
+    transition: opacity 0.6s ease;
+}
+
+#splashScreen.hide {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.splash-content {
+    text-align: center;
 }
 
 #splashScreen img {
     width: 60%;
-    max-width: 320px;
+    max-width: 300px;
+    margin-bottom: 18px;
+}
+
+.splash-title {
+    font-size: 34px;
+    font-weight: 900;
+    color: #003a73;
+    letter-spacing: 1px;
 }
 
 /* =====================
    DEIN VORHANDENES CSS
-   (unverändert)
 ===================== */
 html, body {
     margin: 0;
@@ -127,13 +146,20 @@ function openPaus() {
 
 /* =====================
    SPLASH SCREEN LOGIK
-   - bleibt 5 Sekunden sichtbar
+   - 2 Sekunden sichtbar
+   - sanfter Fade-out
 ===================== */
 window.addEventListener("load", () => {
     setTimeout(() => {
         const splash = document.getElementById("splashScreen");
-        if (splash) splash.style.display = "none";
-    }, 5000); // 5 Sekunden
+        if (!splash) return;
+
+        splash.classList.add("hide");
+
+        setTimeout(() => {
+            splash.style.display = "none";
+        }, 700);
+    }, 2000); // ⏱️ 2 Sekunden
 });
 </script>
 
@@ -144,7 +170,10 @@ window.addEventListener("load", () => {
      SPLASH SCREEN
 ===================== -->
 <div id="splashScreen">
-    <img src="icon512.png" alt="Langen CNC">
+    <div class="splash-content">
+        <img src="icon512.png" alt="Langen CNC">
+        <div class="splash-title">Warenanhänger</div>
+    </div>
 </div>
 
 <div id="main">
