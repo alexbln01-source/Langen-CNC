@@ -115,15 +115,9 @@ h1 {
     <div class="blink">🔧 Bitte etwas Geduld</div>
 
  
-/* 🔙 ZURÜCK → INDEX (WICHTIGER FIX) */
 backBtn.onclick = () => {
+    window.location.href = "../start.html?bereich=home&reset=" + Date.now();
 
-    document.body.style.display = "none";
-
-    setTimeout(() => {
-        window.location.href = "../index.html?reload=" + Date.now();
-    }, 50);
-};
 
 </body>
 </html>
