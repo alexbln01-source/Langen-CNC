@@ -57,56 +57,62 @@ html, body {
     width: 42mm;
 }
 
-.print-spacer {
-    height: 16mm;
-}
+.print-spacer { height: 16mm; }
 
-.etikett * {
-    font-weight: bold !important;
-}
+.etikett * { font-weight: bold !important; }
 
-/* ===== TEXTE ===== */
-.kunde-lp,
-.kunde-lp-eilt,
-.kunde-schuette,
-.kunde-schuette-eilt,
-.kunde-kley,
-.kunde-kley-eilt,
-.kunde-kaley,
-.kunde-wob,
-.kunde-wob-eilt,
-.kunde-comte-zn8,
-.kunde-comte-zni8,
-.kunde-chemisch,
-.kunde-dick,
-.kunde-blau,
-.kunde-pentz,
-.kunde-rcs,
-.kunde-coatinc {
-    font-size: 70pt;
-    margin-bottom: 8mm;
-}
+/* ===== KUNDEN – EINZELN ===== */
 
-.sub-lp-eilt,
-.sub-schuette-eilt,
-.sub-kley-eilt,
-.sub-wob-eilt {
-    font-size: 60pt;
-    margin-bottom: 6mm;
-}
+/* L&P */
+.kunde-lp        { font-size: 70pt; margin-bottom: 8mm; }
+.kunde-lp-eilt   { font-size: 70pt; margin-bottom: 8mm; }
+.sub-lp-eilt     { font-size: 60pt; margin-bottom: 6mm; }
 
-.sub-comte-zn8,
-.sub-comte-zni8,
-.sub-chemisch,
-.sub-dick,
-.sub-blau,
-.sub-pentz,
-.sub-rcs,
-.sub-coatinc {
-    font-size: 32pt;
-    margin-bottom: 6mm;
-}
+/* SCHÜTTE */
+.kunde-schuette        { font-size: 70pt; margin-bottom: 8mm; }
+.kunde-schuette-eilt   { font-size: 70pt; margin-bottom: 8mm; }
+.sub-schuette-eilt     { font-size: 60pt; margin-bottom: 6mm; }
 
+/* KLEY */
+.kunde-kley        { font-size: 70pt; margin-bottom: 8mm; }
+.kunde-kley-eilt   { font-size: 70pt; margin-bottom: 8mm; }
+.sub-kley-eilt     { font-size: 60pt; margin-bottom: 6mm; }
+
+/* KALEY */
+.kunde-kaley { font-size: 70pt; margin-bottom: 8mm; }
+
+/* WOB */
+.kunde-wob        { font-size: 72pt; margin-bottom: 8mm; }
+.kunde-wob-eilt   { font-size: 72pt; margin-bottom: 8mm; }
+.sub-wob-eilt     { font-size: 60pt; margin-bottom: 6mm; }
+
+/* COMTE */
+.kunde-comte-zn8  { font-size: 70pt; margin-bottom: 6mm; }
+.sub-comte-zn8    { font-size: 32pt; margin-bottom: 6mm; }
+
+.kunde-comte-zni8 { font-size: 70pt; margin-bottom: 6mm; }
+.sub-comte-zni8   { font-size: 32pt; margin-bottom: 6mm; }
+
+.kunde-chemisch  { font-size: 70pt; margin-bottom: 6mm; }
+.sub-chemisch    { font-size: 32pt; margin-bottom: 6mm; }
+
+.kunde-dick      { font-size: 70pt; margin-bottom: 6mm; }
+.sub-dick        { font-size: 32pt; margin-bottom: 6mm; }
+
+.kunde-blau      { font-size: 70pt; margin-bottom: 6mm; }
+.sub-blau        { font-size: 32pt; margin-bottom: 6mm; }
+
+/* SONSTIGE */
+.kunde-pentz     { font-size: 70pt; margin-bottom: 8mm; }
+.sub-pentz       { font-size: 32pt; margin-bottom: 6mm; }
+
+.kunde-rcs       { font-size: 70pt; margin-bottom: 8mm; }
+.sub-rcs         { font-size: 32pt; margin-bottom: 6mm; }
+
+.kunde-coatinc   { font-size: 70pt; margin-bottom: 8mm; }
+.sub-coatinc     { font-size: 32pt; margin-bottom: 6mm; }
+
+/* ===== WEITERE TEXTE ===== */
 .print-beistell {
     font-size: 60pt;
     margin-bottom: 12mm;
@@ -230,20 +236,15 @@ window.onload = () => {
     previewContent.innerHTML = html;
     printContent.innerHTML   = html;
 
- /* 🖨 DRUCK */
-printBtn.onclick = () => {
-    window.print();
-};
+    printBtn.onclick = () => window.print();
 
-/* ✅ NACH DRUCK → INDEX */
-window.onafterprint = () => {
-    window.location.href = "../index.html?reload=" + Date.now();
-};
+    window.onafterprint = () => {
+        window.location.href = "../index.html?reload=" + Date.now();
+    };
 
-/* 🔙 ZURÜCK → INDEX (WICHTIGER FIX) */
-backBtn.onclick = () => {
-    window.location.href = "../start.html?bereich=home&reset=" + Date.now();
-};
+    backBtn.onclick = () => {
+        window.location.href = "../start.html?bereich=home&reset=" + Date.now();
+    };
 };
 </script>
 
